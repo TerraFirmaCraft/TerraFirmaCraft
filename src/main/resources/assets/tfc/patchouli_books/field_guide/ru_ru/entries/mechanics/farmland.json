@@ -1,17 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Soil Fertility",
+  "name": "Плодородие почвы",
   "category": "tfc:mechanics",
   "icon": "tfc:farmland/mollisol",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "There are eight varieties of soil occurring in different locations throughout the world. These soils range from very fertile, providing a 20% boost to all $(l:mechanics/fertilizers)fertilizers$() applied to it, and to all nutrients recharged by $(l:mechanics/crops)crops$(), to very poor, providing 20% less than typical soil.",
-      "title": "Soil Fertility"
+      "text": "Существует восемь видов почвы, встречающихся по всему миру. Они варьируются от очень плодородных, дающих бонус в 20% как к эффективности $(l:mechanics/fertilizers)удобрений$(), применяемых к ней, так и к восполнению питательных веществ $(l:mechanics/crops)растениями$(), до очень бедных, дающих на 20% меньше питательных веществ, чем обычная почва.",
+      "title": "Плодородие почвы"
     },
     {
       "type": "patchouli:text",
-      "text": "Soil quality only impacts the effectiveness of fertilizers; unfertilized crops grow at the same rate regardless of what soil they are planted in. While nutrients can be consumed by crops, soil quality is not degraded by subsequent plantings.$(br)$(br)The following pages outline each soil type."
+      "text": "Качество почвы влияет только на эффективность удобрений; неудобренные растения растут с той же скоростью независимо от типа почвы, в которой они посажены. Хотя питательные вещества могут потребляться растениями, качество почвы не ухудшается при последующих посадках.$(br)$(br)На следующих страницах представлено описание каждого типа почвы."
     },
     {
       "type": "patchouli:multiblock",
@@ -29,8 +29,8 @@
           "X": "tfc:dirt/entisol"
         }
       },
-      "name": "Entisol",
-      "text": "Entisol is the most common soil type, found throughout the world. It is a normal quality soil, receiving no bonus nutrients.",
+      "name": "Энтизол",
+      "text": "Энтизол встречается по всему миру. Это почва нормального качества, не дающая бонусных питательных веществ.",
       "enable_visualize": false
     },
     {
@@ -49,8 +49,8 @@
           "X": "tfc:dirt/andisol"
         }
       },
-      "name": "Andisol",
-      "text": "Andisol is found in volcanic regions. It is a high quality soil, receiving 10% bonus nutrients.",
+      "name": "Андизол",
+      "text": "Андизол встречается в вулканических регионах. Это почва высокого качества, дающая 10% бонусных питательных веществ.",
       "enable_visualize": false
     },
     {
@@ -69,8 +69,8 @@
           "X": "tfc:dirt/fluvisol"
         }
       },
-      "name": "Fluvisol",
-      "text": "Fluvisol is found along rivers in regions with wet and dry seasons. It is a high quality soil, receiving 10% bonus nutrients.",
+      "name": "Флювизол",
+      "text": "Флювизол встречается вдоль рек в регионах с влажными и сухими сезонами. Это почва высокого качества, дающая 10% бонусных питательных веществ.",
       "enable_visualize": false
     },
     {
@@ -89,8 +89,8 @@
           "X": "tfc:dirt/alfisol"
         }
       },
-      "name": "Alfisol",
-      "text": "Alfisol is found in temperate broadleaf forests. It is a high quality soil, receiving 10% bonus nutrients.",
+      "name": "Альфизол",
+      "text": "Альфизол встречается в умеренных широколиственных лесах. Это почва высокого качества, дающая 10% бонусных питательных веществ.",
       "enable_visualize": false
     },
     {
@@ -109,8 +109,8 @@
           "X": "tfc:dirt/mollisol"
         }
       },
-      "name": "Mollisol",
-      "text": "Mollisol is found in cold grasslands. It is a very high quality soil, receiving 20% bonus nutrients.",
+      "name": "Моллизол",
+      "text": "Моллизол встречается в холодных степях. Это почва очень высокого качества, дающая 20% бонусных питательных веществ.",
       "enable_visualize": false
     },
     {
@@ -129,8 +129,8 @@
           "X": "tfc:dirt/podzol"
         }
       },
-      "name": "Podzol",
-      "text": "Podzol is found in conifer forests. It is a poor quality soil, receiving 10% less nutrients.",
+      "name": "Подзол",
+      "text": "Подзол встречается в хвойных лесах. Это почва низкого качества, дающая на 10% меньше питательных веществ.",
       "enable_visualize": false
     },
     {
@@ -149,8 +149,8 @@
           "X": "tfc:dirt/aridisol"
         }
       },
-      "name": "Aridisol",
-      "text": "Aridisol is found in dry regions. It is a poor quality soil, receiving 10% less nutrients.",
+      "name": "Аридизол",
+      "text": "Аридизол встречается в засушливых регионах. Это почва низкого качества, дающая на 10% меньше питательных веществ.",
       "enable_visualize": false
     },
     {
@@ -169,8 +169,8 @@
           "X": "tfc:dirt/oxisol"
         }
       },
-      "name": "Oxisol",
-      "text": "Oxisol is found in wet tropical regions. It is a very poor quality soil, receiving 20% less nutrients.",
+      "name": "Оксизол",
+      "text": "Оксизол встречается в влажных тропических регионах. Это почва очень низкого качества, дающая на 20% меньше питательных веществ.",
       "enable_visualize": false
     }
   ],

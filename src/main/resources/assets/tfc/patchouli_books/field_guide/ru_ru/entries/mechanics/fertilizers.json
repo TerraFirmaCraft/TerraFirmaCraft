@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.$(br)The effectiveness of fertilizers are influenced by the type of $(l:mechanics/farmland)Farmland$() they are used on.",
+      "text": "Удобрения используются для добавления питательных веществ $(l:mechanics/crops)культурам$(). $(item)$(k:key.use)$(), держа удобрение в руке, по $(thing)пашне$() или $(thing)культуре$(), чтобы добавить питательные вещества. Появятся частицы, указывающие на то, что удобрение было добавлено.$(br)Эффективность удобрений зависит от типа $(l:mechanics/farmland)пашни$(), на которой они применяются.",
       "title": "Удобрение"
     },
     {
@@ -25,7 +25,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:food/shellfish",
       "link_recipes": false,
-      "text": "Shellfish can be obtained by killing some aquatic invertebrates. $(br)$(li)$(6)Phosphorous: 15$()"
+      "text": "Ракообразных можно получить, убив некоторых водных беспозвоночных. $(br)$(li)$(6)Фосфор: 15$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -37,7 +37,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:groundcover/guano",
       "link_recipes": false,
-      "text": "Guano is found underground in lush biomes and on rocky coastlines. $(br)$(li)$(b)Nitrogen: 40$()$(li)$(6)Phosphorous: 50$()$(li)$(d)Potassium: 10$()"
+      "text": "Гуано находится под землёй в пышных биомах и на скалистых побережьях. $(br)$(li)$(b)Азот: 40$()$(li)$(6)Фосфор: 50$()$(li)$(d)Калий: 10$()"
     },
     {
       "type": "patchouli:spotlight",

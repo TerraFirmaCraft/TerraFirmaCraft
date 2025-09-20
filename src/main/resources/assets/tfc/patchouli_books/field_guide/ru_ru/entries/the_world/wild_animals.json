@@ -134,8 +134,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:bison",
       "scale": 0.6,
-      "name": "Bison",
-      "text": "The bison spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above -10°C and below 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 160 and 420mm."
+      "name": "Бизон",
+      "text": "Бизон появляется на открытых равнинах при любой $(l:the_world/climate#temperature)температуре$() выше -10°C и ниже 15°C, и $(l:the_world/climate#rainfall)осадках$() от 160 до 420мм."
     },
     {
       "type": "patchouli:empty"
@@ -235,8 +235,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:leopard_seal",
       "scale": 0.7,
-      "name": "Leopard Seal",
-      "text": "The Leopard Seal spawns on cold beaches, ice sheet edges, and sea ice with $(l:the_world/climate#temperature)temperatures$() of at most -9°C and $(l:the_world/climate#rainfall)rainfall$() of at least 105mm."
+      "name": "Морской леопард",
+      "text": "Морской леопард появляется на холодных пляжах, краях ледяных щитов и морском льде, где $(l:the_world/climate#temperature)температура$() не более -9°C и $(l:the_world/climate#rainfall)осадки$() не менее 105 мм."
     },
     {
       "type": "patchouli:entity",

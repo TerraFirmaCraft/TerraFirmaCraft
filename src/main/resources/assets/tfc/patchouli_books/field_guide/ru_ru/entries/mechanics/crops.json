@@ -29,26 +29,26 @@
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on $(l:mechanics/farmland)farmland $()in order to grow. Some crops have additional requirements such as being waterlogged or requiring a stick to grow on.$(br2)Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop may consume, or replenish, and combination of these three nutrients.",
+      "text": "Все культуры нужно сажать на $(l:mechanics/farmland)пашню$(), чтобы они росли. Некоторые культуры имеют дополнительные требования, такие как необходимость затопления водой или опоры на палку для роста.$(br2)Культурам для роста не нужны $(thing)питательные вещества$(), но они, безусловно, помогают. Существует три питательных вещества: $(b)Азот$(), $(6)Фосфор$() и $(d)Калий$(). Каждая культура может потреблять или восполнять любую комбинацию этих трёх питательных веществ.",
       "title": "Рост культур"
     },
     {
       "type": "patchouli:text",
-      "text": "Consuming nutrients causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming nutrients also increases the rate at which the crop replenishes other nutrients."
+      "text": "Поглощение питательных веществ ускоряет рост культуры и повышает её урожайность при сборе урожая. Это означает, что культуры, поглотившие больше питательных веществ, при разрушении сбрасывают больше еды! Поглощение питательных веществ также увеличивает скорость восстановления других питательных веществ."
     },
     {
       "type": "patchouli:text",
-      "text": "While each individual crop may have its own balance of fertilizer needs, most crops fit into four general categories: cereals, legumes, vegetables, and cover crops.$(br2)$(bold)Cereals$() consume large amounts of $(b)Nitrogen$(), but replenish $(6)Phosphorous$() and $(d)Potassium$(). They produce food rich in Grain",
-      "title": "Crop Categories"
+      "text": "Хотя каждая отдельная культура может иметь свой баланс потребностей в удобрениях, большинство культур относятся к четырём общим категориям: зерновые, бобовые, овощные и покровные культуры.$(br2)$(bold)Зерновые$() поглощают большое количество $(b)Азота$(), но восстанавливают $(6)Фосфор$() и $(d)Калий$(). Они дают пищу, богатую зерном",
+      "title": "Категории культур"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Legumes$() produce large amounts of $(b)Nitrogen$(), and consume $(b)Phosphorous$() and $(d)Potassium$(). They produce foods rich in Vegetable and Protein.$(br2)$(bold)Vegetables$() consume all three nutrients to produce foods rich in Vegetable.$(br2)$(bold)Cover$() crops produce all three nutrients, but their produce has only limited uses."
+      "text": "$(bold)Бобовые$() производят большое количество $(b)Азота$(), и потребляют $(b)Фосфора$() и $(d)Калия$(). Они производят продукты, богатые овощами и белком.$(br2)$(bold)Овощи$() потребляют все три питательных вещества, чтобы производить продукты, богатые овощами.$(br2)$(bold)Покровные$() культуры производят все три питательных вещества, но их урожай имеет лишь ограниченное применение."
     },
     {
       "type": "patchouli:text",
       "anchor": "barley",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 29 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 75 $(bold)$(6)P: +20 $(bold)$(d)K: +20$()$(br)Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 29 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 10 - 70 %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 75 $(bold)$(6)P: +20 $(bold)$(d)K: +20$()$(br)Ячмень — одноблочная культура. Семена ячменя можно посеять на пахотной земле и они дадут $(thing)Ячмень$() и $(thing)Семена ячменя$() в качестве продукта.",
       "title": "Ячмень"
     },
     {
@@ -196,7 +196,7 @@
     {
       "type": "patchouli:text",
       "anchor": "oat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 85 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +35 $(bold)$(d)K: +25$()$(br)Oat is a single block crop. Oat seeds can be planted on farmland and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Увлажнение$(): 25 - 85 %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +35 $(bold)$(d)K: +25$()$(br)Овёс — одноблочная культура. Семена овса можно сажать на пахотной почве, и в качестве продукта будут получены $(thing)Oat$() и $(thing)Oat Seeds$().",
       "title": "Овес"
     },
     {
@@ -344,7 +344,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rye",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 80 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +20 $(bold)$(d)K: +40$()$(br)Rye is a single block crop. Rye seeds can be planted on farmland and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 23 °C$(br)$(bold)$(l:mechanics/hydration)Увлажнение$(): 15 - 80 %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +20 $(bold)$(d)K: +40$()$(br)Рожь — одноблочная культура. Семена ржи можно сажать на пахотной почве, и в качестве продукта будут получены $(thing)Rye$() и $(thing)Rye Seeds$().",
       "title": "Рожь"
     },
     {
@@ -492,7 +492,7 @@
     {
       "type": "patchouli:text",
       "anchor": "maize",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 90 $(bold)$(6)P: +25 $(bold)$(d)K: +25$()$(br)Maize is a two block tall crop. Maize seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Увлажнение$(): 50 - 100 %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 90 $(bold)$(6)P: +25 $(bold)$(d)K: +25$()$(br)Кукуруза — двухблочная культура. Семена кукурузы можно сажать на пахотной почве; они вырастают в два блока высотой и в качестве продукта дают $(thing)Maize$() и $(thing)Maize Seeds$().",
       "title": "Кукуруза"
     },
     {
@@ -630,7 +630,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wheat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +30 $(bold)$(d)K: +30$()$(br)Wheat is a single block crop. Wheat seeds can be planted on farmland and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Увлажнение$(): 15 - 85 %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +30 $(bold)$(d)K: +30$()$(br)Пшеница — одноблочная культура. Семена пшеницы можно сажать на пахотной почве, и в качестве продукта будут получены $(thing)Wheat$() и $(thing)Wheat Seeds$().",
       "title": "Пшеница"
     },
     {
@@ -778,7 +778,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 8 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 30$()$(br)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product. Unlike most cereal grains, rice requires an even balance of nutrients.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 8 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Увлажнение$(): 35 - 100 %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 30$()$(br)Рис — одноблочная культура. Рис необходимо выращивать под водой — его нужно сажать на пахотной почве в пресной воде глубиной в один блок. В качестве продукта будут получены $(thing)Rice$() и $(thing)Rice Seeds$(). В отличие от большинства зерновых культур рис требует равномерного баланса питательных веществ.",
       "title": "Рис"
     },
     {
@@ -926,8 +926,8 @@
     {
       "type": "patchouli:text",
       "anchor": "cassava",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 45 - 100 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +50 $(bold)$(6)P: 40 $(bold)$(d)K: 20$()$(br)Cassava is a single block crop. Cassava seeds can be planted on farmland and will produce $(thing)Cassava$() and $(thing)Cassava Seeds$() as a product.",
-      "title": "Cassava"
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 10 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Увлажнение$(): 45 - 100 %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +50 $(bold)$(6)P: 40 $(bold)$(d)K: 20$()$(br)Кассава — одноблочная культура. Семена кассавы можно сажать на пахотной почве, и в качестве продукта будут получены $(thing)Cassava$() и $(thing)Cassava Seeds$().",
+      "title": "Маниок"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1040,7 +1040,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_bean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -4 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -4 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 25 - 90 %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Зелёная фасоль – вьющаяся культура высотой в два блока. Семена зелёной фасоли можно сажать на вспаханную землю, растение вырастает до двух блоков высотой, если рядом есть палка, и даёт в качестве продукта $(thing)Зелёную фасоль$() и $(thing)Семена зелёной фасоли$().",
       "title": "Зеленая фасоль"
     },
     {
@@ -1220,8 +1220,8 @@
     {
       "type": "patchouli:text",
       "anchor": "lentil",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 50 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 20 $(bold)$(d)K: 20$()$(br)Lentils are a single block crop. Lentil seeds can be planted on farmland and will produce $(thing)Lentils$() and $(thing)Lentil Seeds$() as a product.",
-      "title": "Lentils"
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -7 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 15 - 50 %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 20 $(bold)$(d)K: 20$()$(br)Чечевица — одноблочная культура. Семена чечевицы можно высаживать на пахотной земле, и в качестве продукта они дают $(thing)Чечевицу$() и $(thing)Семена чечевицы$().",
+      "title": "Чечевица"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1334,8 +1334,8 @@
     {
       "type": "patchouli:text",
       "anchor": "peanut",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 80 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +90 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Peanuts are a single block crop. Peanut seeds can be planted on farmland and will produce $(thing)Peanuts$() and $(thing)Peanut Seeds$() as a product.",
-      "title": "Peanuts"
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 20 - 80 %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +90 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Арахис — одноблочная культура. Семена арахиса можно высаживать на пахотной земле, и в качестве продукта они дают $(thing)Арахис$() и $(thing)Семена арахиса$().",
+      "title": "Арахис"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1448,7 +1448,7 @@
     {
       "type": "patchouli:text",
       "anchor": "soybean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 60 $(bold)$(d)K: 30$()$(br)Soybean is a single block crop. Soybean seeds can be planted on farmland and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 25 - 90 %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 60 $(bold)$(d)K: 30$()$(br)Соя — одноблочная культура. Семена сои можно посадить на пашню, и они дадут $(thing)Соя$() и $(thing)Семена сои$() в качестве продукта.",
       "title": "Соя"
     },
     {
@@ -1579,7 +1579,7 @@
     {
       "type": "patchouli:text",
       "anchor": "beet",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 50$()$(br)Beets are a a single block crop. Beet seeds can be planted on farmland and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -13 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 10 - 70 %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 50$()$(br)Свекла — одноблочная культура. Семена свеклы можно посадить на пашню, и они дадут $(thing)Свекла$() и $(thing)Семена свеклы$() в качестве продукта.",
       "title": "Свекла"
     },
     {
@@ -1693,7 +1693,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cabbage",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 65 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 20 $(bold)$(d)K: 40$()$(br)Cabbage is a single block crop. Cabbage seeds can be planted on farmland and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -13 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 10 - 65 %$(br)$(bold)Категория$(): Овощная$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 20 $(bold)$(d)K: 40$()$(br)Капуста — это одноблочная культура. Семена капусты можно посадить на обработанную почву, и они дадут $(thing)Капуста$() и $(thing)Семена капусты$() в качестве продукта.",
       "title": "Капуста"
     },
     {
@@ -1807,7 +1807,7 @@
     {
       "type": "patchouli:text",
       "anchor": "carrot",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -13 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 30 $(bold)$(d)K: 40$()$(br)Carrot is a single block crop. Carrot seeds can be planted on farmland and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -13 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 15 - 85 %$(br)$(bold)Категория$(): Овощная$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 30 $(bold)$(d)K: 40$()$(br)Морковь — это одноблочная культура. Семена моркови можно посадить на обработанную почву, и они дадут $(thing)Морковь$() и $(thing)Семена моркови$() в качестве продукта.",
       "title": "Морковь"
     },
     {
@@ -1904,7 +1904,7 @@
     {
       "type": "patchouli:text",
       "anchor": "garlic",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 10 - 70 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 50$()$(br)Garlic is a single block crop. Garlic seeds can be planted on farmland and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 10 - 70 %$(br)$(bold)Категория$(): Овощи$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 50$()$(br)Чеснок — культура из одного блока. Семена чеснока можно высаживать на пашню, и они будут давать $(thing)Чеснок$() и $(thing)Семена чеснока$().",
       "title": "Чеснок"
     },
     {
@@ -2001,7 +2001,7 @@
     {
       "type": "patchouli:text",
       "anchor": "potato",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 90 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 35 - 90 %$(br)$(bold)Категория$(): Овощи$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Картофель — культура из одного блока. Семена картофеля можно высаживать на пашню, и они будут давать $(thing)Картофель$() и $(thing)Семена картофеля$().",
       "title": "Картофель"
     },
     {
@@ -2132,7 +2132,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)Category$(): Spreading Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 32 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 20 - 85 %$(br)$(bold)Категория$(): Распространяющаяся овощная культура$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Тыквы — распространяющаяся культура. Семена тыквы высаживают на пашню; при созревании растение разместит возле себя до двух $(thing)Pumpkin Blocks$(). Если собрать блоки тыквы и растение снова созреет, оно сможет вырастить больше тыкв. Тыквы можно превратить в $(l:mechanics/lighting#jack_o_lanterns)Тыквы-фонари$().",
       "title": "Тыквы"
     },
     {
@@ -2304,7 +2304,7 @@
     {
       "type": "patchouli:text",
       "anchor": "melon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)Category$(): Spreading Vegetable$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 5 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 35 - 100 %$(br)$(bold)Категория$(): Распространяющаяся овощная культура$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Дыни — распространяющаяся культура. Семена дыни высаживают на пашню; при созревании растение разместит возле себя до двух $(thing)Melon Blocks$(). Если собрать блоки дыни и растение снова созреет, оно сможет вырастить больше дынь.",
       "title": "Дыни"
     },
     {
@@ -2476,7 +2476,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tomatoes",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 1 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Увлажненность$(): 20 - 85 %$(br)$(bold)Категория$(): Овощи$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Помидоры — вьющаяся культура высотой два блока. Семена помидоров можно сеять во вспаханную землю, при наличии палки они вырастут на два блока в высоту и дадут в качестве продукта $(thing)Помидоры$() и $(thing)Семена помидоров$().",
       "title": "Помидоры"
     },
     {
@@ -2656,7 +2656,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)Category$(): Pickable Vegetable$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Red Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Увлажненность$(): 30 - 95 %$(br)$(bold)Категория$(): Сборные овощи$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Красный сладкий перец — сборная культура. Когда плоды почти созреют, их можно собрать нажатием $(item)$(k:key.use)$() для получения $(thing)Зеленые сладкие перцы$(). Сбор урожая таким способом позволяет растению в дальнейшем приносить новые плоды вместо его уничтожения.",
       "title": "Красные сладкие перцы"
     },
     {
@@ -2787,7 +2787,7 @@
     {
       "type": "patchouli:text",
       "anchor": "yellow_bell_pepper",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)Category$(): Pickable Vegetable$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Yellow Bell Peppers are a pickable crop. When they are near mature, they can be harvested with $(item)$(k:key.use)$() to obtain Green Bell Peppers. Harvesting with $(item)$(k:key.use)$() allows the plant to grow more peppers in the future rather than destroying the plant.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Увлажненность$(): 30 - 95 %$(br)$(bold)Категория$(): Сборные овощи$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Желтый сладкий перец — сборная культура. Когда плоды почти созреют, их можно собрать нажатием $(item)$(k:key.use)$() для получения $(thing)Зеленые сладкие перцы$(). Сбор урожая таким способом позволяет растению в дальнейшем приносить новые плоды вместо его уничтожения.",
       "title": "Желтые сладкие перцы"
     },
     {
@@ -2918,7 +2918,7 @@
     {
       "type": "patchouli:text",
       "anchor": "onion",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Onions are a single block crop. Onion seeds can be planted on farmland and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -7 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 15 - 85 %$(br)$(bold)Категория$(): Овощ$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Лук — одноблочная культура. Семена лука можно посадить на пахотной земле, и они дадут $(thing)Лук$() и $(thing)Семена лука$() в качестве продукта.",
       "title": "Лук"
     },
     {
@@ -3049,7 +3049,7 @@
     {
       "type": "patchouli:text",
       "anchor": "squash",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -9 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(b)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Squash is a single block crop. Squash seeds can be planted on farmland and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -9 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 15 - 85 %$(br)$(bold)Категория$(): Овощ$(br)$(br)$(bold)$(b)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Тыква — одноблочная культура. Семена тыквы можно посадить на пахотной земле, и они дадут $(thing)Тыква$() и $(thing)Семена тыквы$() в качестве продукта.",
       "title": "Тыква"
     },
     {
@@ -3197,8 +3197,8 @@
     {
       "type": "patchouli:text",
       "anchor": "alfalfa",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -30 - 14 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 40 - 100 %$(br)$(bold)Category$(): Cover$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: +50 $(bold)$(d)K: +60$()$(br)Alfalfa is a single block crop adapted to cold temperatures. Alfalfa seeds can be planted on farmland and will produce $(thing)Alfalfa$() and $(thing)Alfalfa Seeds$() as a product, while enriching the soil. Alfalfa can be used as a source of straw, or compost.",
-      "title": "Alfalfa"
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -30 - 14 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 40 - 100 %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: +50 $(bold)$(d)K: +60$()$(br)Люцерна — одноблочная культура, приспособленная к холодным температурам. Семена люцерны можно посадить на пахотной земле, и они дадут $(thing)Люцерна$() и $(thing)Семена люцерны$() в качестве продукта, обогащая почву. Люцерну можно использовать как источник соломы или компоста.",
+      "title": "Люцерна"
     },
     {
       "type": "tfc:multimultiblock",
@@ -3311,8 +3311,8 @@
     {
       "type": "patchouli:text",
       "anchor": "canola",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -35 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 75 %$(br)$(bold)Category$(): Cover$(br)$(br)$(bold)$(b)N: +30 $(bold)$(6)P: +60 $(bold)$(d)K: +100$()$(br)Canola is a single block crop adapted to cold temperatures. Canola seeds can be planted on farmland and will produce $(thing)Canola$() and $(thing)Canola Seeds$() as a product, while enriching the soil. Canola can be used as a source of straw, or compost, and the seeds can be used for oil.",
-      "title": "Canola"
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -35 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 20 - 75 %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(b)N: +30 $(bold)$(6)P: +60 $(bold)$(d)K: +100$()$(br)Канола — одноблочная культура, адаптированная к низким температурам. Семена канолы можно высаживать на пашне, и они дадут $(thing)Канола$() и $(thing)Семена канолы$() в качестве продукта, одновременно обогащая почву. Канола может использоваться как источник соломы или компоста, а семена — для производства масла.",
+      "title": "Канола"
     },
     {
       "type": "tfc:multimultiblock",
@@ -3425,8 +3425,8 @@
     {
       "type": "patchouli:text",
       "anchor": "radish",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -33 - 21 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 90 %$(br)$(bold)Category$(): Cover$(br)$(br)$(bold)$(b)N: +50 $(bold)$(6)P: +100 $(bold)$(d)K: +60$()$(br)Radishes are a single block crop adapted to cold temperatures. Radish seeds can be planted on farmland and will produce $(thing)Radishes$() and $(thing)Radish Seeds$() as a product, while enriching the soil. Radishes are not a very nutritious vegetable, but can be fed to many animals.",
-      "title": "Radish"
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): -33 - 21 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 30 - 90 %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(b)N: +50 $(bold)$(6)P: +100 $(bold)$(d)K: +60$()$(br)Редис — одноблочная культура, адаптированная к низким температурам. Семена редиса можно высаживать на пашне, и они дадут $(thing)Редис$() и $(thing)Семена редиса$() в качестве продукта, одновременно обогащая почву. Редис не очень питателен, но его можно скармливать многим животным.",
+      "title": "Редис"
     },
     {
       "type": "tfc:multimultiblock",
@@ -3539,7 +3539,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)Category$(): Misc$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 17 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 25 - 100 %$(br)$(bold)Категория$(): Прочее$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Сахарный тростник — двухблочная культура. Семена сахарного тростника можно высаживать на пашне: они вырастут на два блока в высоту и дадут $(thing)Сахарный тростник$() и $(thing)Семена сахарного тростника$() в качестве продукта. Сахарный тростник можно использовать для производства $(thing)Сахар$().",
       "title": "Сахарный тростник"
     },
     {
@@ -3719,7 +3719,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jute",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 90 %$(br)$(bold)Category$(): Misc$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: 40 $(bold)$(d)K: +40$()$(br)Jute is a two block tall crop. Jute seeds can be planted on farmland, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 1 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 15 - 90 %$(br)$(bold)Категория$(): Разное$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: 40 $(bold)$(d)K: +40$()$(br)Джут — это двухблочное растение. Семена джута можно высевать на пашне, растение вырастает до двух блоков в высоту и в качестве продукта даёт $(thing)Джут$() и $(thing)Семена джута$().",
       "title": "Джут"
     },
     {
@@ -3857,7 +3857,7 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)Category$(): Misc$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:mechanics/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Температура$(): 12 - 47 °C$(br)$(bold)$(l:mechanics/hydration)Гидратация$(): 50 - 100 %$(br)$(bold)Категория$(): Разное$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Папирус — это двухблочное растение. Семена папируса можно высевать на пашне, растение вырастает до двух блоков в высоту и в качестве продукта даёт $(l:mechanics/papermaking)Папирус$() и $(thing)Семена папируса$().",
       "title": "Папирус"
     },
     {

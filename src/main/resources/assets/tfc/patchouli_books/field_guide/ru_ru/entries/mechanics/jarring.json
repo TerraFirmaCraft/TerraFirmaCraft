@@ -33,7 +33,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/shelf/oak",
-      "text": "$(thing)Shelves$() can be attached to solid walls. Items, including jars, can be placed on top of them by using the item - including jars - on the shelf, or underneath."
+      "text": "$(thing)Полки$() можно прикрепить к сплошным стенам. Предметы, включая банки, можно ставить сверху или снизу, используя предмет - включая банки - на полке."
     }
   ],
   "read_by_default": true

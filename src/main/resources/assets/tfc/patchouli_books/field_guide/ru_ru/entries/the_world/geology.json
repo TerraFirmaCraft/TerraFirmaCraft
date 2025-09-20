@@ -46,12 +46,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(thing)Slate$() and $(thing)Phyllite$() form under $(thing)Shale$(), $(thing)Claystone$(), and $(thing)Conglomerate$().$(li)$(thing)Marble$() forms under $(thing)Limestone$(), $(thing)Dolomite$(), and $(thing)Chalk$().$(li)$(thing)Quartzite$() forms under $(thing)Chert$().$(li)$(thing)Schist$() and $(thing)Gneiss$() form under $(thing)Slate$() and $(thing)Phyllite$(), or igneous intrusive rocks.",
+      "text": "$(li)$(thing)Киферный сланец$() и $(thing)филлит$() образуются под $(thing)сланцем$(), $(thing)аргиллитом$() и $(thing)конгломератом$().$(li)$(thing)Мрамор$() образуется под $(thing)известняком$(), $(thing)доломитом$() и $(thing)мелом$().$(li)$(thing)Кварцит$() образуется под $(thing)кремнистым сланцем$().$(li)$(thing)Аспидный сланец$() и $(thing)гнейс$() образуются под $(thing)киферным сланцем$() и $(thing)филлитом$(), или интрузивными вулканическими породами.",
       "title": "Метаморфические породы"
     },
     {
       "type": "patchouli:text",
-      "text": "Finally, in mountainous regions you might also see $(thing)uplift$(), where a metamorphic or igneous intrusive rock is found on the surface. Uplift rocks can be found above other metamorphic rocks.$(br2)In addition, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)Dikes$() - small vertical slices of igneous intrusive rock - may appear scattered around the world,",
+      "text": "Наконец, в горных регионах вы также можете увидеть $(thing)поднятые породы$(), где на поверхности обнаруживается метаморфическая или магматическая интрузивная порода. Поднятые породы могут встречаться над другими метаморфическими породами.$(br2)Кроме того, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)жилы$() - небольшие вертикальные жилы магматической интрузивной породы - могут встречаться разбросанными по всему миру,",
       "title": "Районы поднятия"
     },
     {

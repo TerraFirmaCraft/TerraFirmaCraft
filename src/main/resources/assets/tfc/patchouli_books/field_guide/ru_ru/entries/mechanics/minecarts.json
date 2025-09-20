@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Minecarts$() are a means of transporting players, entities, and large blocks. Blocks that would normally $(l:getting_started/size_and_weight#overburdening)overburden$() the player can be transported in minecarts. $(l:mechanics/decay#large_vessels)Large Vessels$(), $(l:mechanics/barrels)Barrels$(), $(l:mechanics/powderkegs)Powderkegs$(), $(l:mechanics/anvils)Anvils$(), and $(l:mechanics/crucible)Crucibles$() can be added to carts by pressing both $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$(). Using $(item)$(k:key.sneak)$() with an empty hand removes the block. Forging minecart items can either be done with $(thing)Iron$() or $(thing)Steel$(), with the steel-based recipes being less expensive."
+      "text": "$(thing)Вагонетки$() — это средство транспортировки игроков, существ и крупных блоков. Блоки, которые обычно $(l:getting_started/size_and_weight#overburdening)перегружают$() игрока, можно перевозить в вагонетках. $(l:mechanics/decay#large_vessels)Крупные сосуды$(), $(l:mechanics/barrels)Бочки$(), $(l:mechanics/powderkegs)Пороховые бочки$(), $(l:mechanics/anvils)Наковальни$() и $(l:mechanics/crucible)Тигли$() можно добавить в вагонетку, нажав $(item)$(k:key.use)$() и $(item)$(k:key.sneak)$(). Нажатие $(item)$(k:key.sneak)$() с пустыми руками удаляет блок. Ковать предметы для вагонеток можно из $(thing)железа$() или $(thing)стали$(), при этом рецепты на основе стали менее затратны."
     },
     {
       "type": "patchouli:crafting",

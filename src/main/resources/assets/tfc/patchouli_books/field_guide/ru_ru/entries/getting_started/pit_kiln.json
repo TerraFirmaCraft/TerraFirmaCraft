@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() or two $(thing)Thatch$() blocks on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:mechanics/heating)heating$() the items inside up."
+      "text": "Чтобы создать земляную печь:$(br2)$(bold)1.$() Поместите до четырёх предметов в ямку размером 1×1 с помощью $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Используйте восемь кусков $(thing)соломы$() или два блока $(thing)соломенной крыши$() на земляной печи, пока предметы не будут покрыты.$(br)$(bold)3.$() Используйте восемь $(thing)брёвен$() на земляной печи, пока она не заполнится.$(br)$(bold)4.$() Подожгите верхнюю часть земляной печи!$(br2)Затем земляная печь будет гореть восемь часов, обеспечивая постепенное $(l:mechanics/heating)нагревание$() предметов внутри."
     },
     {
       "type": "patchouli:image",

@@ -1142,9 +1142,9 @@
       "type": "patchouli:spotlight",
       "anchor": "ruby",
       "item": "tfc:ore/ruby",
-      "title": "Ruby",
+      "title": "Рубин",
       "link_recipes": false,
-      "text": "Ruby is a decorative $(thing)Mineral$(). It can be found in $(thing)Schist$() and $(thing)Gneiss$() rock below y=-10."
+      "text": "Рубин — декоративный $(thing)минерал$(). Его можно найти в $(thing)сланце$() и $(thing)гнейсе$() породах ниже y=-10."
     },
     {
       "type": "patchouli:multiblock",
@@ -1162,7 +1162,7 @@
         }
       },
       "name": "",
-      "text": "Ruby in Schist.",
+      "text": "Рубин в сланце.",
       "enable_visualize": false
     }
   ],

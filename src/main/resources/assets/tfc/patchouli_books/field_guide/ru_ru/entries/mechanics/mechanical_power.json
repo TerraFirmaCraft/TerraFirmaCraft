@@ -79,7 +79,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In order to use a gearbox, its sides must be configured. $(item)$(k:key.use)$() while holding a $(thing)Hammer$() on any face of the gearbox to enable input/output through that face. Using a hammer on a gearbox while sneaking will toggle the opposite side of the gearbox instead.$(br2)Note that due to their internal structure, gear boxes can only have faces enabled on two different axes of rotation at the same time."
+      "text": "Чтобы использовать редуктор, его стороны должны быть настроены. Нажмите $(item)$(k:key.use)$(), удерживая в руках $(thing)молоток$(), на любой грани редуктора, чтобы включить ввод/вывод через эту грань. Если использовать молоток по редуктору в режиме приседания, вместо этого переключится противоположная сторона редуктора.$(br2)Обратите внимание, что из-за их внутренней структуры грани редукторов могут быть включены только на двух разных осях вращения одновременно."
     },
     {
       "type": "patchouli:crafting",

@@ -82,7 +82,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Equines$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. They become rideable after reaching 15% familiarity. Horses pass on their $(thing)genetic traits$(), including their speed, jump height, health, size, and markings. The product of a horse and a donkey is a $(thing)mule$()."
+      "text": "$(thing)Однокопытные$() - это $(l:mechanics/animal_husbandry#mammals)млекопитающие$(), которых можно оседлать после приручения. Они становятся пригодными для верховой езды при достижении 15% привязанности. Лошади передают свои $(thing)генетические характеристики$(), включая скорость, высоту прыжка, здоровье, размер и отметины. Потомок скрещивания лошади и осла — это $(thing)мул$()."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -110,15 +110,15 @@
     {
       "type": "patchouli:text",
       "anchor": "rabbit",
-      "text": "$(thing)Rabbits$() spawn in $(l:the_world/climate#temperature)temperatures$() above -16°C, and at least 15mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-6 children, are pregnant for just 19 days, and reach adulthood in 20 days. They can have children 6 times.",
-      "title": "Rabbits"
+      "text": "$(thing)Кролики$() появляются при $(l:the_world/climate#temperature)температурах$() выше -16°C и при уровне $(l:the_world/climate#rainfall)осадков$() не менее 15 мм. Это $(l:mechanics/animal_husbandry#mammals)млекопитающие$() без особых способностей. Они едят любую пищу, даже если она испорчена. У них от 1 до 6 детенышей, беременность длится всего 19 дней, они становятся взрослыми через 20 дней и могут рожать 6 раз.",
+      "title": "Кролики"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rabbit{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.8,
       "name": " ",
-      "text": "A rabbit."
+      "text": "Кролик."
     },
     {
       "type": "patchouli:text",
@@ -279,15 +279,15 @@
     {
       "type": "patchouli:text",
       "anchor": "frog",
-      "text": "$(thing)Frogs$() spawn in $(l:the_world/climate#temperature)temperatures$() above -13°C, and at least 150mm of $(l:the_world/climate#rainfall)rainfall$(). They can be familiarized, and when bred they will lay eggs in fresh water, which hatch into tadpoles. They will eat fish and spider eyes. ",
-      "title": "Frogs"
+      "text": "$(thing)Лягушки$() появляются при $(l:the_world/climate#temperature)температурах$() выше -13°C и как минимум 150 мм $(l:the_world/climate#rainfall)осадков$(). Их можно приручить, и при разведении они откладывают яйца в пресную воду, из которых вылупляются головастики. Они питаются рыбой и паучьими глазами.",
+      "title": "Лягушки"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:frog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.8,
       "name": " ",
-      "text": "A frog."
+      "text": "Лягушка."
     }
   ],
   "read_by_default": true
