@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -76,7 +75,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        final ItemInteractionResult result =super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        final ItemInteractionResult result = super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         if (result.consumesAction())
         {
             kill(level, pos);
@@ -93,10 +92,14 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     @Override
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
-        final ClimateRange range = climateRange.get();
-
-        text.accept(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
-        text.accept(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity bush)
+        {
+            final ClimateRange range = climateRange.get();
+            final BlockPos sourcePos = bush.getStemPos().below();
+            final int hydration = getFruitBushHydration(level, pos);
+            text.accept(FarmlandBlock.getHydrationTooltip(range, false, hydration));
+            text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, sourcePos, range, false));
+        }
     }
 
     @Override
@@ -109,11 +112,11 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(STAGE))
-            {
-                case 0 -> TRUNK_0;
-                case 1 -> TRUNK_1;
-                default -> PLANT;
-            };
+        {
+            case 0 -> TRUNK_0;
+            case 1 -> TRUNK_1;
+            default -> PLANT;
+        };
     }
 
     @Override
@@ -148,9 +151,11 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                 long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
                 long nextCalendarTick = currentCalendarTick - deltaTicks;
 
-                final ClimateRange range = climateRange.get();
-                final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
+                final BlockPos stemPos = bush.getStemPos();
+                float temperature = Climate.getAverageTemperature(level, stemPos);
+                int hydration = getFruitBushHydrationFromRootPos(level, stemPos.below());
 
+                final ClimateRange range = climateRange.get();
                 int stage = state.getValue(STAGE);
 
                 BlockPos abovePos = pos.above();
@@ -173,9 +178,8 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                         }
                     }
 
-                    float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
                     Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
-                    if (range.checkBoth(hydration, temperatureAtNextTick, false))
+                    if (range.checkBoth(hydration, temperature, false))
                     {
                         currentLifecycle = currentLifecycle.advanceTowards(lifecycleAtNextTick);
                     }
@@ -198,7 +202,11 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                         {
                             level.setBlockAndUpdate(abovePos, newState);
                             final long newBushTicks = nextCalendarTick;
-                            level.getBlockEntity(abovePos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(newBush -> newBush.setLastBushTick(newBushTicks));
+                            level.getBlockEntity(abovePos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(newBush ->
+                            {
+                                newBush.setLastBushTick(newBushTicks);
+                                newBush.setStemPos(stemPos);
+                            });
                         }
                     }
                 }

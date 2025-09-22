@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/oxidized_block/sterling_silver_slab"
+  },
+  "result_fluid": {
+    "amount": 50,
+    "id": "tfc:metal/sterling_silver"
+  },
+  "temperature": 950.0
+}

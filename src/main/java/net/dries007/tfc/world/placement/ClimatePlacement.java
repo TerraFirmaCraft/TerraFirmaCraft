@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.world.Codecs;
@@ -40,7 +41,8 @@ public class ClimatePlacement extends PlacementModifier
         ForestType.CODEC.listOf().optionalFieldOf("forest_types", Collections.emptyList()).forGetter(c -> c.types),
         Codec.INT.optionalFieldOf("min_elevation", -64).forGetter(c -> c.minElevation),
         Codec.INT.optionalFieldOf("max_elevation", 320).forGetter(c -> c.maxElevation),
-        Codec.BOOL.optionalFieldOf("fuzzy", false).forGetter(c -> c.fuzzy)
+        Codec.BOOL.optionalFieldOf("fuzzy", false).forGetter(c -> c.fuzzy),
+        Codec.BOOL.optionalFieldOf("ignore_rivers", false).forGetter(c -> c.ignoreRivers)
     ).apply(instance, ClimatePlacement::new));
 
 
@@ -60,8 +62,9 @@ public class ClimatePlacement extends PlacementModifier
     private final int minElevation;
     private final int maxElevation;
     private final boolean fuzzy;
+    private final boolean ignoreRivers;
 
-    public ClimatePlacement(float minTemp, float maxTemp, float minGroundwater, float maxGroundwater, float minRainVariance, float maxRainVariance, boolean rainVarianceAbsolute, int minForest, int maxForest, List<ForestType> types, int minElevation, int maxElevation, boolean fuzzy)
+    public ClimatePlacement(float minTemp, float maxTemp, float minGroundwater, float maxGroundwater, float minRainVariance, float maxRainVariance, boolean rainVarianceAbsolute, int minForest, int maxForest, List<ForestType> types, int minElevation, int maxElevation, boolean fuzzy, boolean ignoreRivers)
     {
         this.minTemp = minTemp;
         this.maxTemp = maxTemp;
@@ -79,6 +82,7 @@ public class ClimatePlacement extends PlacementModifier
         this.minElevation = minElevation;
         this.maxElevation = maxElevation;
         this.fuzzy = fuzzy;
+        this.ignoreRivers = ignoreRivers;
     }
 
     public float getMinTemp()
@@ -114,6 +118,11 @@ public class ClimatePlacement extends PlacementModifier
     public boolean isRainVarianceAbsolute()
     {
         return rainVarianceAbsolute;
+    }
+
+    public boolean ignoresRivers()
+    {
+        return ignoreRivers;
     }
 
     public int getMinForest()
@@ -163,7 +172,7 @@ public class ClimatePlacement extends PlacementModifier
 
         final int y = pos.getY();
         final float temperature = EnvironmentHelpers.adjustAvgTempForElev(y, data.getAverageSeaLevelTemp(pos));
-        final float groundwater = data.getGroundwater(pos);
+        final float groundwater = ignoreRivers ? data.getRainfall(pos) : data.getGroundwater(pos);
         final ForestType forestType = data.getForestType();
 
         //Empty list of Forest Types defaults to generating everywhere

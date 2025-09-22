@@ -47,7 +47,7 @@ public final class FruitBlocks
                 .randomTicks()
                 .strength(0)
                 .sound(SoundType.GRASS)
-                .blockEntity(TFCBlockEntities.TICK_COUNTER)
+                .blockEntity(TFCBlockEntities.TICK_COUNTING_BRANCH)
                 .flammableLikeLeaves(),
             BANANA_STAGES,
             TFCBlocks.BANANA_PLANT,
@@ -151,7 +151,7 @@ public final class FruitBlocks
                     .randomTicks()
                     .strength(0)
                     .sound(SoundType.GRASS)
-                    .blockEntity(TFCBlockEntities.TICK_COUNTER)
+                    .blockEntity(TFCBlockEntities.TICK_COUNTING_BRANCH)
                     .flammableLikeLeaves(),
                 TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this),
                 TFCConfig.SERVER.fruitSaplingGrowthTicks.get(this),
@@ -176,7 +176,7 @@ public final class FruitBlocks
 
         public Block createGrowingBranch()
         {
-            return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLogs().cloneEmpty(), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this), ClimateRanges.FRUIT_TREES.get(this));
+            return new GrowingFruitTreeBranchBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f).pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.TICK_COUNTING_BRANCH).flammableLikeLogs().cloneEmpty(), TFCBlocks.FRUIT_TREE_BRANCHES.get(this), TFCBlocks.FRUIT_TREE_LEAVES.get(this), ClimateRanges.FRUIT_TREES.get(this));
         }
 
         public int defaultTicksToGrow()

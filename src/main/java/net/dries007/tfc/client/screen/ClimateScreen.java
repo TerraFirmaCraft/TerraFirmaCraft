@@ -57,17 +57,17 @@ public class ClimateScreen extends TFCContainerScreen<Container>
 
         // Climate at the current player
         final float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
-        final float rainfall = ClimateRenderCache.INSTANCE.getAverageRainfall();
+        final float averageRainfall = ClimateRenderCache.INSTANCE.getAverageRainfall();
         final float rainVar = ClimateRenderCache.INSTANCE.getRainVariance();
         final float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
+        final float currentRainfall = ClimateRenderCache.INSTANCE.getRainfall();
 
         final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
 
-        drawCenteredLine(stack, Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, rainfall, rainVar, ClientHelpers.inNorthernHemisphere())), 17);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_average_temperature", style.formatRange(averageTemp)), 28);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_annual_rainfall", String.format("%.0f", rainfall)), 39);
-        drawCenteredLine(stack, Component.translatable(rainVar > 0 ? "tfc.tooltip.climate_peak_rainfall_july" : "tfc.tooltip.climate_peak_rainfall_january", String.format("%.0f", rainfall * (1 + Math.abs(rainVar)))), 50);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_current_temp", style.formatRange(currentTemp)), 61);
+        drawCenteredLine(stack, Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, averageRainfall, rainVar, ClientHelpers.inNorthernHemisphere())), 21);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_temperature", style.formatRange(averageTemp), style.formatRange(currentTemp)), 32);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_rainfall", String.format("%.0f", averageRainfall), String.format("%.0f", currentRainfall)), 43);
+        drawCenteredLine(stack, Component.translatable(rainVar > 0 ? "tfc.tooltip.climate_peak_rainfall_july" : "tfc.tooltip.climate_peak_rainfall_january", String.format("%.0f", averageRainfall * (1 + Math.abs(rainVar)))), 54);
     }
 
 }

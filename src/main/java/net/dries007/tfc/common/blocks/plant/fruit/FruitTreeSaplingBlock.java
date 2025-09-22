@@ -34,9 +34,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.common.blockentities.TickCountingBranchBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -50,6 +52,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension, HoeOverlayBlock
 {
@@ -92,22 +95,27 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @Override
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
-        final ClimateRange range = climateRange.get();
+        if (level.getBlockEntity(pos) instanceof TickCountingBranchBlockEntity sapling)
+        {
+            final ClimateRange range = climateRange.get();
 
-        text.accept(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
-        text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
+            // We use the stem position for both checks, so that the whole tree is using the temperature at the base elevation
+            final BlockPos stemPos = sapling.getStemPos();
+            text.accept(FarmlandBlock.getHydrationTooltip(range, false, SeasonalPlantBlock.getFruitBushHydrationFromRootPos(level, stemPos.below())));
+            text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, stemPos, range, false));
 
-        if (!stages[Calendars.SERVER.getHemispheralCalendarMonthOfYear(SolarCalculator.getInNorthernHemisphere(pos, level)).ordinal()].active())
-        {
-            text.accept(Component.translatable("tfc.tooltip.fruit_tree.sapling_wrong_month"));
-        }
-        else
-        {
-            text.accept(Component.translatable("tfc.tooltip.fruit_tree.growing"));
-        }
-        if (maySplice(level, pos, state))
-        {
-            text.accept(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
+            if (!stages[Calendars.SERVER.getHemispheralCalendarMonthOfYear(SolarCalculator.getInNorthernHemisphere(pos, level)).ordinal()].active())
+            {
+                text.accept(Component.translatable("tfc.tooltip.fruit_tree.sapling_wrong_month"));
+            }
+            else
+            {
+                text.accept(Component.translatable("tfc.tooltip.fruit_tree.growing"));
+            }
+            if (maySplice(level, pos, state))
+            {
+                text.accept(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
+            }
         }
     }
 
@@ -119,7 +127,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         final ItemStack off = player.getItemInHand(InteractionHand.OFF_HAND);
         if (defaultBlockState().getBlock().asItem() == held.getItem() && Helpers.isItem(off, TFCTags.Items.TOOLS_KNIFE) && maySplice(level, pos, state))
         {
-            held.shrink(1);
+            if (!player.isCreative()) held.shrink(1);
             level.setBlockAndUpdate(pos, state.setValue(SAPLINGS, saplings + 1));
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -138,35 +146,40 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         // only go through this check if we are reasonably sure the plant would actually live
         if (stages[Calendars.SERVER.getHemispheralCalendarMonthOfYear(SolarCalculator.getInNorthernHemisphere(pos, level)).ordinal()].active())
         {
-            if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+            if (level.getBlockEntity(pos) instanceof TickCountingBranchBlockEntity counter)
             {
                 final long elapsedTicks = counter.getTicksSinceUpdate();
                 if (elapsedTicks > getTicksToGrow())
                 {
-                    final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
-                    final float temp = Climate.getAverageTemperature(level, pos);
+                    final BlockPos stemPos = counter.getStemPos();
+                    final int hydration = SeasonalPlantBlock.getFruitBushHydrationFromRootPos(level, stemPos.below());
+                    final float temp = Climate.getAverageTemperature(level, stemPos);
                     if (!climateRange.get().checkBoth(hydration, temp, false))
                     {
                         level.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
                     }
                     else
                     {
-                        createTree(level, pos, state, random, elapsedTicks - getTicksToGrow());
+                        createTree(level, pos, state, random, elapsedTicks - getTicksToGrow(), stemPos);
                     }
                 }
             }
         }
     }
 
-    public void createTree(Level level, BlockPos pos, BlockState state, RandomSource random, long ticksToAdd)
+    public void createTree(Level level, BlockPos pos, BlockState state, RandomSource random, long ticksToAdd, BlockPos stemPos)
     {
         final boolean onBranch = Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
         int internalSapling = onBranch ? 3 : state.getValue(SAPLINGS);
         if (internalSapling == 1 && random.nextBoolean()) internalSapling += 1;
         level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, internalSapling).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
-        TickCounterBlockEntity.reset(level, pos);
         // The following carries over time since planting the sapling block to the growth of the tree
-        TickCounterBlockEntity.addTicks(level, pos, ticksToAdd);
+        if (level.getBlockEntity(pos) instanceof TickCountingBranchBlockEntity branch)
+        {
+            TickCountingBranchBlockEntity.reset(level, pos);
+            TickCountingBranchBlockEntity.addTicks(level, pos, ticksToAdd);
+            branch.setStemPos(stemPos);
+        }
         level.scheduleTick(pos, block.get(), 20, TickPriority.NORMAL);
     }
 
@@ -197,8 +210,36 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterBlockEntity.reset(level, pos);
+        BlockPos downPos = pos.below();
+        BlockState downState = level.getBlockState(downPos);
+
+        if (Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH))
+        {
+            TickCountingBranchBlockEntity.setStemPos(level, pos, findBaseOfTree(level, downPos, downState));
+        }
+
+        TickCountingBranchBlockEntity.reset(level, pos);
         super.setPlacedBy(level, pos, state, placer, stack);
+    }
+
+    // Returns the lowest branch block of the tree, if this sapling was placed on a branch elbow
+    protected BlockPos findBaseOfTree(Level level, BlockPos startPos, BlockState startState)
+    {
+        for (Direction dir : Direction.Plane.HORIZONTAL)
+        {
+            if (startState.getValue(PipeBlock.PROPERTY_BY_DIRECTION.get(dir)))
+            {
+                BlockPos.MutableBlockPos mutablePos = startPos.mutable();
+                mutablePos.move(dir, 1);
+                while (Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.FRUIT_TREE_BRANCH))
+                {
+                    mutablePos.move(0, -1, 0);
+                }
+                return mutablePos.above();
+            }
+        }
+        // Fall back on the position beneath the original sapling
+        return startPos;
     }
 
     @Override

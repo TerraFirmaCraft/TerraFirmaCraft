@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "tag": "c:storage_blocks/sterling_silver"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfc:metal/sterling_silver"
+  },
+  "temperature": 950.0
+}

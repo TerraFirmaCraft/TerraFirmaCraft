@@ -30,6 +30,9 @@ import net.dries007.tfc.util.Helpers;
 
 public class ScribingTableContainer extends ItemCombinerMenu
 {
+    // Fluid ink gets a 4:1 ratio for those who bother to use it
+    private static final int FLUID_INK_COST = FluidHelpers.BUCKET_VOLUME / 4;
+
     public static boolean isInkInput(ItemStack stack)
     {
         return !getInkFluid(stack).isEmpty() || Helpers.isItem(stack, TFCTags.Items.SCRIBING_INK);
@@ -45,11 +48,22 @@ public class ScribingTableContainer extends ItemCombinerMenu
     {
         for (int tank = 0; tank < handler.getTanks(); tank++)
         {
-            FluidStack fluidStack = handler.getFluidInTank(tank);
-            if (Helpers.isFluid(fluidStack.getFluid(), TFCTags.Fluids.USABLE_IN_SCRIBING_TABLE) && fluidStack.getAmount() >= FluidHelpers.BUCKET_VOLUME)
-                return fluidStack;
+            final FluidStack fluidStack = handler.getFluidInTank(tank);
+            if (Helpers.isFluid(fluidStack.getFluid(), TFCTags.Fluids.USABLE_IN_SCRIBING_TABLE))
+            {
+                if (canExtractFluid(handler, fluidStack, FLUID_INK_COST) || canExtractFluid(handler, fluidStack, FluidHelpers.BUCKET_VOLUME))
+                {
+                    return fluidStack;
+                }
+            }
         }
         return FluidStack.EMPTY;
+    }
+
+    public static boolean canExtractFluid(IFluidHandlerItem fluidHandler, FluidStack ink, int amount)
+    {
+        final FluidStack drainResult = fluidHandler.drain(ink.copyWithAmount(amount), IFluidHandler.FluidAction.SIMULATE);
+        return !drainResult.isEmpty() && drainResult.getAmount() == amount;
     }
 
     private @Nullable String itemName;
@@ -80,7 +94,13 @@ public class ScribingTableContainer extends ItemCombinerMenu
         final ItemStack resultDye;
         if (dyeFluidHandler != null)
         {
-            dyeFluidHandler.drain(FluidHelpers.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
+            FluidStack extracted = dyeFluidHandler.drain(FLUID_INK_COST, IFluidHandler.FluidAction.EXECUTE);
+            if (extracted.isEmpty())
+            {
+                // Some handlers (like normal buckets) will only let you drain the whole 1000mb, so
+                // if this didn't work you get it for free I guess :)
+                dyeFluidHandler.drain(FluidHelpers.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
+            }
             resultDye = dyeFluidHandler.getContainer();
         }
         else

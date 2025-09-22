@@ -116,8 +116,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland, IC
         if (includeHydration)
         {
             final ChunkData data = ChunkData.get(level, pos);
-            final int stormHydration = (int) data.getStormHydration();
-            final int totalRainHydration = FarmlandBlock.getRainHydration(level, pos, stormHydration);
+            final int totalRainHydration = FarmlandBlock.getRainHydration(level, pos);
             final int hydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, totalRainHydration);
             final int minRainfallHydration = (int) data.getMinRainfallHydration(pos);
             final int minHydrationValue = FarmlandBlock.getHydrationFromRainHydration(level, pos, minRainfallHydration);

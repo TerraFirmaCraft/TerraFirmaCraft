@@ -114,6 +114,14 @@
         }
       }
     },
+    "red_apple": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "tfc:food/red_apple"
+        }
+      }
+    },
     "lemon": {
       "trigger": "minecraft:consume_item",
       "conditions": {
@@ -151,14 +159,6 @@
       "conditions": {
         "item": {
           "items": "tfc:food/plum"
-        }
-      }
-    },
-    "red_apple": {
-      "trigger": "minecraft:consume_item",
-      "conditions": {
-        "item": {
-          "items": "tfc:food/red_apple"
         }
       }
     }
@@ -228,6 +228,9 @@
       "green_apple"
     ],
     [
+      "red_apple"
+    ],
+    [
       "lemon"
     ],
     [
@@ -241,9 +244,6 @@
     ],
     [
       "plum"
-    ],
-    [
-      "red_apple"
     ]
   ]
 }

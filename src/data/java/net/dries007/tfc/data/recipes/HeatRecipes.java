@@ -134,6 +134,11 @@ public interface HeatRecipes extends Recipes
             ItemStackProvider.empty(),
             new FluidStack(meltFluidFor(metal), units(type)),
             temperatureOf(metal), new ItemStack(item).isDamageableItem()))));
+        TFCBlocks.METALS.forEach((metal, items) -> items.forEach((type, item) -> add(nameOf(item), new HeatingRecipe(
+            ingredientOf(metal, type),
+            ItemStackProvider.empty(),
+            new FluidStack(meltFluidFor(metal), units(type)),
+            temperatureOf(metal), new ItemStack(item).isDamageableItem()))));
     }
 
     private Fluid meltFluidFor(Metal metal)

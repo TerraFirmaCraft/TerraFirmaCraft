@@ -27,17 +27,19 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
 
     private long lastTick; // The last tick this bush was ticked via the block entity's serverTick() method. A delta of > 1 is used to detect time skips
     private long lastUpdateTick; // The last tick the bush block was ticked via IBushBlock#onUpdate()
+    private BlockPos stemPos;
 
     public BerryBushBlockEntity(BlockPos pos, BlockState state)
     {
-        this(TFCBlockEntities.BERRY_BUSH.get(), pos, state);
+        this(TFCBlockEntities.BERRY_BUSH.get(), pos, state, pos);
     }
 
-    protected BerryBushBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
+    protected BerryBushBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, BlockPos stemPos)
     {
         super(type, pos, state);
         lastTick = Integer.MIN_VALUE;
         lastUpdateTick = Calendars.SERVER.getTicks();
+        this.stemPos = stemPos;
     }
 
     /**
@@ -53,6 +55,9 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
     {
         lastUpdateTick = nbt.getLong("lastUpdateTick");
         lastTick = nbt.getLong("lastTick");
+        int[] stemArray = nbt.getIntArray("stemPos");
+        stemPos = new BlockPos(stemArray[0], stemArray[1], stemArray[2]);
+
         super.loadAdditional(nbt, provider);
     }
 
@@ -61,13 +66,21 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
     {
         nbt.putLong("lastUpdateTick", lastUpdateTick);
         nbt.putLong("lastTick", lastTick);
+        nbt.putIntArray("stemPos", new int[] {stemPos.getX(), stemPos.getY(), stemPos.getZ()});
         super.saveAdditional(nbt, provider);
     }
 
     @Override
     public void onCalendarUpdate(long ticks)
     {
-        if (level != null && ticks >= ICalendar.TICKS_IN_DAY)
+        // TODO: This code is *very* problematic, because it just doesn't work if the chunk is loaded
+        //  Because it only updates if the tick skip is greater than a day, and always only updates once, there is weird behavior
+        //  Case 1: Time skip 1d -> grows once, expected behavior
+        //  Case 2: Time skip 23h (run twice) -> does not grow
+        //  Case 3: Time skip 3d -> grows once
+        //  Case 4: Tick sprint 2d -> does not grow
+        //  Cases 2/2 is most concerning to me as that's what shows loading the chunks is counter productive
+        if (level != null && ticks >= ICalendar.CALENDAR_TICKS_IN_DAY)
         {
             final BlockState state = level.getBlockState(worldPosition);
             if (state.getBlock() instanceof IBushBlock bush)
@@ -96,5 +109,15 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
     public void setLastBushTick(long ticks)
     {
         lastUpdateTick = ticks;
+    }
+
+    public void setStemPos(BlockPos stemPos)
+    {
+        this.stemPos = stemPos;
+    }
+
+    public BlockPos getStemPos()
+    {
+        return stemPos;
     }
 }

@@ -41,8 +41,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -50,12 +52,14 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.PlantBlock;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension, ISlowEntities
 {
@@ -208,6 +212,35 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     public ItemStack getProductItem(RandomSource random)
     {
         return new ItemStack(productItem.get());
+    }
+
+    /**
+     * Evaluates hydration at the base of the tree/bush/plant
+     * @param leafPos Must be the position of a valid {@link BerryBushBlockEntity}
+     */
+    protected static int getFruitBushHydration(Level level, BlockPos leafPos)
+    {
+        final BlockPos sourcePos;
+        if (level.getBlockEntity(leafPos) instanceof BerryBushBlockEntity bush)
+        {
+            sourcePos = bush.getStemPos().below();
+        }
+        else
+        {
+            TerraFirmaCraft.LOGGER.error("Fruit tree leaf block entity not present");
+            sourcePos = leafPos;
+        }
+        return getFruitBushHydrationFromRootPos(level, sourcePos);
+    }
+
+    /**
+     * Evaluates hydration at the base of the tree/bush/plant
+     * @param rootPos can be any block location you want to know the hydration level at
+     */
+    protected static int getFruitBushHydrationFromRootPos(Level level, BlockPos rootPos)
+    {
+        final float averageRainfall = WorldTracker.get(level).getClimateModel().getAverageRainfall(level, rootPos);
+        return FarmlandBlock.getHydrationFromRainHydration(level, rootPos, FarmlandBlock.getRainHydration(averageRainfall));
     }
 
     protected Lifecycle getLifecycleForCurrentMonth(Level level, BlockPos pos)

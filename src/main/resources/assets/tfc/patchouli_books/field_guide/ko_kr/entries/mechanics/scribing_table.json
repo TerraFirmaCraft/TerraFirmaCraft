@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/gui/scribing.png"
       ],
-      "text": "필기대 스크린은 맨 위에 이름 변경 칸이 있으며, 왼쪽에 입력 슬롯과 중앙에 염료 슬롯이 있습니다. 결과물은 오른쪽 슬롯으로 나옵니다.",
+      "text": "The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot. Using fluid dye only costs 250mb instead of 1000mb, if possible.",
       "border": false
     }
   ],

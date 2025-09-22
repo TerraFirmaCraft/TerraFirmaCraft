@@ -51,6 +51,7 @@ public record Fauna(
         List<ForestType> forests = new ArrayList<>();
         int minElevation = -64, maxElevation = 320;
         boolean fuzzy = false;
+        boolean ignoreRivers = false;
         int chance = 1;
         int distanceBelowSeaLevel = -1;
         boolean solidGround = false;
@@ -119,10 +120,11 @@ public record Fauna(
 
         public Builder fuzzy() { this.fuzzy = true; return this; }
         public Builder solid() { this.solidGround = true; return this; }
+        public Builder ignoreRivers() { this.ignoreRivers = true; return this; }
 
         public Fauna build()
         {
-            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minRainVariance, maxRainVariance, rainVarianceAbsolute, minForest, maxForest, forests, minElevation, maxElevation, fuzzy), solidGround, maxBrightness, months);
+            return new Fauna(chance, distanceBelowSeaLevel, new ClimatePlacement(minTemperature, maxTemperature, minRainfall, maxRainfall, minRainVariance, maxRainVariance, rainVarianceAbsolute, minForest, maxForest, forests, minElevation, maxElevation, fuzzy, ignoreRivers), solidGround, maxBrightness, months);
         }
     }
 }

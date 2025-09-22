@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/block/rose_gold_stairs"
+  },
+  "result_fluid": {
+    "amount": 75,
+    "id": "tfc:metal/rose_gold"
+  },
+  "temperature": 960.0
+}

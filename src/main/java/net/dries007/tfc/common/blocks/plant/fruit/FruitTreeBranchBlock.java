@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCountingBranchBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.PipePlantBlock;
@@ -44,9 +45,17 @@ public class FruitTreeBranchBlock extends PipePlantBlock implements HoeOverlayBl
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
+        if (level.getBlockEntity(pos) instanceof TickCountingBranchBlockEntity branch)
+        {
+            final BlockPos rootPos = branch.getStemPos().below();
+            text.accept(FarmlandBlock.getHydrationTooltip(level, rootPos, range, false));
+            text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, rootPos, range, false));
+        }
+        else
+        {
+            text.accept(Component.translatable("tfc.tooltip.fruit_tree.check_leaves"));
+        }
 
-        text.accept(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
-        text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
         if (maySplice(level, pos.above(), level.getBlockState(pos.above())))
         {
             text.accept(Component.translatable("tfc.tooltip.fruit_tree.sapling_splice"));

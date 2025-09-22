@@ -70,11 +70,13 @@ public record ClimateRange(
 
     public Result checkHydration(int hydration, boolean allowWiggle)
     {
+        Result result = check(hydration, minHydration, maxHydration, hydrationWiggleRange, allowWiggle);
         return check(hydration, minHydration, maxHydration, hydrationWiggleRange, allowWiggle);
     }
 
     public Result checkTemperature(float temperature, boolean allowWiggle)
     {
+        Result result = check(temperature, minTemperature, maxTemperature, temperatureWiggleRange, allowWiggle);
         return check(temperature, minTemperature, maxTemperature, temperatureWiggleRange, allowWiggle);
     }
 

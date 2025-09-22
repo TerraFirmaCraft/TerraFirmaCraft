@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/gui/scribing.png"
       ],
-      "text": "在命名台的上方输入文字，将要重命名的物品放在左侧，中间放置染料。右侧的格子就会输出物品。",
+      "text": "The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot. Using fluid dye only costs 250mb instead of 1000mb, if possible.",
       "border": false
     }
   ],

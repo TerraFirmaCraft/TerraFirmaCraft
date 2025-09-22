@@ -6,11 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Однією з труднощів у сільському господарстві є підтримка вологості грядок у городі. $(l:the_world/climate#rainfall)Опади$() у місцевому регіоні мають деякий вплив на зволоження. Однак цього може бути недостатньо, особливо для культур, що вимагають більшого зрошення.$(br2)Щоб побачити зволоження будь-якого конкретного блоку, треба мати $(thing)мотику$() у руці."
+      "text": "One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground will have some latent moisture. However, this may not be enough especially for particularly water-intensive crops, or it may be too much to grow other crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand."
     },
     {
       "type": "patchouli:text",
-      "text": "Направ її на $(thing)грядку$(), або рослину чі навіть на блок землі. Підказка проінформує про поточне зволоження від 0% до 100%.$(br2)Зволоження не можна зменшити, хіба що шляхом переміщення до області з меншою кількістю опадів. Однак його можна збільшити через близькість до блоку $(thing)води$(), що схоже на прийом у ванільному майнкрафті."
+      "text": "Then simply look at any $(thing)Farmland$() block, or any crop which requires hydration. You will see a tooltip which shows the current hydration as a percentage from 0% to 100%. In addition, on Farmland and Crop blocks the annual minimum and maximum values are shown. The maximum value will occur six months apart from the minimum value, and the current hydration will vary smoothly between those times."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Unlike crops, $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$() and $(l:the_world/wild_fruits#tall_bushes)Berry Bushes$() will grow as long as the annual average hydration is correct.$(br2) In addition to rainfall, $(thing)fresh water$() within four blocks of the farmland contributes a flat 40% hydration to a block."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Hydration can also be modified by altering the block below the farmland or dirt that the crop or fruit is planted on. $(thing)Sand$() and $(thing)Gravel$() will increase drainage reducing the total hydration by 50%. Conversely, $(thing)Clay Blocks$() placed below the farmland will trap in water, doubling the hydration (though never increasing it beyond 100%"
     }
   ],
   "read_by_default": true

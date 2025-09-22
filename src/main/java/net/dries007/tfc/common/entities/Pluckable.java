@@ -39,11 +39,15 @@ public interface Pluckable
             return false;
         if (player.getItemInHand(hand).isEmpty() && player.isShiftKeyDown() && (entity.getHealth() / entity.getMaxHealth() > 0.15001f))
         {
-            final long remainingTicks = getLastPluckedTick() + PLUCKING_COOLDOWN - Calendars.SERVER.getTicks();
-            if (remainingTicks > 0)
+            final long lastPlucked = getLastPluckedTick();
+            if (lastPlucked > 0)
             {
-                player.displayClientMessage(Component.translatable("tfc.tooltip.animal.cannot_pluck", Calendars.SERVER.getTimeDelta(remainingTicks)), true);
-                return false;
+                final long remainingTicks = lastPlucked + PLUCKING_COOLDOWN - Calendars.SERVER.getTicks();
+                if (remainingTicks > 0)
+                {
+                    player.displayClientMessage(Component.translatable("tfc.tooltip.animal.cannot_pluck", Calendars.SERVER.getTimeDelta(remainingTicks)), true);
+                    return false;
+                }
             }
             if (entity.getHealth() / entity.getMaxHealth() <= 0.15f)
             {

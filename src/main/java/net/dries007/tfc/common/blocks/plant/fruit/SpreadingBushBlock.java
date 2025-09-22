@@ -6,12 +6,9 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
@@ -23,9 +20,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.climate.ClimateRange;
 
@@ -93,6 +90,13 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
             {
                 // Growing upwards grows at stage = 1, because stage = 0 is just newly planted bushes.
                 level.setBlockAndUpdate(abovePos, state.setValue(STAGE, 1).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
+
+                // If block grows, set the new block's stem position to match the original
+                if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity sourceBush && level.getBlockEntity(abovePos) instanceof BerryBushBlockEntity newBush)
+                {
+                    newBush.setStemPos(sourceBush.getStemPos());
+                }
+
                 return state; // Stay in stage 1, if we only grew upwards.
             }
 
@@ -104,22 +108,19 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
                 if (level.isEmptyBlock(offsetPos))
                 {
                     level.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, offset).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
+
+                    // If block grows, set the new block's stem position to match the original
+                    if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity sourceBush && level.getBlockEntity(offsetPos) instanceof BerryBushBlockEntity newBush)
+                    {
+                        newBush.setStemPos(sourceBush.getStemPos());
+                    }
+
                 }
             }
 
             return state.setValue(STAGE, 2);
         }
         return state; // Stay at stage 2, and don't grow
-    }
-
-    @Override
-    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
-    {
-        final BlockPos sourcePos = pos.below();
-        final ClimateRange range = climateRange.get();
-
-        text.accept(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
-        text.accept(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
     }
 
     @Override

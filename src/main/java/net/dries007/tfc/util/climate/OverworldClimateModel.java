@@ -124,7 +124,7 @@ public class OverworldClimateModel implements ClimateModel
     @Override
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
-        return ChunkData.get(level, pos).getAverageSeaLevelTemp(pos);
+        return Helpers.adjustAverageTemperatureByElevation(pos.getY(), ChunkData.get(level, pos).getAverageSeaLevelTemp(pos), SEA_LEVEL);
     }
 
     @Override

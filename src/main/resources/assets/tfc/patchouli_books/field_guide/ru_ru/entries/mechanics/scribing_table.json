@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/gui/scribing.png"
       ],
-      "text": "Экран стола для письма принимает ввод текста в верхней части, входящий предмет слева, краситель по центру. Готовый предмет берется из правого слота.",
+      "text": "The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot. Using fluid dye only costs 250mb instead of 1000mb, if possible.",
       "border": false
     }
   ],

@@ -48,6 +48,7 @@ import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.common.blockentities.TickCountingBranchBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.FireboxBlock;
@@ -353,7 +354,7 @@ public final class BlockEntityTooltips
     };
 
     public static final BlockEntityTooltip FRUIT_TREE_SAPLING = (level, state, pos, entity, tooltip) -> {
-        if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof FruitTreeSaplingBlock sapling)
+        if (entity instanceof TickCountingBranchBlockEntity counter && state.getBlock() instanceof FruitTreeSaplingBlock sapling)
         {
             timeLeft(level, tooltip, sapling.getTicksToGrow() - counter.getTicksSinceUpdate(), Component.translatable("tfc.jade.ready_to_grow"));
         }

@@ -51,7 +51,11 @@ public class DecayingBlockEntity extends TFCBlockEntity
     public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
     {
         super.saveAdditional(nbt, provider);
-        nbt.put("item", stack.save(provider));
+        // Stack is set to empty before this is called if the player is in creative
+        if (!stack.isEmpty())
+        {
+            nbt.put("item", stack.save(provider));
+        }
     }
 
     public boolean isRotten()

@@ -52,13 +52,7 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
         {
             text.accept(Component.translatable("tfc.tooltip.berry_bush.not_underwater"));
         }
-        text.accept(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
-    }
-
-    @Override
-    protected int getHydration(Level level, BlockPos pos, BlockState state, long fromTick, long toTick)
-    {
-        return state.getValue(FLUID).getFluid() != Fluids.EMPTY ? 100 : 0;
+        text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, sourcePos, range, false));
     }
 
     @Override

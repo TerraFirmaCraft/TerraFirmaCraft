@@ -36,6 +36,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
@@ -52,17 +53,10 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.tracker.WorldTracker;
 
 public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock, IBushBlock, HoeOverlayBlock, IFluidLoggable
 {
-    /**
-     * Taking into account only environment rainfall, on a scale [0, 100]
-     */
-    public static int getHydration(Level level, BlockPos pos)
-    {
-        return (int) (Climate.getRainfall(level, pos) / 5);
-    }
-
     public static MapColor getMapColor(BlockState state)
     {
         return switch(state.getValue(LIFECYCLE))
@@ -140,15 +134,17 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         if (state.getValue(PERSISTENT)) return; // persistent leaves don't grow
         if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity leaves)
         {
+            final BlockPos stemPos = leaves.getStemPos();
             Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
             Lifecycle expectedLifecycle = getLifecycleForCurrentMonth(level, pos);
             // if we are not working with a plant that is or should be dormant
             if (!checkAndSetDormant(level, pos, state, currentLifecycle, expectedLifecycle))
             {
                 final ClimateRange range = climateRange.get();
-                final int hydration = getHydration(level, pos);
 
-                if (range.checkBoth(hydration, Climate.getAverageTemperature(level, pos), false))
+                final int hydration = getFruitBushHydrationFromRootPos(level, stemPos.below());
+
+                if (range.checkBoth(hydration, Climate.getAverageTemperature(level, stemPos), false))
                 {
                     currentLifecycle = currentLifecycle.advanceTowards(expectedLifecycle);
                 }
@@ -177,8 +173,18 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
-        text.accept(FarmlandBlock.getHydrationTooltip(level, pos, range, false, getHydration(level, pos)));
-        text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, pos, range, false));
+
+        final BlockPos stemPos;
+        if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity bush)
+        {
+            stemPos = bush.getStemPos();
+        }
+        else
+        {
+            stemPos = pos;
+        }
+        text.accept(FarmlandBlock.getHydrationTooltip(range, false, getFruitBushHydrationFromRootPos(level, stemPos.below())));
+        text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, stemPos, range, false));
     }
 
     @Override

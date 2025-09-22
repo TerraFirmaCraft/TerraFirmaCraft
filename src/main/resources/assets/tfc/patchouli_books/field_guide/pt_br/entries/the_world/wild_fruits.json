@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Árvores frutíferas começam em $(thing)Mudas$(). As mudas só começarão a crescer, colocando sua primeira peça da árvore, se não for a estação adormecida para essa fruta. O tamanho da árvore acabado é pouco determinado por quantos mudas estão no bloco de mudas original. Mais mudas significa uma árvore maior.$(br)Mais mudas podem ser adicionadas a um único bloco através $(thing)Splicing$(). Para ceder uma muda em outro, apenas $(item)$(k:key.use)$() nele enquanto segurava um muda e um $(thing)Faca$() na sua mão."
+      "text": "Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit and the climate requirements for that tree are met. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand."
     },
     {
       "type": "patchouli:text",
@@ -36,8 +36,15 @@
     },
     {
       "type": "patchouli:text",
+      "text": "The correct $(l:the_world/climate#temperature)Temperature$() and $(l:mechanics/hydration)Hydration$() are essential when planting fruit trees. Fruit trees will only grow and bear fruit if the Annual Average Temperature at the base of the tree (where the sapling is planted) is within that tree's range. Likewise, hydration is determined by the Average Annual Rainfall and water sources near to the base of the tree."
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "cherry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 350mm$(br2)Cherry trees grow in the months of January through March, start flowering in April and May, and bear fruit in June.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5.2 - 14.0 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 350mm$(br2)Cherry trees grow in the months of January through March, start flowering in April and May, and bear fruit in June.",
       "title": "Árvore de cereja"
     },
     {
@@ -261,7 +268,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 110 - 280mm$(br2)Green apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -10.6 - 10.4 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 130 - 280mm$(br2)Green apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
       "title": "Green Apple Tree"
     },
     {
@@ -485,7 +492,7 @@
     {
       "type": "patchouli:text",
       "anchor": "lemon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 180 - 470mm$(br2)Lemon trees grow from February to May, start flowering in June and July, and bear fruit in August.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 7.4 - 24.8 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 220 - 440mm$(br2)Lemon trees grow from February to May, start flowering in June and July, and bear fruit in August.",
       "title": "Lemon Tree"
     },
     {
@@ -709,7 +716,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 150 - 500mm$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.$(br2)Olives can be used to produce $(l:mechanics/lamps#olives)Olive Oil$(), which can be used as a fuel for lamps.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 2 - 23.0 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 450mm$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.$(br2)Olives can be used to produce $(l:mechanics/lamps#olives)Olive Oil$(), which can be used as a fuel for lamps.",
       "title": "Olive Tree"
     },
     {
@@ -933,7 +940,7 @@
     {
       "type": "patchouli:text",
       "anchor": "orange",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 500mm$(br2)Orange trees grow from March to June, start flowering in July and August, and bear fruit in September.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 9.2 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 300 - 500mm$(br2)Orange trees grow from March to June, start flowering in July and August, and bear fruit in September.",
       "title": "Orange Tree"
     },
     {
@@ -1157,7 +1164,7 @@
     {
       "type": "patchouli:text",
       "anchor": "peach",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 60 - 230mm$(br2)Peach trees grow from December to March, start flowering in April and May, and bear fruit in June.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -3.4 - 15.8 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 180 - 470mm$(br2)Peach trees grow from December to March, start flowering in April and May, and bear fruit in June.",
       "title": "Peach Tree"
     },
     {
@@ -1381,7 +1388,7 @@
     {
       "type": "patchouli:text",
       "anchor": "plum",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 400mm$(br2)Plum trees grow from January to April, start flowering in May and June, and bear fruit in July.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 12.2 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 120 - 300mm$(br2)Plum trees grow from January to April, start flowering in May and June, and bear fruit in July.",
       "title": "Plum Tree"
     },
     {
@@ -1605,7 +1612,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 280mm$(br2)Red Apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -10.6 - 10.4 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 190 - 310mm$(br2)Red Apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
       "title": "Red Apple Tree"
     },
     {
@@ -1829,7 +1836,7 @@
     {
       "type": "patchouli:text",
       "anchor": "banana",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 280 - 500mm$(br2)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 11.0 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 280 - 500mm$(br2)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.",
       "title": "Banana Tree"
     },
     {
@@ -2341,12 +2348,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Arbustos, ao contrário das árvores frutíferas, levam em consideração os blocos de água circundantes para determinar seus $(l:mechanics/hydration)Hidratação$(), Ao contrário das árvores frutíferas, que só se preocupam com as chuvas.$(br)Qualquer bloco de arbusto completo pode cultivar bagas, que são colhidas com $(item)$(k:key.use)$()."
+      "text": "Bushes, like Fruit Trees, consider the base block of the plant when determining $(l:mechanics/hydration)Hydration$() and $(l:the_world/climate#temperature)Temperature$(), and grow as long as the Annual Average Rainfall and Temperature are correct. $(br)Any full bush block can grow berries, which are harvestable with $(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 24 - 100mm$(br2)Blackberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5.2 - 19.4 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 24 - 100mm$(br2)Blackberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
       "title": "Blackberry Bush"
     },
     {
@@ -2446,7 +2453,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 24 - 100mm$(br2)Raspberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -10.6 - 14.0 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 21 - 100mm$(br2)Raspberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in areas with few trees.",
       "title": "Raspberry Bush"
     },
     {
@@ -2546,7 +2553,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 12 - 100mm$(br2)Blueberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -8.8 - 8.6 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 18 - 100mm$(br2)Blueberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
       "title": "Blueberry Bush"
     },
     {
@@ -2646,7 +2653,7 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 12 - 100mm$(br2)Elderberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5.2 - 15.8 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 14 - 100mm$(br2)Elderberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
       "title": "Elderberry Bush"
     },
     {
@@ -2797,7 +2804,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bunchberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Bunchberry bushes grow from May to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -14.2 - 1.4 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 33 - 100 %$(br2)Bunchberry bushes grow from May to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
       "title": "Bunchberry Bush"
     },
     {
@@ -2861,7 +2868,7 @@
     {
       "type": "patchouli:text",
       "anchor": "gooseberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Gooseberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 12.2 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Gooseberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
       "title": "Gooseberry Bush"
     },
     {
@@ -2925,7 +2932,7 @@
     {
       "type": "patchouli:text",
       "anchor": "snowberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Snowberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -10.6 - 5 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 24 - 100 %$(br2)Snowberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests.",
       "title": "Snowberry Bush"
     },
     {
@@ -2989,7 +2996,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cloudberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 9 - 100 %$(br2)Cloudberry bushes grow from February to May, start flowering in June to August, and bear fruit in September.$(br2)They can be found in forests.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -14.2 - 6.8 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 9 - 100 %$(br2)Cloudberry bushes grow from February to May, start flowering in June to August, and bear fruit in September.$(br2)They can be found in forests.",
       "title": "Cloudberry Bush"
     },
     {
@@ -3053,7 +3060,7 @@
     {
       "type": "patchouli:text",
       "anchor": "strawberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 12 - 100 %$(br2)Strawberry bushes grow from October to December, start flowering in January and February, and bear fruit in March.$(br2)They can be found in forests.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -1.6 - 17.6 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 16 - 100 %$(br2)Strawberry bushes grow from October to December, start flowering in January and February, and bear fruit in March.$(br2)They can be found in forests.",
       "title": "Strawberry Bush"
     },
     {
@@ -3117,7 +3124,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wintergreen_berry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 12 - 100 %$(br2)Wintergreen berry bushes grow from May to September, start flowering in October and November, and bear fruit in December.$(br2)They can be found in forests.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -8.8 - 6.8 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 12 - 100 %$(br2)Wintergreen berry bushes grow from May to September, start flowering in October and November, and bear fruit in December.$(br2)They can be found in forests.",
       "title": "Wintergreen Berry Bush"
     },
     {
@@ -3181,7 +3188,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cranberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 100 %$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -14.2 - 8.6 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 100 %$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.",
       "title": "Cranberry Bush"
     },
     {
@@ -3594,45 +3601,45 @@
   "read_by_default": true,
   "sortnum": 5,
   "extra_recipe_mappings": {
-    "tfc:food/cherry": 6,
-    "tfc:plant/cherry_sapling": 6,
-    "tfc:food/green_apple": 8,
-    "tfc:plant/green_apple_sapling": 8,
-    "tfc:food/lemon": 10,
-    "tfc:plant/lemon_sapling": 10,
-    "tfc:food/olive": 12,
-    "tfc:plant/olive_sapling": 12,
-    "tfc:food/orange": 14,
-    "tfc:plant/orange_sapling": 14,
-    "tfc:food/peach": 16,
-    "tfc:plant/peach_sapling": 16,
-    "tfc:food/plum": 18,
-    "tfc:plant/plum_sapling": 18,
-    "tfc:food/red_apple": 20,
-    "tfc:plant/red_apple_sapling": 20,
-    "tfc:food/banana": 22,
-    "tfc:plant/banana_sapling": 22,
-    "tfc:food/blackberry": 30,
-    "tfc:plant/blackberry_bush": 30,
-    "tfc:food/raspberry": 32,
-    "tfc:plant/raspberry_bush": 32,
-    "tfc:food/blueberry": 34,
-    "tfc:plant/blueberry_bush": 34,
-    "tfc:food/elderberry": 36,
-    "tfc:plant/elderberry_bush": 36,
-    "tfc:food/bunchberry": 40,
-    "tfc:plant/bunchberry_bush": 40,
-    "tfc:food/gooseberry": 42,
-    "tfc:plant/gooseberry_bush": 42,
-    "tfc:food/snowberry": 44,
-    "tfc:plant/snowberry_bush": 44,
-    "tfc:food/cloudberry": 46,
-    "tfc:plant/cloudberry_bush": 46,
-    "tfc:food/strawberry": 48,
-    "tfc:plant/strawberry_bush": 48,
-    "tfc:food/wintergreen_berry": 50,
-    "tfc:plant/wintergreen_berry_bush": 50,
-    "tfc:food/cranberry": 52,
-    "tfc:plant/cranberry_bush": 52
+    "tfc:food/cherry": 8,
+    "tfc:plant/cherry_sapling": 8,
+    "tfc:food/green_apple": 10,
+    "tfc:plant/green_apple_sapling": 10,
+    "tfc:food/lemon": 12,
+    "tfc:plant/lemon_sapling": 12,
+    "tfc:food/olive": 14,
+    "tfc:plant/olive_sapling": 14,
+    "tfc:food/orange": 16,
+    "tfc:plant/orange_sapling": 16,
+    "tfc:food/peach": 18,
+    "tfc:plant/peach_sapling": 18,
+    "tfc:food/plum": 20,
+    "tfc:plant/plum_sapling": 20,
+    "tfc:food/red_apple": 22,
+    "tfc:plant/red_apple_sapling": 22,
+    "tfc:food/banana": 24,
+    "tfc:plant/banana_sapling": 24,
+    "tfc:food/blackberry": 32,
+    "tfc:plant/blackberry_bush": 32,
+    "tfc:food/raspberry": 34,
+    "tfc:plant/raspberry_bush": 34,
+    "tfc:food/blueberry": 36,
+    "tfc:plant/blueberry_bush": 36,
+    "tfc:food/elderberry": 38,
+    "tfc:plant/elderberry_bush": 38,
+    "tfc:food/bunchberry": 42,
+    "tfc:plant/bunchberry_bush": 42,
+    "tfc:food/gooseberry": 44,
+    "tfc:plant/gooseberry_bush": 44,
+    "tfc:food/snowberry": 46,
+    "tfc:plant/snowberry_bush": 46,
+    "tfc:food/cloudberry": 48,
+    "tfc:plant/cloudberry_bush": 48,
+    "tfc:food/strawberry": 50,
+    "tfc:plant/strawberry_bush": 50,
+    "tfc:food/wintergreen_berry": 52,
+    "tfc:plant/wintergreen_berry_bush": 52,
+    "tfc:food/cranberry": 54,
+    "tfc:plant/cranberry_bush": 54
   }
 }

@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfc:metal/block/wrought_iron_stairs"
+  },
+  "result_fluid": {
+    "amount": 75,
+    "id": "tfc:metal/cast_iron"
+  },
+  "temperature": 1535.0
+}

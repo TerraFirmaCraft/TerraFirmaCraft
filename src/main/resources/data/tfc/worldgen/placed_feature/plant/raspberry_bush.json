@@ -4,10 +4,10 @@
   "placement": [
     {
       "type": "tfc:climate",
-      "min_temperature": 5,
-      "max_temperature": 25,
-      "min_groundwater": 200,
-      "max_groundwater": 500,
+      "min_temperature": -10.6,
+      "max_temperature": 14.0,
+      "min_groundwater": 180,
+      "max_groundwater": 450,
       "min_forest": 0,
       "max_forest": 2
     },

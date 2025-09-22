@@ -863,37 +863,38 @@ OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo', 'flame_vine', 'cycad')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'water_surface_spring', 'extra_water_surface_spring', 'glacial_spring', 'ice_sheet_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks')
 
-# todo: bush hydration / groundwater separation and proper ranges
 # Note, this may be worth moving entirely to groundwater now that we have that system
-# When this gest updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
+# When this gets updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
 # Alternatively, we ditch rainfall and/or hydration entirely.
+# Generated from Spreadsheet Data
 BERRIES: dict[str, Berry] = {
-    'blackberry': Berry(7, 24, 200, 500, 'spreading', 0, 2),
-    'raspberry': Berry(5, 25, 200, 500, 'spreading', 0, 2),
-    'blueberry': Berry(7, 29, 100, 400, 'spreading', 0, 2),
-    'elderberry': Berry(10, 33, 100, 400, 'spreading', 0, 2),
+    'blackberry': Berry(-5.2, 19.4, 200, 500, 'spreading', 0, 2),
+    'raspberry': Berry(-10.6, 14., 180, 450, 'spreading', 0, 2),
+    'blueberry': Berry(-8.8, 8.6, 150, 400, 'spreading', 0, 2),
+    'elderberry': Berry(-5.2, 15.8, 120, 380, 'spreading', 0, 2),
 
-    'snowberry': Berry(-7, 18, 200, 500, 'stationary', 2, 4),
-    'bunchberry': Berry(15, 35, 200, 500, 'stationary', 2, 4),
-    'gooseberry': Berry(5, 27, 200, 500, 'stationary', 2, 4),
-    'cloudberry': Berry(-2, 17, 80, 380, 'stationary', 2, 4),
-    'strawberry': Berry(5, 28, 100, 400, 'stationary', 2, 4),
-    'wintergreen_berry': Berry(-6, 17, 100, 400, 'stationary', 2, 4),
+    'snowberry': Berry(-10.6, 5, 200, 500, 'stationary', 2, 4),
+    'bunchberry': Berry(-14.2, 1.4, 280, 500, 'stationary', 2, 4),
+    'gooseberry': Berry(-7, 12.2, 200, 500, 'stationary', 2, 4),
+    'cloudberry': Berry(-14.2, 6.8, 80, 320, 'stationary', 2, 4),
+    'strawberry': Berry(-1.6, 17.6, 140, 400, 'stationary', 2, 4),
+    'wintergreen_berry': Berry(-8.8, 6.8, 100, 370, 'stationary', 2, 4),
 
-    'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 2, 4)
+    'cranberry': Berry(-14.2, 8.6, 250, 500, 'waterlogged', 2, 4),
 }
 
+# Generated from Spreadsheet Data
 FRUITS: dict[str, Fruit] = {
-    'banana': Fruit(17, 35, 280, 500),
+    'banana': Fruit(11., 40, 280, 500),
 
-    'cherry': Fruit(5, 25, 100, 350),
-    'green_apple': Fruit(1, 25, 110, 280),
-    'lemon': Fruit(10, 30, 180, 470),
-    'olive': Fruit(5, 30, 150, 500),
-    'orange': Fruit(15, 36, 250, 500),
-    'peach': Fruit(4, 27, 60, 230),
-    'plum': Fruit(15, 31, 250, 400),
-    'red_apple': Fruit(1, 25, 100, 280)
+    'cherry': Fruit(-5.2, 14., 100, 350),
+    'green_apple': Fruit(-10.6, 10.4, 130, 280),
+    'red_apple': Fruit(-10.6, 10.4, 190, 310),
+    'lemon': Fruit(7.4, 24.8, 220, 440),
+    'olive': Fruit(2, 23., 250, 450),
+    'orange': Fruit(9.2, 40, 300, 500),
+    'peach': Fruit(-3.4, 15.8, 180, 470),
+    'plum': Fruit(-7, 12.2, 120, 300),
 }
 JAR_FRUITS = tuple([*BERRIES.keys(), *FRUITS.keys(), 'pumpkin_chunks', 'melon_slice', 'peanut'])
 
@@ -1224,9 +1225,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.calendar_birthday': '%s\'s Birthday!',
     'tfc.tooltip.calendar_date': 'Date : %s',
     'tfc.tooltip.climate_average_temperature': 'Avg. Temp: %s',
-    'tfc.tooltip.climate_annual_rainfall': 'Avg. Rainfall: %smm/yr',
-    'tfc.tooltip.climate_peak_rainfall_july': 'Peak: %smm/yr in July',
-    'tfc.tooltip.climate_peak_rainfall_january': 'Peak: %smm/yr in January',
+    'tfc.tooltip.climate_temperature': 'Temp: Avg: %s Now: %s',
+    'tfc.tooltip.climate_rainfall': 'Rain: Avg: %smm Now: %smm',
+    'tfc.tooltip.climate_peak_rainfall_july': 'Peak: %smm in July',
+    'tfc.tooltip.climate_peak_rainfall_january': 'Peak: %smm in January',
     'tfc.tooltip.climate_current_temp': 'Current Temp: %s',
     'tfc.tooltip.food_expiry_date': 'Expires on: %s',
     'tfc.tooltip.food_expiry_left': 'Expires in: %s',
@@ -1289,6 +1291,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.fruit_tree.growing': 'This block could grow under the right conditions.',
     'tfc.tooltip.fruit_tree.sapling_wrong_month': 'Wrong season to grow a tree.',
     'tfc.tooltip.fruit_tree.sapling_splice': 'May be spliced',
+    'tfc.tooltip.fruit_tree.check_leaves': 'Check leaves or topmost branch for climate information',
     'tfc.tooltip.berry_bush.not_underwater': 'Must be underwater to grow!',
     'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
     'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',

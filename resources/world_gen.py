@@ -389,7 +389,7 @@ def generate(rm: ResourceManager):
         'height': 7,
         'states': [{'replace': 'tfc:%s/%s' % (block, soil), 'with': 'tfc:%s/mollisol' % block} for soil in ALFISOL_REPLACEABLE for block in NATURAL_SOIL_BLOCKS]
     })
-    rm.placed_feature('mollisol_disc', 'tfc:mollisol_disc', decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_temp=-9, max_temp=3, min_water=200, forest_types=['grassland']))
+    rm.placed_feature('mollisol_disc', 'tfc:mollisol_disc', decorate_square(), decorate_count(2), decorate_heightmap('world_surface_wg'), decorate_climate(min_temp=-9, max_temp=3, min_water=250, forest_types=['grassland'], ignore_rivers=True))
 
 
     for ore in ORE_DEPOSITS:
@@ -1566,7 +1566,7 @@ def decorate_carving_mask(min_y: Optional[VerticalAnchor] = None, max_y: Optiona
         'max_y': utils.as_vertical_anchor(max_y) if max_y is not None else None
     }
 
-def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_water: Optional[float] = None, max_water: Optional[float] = None, min_rain_variance: Optional[float] = None, max_rain_variance: Optional[float] = None, rain_variance_absolute: Optional[bool] = None, min_forest: Optional[int] = None, max_forest: Optional[int] = None, min_elevation: Optional[int] = None, max_elevation: Optional[int] = None, fuzzy: Optional[bool] = None, forest_types: Optional[List[str]] = None, needs_forest: Optional[bool] = False) -> Json:
+def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_water: Optional[float] = None, max_water: Optional[float] = None, min_rain_variance: Optional[float] = None, max_rain_variance: Optional[float] = None, rain_variance_absolute: Optional[bool] = None, min_forest: Optional[int] = None, max_forest: Optional[int] = None, min_elevation: Optional[int] = None, max_elevation: Optional[int] = None, fuzzy: Optional[bool] = None, ignore_rivers: Optional[bool] = None, forest_types: Optional[List[str]] = None, needs_forest: Optional[bool] = False) -> Json:
 
     if needs_forest:
         min_forest = 3
@@ -1584,7 +1584,8 @@ def decorate_climate(min_temp: Optional[float] = None, max_temp: Optional[float]
         'forest_types': forest_types,
         'min_elevation': min_elevation,
         'max_elevation': max_elevation,
-        'fuzzy': fuzzy
+        'fuzzy': fuzzy,
+        'ignore_rivers': ignore_rivers
     }
 
 # Elevations are number above/below the high tide elevation

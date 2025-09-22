@@ -195,7 +195,7 @@ public class TFCEntities
     public static final Id<RammingPrey> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final Id<RammingPrey> MOOSE = register("moose", EntityType.Builder.of(TFCEntities::makeMoose, MobCategory.CREATURE).sized(1.8F, 2.2F).clientTrackingRange(10));
     public static final Id<RammingPrey> WILDEBEEST = register("wildebeest", EntityType.Builder.of(TFCEntities::makeWildebeest, MobCategory.CREATURE).sized(1.0F, 1.4F).clientTrackingRange(10));
-    public static final Id<RammingPrey> BISON = register("bison", EntityType.Builder.of(TFCEntities::makeBison, MobCategory.CREATURE).sized(1.0F, 1.4F).clientTrackingRange(10));
+    public static final Id<RammingPrey> BISON = register("bison", EntityType.Builder.of(TFCEntities::makeBison, MobCategory.CREATURE).sized(1.5F, 2.0F).clientTrackingRange(10));
 
     public static final Id<Pest> RAT = register("rat", EntityType.Builder.of(TFCEntities::makeRat, MobCategory.CREATURE).sized(0.4f, 0.3f).eyeHeight(0.13F).clientTrackingRange(8));
     public static final Id<Pest> LEMMING = register("lemming", EntityType.Builder.of(TFCEntities::makeRat, MobCategory.CREATURE).sized(0.4f, 0.3f).eyeHeight(0.13F).clientTrackingRange(8));

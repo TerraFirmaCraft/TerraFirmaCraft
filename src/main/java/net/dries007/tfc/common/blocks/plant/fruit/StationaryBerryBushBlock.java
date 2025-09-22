@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -31,9 +29,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.tracker.WorldTracker;
 
 public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeOverlayBlock, IBushBlock
 {
@@ -72,11 +68,14 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     @Override
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
-        final BlockPos sourcePos = pos.below();
-        final ClimateRange range = climateRange.get();
-
-        text.accept(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
-        text.accept(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
+        if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity bush)
+        {
+            final ClimateRange range = climateRange.get();
+            final BlockPos sourcePos = bush.getStemPos().below();
+            final int hydration = getFruitBushHydration(level, pos);
+            text.accept(FarmlandBlock.getHydrationTooltip(range, false, hydration));
+            text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, sourcePos, range, false));
+        }
     }
 
     @Override
@@ -95,10 +94,11 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
                 long nextCalendarTick = currentCalendarTick - deltaTicks;
 
-                final BlockPos sourcePos = pos.below();
-                final ClimateRange range = climateRange.get();
-                final int hydration = getHydration(level, sourcePos, state, currentCalendarTick, nextCalendarTick);
+                final BlockPos stemPos = bush.getStemPos();
+                float temperature = Climate.getAverageTemperature(level, pos);
+                final int hydration = getFruitBushHydrationFromRootPos(level, stemPos.below());
 
+                final ClimateRange range = climateRange.get();
                 int monthsSpentDying = 0;
                 do
                 {
@@ -109,10 +109,8 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                     // Advance both the stage (randomly, if the previous month was healthy), and lifecycle (if the at-the-time conditions were valid)
                     nextCalendarTick = Math.min(nextCalendarTick + Calendars.SERVER.getCalendarTicksInMonth(), currentCalendarTick);
 
-
-                    float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
                     Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
-                    if (range.checkBoth(hydration, temperatureAtNextTick, false))
+                    if (range.checkBoth(hydration, temperature, false))
                     {
                         currentLifecycle = currentLifecycle.advanceTowards(lifecycleAtNextTick);
                     }
@@ -152,24 +150,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
             }
         }
     }
-
-    protected int getHydration(Level level, BlockPos pos, BlockState state, long fromTick, long toTick)
-    {
-        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
-        {
-            return 100; // special case for waterlogged crops
-        }
-
-        final WorldTracker tracker = WorldTracker.get(level);
-        final ClimateModel model = tracker.getClimateModel();
-        final ICalendar calendar = Calendars.get(level);
-
-        // TODO: The display of these quantities appears to be bugged with the changes to the hydration system. Revisit once hydration system finalized
-        final float rainfall = model.getRainfall(level, pos, fromTick, toTick, calendar.getCalendarDaysInMonth()); // Rainfall forms a baseline, providing up to 60% hydration
-        final int waterCost = FarmlandBlock.findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity
-        return Mth.clamp((int) (60 * rainfall / ClimateModel.MAX_RAINFALL) + 20 * (5 - waterCost), 0, 100);
-    }
-
+    
     /**
      * Can this bush die, given that it spent {@code monthsSpentDying} consecutive months in a dormant state, when it should've been in a non-dormant state.
      */
