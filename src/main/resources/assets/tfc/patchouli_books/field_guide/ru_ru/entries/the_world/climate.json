@@ -28,7 +28,7 @@
     {
       "type": "patchouli:text",
       "anchor": "climate",
-      "text": "Another tab on the main inventory screen is the $(thing)Climate$() screen. This one shows information about the current location$(br2)From top to bottom, the screen displays the $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)Local Climate$(), the $(thing)Average Annual Temperature$(), the current temperature, the $(thing)Average Annual Rainfall$(), the current rainfall, the peak rainfall, and the season when the peak occurs.",
+      "text": "Ещё одна вкладка на главном экране инвентаря — экран $(thing)климат$(). Он показывает информацию о текущем местоположении$(br2)Сверху вниз на экране отображаются $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)местный климат$(), $(thing)среднегодовая температура$(), текущая температура, $(thing)Среднегодовое количество осадков$(), текущее количество осадков, максимальное количество осадков и сезон, когда осадки достигают пика.",
       "title": "Климат"
     },
     {
@@ -51,7 +51,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rainfall",
-      "text": "Rainfall is another climate value that can vary depending on where you are in the world and the time of year. The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm. Rainfall affects the types of flora that are found in an area, and also the types of soil.$(br)Depending on the local climate, rainfall may vary throughout the year to a peak of up to twice the local average.",
+      "text": "Количество осадков — ещё одна климатическая величина, которая может меняться в зависимости от вашего местоположения в мире и времени года. Годовое количество осадков измеряется в миллиметрах (мм) и может составлять от 0 мм до 500 мм. Количество осадков влияет на виды растительности, встречающиеся в регионе, а также на типы почв.$(br)В зависимости от местного климата количество осадков может меняться в течение года, достигая пиковых значений до двукратного превышения местного среднего уровня.",
       "title": "Осадки"
     },
     {

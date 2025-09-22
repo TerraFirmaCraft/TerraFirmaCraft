@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit and the climate requirements for that tree are met. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand."
+      "text": "Плодовые деревья начинаются с $(thing)саженцев$(). Саженцы начинают расти, формируя первый элемент дерева, только если сейчас не период покоя для данного фрукта и выполнены климатические требования для этого дерева. Размер готового дерева приблизительно определяется количеством саженцев в исходном блоке саженцев: чем их больше, тем крупнее дерево.$(br)В один блок через $(thing)прививку$() можно добавить дополнительные саженцы. Чтобы привить саженец к другому, нажмите $(item)$(k:key.use)$(), удерживая саженец и $(thing)Нож$() в свободной руке."
     },
     {
       "type": "patchouli:text",
@@ -36,7 +36,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The correct $(l:the_world/climate#temperature)Temperature$() and $(l:mechanics/hydration)Hydration$() are essential when planting fruit trees. Fruit trees will only grow and bear fruit if the Annual Average Temperature at the base of the tree (where the sapling is planted) is within that tree's range. Likewise, hydration is determined by the Average Annual Rainfall and water sources near to the base of the tree."
+      "text": "Правильная $(l:the_world/climate#temperature)температура$() и правильное $(l:mechanics/hydration)увлажнение$() необходимы при посадке плодовых деревьев. Плодовые деревья будут расти и плодоносить только в том случае, если среднегодовая температура у основания дерева (где посажен саженец) находится в пределах допустимого диапазона для этого вида. Аналогично увлажнение определяется среднегодовым количеством осадков и водными источниками, расположенными поблизости от основания дерева."
     },
     {
       "type": "patchouli:empty"
@@ -2348,7 +2348,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Bushes, like Fruit Trees, consider the base block of the plant when determining $(l:mechanics/hydration)Hydration$() and $(l:the_world/climate#temperature)Temperature$(), and grow as long as the Annual Average Rainfall and Temperature are correct. $(br)Any full bush block can grow berries, which are harvestable with $(item)$(k:key.use)$()."
+      "text": "Кусты, как и фруктовые деревья, учитывают базовый блок растения при определении $(l:mechanics/hydration)увлажненности$() и $(l:the_world/climate#temperature)температуры$(), и растут, пока среднегодовые осадки и температура соответствуют требованиям. $(br)Любой полный блок куста может вырастить ягоды, которые можно собрать с помощью $(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:text",
