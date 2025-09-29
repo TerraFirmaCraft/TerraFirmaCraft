@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -211,12 +212,17 @@ public interface BarrelRecipes extends Recipes
         dye(TFCItems.UNFIRED_LARGE_VESSEL, TFCItems.UNFIRED_GLAZED_LARGE_VESSELS::get);
 
         for (DyeColor color : DyeColor.values())
-            barrel(color.name() + "_leather")
+            barrel(color.name() + "_dyeable")
                 .input(fluidOf(color), 25)
-                .input(Ingredient.of(Items.LEATHER_CHESTPLATE, Items.LEATHER_LEGGINGS, Items.LEATHER_BOOTS, Items
-                    .LEATHER_HELMET, Items.LEATHER_HORSE_ARMOR))
+                .input(Ingredient.of(ItemTags.DYEABLE))
                 .output(ItemStackProvider.of(CopyInputModifier.INSTANCE, DyeLeatherModifier.of(color)))
                 .sealed(hours(1));
+
+        barrel("bleach_dyeable")
+            .input(fluidOf(SimpleFluid.LYE), 25)
+            .input(Ingredient.of(ItemTags.DYEABLE))
+            .output(ItemStackProvider.of(CopyInputModifier.INSTANCE, DyeLeatherModifier.of(DyeColor.WHITE)))
+            .sealed(hours(1));
 
         musicDisc(DyeColor.YELLOW, Items.MUSIC_DISC_13);
         musicDisc(DyeColor.ORANGE, Items.MUSIC_DISC_BLOCKS);
