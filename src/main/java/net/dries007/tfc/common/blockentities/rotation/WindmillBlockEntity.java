@@ -60,7 +60,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
             float wind = Climate.get(level).getWind(level, pos).length();
 
-            float windFactor = Math.min(wind, 0.5f) + 1f; // clamp below ~57 kmh
+            float windFactor = Math.min(wind, 0.5f) + 0.75f; // clamp below ~57 kmh
 
             windmill.targetSpeed = windFactor * targetBeforeWind;
             windmill.markForSync();
