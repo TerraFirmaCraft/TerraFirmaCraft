@@ -7,19 +7,23 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec2;
 
-import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
-import net.dries007.tfc.common.blocks.rotation.WaterWheelBlock;
 import net.dries007.tfc.util.climate.Climate;
 
 public class AnemometerBlockEntity extends TickableBlockEntity
 {
+    public static final float MAX_SPEED = 1f;
+    private static final float LERP_SPEED = Mth.TWO_PI * 0.0005f;
+    private float targetSpeed;
     private float speed;
+
+    float angle = 0;
 
     protected AnemometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -38,16 +42,38 @@ public class AnemometerBlockEntity extends TickableBlockEntity
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, AnemometerBlockEntity anemometer)
     {
+        anemometer.angle += anemometer.speed;
         if (level.getGameTime() % 40 == 0)
         {
-            Vec2 wind = Climate.get(level).getWind(level, pos);
-            anemometer.speed = wind.length();
+            float wind = Climate.get(level).getWind(level, pos).length();
+            // consider the most common wind speeds fall between 0 and 0.25
+            anemometer.targetSpeed = Mth.clampedMap(wind, 0,0.5f,0,MAX_SPEED);
         }
+        final float targetSpeed = anemometer.targetSpeed;
+        final float currentSpeed = anemometer.speed;
+        anemometer.speed = targetSpeed > currentSpeed
+            ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
+            : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
     }
 
-    public float getSpeed(){
-        return speed;
+    public float getAngle(float partialTick)
+    {
+        return angle + speed * partialTick;
     }
 
+    @Override
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.saveAdditional(tag, provider);
+        tag.putFloat("targetSpeed", targetSpeed);
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.loadAdditional(tag, provider);
+        targetSpeed = tag.getFloat("targetSpeed");
+        markForSync();
+    }
 
 }

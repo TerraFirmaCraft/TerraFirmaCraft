@@ -20,13 +20,16 @@ import net.dries007.tfc.client.model.entity.VaneModel;
 import net.dries007.tfc.common.blockentities.VaneBlockEntity;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.common.blocks.TFCBlockStateProperties.*;
+
 public class VaneBlockEntityRenderer implements BlockEntityRenderer<VaneBlockEntity>
 {
     public static final ResourceLocation TEXTURE = Helpers.identifier("textures/entity/vane.png");
 
     private final VaneModel model;
 
-    public VaneBlockEntityRenderer(BlockEntityRendererProvider.Context context){
+    public VaneBlockEntityRenderer(BlockEntityRendererProvider.Context context)
+    {
         this.model = new VaneModel(context.bakeLayer(RenderHelpers.layerId("vane")));
     }
 
@@ -44,7 +47,15 @@ public class VaneBlockEntityRenderer implements BlockEntityRenderer<VaneBlockEnt
         stack.translate(0.5f, -0f, 0.5f);
         stack.translate(0, 1.0625f + 0.4375f, 0);
         stack.scale(-1, -1, 1);
-        stack.mulPose(Axis.YP.rotationDegrees(0));
+
+        if (vane.getBlockState().getValue(ATTACHED_WIND_DEVICES))
+        {
+            stack.translate(0, 0.5625f, 0);
+        }
+        else
+        {
+            model.renderBase(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), packedLight, packedOverlay, -1);
+        }
 
         model.setupAnim(vane, partialTick);
         model.renderToBuffer(stack, buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), packedLight, packedOverlay, -1);

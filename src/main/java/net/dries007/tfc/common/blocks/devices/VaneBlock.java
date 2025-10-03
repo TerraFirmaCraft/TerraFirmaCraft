@@ -8,12 +8,16 @@ package net.dries007.tfc.common.blocks.devices;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -22,6 +26,7 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 
 import static net.minecraft.world.level.block.Block.*;
 
@@ -29,17 +34,33 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
 {
     public static BooleanProperty ATTACHED_WIND_DEVICES = TFCBlockStateProperties.ATTACHED_WIND_DEVICES;
     private static final VoxelShape SHAPE = box(6D, 0.0D, 6D, 10D, 12.0D, 10D);
+    private static final VoxelShape SHAPE_ATTACHED = box(6D, 0.0D, 6D, 10D, 6.0D, 10D);
 
     public VaneBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(ATTACHED_WIND_DEVICES, true));
+        registerDefaultState(getStateDefinition().any().setValue(ATTACHED_WIND_DEVICES, false));
+    }
+
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        BlockPos blockpos = context.getClickedPos();
+        return context.getLevel().getBlockState(blockpos.below()).is(TFCBlocks.ANEMOMETER.get())
+            ? this.defaultBlockState().setValue(ATTACHED_WIND_DEVICES, true)
+            : this.defaultBlockState();
+    }
+
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
+    {
+        return level.getBlockState(blockpos.below()).is(TFCBlocks.ANEMOMETER.get())
+            ? this.defaultBlockState().setValue(ATTACHED_WIND_DEVICES, true)
+            : this.defaultBlockState();
     }
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return SHAPE;
+        return state.getValue(ATTACHED_WIND_DEVICES) ? SHAPE_ATTACHED : SHAPE;
     }
 
     @Override

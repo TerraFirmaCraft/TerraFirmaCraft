@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,8 +20,11 @@ import net.dries007.tfc.util.climate.ClimateModel;
 
 public class VaneBlockEntity extends TickableBlockEntity
 {
-
+    public static final float MAX_SPEED = 0.025f;
+    private float targetAngle;
     private float angle;
+    private float speed;
+    private boolean shouldRotate = false;
 
     protected VaneBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -33,7 +38,11 @@ public class VaneBlockEntity extends TickableBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, VaneBlockEntity vane)
     {
-        clientTick(level, pos, state, vane);
+        if (level.getGameTime() % 40 == 0)
+        {
+            Vec2 wind = Climate.get(level).getWind(level, pos);
+            vane.targetAngle = (float) Mth.atan2(wind.y, wind.x);
+        }
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, VaneBlockEntity vane)
@@ -41,11 +50,56 @@ public class VaneBlockEntity extends TickableBlockEntity
         if (level.getGameTime() % 40 == 0)
         {
             Vec2 wind = Climate.get(level).getWind(level, pos);
-            vane.angle = (float) Mth.atan2(wind.y, wind.x);
+            vane.targetAngle = (float) Mth.atan2(wind.y, wind.x);
+            vane.speed = Mth.clampedMap(wind.length(), 0, 0.5f, 0, MAX_SPEED);
+        }
+
+        final float targetAngle = vane.targetAngle;
+
+        final float currentAngle = vane.angle;
+        vane.shouldRotate = Math.abs(currentAngle - targetAngle) > vane.speed;
+
+        if (vane.shouldRotate)
+        {
+            vane.angle = targetAngle > currentAngle
+                ? Math.min(targetAngle, currentAngle + vane.speed)
+                : Math.max(targetAngle, currentAngle - vane.speed);
+        }
+        else
+        {
+            float rand = (level.random.nextFloat() - 0.5f);
+            if (Math.abs(rand) < 0.3)
+            {
+                rand = rand < 0 ? -0.3f : 0.3f;
+            }
+            vane.targetAngle = vane.targetAngle + rand * Mth.TWO_PI / 72;
+            vane.shouldRotate = true;
         }
     }
 
-    public float getAngle(){
+    public float getAngle(float partialTick)
+    {
+        if (shouldRotate)
+        {
+            return targetAngle > angle
+                ? Math.min(targetAngle, angle + speed * partialTick)
+                : Math.max(targetAngle, angle - speed * partialTick);
+        }
         return angle;
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.saveAdditional(tag, provider);
+        tag.putFloat("targetAngle", targetAngle);
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.loadAdditional(tag, provider);
+        targetAngle = tag.getFloat("targetAngle");
+        markForSync();
     }
 }

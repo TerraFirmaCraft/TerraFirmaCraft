@@ -29,14 +29,14 @@ public class AnemometerModel extends Model
 
         PartDefinition base = partdefinition.addOrReplaceChild("base", CubeListBuilder.create().texOffs(0, 12).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-        PartDefinition spinny = partdefinition.addOrReplaceChild("spinny", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, -11.001F, -6.0F, 11.0F, 1.0F, 11.0F, new CubeDeformation(0.0F))
-            .texOffs(6, 18).addBox(-8.25F, -11.0F, -1.5F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 28.0F, 0.5F));
+        PartDefinition spinny = partdefinition.addOrReplaceChild("spinny", CubeListBuilder.create().texOffs(0, 0).addBox(-5.5F, -11.001F, -5.5F, 11.0F, 1.0F, 11.0F, new CubeDeformation(0.0F))
+            .texOffs(6, 18).addBox(-7.75F, -11.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 28.0F, 0.0F));
 
-        PartDefinition cube_r1 = spinny.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(6, 18).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -9.0F, 6.0F, 0.0F, 1.5708F, 0.0F));
+        PartDefinition cube_r1 = spinny.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(6, 18).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -9.0F, 6.5F, 0.0F, 1.5708F, 0.0F));
 
-        PartDefinition cube_r2 = spinny.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(6, 18).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, -9.0F, -7.0F, 0.0F, -1.5708F, 0.0F));
+        PartDefinition cube_r2 = spinny.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(6, 18).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -9.0F, -6.5F, 0.0F, -1.5708F, 0.0F));
 
-        PartDefinition cube_r3 = spinny.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(6, 18).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(6.0F, -9.0F, -0.5F, 0.0F, 3.1416F, 0.0F));
+        PartDefinition cube_r3 = spinny.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(6, 18).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(6.5F, -9.0F, 0.0F, 0.0F, 3.1416F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
@@ -58,6 +58,6 @@ public class AnemometerModel extends Model
 
     public void setupAnim(AnemometerBlockEntity anemometer, float partialTick)
     {
-        spinny.yRot = 0;
+        spinny.yRot = anemometer.getAngle(partialTick);
     }
 }

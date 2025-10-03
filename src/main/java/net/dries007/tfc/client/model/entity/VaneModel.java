@@ -17,13 +17,16 @@ import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
 
 public class VaneModel extends Model
 {
-    public VaneModel(ModelPart root) {
+    public VaneModel(ModelPart root)
+    {
         super(RenderType::entityCutoutNoCull);
         this.base = root.getChild("base");
         this.static_parts = root.getChild("static");
         this.spinny = root.getChild("spinny");
     }
-    public static LayerDefinition createBodyLayer() {
+
+    public static LayerDefinition createBodyLayer()
+    {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -51,13 +54,17 @@ public class VaneModel extends Model
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color)
     {
-        base.render(poseStack, buffer, packedLight, packedOverlay, color);
         static_parts.render(poseStack, buffer, packedLight, packedOverlay, color);
         spinny.render(poseStack, buffer, packedLight, packedOverlay, color);
     }
 
+    public void renderBase(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color)
+    {
+        base.render(poseStack, buffer, packedLight, packedOverlay, color);
+    }
+
     public void setupAnim(VaneBlockEntity vane, float partialTick)
     {
-        spinny.yRot = (float) (vane.getAngle()+Math.PI/2);
+        spinny.yRot = (float) (vane.getAngle(partialTick) + Math.PI / 2);
     }
 }
