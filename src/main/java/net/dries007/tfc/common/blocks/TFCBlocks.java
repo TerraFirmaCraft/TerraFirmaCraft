@@ -494,14 +494,14 @@ public final class TFCBlocks
     public static final Id<Block> VANE = register(
         "vane",
         () -> new VaneBlock(
-            ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.VANE).requiresCorrectToolForDrops().serverTicks(VaneBlockEntity::serverTick)
+            ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.VANE).requiresCorrectToolForDrops().<VaneBlockEntity>ticks(VaneBlockEntity::serverTick, VaneBlockEntity::clientTick)
         )
     );
 
     public static final Id<Block> ANEMOMETER = register(
         "anemometer",
         () -> new AnemometerBlock(
-            ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.VANE).requiresCorrectToolForDrops().serverTicks(AnemometerBlockEntity::serverTick)
+            ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.ANEMOMETER).requiresCorrectToolForDrops().<AnemometerBlockEntity>ticks(AnemometerBlockEntity::serverTick, AnemometerBlockEntity::clientTick)
         )
     );
 
