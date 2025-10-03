@@ -70,6 +70,8 @@ import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.rotation.PumpBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
+import net.dries007.tfc.common.blockentities.VaneBlockEntity;
+import net.dries007.tfc.common.blockentities.AnemometerBlockEntity;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.crop.TFCPumpkinBlock;
@@ -96,6 +98,8 @@ import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.blocks.devices.VaneBlock;
+import net.dries007.tfc.common.blocks.devices.AnemometerBlock;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
@@ -484,6 +488,20 @@ public final class TFCBlocks
         "mold_table",
         () -> new MoldBlock(
             ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.MOLD_TABLE).serverTicks(MoldBlockEntity::serverTick)
+        )
+    );
+
+    public static final Id<Block> VANE = register(
+        "vane",
+        () -> new VaneBlock(
+            ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.VANE).requiresCorrectToolForDrops().serverTicks(VaneBlockEntity::serverTick)
+        )
+    );
+
+    public static final Id<Block> ANEMOMETER = register(
+        "anemometer",
+        () -> new AnemometerBlock(
+            ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.VANE).requiresCorrectToolForDrops().serverTicks(AnemometerBlockEntity::serverTick)
         )
     );
 

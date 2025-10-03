@@ -144,6 +144,9 @@ public final class TFCBlockEntities
     public static final Id<WaterWheelBlockEntity> WATER_WHEEL = register("water_wheel", WaterWheelBlockEntity::new, woodBlocks(Wood.BlockType.WATER_WHEEL));
     public static final Id<CrankshaftBlockEntity> CRANKSHAFT = register("crankshaft", CrankshaftBlockEntity::new, TFCBlocks.CRANKSHAFT);
     public static final Id<TripHammerBlockEntity> TRIP_HAMMER = register("trip_hammer", TripHammerBlockEntity::new, TFCBlocks.TRIP_HAMMER);
+    public static final Id<VaneBlockEntity> VANE = register("vane", VaneBlockEntity::new, TFCBlocks.VANE);
+    public static final Id<AnemometerBlockEntity> ANEMOMETER = register("anemometer", AnemometerBlockEntity::new, TFCBlocks.ANEMOMETER);
+
     public static final Id<PumpBlockEntity> PUMP = register("pump", PumpBlockEntity::new, TFCBlocks.STEEL_PUMP);
     public static final Id<MoldBlockEntity> MOLD_TABLE = register("mold_table", MoldBlockEntity::new, TFCBlocks.MOLD_TABLE);
     public static final Id<ChannelBlockEntity> CHANNEL = register("channel", ChannelBlockEntity::new, TFCBlocks.CHANNEL);

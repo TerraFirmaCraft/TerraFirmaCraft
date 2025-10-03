@@ -193,6 +193,8 @@ import net.dries007.tfc.client.render.blockentity.TFCHangingSignBlockEntityRende
 import net.dries007.tfc.client.render.blockentity.TFCSignBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ToolRackBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.TripHammerBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.VaneBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.AnemometerBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.WaterWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.WindmillBlockEntityRenderer;
 import net.dries007.tfc.client.render.entity.AnimalRenderer;
@@ -673,6 +675,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.TRIP_HAMMER.get(), ctx -> new TripHammerBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.WATER_WHEEL.get(), WaterWheelBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.WINDMILL.get(), WindmillBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.VANE.get(), ctx -> new VaneBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.ANEMOMETER.get(), ctx -> new AnemometerBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CRANKSHAFT.get(), ctx -> new CrankshaftBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.CHANNEL.get(), ctx -> new ChannelBlockEntityRenderer());
