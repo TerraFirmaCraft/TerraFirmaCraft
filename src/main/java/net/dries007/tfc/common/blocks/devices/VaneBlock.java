@@ -97,7 +97,6 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
     {
         if (blockAccess.getBlockEntity(pos) instanceof VaneBlockEntity vane)
         {
-            int signal = vane.getRedstoneSignal();
             return vane.getRedstoneSignal();
         }
         return 0;

@@ -21,9 +21,10 @@ public class AnemometerBlockEntity extends TickableBlockEntity
     public static final float MAX_SPEED = 1f;
     private static final float LERP_SPEED = Mth.TWO_PI * 0.0005f;
     private float targetSpeed;
-    private float speed;
+    private float actualSpeed;
     private float windSpeed;
     float angle = 0;
+    boolean needsUpdate = false;
 
     protected AnemometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -37,12 +38,18 @@ public class AnemometerBlockEntity extends TickableBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, AnemometerBlockEntity anemometer)
     {
+        if (anemometer.needsUpdate)
+        {
+            anemometer.markForSync();
+            anemometer.needsUpdate = false;
+        }
         if (level.getGameTime() % 40 == 0)
         {
-            float speed = Climate.get(level).getWind(level, pos).length();
-            if (anemometer.windSpeed != speed)
+            float wind = Climate.get(level).getWind(level, pos).length();
+            anemometer.actualSpeed = Mth.clampedMap(wind, 0, 0.5f, 0, MAX_SPEED);
+            if (anemometer.windSpeed != wind)
             {
-                anemometer.windSpeed = speed;
+                anemometer.windSpeed = wind;
                 level.updateNeighborsAt(pos, state.getBlock());
                 level.updateNeighborsAt(pos.below(), state.getBlock());
             }
@@ -51,7 +58,7 @@ public class AnemometerBlockEntity extends TickableBlockEntity
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, AnemometerBlockEntity anemometer)
     {
-        anemometer.angle += anemometer.speed;
+        anemometer.angle += anemometer.actualSpeed;
         if (level.getGameTime() % 40 == 0)
         {
             float wind = Climate.get(level).getWind(level, pos).length();
@@ -59,15 +66,15 @@ public class AnemometerBlockEntity extends TickableBlockEntity
             anemometer.targetSpeed = Mth.clampedMap(wind, 0, 0.5f, 0, MAX_SPEED);
         }
         final float targetSpeed = anemometer.targetSpeed;
-        final float currentSpeed = anemometer.speed;
-        anemometer.speed = targetSpeed > currentSpeed
+        final float currentSpeed = anemometer.actualSpeed;
+        anemometer.actualSpeed = targetSpeed > currentSpeed
             ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
             : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
     }
 
     public float getAngle(float partialTick)
     {
-        return angle + speed * partialTick;
+        return angle + actualSpeed * partialTick;
     }
 
     public int getRedstoneSignal()
@@ -79,19 +86,15 @@ public class AnemometerBlockEntity extends TickableBlockEntity
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.saveAdditional(tag, provider);
-        tag.putFloat("targetSpeed", targetSpeed);
+        tag.putFloat("actualSpeed", actualSpeed);
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
     {
         super.loadAdditional(tag, provider);
-        targetSpeed = tag.getFloat("targetSpeed");
-    }
-
-    @Override
-    protected void onLoadAdditional(){
-        markForSync();
+        actualSpeed = tag.getFloat("actualSpeed");
+        needsUpdate = true;
     }
 
 }

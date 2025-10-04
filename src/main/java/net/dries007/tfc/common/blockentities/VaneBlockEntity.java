@@ -27,6 +27,7 @@ public class VaneBlockEntity extends TickableBlockEntity
     private float angle;
     private float speed;
     private boolean shouldRotate = false;
+    private boolean needsUpdate = false;
 
     protected VaneBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -40,10 +41,16 @@ public class VaneBlockEntity extends TickableBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, VaneBlockEntity vane)
     {
+        if (vane.needsUpdate)
+        {
+            vane.markForSync();
+            vane.needsUpdate = false;
+        }
         if (level.getGameTime() % 40 == 0)
         {
             Vec2 wind = Climate.get(level).getWind(level, pos);
             float angle = (float) Mth.atan2(wind.y, wind.x);
+            vane.angle = angle;
             if (vane.targetAngle != angle)
             {
                 vane.targetAngle = angle;
@@ -117,6 +124,7 @@ public class VaneBlockEntity extends TickableBlockEntity
     {
         super.saveAdditional(tag, provider);
         tag.putFloat("targetAngle", targetAngle);
+        tag.putFloat("angle", angle);
     }
 
     @Override
@@ -124,6 +132,7 @@ public class VaneBlockEntity extends TickableBlockEntity
     {
         super.loadAdditional(tag, provider);
         targetAngle = tag.getFloat("targetAngle");
-        markForSync();
+        angle = tag.getFloat("angle");
+        needsUpdate = true;
     }
 }
