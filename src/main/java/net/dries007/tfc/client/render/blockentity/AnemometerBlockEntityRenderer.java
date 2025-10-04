@@ -26,7 +26,8 @@ public class AnemometerBlockEntityRenderer implements BlockEntityRenderer<Anemom
 
     private final AnemometerModel model;
 
-    public AnemometerBlockEntityRenderer(BlockEntityRendererProvider.Context context){
+    public AnemometerBlockEntityRenderer(BlockEntityRendererProvider.Context context)
+    {
         this.model = new AnemometerModel(context.bakeLayer(RenderHelpers.layerId("anemometer")));
     }
 

@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 
 import net.dries007.tfc.util.climate.Climate;
 
@@ -41,7 +40,8 @@ public class AnemometerBlockEntity extends TickableBlockEntity
         if (level.getGameTime() % 40 == 0)
         {
             float speed = Climate.get(level).getWind(level, pos).length();
-            if (anemometer.windSpeed != speed){
+            if (anemometer.windSpeed != speed)
+            {
                 anemometer.windSpeed = speed;
                 level.updateNeighborsAt(pos, state.getBlock());
                 level.updateNeighborsAt(pos.below(), state.getBlock());
@@ -87,6 +87,10 @@ public class AnemometerBlockEntity extends TickableBlockEntity
     {
         super.loadAdditional(tag, provider);
         targetSpeed = tag.getFloat("targetSpeed");
+    }
+
+    @Override
+    protected void onLoadAdditional(){
         markForSync();
     }
 

@@ -59,16 +59,19 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
             : this.defaultBlockState();
     }
 
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    {
         level.updateNeighborsAt(pos, this);
         level.updateNeighborsAt(pos.below(), this);
     }
 
-    protected boolean isSignalSource(BlockState state) {
+    protected boolean isSignalSource(BlockState state)
+    {
         return true;
     }
 
-    protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+    protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
+    {
         return getSignal(blockState, blockAccess, pos, side);
     }
 

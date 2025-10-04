@@ -5,17 +5,14 @@
     "B": {
       "item": "tfc:brass_mechanisms"
     },
-    "S": {
-      "item": "tfc:metal/sheet/wrought_iron"
-    },
-    "W": {
-      "item": "tfc:metal/rod/wrought_iron"
+    "R": {
+      "item": "tfc:metal/rod/brass"
     }
   },
   "pattern": [
-    " S ",
-    "WBW",
-    " W "
+    "R R",
+    " B ",
+    "RRR"
   ],
   "result": {
     "count": 1,
