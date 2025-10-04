@@ -481,19 +481,22 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             //vert2.rotate(quat, cam);
                             //vert3.rotate(quat, cam);
 
-                            buffer.addVertex(x - camX - rainSizeX + 0.5f, maxY - camY, z - camZ - rainSizeZ + 0.5f)
+                            buffer.addVertex(vert0)
                                 .setUv(0.0F, minY * 0.25F + v)
                                 .setColor(1.0F, 1.0F, 1.0F, alpha)
                                 .setLight(light);
-                            buffer.addVertex(x - camX + rainSizeX + 0.5f, maxY - camY, z - camZ + rainSizeZ + 0.5f)
+
+                            buffer.addVertex(vert1)
                                 .setUv(1.0F, minY * 0.25F + v)
                                 .setColor(1.0F, 1.0F, 1.0F, alpha)
                                 .setLight(light);
-                            buffer.addVertex(x - camX + rainSizeX + 0.5f, minY - camY, z - camZ + rainSizeZ + 0.5f)
+
+                            buffer.addVertex(vert2)
                                 .setUv(1.0F, maxY * 0.25F + v)
                                 .setColor(1.0F, 1.0F, 1.0F, alpha)
                                 .setLight(light);
-                            buffer.addVertex(x - camX - rainSizeX + 0.5f, minY - camY, z - camZ - rainSizeZ + 0.5f)
+
+                            buffer.addVertex(vert3)
                                 .setUv(0.0F, maxY * 0.25F + v)
                                 .setColor(1.0F, 1.0F, 1.0F, alpha)
                                 .setLight(light);
