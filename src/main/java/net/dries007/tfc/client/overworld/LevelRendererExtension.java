@@ -443,7 +443,8 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
 
                                 // select the texture based on the amount of rain
-                                RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
+                                //RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
+                                RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[3]);
 
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
@@ -463,8 +464,8 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             // Note we also fix a bug here by clamping, so alpha does not go negative, which causes random non-alpha rainfall on
                             // far-away blocks. This affects us more as we have more distant rainfall (15 vs. 10 max in vanilla)
                             float f6 = (float) Math.sqrt(d2 * d2 + d3 * d3) / blockRadius;
-                            final float alpha = Mth.clamp((1.0F - f6 * f6) * 0.5F + 0.5F, 0f, 1f)
-                                * rainLevel;
+                            //final float alpha = Mth.clamp((1.0F - f6 * f6) * 0.5F + 0.5F, 0f, 1f) * rainLevel;
+                            float alpha = 1;
 
                             cursor.set(x, y, z);
 
@@ -475,11 +476,12 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             Vector3f vert1 = new Vector3f(x - camX + rainSizeX + 0.5f, maxY - camY, z - camZ + rainSizeZ + 0.5f);
                             Vector3f vert2 = new Vector3f(x - camX + rainSizeX + 0.5f, minY - camY, z - camZ + rainSizeZ + 0.5f);
                             Vector3f vert3 = new Vector3f(x - camX - rainSizeX + 0.5f, minY - camY, z - camZ - rainSizeZ + 0.5f);
-                            Quaternionf quat = new Quaternionf().rotationXYZ(Mth.TWO_PI/24, 0,0);
-                            vert0.rotate(quat, cam);
-                            vert1.rotate(quat, cam);
-                            vert2.rotate(quat, cam);
-                            vert3.rotate(quat, cam);
+                            Quaternionf quat = new Quaternionf().rotationXYZ(0, 0,0);
+                            float angle = 0;
+                            vert0 = vert0.add(4,0,0);
+                            vert1 = vert1.add(4,0,0);
+                            vert2 = vert2.add(0,0,0);
+                            vert3 = vert3.add(0,0,0);
 
                             buffer.addVertex(vert0)
                                 .setUv(0.0F, minY * 0.25F + v)
