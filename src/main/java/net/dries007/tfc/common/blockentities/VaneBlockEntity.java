@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
+
 import net.dries007.tfc.util.climate.Climate;
 
 public class VaneBlockEntity extends TickableBlockEntity
