@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.AnemometerModel;
@@ -34,7 +33,6 @@ public class AnemometerBlockEntityRenderer implements BlockEntityRenderer<Anemom
     @Override
     public void render(AnemometerBlockEntity anemometer, float partialTick, PoseStack stack, MultiBufferSource buffer, int packedLight, int packedOverlay)
     {
-        final Block block = anemometer.getBlockState().getBlock();
         if (anemometer.getLevel() == null)
         {
             return;
