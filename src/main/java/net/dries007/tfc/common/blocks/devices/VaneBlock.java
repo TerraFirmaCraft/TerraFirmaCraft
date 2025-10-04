@@ -64,6 +64,7 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
     {
         level.updateNeighborsAt(pos, this);
         level.updateNeighborsAt(pos.below(), this);
+        level.removeBlockEntity(pos); // wasn't getting removed otherwise?
     }
 
     @Override
