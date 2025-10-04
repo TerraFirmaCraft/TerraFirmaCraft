@@ -2292,7 +2292,7 @@ def generate(rm: ResourceManager):
     rm.item_model('vane')
 
     block = rm.blockstate('anemometer').with_block_model({'particle': 'tfc:block/metal/block/brass'}, parent=None)
-    block.with_lang(lang('anemometer')).with_block_loot('tfc:anemometer').with_item_model('anemometer')
+    block.with_lang(lang('anemometer')).with_block_loot('tfc:anemometer')
     rm.item_model('anemometer')
 
     # Candles
