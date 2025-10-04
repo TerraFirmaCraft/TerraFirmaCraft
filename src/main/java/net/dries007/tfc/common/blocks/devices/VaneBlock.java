@@ -63,7 +63,8 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
         return state.getValue(ATTACHED_WIND_DEVICES) ? SHAPE_ATTACHED : SHAPE;
     }
 
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    {
         level.updateNeighborsAt(pos, this);
         level.updateNeighborsAt(pos.below(), this);
     }
@@ -81,11 +82,13 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
-    protected boolean isSignalSource(BlockState state) {
+    protected boolean isSignalSource(BlockState state)
+    {
         return true;
     }
 
-    protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+    protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
+    {
         return getSignal(blockState, blockAccess, pos, side);
     }
 

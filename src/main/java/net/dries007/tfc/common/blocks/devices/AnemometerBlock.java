@@ -80,7 +80,6 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
     {
         if (blockAccess.getBlockEntity(pos) instanceof AnemometerBlockEntity anemometer)
         {
-            int signal = anemometer.getRedstoneSignal();
             return anemometer.getRedstoneSignal();
         }
         return 0;
