@@ -12,7 +12,9 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -50,9 +52,20 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
 
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
     {
-        return level.getBlockState(blockpos.above()).is(TFCBlocks.VANE.get())
-            ? this.defaultBlockState().setValue(ATTACHED_WIND_DEVICES, true)
-            : this.defaultBlockState();
+        if (facing == Direction.DOWN)
+        {
+            if (!this.canSurvive(state, level, blockpos))
+            {
+                return Blocks.AIR.defaultBlockState();
+            }
+        }
+        else if (facing == Direction.UP)
+        {
+            return level.getBlockState(blockpos.above()).is(TFCBlocks.VANE.get())
+                ? this.defaultBlockState().setValue(ATTACHED_WIND_DEVICES, true)
+                : this.defaultBlockState();
+        }
+        return super.updateShape(state, facing, facingState, level, blockpos, facingPos);
     }
 
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
@@ -98,5 +111,10 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
     public RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos)
+    {
+        return canSupportCenter(levelReader, pos.below(), Direction.UP);
     }
 }

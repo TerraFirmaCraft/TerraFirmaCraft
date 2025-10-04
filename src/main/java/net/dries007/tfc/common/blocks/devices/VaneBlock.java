@@ -12,7 +12,9 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -50,9 +52,17 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
 
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
     {
-        return level.getBlockState(blockpos.below()).is(TFCBlocks.ANEMOMETER.get())
-            ? this.defaultBlockState().setValue(ATTACHED_WIND_DEVICES, true)
-            : this.defaultBlockState();
+        if (facing == Direction.DOWN)
+        {
+            if (!this.canSurvive(state, level, blockpos))
+            {
+                return Blocks.AIR.defaultBlockState();
+            }
+            return level.getBlockState(blockpos.below()).is(TFCBlocks.ANEMOMETER.get())
+                ? this.defaultBlockState().setValue(ATTACHED_WIND_DEVICES, true)
+                : this.defaultBlockState();
+        }
+        return super.updateShape(state, facing, facingState, level, blockpos, facingPos);
     }
 
     @Override
@@ -98,6 +108,15 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
             return vane.getRedstoneSignal();
         }
         return 0;
+    }
+
+    protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos)
+    {
+        if (levelReader.getBlockState(pos.below()).is(TFCBlocks.ANEMOMETER.get()))
+        {
+            return true;
+        }
+        return canSupportCenter(levelReader, pos.below(), Direction.UP);
     }
 
 }
