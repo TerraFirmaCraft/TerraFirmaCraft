@@ -476,10 +476,10 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             Vector3f vert2 = new Vector3f(x - camX + rainSizeX + 0.5f, minY - camY, z - camZ + rainSizeZ + 0.5f);
                             Vector3f vert3 = new Vector3f(x - camX - rainSizeX + 0.5f, minY - camY, z - camZ - rainSizeZ + 0.5f);
                             Quaternionf quat = new Quaternionf().rotationXYZ(Mth.TWO_PI/24, 0,0);
-                            //vert0.rotate(quat, cam);
-                            //vert1.rotate(quat, cam);
-                            //vert2.rotate(quat, cam);
-                            //vert3.rotate(quat, cam);
+                            vert0.rotate(quat, cam);
+                            vert1.rotate(quat, cam);
+                            vert2.rotate(quat, cam);
+                            vert3.rotate(quat, cam);
 
                             buffer.addVertex(vert0)
                                 .setUv(0.0F, minY * 0.25F + v)
@@ -500,6 +500,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                                 .setUv(0.0F, maxY * 0.25F + v)
                                 .setColor(1.0F, 1.0F, 1.0F, alpha)
                                 .setLight(light);
+
                         }
                         else
                         {
