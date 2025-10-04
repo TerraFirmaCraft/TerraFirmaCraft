@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 import net.dries007.tfc.util.climate.Climate;
 
@@ -22,7 +23,7 @@ public class AnemometerBlockEntity extends TickableBlockEntity
     private static final float LERP_SPEED = Mth.TWO_PI * 0.0005f;
     private float targetSpeed;
     private float speed;
-
+    private float windSpeed;
     float angle = 0;
 
     protected AnemometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
@@ -37,7 +38,15 @@ public class AnemometerBlockEntity extends TickableBlockEntity
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, AnemometerBlockEntity anemometer)
     {
-        clientTick(level, pos, state, anemometer);
+        if (level.getGameTime() % 40 == 0)
+        {
+            float speed = Climate.get(level).getWind(level, pos).length();
+            if (anemometer.windSpeed != speed){
+                anemometer.windSpeed = speed;
+                level.updateNeighborsAt(pos, state.getBlock());
+                level.updateNeighborsAt(pos.below(), state.getBlock());
+            }
+        }
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, AnemometerBlockEntity anemometer)
@@ -47,7 +56,7 @@ public class AnemometerBlockEntity extends TickableBlockEntity
         {
             float wind = Climate.get(level).getWind(level, pos).length();
             // consider the most common wind speeds fall between 0 and 0.25
-            anemometer.targetSpeed = Mth.clampedMap(wind, 0,0.5f,0,MAX_SPEED);
+            anemometer.targetSpeed = Mth.clampedMap(wind, 0, 0.5f, 0, MAX_SPEED);
         }
         final float targetSpeed = anemometer.targetSpeed;
         final float currentSpeed = anemometer.speed;
@@ -59,6 +68,11 @@ public class AnemometerBlockEntity extends TickableBlockEntity
     public float getAngle(float partialTick)
     {
         return angle + speed * partialTick;
+    }
+
+    public int getRedstoneSignal()
+    {
+        return Math.clamp(Mth.floor(windSpeed * 16), 0, 15);
     }
 
     @Override

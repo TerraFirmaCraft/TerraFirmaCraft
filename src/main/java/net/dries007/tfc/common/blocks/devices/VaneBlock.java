@@ -10,25 +10,25 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blockentities.VaneBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-
-import static net.minecraft.world.level.block.Block.*;
 
 public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IForgeBlockExtension
 {
@@ -63,6 +63,11 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
         return state.getValue(ATTACHED_WIND_DEVICES) ? SHAPE_ATTACHED : SHAPE;
     }
 
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        level.updateNeighborsAt(pos, this);
+        level.updateNeighborsAt(pos.below(), this);
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
@@ -74,6 +79,25 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
     public RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    protected boolean isSignalSource(BlockState state) {
+        return true;
+    }
+
+    protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+        return getSignal(blockState, blockAccess, pos, side);
+    }
+
+    @Override
+    protected int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
+    {
+        if (blockAccess.getBlockEntity(pos) instanceof VaneBlockEntity vane)
+        {
+            int signal = vane.getRedstoneSignal();
+            return vane.getRedstoneSignal();
+        }
+        return 0;
     }
 
 }

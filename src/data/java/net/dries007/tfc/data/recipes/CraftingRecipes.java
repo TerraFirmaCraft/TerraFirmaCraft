@@ -1230,6 +1230,17 @@ public interface CraftingRecipes extends Recipes
         recipe("from_canola")
             .input(TFCItems.CANOLA)
             .shapeless(TFCItems.STRAW);
+        recipe()
+            .input('R', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.ROD))
+            .input('B', TFCItems.BRASS_MECHANISMS)
+            .pattern("R R", " B ", "RRR")
+            .shaped(TFCBlocks.VANE);
+        recipe()
+            .input('S', TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.SHEET))
+            .input('W', TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.ROD))
+            .input('B', TFCItems.BRASS_MECHANISMS)
+            .pattern(" S ", "WBW", " W ")
+            .shaped(TFCBlocks.ANEMOMETER);
     }
 
     /**

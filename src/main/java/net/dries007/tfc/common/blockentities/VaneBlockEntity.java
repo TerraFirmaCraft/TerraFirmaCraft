@@ -7,9 +7,11 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +43,13 @@ public class VaneBlockEntity extends TickableBlockEntity
         if (level.getGameTime() % 40 == 0)
         {
             Vec2 wind = Climate.get(level).getWind(level, pos);
-            vane.targetAngle = (float) Mth.atan2(wind.y, wind.x);
+            float angle = (float) Mth.atan2(wind.y, wind.x);
+            if (vane.targetAngle != angle)
+            {
+                vane.targetAngle = angle;
+                level.updateNeighborsAt(pos, state.getBlock());
+                level.updateNeighborsAt(pos.below(), state.getBlock());
+            }
         }
     }
 
@@ -86,6 +94,22 @@ public class VaneBlockEntity extends TickableBlockEntity
                 : Math.max(targetAngle, angle - speed * partialTick);
         }
         return angle;
+    }
+
+    public int getRedstoneSignal()
+    {
+        // make angle non-negative
+        float angle = targetAngle < 0
+            ? targetAngle += Mth.TWO_PI
+            : targetAngle;
+        // rotate so North is signal 0/15
+        angle += Mth.PI / 2;
+        // wrap
+        if (angle > Mth.TWO_PI)
+        {
+            angle -= Mth.TWO_PI;
+        }
+        return Math.clamp(Mth.floor((angle / Mth.TWO_PI) * 16), 0, 15);
     }
 
     @Override

@@ -10,9 +10,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -21,6 +23,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blockentities.AnemometerBlockEntity;
+import net.dries007.tfc.common.blockentities.VaneBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -53,6 +57,30 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
         return level.getBlockState(blockpos.above()).is(TFCBlocks.VANE.get())
             ? this.defaultBlockState().setValue(ATTACHED_WIND_DEVICES, true)
             : this.defaultBlockState();
+    }
+
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        level.updateNeighborsAt(pos, this);
+        level.updateNeighborsAt(pos.below(), this);
+    }
+
+    protected boolean isSignalSource(BlockState state) {
+        return true;
+    }
+
+    protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
+        return getSignal(blockState, blockAccess, pos, side);
+    }
+
+    @Override
+    protected int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
+    {
+        if (blockAccess.getBlockEntity(pos) instanceof AnemometerBlockEntity anemometer)
+        {
+            int signal = anemometer.getRedstoneSignal();
+            return anemometer.getRedstoneSignal();
+        }
+        return 0;
     }
 
     @Override
