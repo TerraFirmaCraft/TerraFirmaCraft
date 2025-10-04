@@ -227,7 +227,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         }
         else
         {
-            TerraFirmaCraft.LOGGER.error("Fruit tree leaf block entity not present");
+            TerraFirmaCraft.LOGGER.error("Fruit tree leaf block entity not present at {}", leafPos);
             sourcePos = leafPos;
         }
         return getFruitBushHydrationFromRootPos(level, sourcePos);

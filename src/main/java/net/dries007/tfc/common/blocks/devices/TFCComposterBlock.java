@@ -102,7 +102,7 @@ public class TFCComposterBlock extends BottomSupportedDeviceBlock implements Ent
     @Override
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, Consumer<Component> text, boolean isDebug)
     {
-        if (level.getBlockEntity(pos) instanceof ComposterBlockEntity composter && state.getValue(TYPE) != CompostType.ROTTEN)
+        if (level.getBlockEntity(pos) instanceof ComposterBlockEntity composter)
         {
             text.accept(Component.translatable("tfc.composter.green_items", composter.getGreen()).withStyle(ChatFormatting.GREEN));
             text.accept(Component.translatable("tfc.composter.brown_items", composter.getBrown()).withStyle(ChatFormatting.GOLD));

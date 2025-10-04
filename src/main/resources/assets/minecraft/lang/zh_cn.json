@@ -3,6 +3,7 @@
   "__comment2": "Apparently leaving this under tfc namespace doesn't work",
   "item.minecraft.glow_ink_sac": "荧光墨囊",
   "item.minecraft.shield": "木盾牌",
+  "block.minecraft.bed.no_sleep": "You can only sleep at night",
   "block.minecraft.bell": "金钟",
   "block.minecraft.slime_block": "Glue Block",
   "block.minecraft.loom": "Banner Loom",

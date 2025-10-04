@@ -74,7 +74,6 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
     private float thirst = MAX_THIRST; // The current thirst of the player
     private long lastDrinkTick = Long.MIN_VALUE;
     private long intoxicationTick = Long.MIN_VALUE; // A future tick that the player is intoxicated until
-    private long sleepTick = Long.MIN_VALUE; // The last tick this player slept
     private ChiselMode chiselMode = ChiselMode.SMOOTH.value();
     private INutritionData nutrition; // Nutrition information
 
@@ -136,19 +135,6 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
             intoxicationTick = currentTick + TFCConfig.SERVER.maxIntoxicationTicks.get();
         }
         modified = true;
-    }
-
-    @Override
-    public int getPossibleSleepDuration()
-    {
-        final long sleepTicks = calendar().getFixedCalendarTicksFromTick((calendar().getTicks() - sleepTick) / 2);
-        return sleepTicks < ICalendar.CALENDAR_TICKS_IN_HOUR ? 0 : (int) sleepTicks;
-    }
-
-    @Override
-    public void resetSleepRestoration()
-    {
-        sleepTick = calendar().getTicks();
     }
 
     @Override
@@ -379,7 +365,6 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         nutrition.setHunger(getFoodLevel());
         nutrition.readFromNbt(tag.get("nutrition"));
         intoxicationTick = tag.getLong("intoxication");
-        sleepTick = tag.getLong("sleep");
     }
 
     @Override
@@ -394,7 +379,6 @@ public final class PlayerInfo extends net.minecraft.world.food.FoodData implemen
         tag.putString("chiselMode", ChiselMode.REGISTRY.getKey(chiselMode).toString());
         tag.put("nutrition", nutrition.writeToNbt());
         tag.putLong("intoxication", intoxicationTick);
-        tag.putLong("sleep", sleepTick);
     }
 
     @Override

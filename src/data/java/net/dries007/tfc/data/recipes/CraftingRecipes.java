@@ -1166,18 +1166,19 @@ public interface CraftingRecipes extends Recipes
         recipe("from_twigs")
             .input(TFCTags.Items.TWIGS)
             .shapeless(Items.STICK, 1);
-        recipe("from_golden_bamboo")
-            .input('X', TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO))
+        recipe("from_tfc_bamboo")
+            .input('X', TFCTags.Items.BAMBOO)
             .pattern("X", "X")
             .shaped(Items.STICK);
-        recipe("from_golden_bamboo")
+        recipe("from_tfc_bamboo")
             .input('I', TFCTags.Items.BAMBOO)
             .input('~', Tags.Items.STRINGS)
             .pattern("I~I", "I I", "I I")
             .shaped(Items.SCAFFOLDING);
         recipe()
-            .input(TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO))
-            .shapeless(TFCBlocks.GOLDEN_BAMBOO_BLOCK, 9);
+            .input('X', TFCBlocks.PLANTS.get(Plant.GOLDEN_BAMBOO))
+            .pattern("XXX", "XXX", "XXX")
+            .shaped(TFCBlocks.GOLDEN_BAMBOO_BLOCK);
         recipe().to2x2(TFCItems.STRAW, TFCBlocks.THATCH, 1);
         recipe()
             .input(TFCBlocks.THATCH)

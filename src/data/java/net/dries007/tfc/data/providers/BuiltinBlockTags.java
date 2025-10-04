@@ -189,7 +189,12 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.SPRUCE_KRUMMHOLZ,
                 TFCBlocks.WHITE_CEDAR_KRUMMHOLZ,
                 TFCBlocks.BELLOWS,
-                TFCBlocks.BARREL_RACK
+                TFCBlocks.BARREL_RACK,
+                TFCBlocks.MELON,
+                TFCBlocks.PUMPKIN,
+                TFCBlocks.ROTTEN_MELON,
+                TFCBlocks.ROTTEN_PUMPKIN,
+                TFCBlocks.JACK_O_LANTERN
             );
         // Note, our hoes do not use this tag, but instead we co-opt the values as a 'sharp tool'
         tag(BlockTags.MINEABLE_WITH_HOE)
@@ -214,12 +219,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.DEAD_CANE,
                 TFCBlocks.THATCH,
                 TFCBlocks.THATCH_BED,
-                TFCBlocks.TREE_ROOTS,
-                TFCBlocks.MELON,
-                TFCBlocks.PUMPKIN,
-                TFCBlocks.ROTTEN_MELON,
-                TFCBlocks.ROTTEN_PUMPKIN,
-                TFCBlocks.JACK_O_LANTERN
+                TFCBlocks.TREE_ROOTS
             );
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .add2(TFCBlocks.SANDSTONE)
@@ -574,11 +574,11 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(MINEABLE_WITH_HAMMER).addTag(BlockTags.LOGS);
         tag(MINEABLE_WITH_KNIFE).addTag(BlockTags.MINEABLE_WITH_HOE);
         tag(MINEABLE_WITH_SCYTHE).addTag(BlockTags.MINEABLE_WITH_HOE);
+        tag(MINEABLE_WITH_HOE).addTag(BlockTags.MINEABLE_WITH_HOE);
         tag(MINEABLE_WITH_GLASS_SAW)
             .addTags(Tags.Blocks.GLASS_BLOCKS, Tags.Blocks.GLASS_PANES)
             .add(TFCBlocks.COLORED_POURED_GLASS)
             .add(TFCBlocks.POURED_GLASS);
-        tag(MINEABLE_WITH_HOE); // Empty
 
         tag(PROSPECTABLE).addTags(Tags.Blocks.ORES);
 

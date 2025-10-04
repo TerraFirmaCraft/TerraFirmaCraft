@@ -1,13 +1,18 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "key": {
+    "X": {
       "item": "tfc:plant/golden_bamboo"
     }
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
   ],
   "result": {
-    "count": 9,
+    "count": 1,
     "id": "tfc:golden_bamboo_block"
   }
 }

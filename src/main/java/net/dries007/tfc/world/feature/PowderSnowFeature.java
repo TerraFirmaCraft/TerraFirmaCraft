@@ -18,6 +18,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.noise.Metaballs3D;
 
+import static net.dries007.tfc.util.climate.OverworldClimateModel.*;
+
 public class PowderSnowFeature extends Feature<BlockStateConfiguration>
 {
     public PowderSnowFeature(Codec<BlockStateConfiguration> codec)
@@ -45,10 +47,15 @@ public class PowderSnowFeature extends Feature<BlockStateConfiguration>
                     if (noise.inside(x, y, z))
                     {
                         mutablePos.setWithOffset(pos, x, y, z);
-                        final BlockState foundState = level.getBlockState(mutablePos);
-                        if (Helpers.isBlock(foundState, TFCTags.Blocks.POWDER_SNOW_REPLACEABLE))
+
+                        // Do not replace below sea level where water might flood back in
+                        if (mutablePos.getY() > SEA_LEVEL)
                         {
-                            setBlock(level, mutablePos, state);
+                            final BlockState foundState = level.getBlockState(mutablePos);
+                            if (Helpers.isBlock(foundState, TFCTags.Blocks.POWDER_SNOW_REPLACEABLE))
+                            {
+                                setBlock(level, mutablePos, state);
+                            }
                         }
                     }
                 }

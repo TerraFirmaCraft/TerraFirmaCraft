@@ -20,7 +20,7 @@ def generate(rm: ResourceManager):
     for mob in ('orca', 'dolphin', 'manatee'):
         mob_loot(rm, mob, 'tfc:blubber', min_amount=2, max_amount=7, bones=5)
     mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)
-    mob_loot(rm, 'seal', 'tfc:blubber', min_amount=2, max_amount=5, hide_size='medium', bones=4)
+    mob_loot(rm, 'leopard_seal', 'tfc:blubber', min_amount=3, max_amount=6, hide_size='medium', bones=4)
     mob_loot(rm, 'turtle', 'minecraft:turtle_scute', extra_pool={'name': 'tfc:food/turtle'})
     mob_loot(rm, 'polar_bear', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'grizzly_bear', 'tfc:large_raw_hide', bones=6)

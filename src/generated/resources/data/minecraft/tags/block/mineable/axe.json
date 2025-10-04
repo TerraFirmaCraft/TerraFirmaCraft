@@ -811,6 +811,11 @@
     "tfc:plant/spruce_krummholz",
     "tfc:plant/white_cedar_krummholz",
     "tfc:bellows",
-    "tfc:barrel_rack"
+    "tfc:barrel_rack",
+    "tfc:melon",
+    "tfc:pumpkin",
+    "tfc:rotten_melon",
+    "tfc:rotten_pumpkin",
+    "tfc:jack_o_lantern"
   ]
 }

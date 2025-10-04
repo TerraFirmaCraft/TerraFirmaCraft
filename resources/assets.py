@@ -279,6 +279,9 @@ def generate(rm: ResourceManager):
                     if ore == 'pyrite':
                         name = lang('native gold?')
                     rm.block('tfc:ore/%s/%s/prospected' % (ore, rock)).with_lang(name)
+            else:
+                name = lang(ore)
+                rm.block('tfc:%s/prospected' % (ore)).with_lang(name)
 
     # Loose Ore Items
     for ore, ore_data in ORES.items():
@@ -359,6 +362,7 @@ def generate(rm: ResourceManager):
     rm.blockstate('golden_bamboo_block', variants=dict(('axis=%s' % a, {'model': 'tfc:block/golden_bamboo_%s' % a}) for a in ('x', 'y', 'z'))).with_block_loot('tfc:golden_bamboo_block').with_lang(lang('golden bamboo block'))
     for a in ('x', 'y', 'z'):
         rm.block_model('golden_bamboo_%s' % a, {'side': 'tfc:block/golden_bamboo_side', 'end': 'tfc:block/golden_bamboo_top'}, 'minecraft:block/bamboo_block_%s' % a)
+        rm.item_model('golden_bamboo_block', parent='tfc:block/golden_bamboo_y', no_textures=True)
 
     for name in ('pumpkin', 'melon'):
         # Loot table for the non-rotten block is done via code, as we need to select rotten/not via tile entity

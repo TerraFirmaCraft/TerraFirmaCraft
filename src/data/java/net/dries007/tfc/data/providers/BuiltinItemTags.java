@@ -192,6 +192,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(TURTLE_FOOD).add(TFCItems.FOOD.get(Food.DRIED_KELP), TFCItems.FOOD.get(Food.DRIED_SEAWEED));
         tag(FROG_FOOD).addTag(RAW_FISH).add(Items.SPIDER_EYE);
         tag(RABBIT_FOOD).addTags(GRAINS, VEGETABLES);
+        tag(ItemTags.PANDA_FOOD).addTag(BAMBOO);
 
         // Greens and Browns intentionally overlap - we check browns first, then greens, to resolve
         tag(COMPOST_GREENS).addTags(COMPOST_GREENS_LOW, COMPOST_GREENS_MEDIUM, COMPOST_GREENS_HIGH);
