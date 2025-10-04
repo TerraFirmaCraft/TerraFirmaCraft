@@ -374,8 +374,6 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             final Tesselator tesselator = Tesselator.getInstance();
             final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
-            cursor.set(blockX, blockY, blockZ);
-
             final ClimateModel model = Climate.get(level);
             final long calendarTick = Calendars.get(level).getCalendarTicks();
             final float climateRain = model.getRain(calendarTick);
@@ -471,6 +469,17 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             cursor.set(x, y, z);
 
                             final int light = LevelRenderer.getLightColor(level, cursor);
+
+                            Vector3f cam = new Vector3f(camX, camY, camZ);
+                            Vector3f vert0 = new Vector3f(x - camX - rainSizeX + 0.5f, maxY - camY, z - camZ - rainSizeZ + 0.5f);
+                            Vector3f vert1 = new Vector3f(x - camX + rainSizeX + 0.5f, maxY - camY, z - camZ + rainSizeZ + 0.5f);
+                            Vector3f vert2 = new Vector3f(x - camX + rainSizeX + 0.5f, minY - camY, z - camZ + rainSizeZ + 0.5f);
+                            Vector3f vert3 = new Vector3f(x - camX - rainSizeX + 0.5f, minY - camY, z - camZ - rainSizeZ + 0.5f);
+                            Quaternionf quat = new Quaternionf().rotationXYZ(Mth.TWO_PI/24, 0,0);
+                            //vert0.rotate(quat, cam);
+                            //vert1.rotate(quat, cam);
+                            //vert2.rotate(quat, cam);
+                            //vert3.rotate(quat, cam);
 
                             buffer.addVertex(x - camX - rainSizeX + 0.5f, maxY - camY, z - camZ - rainSizeZ + 0.5f)
                                 .setUv(0.0F, minY * 0.25F + v)
