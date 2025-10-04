@@ -95,7 +95,6 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.ENTITYBLOCK_ANIMATED;
