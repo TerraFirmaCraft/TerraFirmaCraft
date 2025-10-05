@@ -407,16 +407,16 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             int stateFlag = -1;
 
             Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
-            float xangleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.35f, 0, RAIN_MAX_ANGLE));
-            float zangleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.35f, 0, RAIN_MAX_ANGLE));
-            float xangleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.35f, 0, SNOW_MAX_ANGLE));
-            float zangleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.35f, 0, SNOW_MAX_ANGLE));
+            float zAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.35f, 0, RAIN_MAX_ANGLE));
+            float xAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.35f, 0, RAIN_MAX_ANGLE));
+            float xAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.35f, 0, SNOW_MAX_ANGLE));
+            float zAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.35f, 0, SNOW_MAX_ANGLE));
 
-            final float defaultXOffsetRain = (float) (Math.tan(xangleRain) * 10);
-            final float defaultZOffsetRain = (float) (Math.tan(zangleRain) * 10);
+            final float defaultXOffsetRain = (float) (Math.tan(zAngleRain) * 10);
+            final float defaultZOffsetRain = (float) (Math.tan(xAngleRain) * 10);
 
-            final float defaultXOffsetSnow = (float) (Math.tan(xangleSnow) * 10);
-            final float defaultZOffsetSnow = (float) (Math.tan(zangleSnow) * 10);
+            final float defaultXOffsetSnow = (float) (Math.tan(xAngleSnow) * 10);
+            final float defaultZOffsetSnow = (float) (Math.tan(zAngleSnow) * 10);
 
             for (int z = blockZ - blockRadius; z <= blockZ + blockRadius; z++)
             {
@@ -485,13 +485,13 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
                             float height = maxY - minY;
 
-                            float xoffset = defaultXOffsetRain;
-                            float zoffset = defaultZOffsetRain;
+                            float zOffset = defaultXOffsetRain;
+                            float xOffset = defaultZOffsetRain;
                             if (height != 10)
                             {
                                 // avoid extra math for most of these quads
-                                xoffset = (float) (Math.tan(xangleRain) * height);
-                                zoffset = (float) (Math.tan(zangleRain) * height);
+                                zOffset = (float) (Math.tan(zAngleRain) * height);
+                                xOffset = (float) (Math.tan(xAngleRain) * height);
                             }
 
                             cursor.set(x, y, z);
@@ -503,10 +503,10 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             Vector3f vert2 = new Vector3f(x - camX + rainSizeX + 0.5f, minY - camY, z - camZ + rainSizeZ + 0.5f);
                             Vector3f vert3 = new Vector3f(x - camX - rainSizeX + 0.5f, minY - camY, z - camZ - rainSizeZ + 0.5f);
 
-                            vert0 = vert0.add(-xoffset / 2, 0, -zoffset / 2);
-                            vert1 = vert1.add(-xoffset / 2, 0, -zoffset / 2);
-                            vert2 = vert2.add(xoffset / 2, 0, zoffset / 2);
-                            vert3 = vert3.add(xoffset / 2, 0, zoffset / 2);
+                            vert0 = vert0.add(-zOffset / 2, 0, -xOffset / 2);
+                            vert1 = vert1.add(-zOffset / 2, 0, -xOffset / 2);
+                            vert2 = vert2.add(zOffset / 2, 0, xOffset / 2);
+                            vert3 = vert3.add(zOffset / 2, 0, xOffset / 2);
 
                             buffer.addVertex(vert0)
                                 .setUv(0.0F, minY * 0.25F + v)
@@ -571,8 +571,8 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             float zoffset = defaultZOffsetSnow;
                             if (height != 10)
                             {
-                                xoffset = (float) (Math.tan(xangleSnow) * height);
-                                zoffset = (float) (Math.tan(zangleSnow) * height);
+                                xoffset = (float) (Math.tan(xAngleSnow) * height);
+                                zoffset = (float) (Math.tan(zAngleSnow) * height);
                             }
 
                             cursor.set(x, y, z);
