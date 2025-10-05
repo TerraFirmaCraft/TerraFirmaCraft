@@ -117,12 +117,6 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state)
-    {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
-    }
-
-    @Override
     protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos)
     {
         return canSupportCenter(levelReader, pos.below(), Direction.UP);

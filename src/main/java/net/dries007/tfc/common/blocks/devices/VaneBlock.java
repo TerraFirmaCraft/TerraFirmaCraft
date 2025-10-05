@@ -87,12 +87,6 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state)
-    {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
-    }
-
-    @Override
     protected boolean isSignalSource(BlockState state)
     {
         return true;
