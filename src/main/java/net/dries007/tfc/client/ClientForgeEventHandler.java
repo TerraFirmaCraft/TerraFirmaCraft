@@ -172,11 +172,11 @@ public class ClientForgeEventHandler
                 ));
                 final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
                 tooltip.add(Component.translatable("tfc.tooltip.wind_speed",
-                        Mth.floor(320 * wind.length()),
-                        String.format("%.0f", Mth.abs(wind.x * 100)),
-                        Helpers.translateEnum(wind.x > 0 ? Direction.EAST : Direction.WEST),
-                        String.format("%.0f", Mth.abs(wind.y * 100)),
-                        Helpers.translateEnum(wind.y > 0 ? Direction.SOUTH : Direction.NORTH))
+                    Mth.floor(320 * wind.length()),
+                    String.format("%.0f", Mth.abs(wind.x * 100)),
+                    Helpers.translateEnum(wind.x > 0 ? Direction.EAST : Direction.WEST),
+                    String.format("%.0f", Mth.abs(wind.y * 100)),
+                    Helpers.translateEnum(wind.y > 0 ? Direction.SOUTH : Direction.NORTH))
                     .getString());
 
                 final ChunkData data = ChunkData.get(mc.level, pos);
@@ -306,10 +306,10 @@ public class ClientForgeEventHandler
                         first = false;
                     }
                     tooltip.add(Component.literal(DARK_GRAY
-                            + typeOfComponent(stack.getComponentsPatch().get(component.type()))
-                            + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
-                            + " = "
-                            + component.value()
+                        + typeOfComponent(stack.getComponentsPatch().get(component.type()))
+                        + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
+                        + " = "
+                        + component.value()
                         // Avoid showing the encoding, it's interesting but not necessary. Uncomment if needing to debug
                         //+ " = "
                         //+ component.encodeValue(RegistryOps.create(NbtOps.INSTANCE, Minecraft.getInstance().level.registryAccess()))
