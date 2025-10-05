@@ -169,7 +169,11 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
     @Override
     protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
     {
-        return getSignal(blockState, blockAccess, pos, side);
+        if (blockState.getValue(FACING) == side)
+        {
+            return getSignal(blockState, blockAccess, pos, side);
+        }
+        return 0;
     }
 
     @Override

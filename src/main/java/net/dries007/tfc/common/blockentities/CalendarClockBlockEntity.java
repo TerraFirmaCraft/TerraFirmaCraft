@@ -7,6 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.calendar.Calendar;
@@ -51,7 +52,7 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
                 clock.hour = getHourOfDay(Calendars.SERVER.getCalendarTicks());
             }
             level.updateNeighborsAt(pos, state.getBlock());
-            level.updateNeighborsAt(pos.below(), state.getBlock());
+            level.updateNeighborsAt(pos.relative(state.getValue(BlockStateProperties.FACING).getOpposite()), state.getBlock());
         }
         clientTick(level, pos, state, clock);
     }
