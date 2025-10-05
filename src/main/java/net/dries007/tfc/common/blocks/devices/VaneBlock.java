@@ -42,6 +42,7 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
         registerDefaultState(getStateDefinition().any().setValue(ATTACHED_WIND_DEVICES, false));
     }
 
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockPos blockpos = context.getClickedPos();
@@ -50,6 +51,7 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
             : this.defaultBlockState();
     }
 
+    @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN)
@@ -90,14 +92,20 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
+    @Override
     protected boolean isSignalSource(BlockState state)
     {
         return true;
     }
 
+    @Override
     protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
     {
-        return getSignal(blockState, blockAccess, pos, side);
+        if (side == Direction.UP)
+        {
+            return getSignal(blockState, blockAccess, pos, side);
+        }
+        return 0;
     }
 
     @Override
@@ -110,6 +118,7 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
         return 0;
     }
 
+    @Override
     protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos)
     {
         if (levelReader.getBlockState(pos.below()).is(TFCBlocks.ANEMOMETER.get()))

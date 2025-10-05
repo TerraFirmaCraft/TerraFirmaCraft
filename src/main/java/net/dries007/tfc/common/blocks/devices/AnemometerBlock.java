@@ -42,6 +42,7 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
         registerDefaultState(getStateDefinition().any().setValue(ATTACHED_WIND_DEVICES, false));
     }
 
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockPos blockpos = context.getClickedPos();
@@ -50,6 +51,7 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
             : this.defaultBlockState();
     }
 
+    @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
     {
         if (facing == Direction.DOWN)
@@ -68,6 +70,7 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
         return super.updateShape(state, facing, facingState, level, blockpos, facingPos);
     }
 
+    @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         level.updateNeighborsAt(pos, this);
@@ -75,14 +78,20 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
         level.removeBlockEntity(pos); // wasn't getting removed otherwise?
     }
 
+    @Override
     protected boolean isSignalSource(BlockState state)
     {
         return true;
     }
 
+    @Override
     protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
     {
-        return getSignal(blockState, blockAccess, pos, side);
+        if (side == Direction.UP)
+        {
+            return getSignal(blockState, blockAccess, pos, side);
+        }
+        return 0;
     }
 
     @Override
@@ -113,6 +122,7 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
+    @Override
     protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos)
     {
         return canSupportCenter(levelReader, pos.below(), Direction.UP);
