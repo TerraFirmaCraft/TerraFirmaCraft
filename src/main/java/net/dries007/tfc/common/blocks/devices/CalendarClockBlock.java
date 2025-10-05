@@ -23,6 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.CalendarClockBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -56,9 +57,28 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
         level.removeBlockEntity(pos); // wasn't getting removed otherwise?
     }
 
+    @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+        BlockState blockstate = this.defaultBlockState();
+        LevelReader levelreader = context.getLevel();
+        BlockPos blockpos = context.getClickedPos();
+        Direction[] adirection = context.getNearestLookingDirections();
+        Direction[] var6 = adirection;
+        int var7 = adirection.length;
+
+        for (int var8 = 0; var8 < var7; ++var8)
+        {
+            Direction direction = var6[var8];
+            Direction direction1 = direction.getOpposite();
+            blockstate = blockstate.setValue(FACING, direction1);
+            if (blockstate.canSurvive(levelreader, blockpos))
+            {
+                return blockstate;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -124,6 +144,7 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
         return SHAPE_DOWN;
     }
 
+    @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
     {
         if (!this.canSurvive(state, level, blockpos))
@@ -139,11 +160,13 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
+    @Override
     protected boolean isSignalSource(BlockState state)
     {
         return true;
     }
 
+    @Override
     protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
     {
         return getSignal(blockState, blockAccess, pos, side);
@@ -159,10 +182,16 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
         return 0;
     }
 
-    protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos)
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return true;
-        //return levelReader.getBlockState(pos).isFaceSturdy(levelReader, pos, state.getValue(FACING).getOpposite());
+        return canSurvive(level, pos, state.getValue(FACING));
     }
 
+    public static boolean canSurvive(LevelReader level, BlockPos pos, Direction facing)
+    {
+        BlockPos blockpos = pos.relative(facing.getOpposite());
+        BlockState blockstate = level.getBlockState(blockpos);
+        return blockstate.isFaceSturdy(level, blockpos, facing);
+    }
 }
