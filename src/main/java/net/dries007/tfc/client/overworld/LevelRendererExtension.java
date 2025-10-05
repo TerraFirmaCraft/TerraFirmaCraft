@@ -407,10 +407,12 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             int stateFlag = -1;
 
             Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
-            float zAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.35f, 0, RAIN_MAX_ANGLE));
-            float xAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.35f, 0, RAIN_MAX_ANGLE));
-            float xAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.35f, 0, SNOW_MAX_ANGLE));
-            float zAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.35f, 0, SNOW_MAX_ANGLE));
+
+            // max angle is at ~50 kmh
+            float zAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, RAIN_MAX_ANGLE));
+            float xAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, RAIN_MAX_ANGLE));
+            float xAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, SNOW_MAX_ANGLE));
+            float zAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, SNOW_MAX_ANGLE));
 
             final float defaultXOffsetRain = (float) (Math.tan(zAngleRain) * 10);
             final float defaultZOffsetRain = (float) (Math.tan(xAngleRain) * 10);
@@ -546,7 +548,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
 
-                            float speed = Mth.clampedMap(wind.x, 0, 0.7f, 1, 16);
+                            float speed = Mth.clampedMap(wind.length(), 0, 0.7f, 1, 16);
                             // Mojang magic
                             float f8 = -((float) (ticks & 511) + partialTick) / (512f / speed);
                             float f9 = (float) (random.nextDouble() + currentTick * 0.01 * random.nextGaussian());
