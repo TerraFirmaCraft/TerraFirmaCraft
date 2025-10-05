@@ -78,7 +78,7 @@ public interface ICalendar
         return (int) (60f * (calendarTick % CALENDAR_TICKS_IN_HOUR) / CALENDAR_TICKS_IN_HOUR);
     }
 
-    private static int getHourOfDay(long calendarTick)
+    static int getHourOfDay(long calendarTick)
     {
         return (int) ((calendarTick / CALENDAR_TICKS_IN_HOUR) % HOURS_IN_DAY);
     }
@@ -106,6 +106,11 @@ public interface ICalendar
     static long getTotalCalendarDays(long calendarTick)
     {
         return calendarTick / CALENDAR_TICKS_IN_DAY;
+    }
+
+    static float getFractionOfHour(long calendarTick)
+    {
+        return (float) (calendarTick % CALENDAR_TICKS_IN_HOUR) / CALENDAR_TICKS_IN_HOUR;
     }
 
     static float getFractionOfDay(long calendarTick)
@@ -223,6 +228,15 @@ public interface ICalendar
     default int getCalendarDayOfMonth()
     {
         return ICalendar.getDayOfMonth(getCalendarTicks(), getCalendarDaysInMonth());
+    }
+
+    /**
+     * @return The progress through the current day from the calendar time. A value between {@code [0, 1]} where {@code 0} indicates midnight,
+     * and {@code 0.5} indicates noon.
+     */
+    default float getCalendarFractionOfHour()
+    {
+        return ICalendar.getFractionOfHour(getCalendarTicks());
     }
 
     /**

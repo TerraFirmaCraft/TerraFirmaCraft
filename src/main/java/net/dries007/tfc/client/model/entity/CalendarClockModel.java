@@ -3,7 +3,6 @@ package net.dries007.tfc.client.model.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -12,14 +11,12 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.blockentities.CalendarClockBlockEntity;
-import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
 
 public class CalendarClockModel extends Model
 {
-    //public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "mechanical_clock"), "main");
     private final ModelPart static_parts;
     private final ModelPart month_hand;
     private final ModelPart hour_hand;
@@ -54,7 +51,9 @@ public class CalendarClockModel extends Model
 
     public void setupAnim(CalendarClockBlockEntity clock, float partialTick)
     {
-
+        minute_hand.yRot = clock.getAngles()[0] + Mth.PI;
+        hour_hand.yRot = clock.getAngles()[1] + Mth.PI;
+        month_hand.yRot = clock.getAngles()[2] + Mth.PI;
     }
 
     @Override

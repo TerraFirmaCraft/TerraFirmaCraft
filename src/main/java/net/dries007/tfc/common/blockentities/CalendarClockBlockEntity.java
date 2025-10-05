@@ -3,15 +3,24 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.util.calendar.Calendar;
+import net.dries007.tfc.util.calendar.Calendars;
+
+import static net.dries007.tfc.util.calendar.ICalendar.*;
 
 public class CalendarClockBlockEntity extends TickableBlockEntity
 {
     private float monthAngle;
     private float minuteAngle;
     private float hourAngle;
+    private int hour;
+    private int month;
     private boolean needsUpdate = false;
 
     protected CalendarClockBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
@@ -31,18 +40,55 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
             clock.markForSync();
             clock.needsUpdate = false;
         }
+        if (level.getGameTime() % 40 == 0)
+        {
+            if (Calendars.SERVER.getAbsoluteCalendarMonthOfYear().ordinal() != clock.month)
+            {
+                clock.month = Calendars.SERVER.getAbsoluteCalendarMonthOfYear().ordinal();
+            }
+            if (getHourOfDay(Calendars.SERVER.getCalendarTicks()) != clock.hour)
+            {
+                clock.hour = getHourOfDay(Calendars.SERVER.getCalendarTicks());
+            }
+            level.updateNeighborsAt(pos, state.getBlock());
+            level.updateNeighborsAt(pos.below(), state.getBlock());
+        }
+        clientTick(level, pos, state, clock);
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, CalendarClockBlockEntity clock)
     {
         if (level.getGameTime() % 20 == 0)
         {
+            clock.minuteAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfHour();
         }
+        clock.hourAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfDay();
+        clock.monthAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfYear();
+    }
+
+    public float[] getAngles()
+    {
+        return new float[] {minuteAngle, hourAngle, monthAngle};
+    }
+
+    public void needsInstantUpdate()
+    {
+        assert level != null;
+        float fractionOver = (level.getGameTime() % 20f) / CALENDAR_TICKS_IN_HOUR;
+        minuteAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfHour() - Mth.TWO_PI * fractionOver + Mth.TWO_PI * 0.005f;
+        hourAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfDay();
+        monthAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfYear();
     }
 
     public int getRedstoneSignal()
     {
-        return 0;
+        if (this.getBlockState().getValue(TFCBlockStateProperties.CLOCK_MONTH_MODE))
+        {
+            return month;
+        }
+        return hour > 11
+            ? hour - 12
+            : hour;
     }
 
     @Override
