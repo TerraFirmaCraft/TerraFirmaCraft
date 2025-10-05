@@ -46,7 +46,7 @@ public class AnemometerBlockEntity extends TickableBlockEntity
         if (level.getGameTime() % 40 == 0)
         {
             float wind = Climate.get(level).getWind(level, pos).length();
-            anemometer.actualSpeed = Mth.clampedMap(wind, 0, 0.5f, 0, MAX_SPEED);
+            anemometer.actualSpeed = windToVisualSpeed(wind);
             if (anemometer.windSpeed != wind)
             {
                 anemometer.windSpeed = wind;
@@ -63,13 +63,17 @@ public class AnemometerBlockEntity extends TickableBlockEntity
         {
             float wind = Climate.get(level).getWind(level, pos).length();
             // consider the most common wind speeds fall between 0 and 0.25
-            anemometer.targetSpeed = Mth.clampedMap(wind, 0, 0.5f, 0, MAX_SPEED);
+            anemometer.targetSpeed = windToVisualSpeed(wind);
         }
         final float targetSpeed = anemometer.targetSpeed;
         final float currentSpeed = anemometer.actualSpeed;
         anemometer.actualSpeed = targetSpeed > currentSpeed
             ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
             : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
+    }
+
+    private static float windToVisualSpeed(float wind){
+        return Mth.clampedMap(wind, 0, 0.5f, 0, MAX_SPEED);
     }
 
     public float getAngle(float partialTick)
