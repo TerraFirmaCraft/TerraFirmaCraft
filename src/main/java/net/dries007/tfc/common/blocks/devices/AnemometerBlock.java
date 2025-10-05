@@ -30,7 +30,7 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
-public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtension, IForgeBlockExtension
+public class AnemometerBlock extends DeviceBlock
 {
     public static BooleanProperty ATTACHED_WIND_DEVICES = TFCBlockStateProperties.ATTACHED_WIND_DEVICES;
     private static final VoxelShape SHAPE = box(6D, 0.0D, 6D, 10D, 8.0D, 10D);
@@ -38,7 +38,7 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
 
     public AnemometerBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, DeviceBlock.InventoryRemoveBehavior.NOOP);
         registerDefaultState(getStateDefinition().any().setValue(ATTACHED_WIND_DEVICES, false));
     }
 
@@ -73,9 +73,8 @@ public class AnemometerBlock extends ExtendedBlock implements EntityBlockExtensi
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        level.updateNeighborsAt(pos, this);
-        level.updateNeighborsAt(pos.below(), this);
-        level.removeBlockEntity(pos); // wasn't getting removed otherwise?
+        super.onRemove(state,level,pos,newState,isMoving);
+        level.updateNeighborsAt(pos.below(), this); // needs this for strong power to update afaik
     }
 
     @Override

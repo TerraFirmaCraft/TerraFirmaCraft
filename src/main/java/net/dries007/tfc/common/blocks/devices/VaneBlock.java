@@ -15,7 +15,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -23,14 +22,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.VaneBlockEntity;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
-public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IForgeBlockExtension
+public class VaneBlock extends DeviceBlock
 {
     public static BooleanProperty ATTACHED_WIND_DEVICES = TFCBlockStateProperties.ATTACHED_WIND_DEVICES;
     private static final VoxelShape SHAPE = box(6D, 0.0D, 6D, 10D, 12.0D, 10D);
@@ -38,7 +34,7 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
 
     public VaneBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.NOOP);
         registerDefaultState(getStateDefinition().any().setValue(ATTACHED_WIND_DEVICES, false));
     }
 
@@ -75,9 +71,8 @@ public class VaneBlock extends ExtendedBlock implements EntityBlockExtension, IF
 
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        level.updateNeighborsAt(pos, this);
-        level.updateNeighborsAt(pos.below(), this);
-        level.removeBlockEntity(pos); // wasn't getting removed otherwise?
+        super.onRemove(state,level,pos,newState,isMoving);
+        level.updateNeighborsAt(pos.below(), this); // needs this for strong power to update afaik
     }
 
     @Override
