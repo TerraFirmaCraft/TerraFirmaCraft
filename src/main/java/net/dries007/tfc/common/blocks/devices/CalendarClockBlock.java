@@ -5,10 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ObserverBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,17 +35,17 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
 {
     public static BooleanProperty CLOCK_MONTH_MODE = TFCBlockStateProperties.CLOCK_MONTH_MODE;
     public static DirectionProperty FACING = BlockStateProperties.FACING;
-    private static final VoxelShape SHAPE_UP = box(1D, 0D, 1D, 15D, 2.0D, 15D); // "up" is +Y
-    private static final VoxelShape SHAPE_DOWN = SHAPE_UP.move(0D, 14D, 0D);
-    private static final VoxelShape SHAPE_SOUTH = box(1D, 1D, 0D, 15D, 15D, 2D); // "up" is +Z
-    private static final VoxelShape SHAPE_NORTH = SHAPE_SOUTH.move(0D, 0D, -14D);
-    private static final VoxelShape SHAPE_WEST = box(0D, 1D, 1D, 2D, 15D, 15D); // "up" is +X
-    private static final VoxelShape SHAPE_EAST = SHAPE_WEST.move(-14D, 0D, 0D);
+    private static final VoxelShape SHAPE_UP = box(1D, 0D, 1D, 15D, 2.0D, 15D);
+    private static final VoxelShape SHAPE_DOWN = box(1D, 14D, 1D, 15D, 16.0D, 15D);
+    private static final VoxelShape SHAPE_NORTH = box(1D, 1D, 14D, 15D, 15D, 16D);
+    private static final VoxelShape SHAPE_SOUTH = box(1D, 1D, 0D, 15D, 15D, 2D);
+    private static final VoxelShape SHAPE_EAST = box(0D, 1D, 1D, 2D, 15D, 15D);
+    private static final VoxelShape SHAPE_WEST = box(14D, 1D, 1D, 16D, 15D, 15D);
 
     public CalendarClockBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(CLOCK_MONTH_MODE, false));
+        registerDefaultState(getStateDefinition().any().setValue(CLOCK_MONTH_MODE, false).setValue(FACING, Direction.UP));
     }
 
     @Override
@@ -53,6 +56,11 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
         level.removeBlockEntity(pos); // wasn't getting removed otherwise?
     }
 
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+    }
+
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
@@ -61,7 +69,7 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
             clock.needsInstantUpdate();
         }
         level.updateNeighborsAt(pos, this);
-        level.updateNeighborsAt(pos.below(), this);
+        level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
     }
 
     @Override
@@ -98,7 +106,7 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(CLOCK_MONTH_MODE);
+        builder.add(CLOCK_MONTH_MODE).add(FACING);
     }
 
     @Override
@@ -114,6 +122,15 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
             case DOWN -> {return SHAPE_DOWN;}
         }
         return SHAPE_DOWN;
+    }
+
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
+    {
+        if (!this.canSurvive(state, level, blockpos))
+        {
+            return Blocks.AIR.defaultBlockState();
+        }
+        return super.updateShape(state, facing, facingState, level, blockpos, facingPos);
     }
 
     @Override
@@ -145,6 +162,7 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
     protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos)
     {
         return true;
+        //return levelReader.getBlockState(pos).isFaceSturdy(levelReader, pos, state.getValue(FACING).getOpposite());
     }
 
 }

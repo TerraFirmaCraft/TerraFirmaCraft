@@ -62,7 +62,7 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
         {
             clock.minuteAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfHour();
         }
-        clock.hourAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfDay();
+        clock.hourAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfDay() * 2;
         clock.monthAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfYear();
     }
 
@@ -76,7 +76,7 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
         assert level != null;
         float fractionOver = (level.getGameTime() % 20f) / CALENDAR_TICKS_IN_HOUR;
         minuteAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfHour() - Mth.TWO_PI * fractionOver + Mth.TWO_PI * 0.005f;
-        hourAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfDay();
+        hourAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfDay() * 2;
         monthAngle = Mth.TWO_PI * Calendars.CLIENT.getCalendarFractionOfYear();
     }
 

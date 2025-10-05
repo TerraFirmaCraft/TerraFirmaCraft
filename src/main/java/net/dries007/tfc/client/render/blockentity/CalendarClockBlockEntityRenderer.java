@@ -1,5 +1,6 @@
 package net.dries007.tfc.client.render.blockentity;
 
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -7,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.CalendarClockModel;
@@ -39,6 +41,38 @@ public class CalendarClockBlockEntityRenderer implements BlockEntityRenderer<Cal
         stack.translate(0.5f, -0f, 0.5f);
         stack.translate(0, 1.0625f + 0.4375f, 0);
         stack.scale(-1, -1, 1);
+
+        switch (clock.getBlockState().getValue(BlockStateProperties.FACING))
+        {
+            case NORTH ->
+            {
+                stack.translate(0f, 1f, -1f);
+                stack.mulPose(Axis.XP.rotationDegrees(90));
+            }
+            case SOUTH ->
+            {
+                stack.translate(0f, 1f, 1f);
+                stack.mulPose(Axis.XN.rotationDegrees(90));
+                stack.mulPose(Axis.YN.rotationDegrees(180));
+            }
+            case EAST ->
+            {
+                stack.translate(-1f, 1f, 0f);
+                stack.mulPose(Axis.ZN.rotationDegrees(90));
+                stack.mulPose(Axis.YP.rotationDegrees(90));
+            }
+            case WEST ->
+            {
+                stack.translate(1f, 1f, 0f);
+                stack.mulPose(Axis.ZP.rotationDegrees(90));
+                stack.mulPose(Axis.YN.rotationDegrees(90));
+            }
+            case DOWN ->
+            {
+                stack.translate(0f, 2f, 0f);
+                stack.mulPose(Axis.ZP.rotationDegrees(180));
+            }
+        }
 
         model.setupAnim(clock, partialTick);
 
