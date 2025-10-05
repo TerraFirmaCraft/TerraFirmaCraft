@@ -32,6 +32,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
@@ -73,6 +74,7 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.common.recipes.outputs.MealModifier;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.MetalItem;
 
 public interface CraftingRecipes extends Recipes
 {
@@ -1231,6 +1233,12 @@ public interface CraftingRecipes extends Recipes
         recipe("from_canola")
             .input(TFCItems.CANOLA)
             .shapeless(TFCItems.STRAW);
+        recipe()
+            .input('G', Blocks.GLASS_PANE)
+            .input('B', TFCItems.BRASS_MECHANISMS)
+            .input('S', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.SHEET))
+            .pattern(" G ", "SBS", " B ")
+            .shaped(TFCBlocks.CALENDAR_CLOCK);
     }
 
     /**

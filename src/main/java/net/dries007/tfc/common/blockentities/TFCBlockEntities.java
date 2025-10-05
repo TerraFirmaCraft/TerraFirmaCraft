@@ -30,6 +30,7 @@ import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.CalendarClockBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.util.Metal;
@@ -53,6 +54,7 @@ public final class TFCBlockEntities
     public static final Id<GlassBasinBlockEntity> GLASS_BASIN = register("glass_basin", GlassBasinBlockEntity::new, TFCBlocks.GLASS_BASIN);
     public static final Id<ShelfBlockEntity> SHELF = register("shelf", ShelfBlockEntity::new, Stream.concat(Stream.of(TFCBlocks.FIRE_BRICK_SHELF), woodBlocks(Wood.BlockType.SHELF)));
     public static final Id<FireboxBlockEntity> FIREBOX = register("firebox", FireboxBlockEntity::new, TFCBlocks.FIREBOX);
+    public static final Id<CalendarClockBlockEntity> CALENDAR_CLOCK = register("calendar_clock", CalendarClockBlockEntity::new, TFCBlocks.CALENDAR_CLOCK);
 
     public static final Id<TickCounterBlockEntity> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
             woodBlocks(Wood.BlockType.SAPLING),

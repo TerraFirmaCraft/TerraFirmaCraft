@@ -2291,6 +2291,10 @@ def generate(rm: ResourceManager):
     block.with_block_loot('tfc:trip_hammer')
     rm.item_model('trip_hammer', parent='tfc:block/trip_hammer', no_textures=True)
 
+    block = rm.blockstate('calendar_clock').with_block_model({'particle': 'tfc:block/metal/block/brass'}, parent=None)
+    block.with_lang(lang('precision clock')).with_block_loot('tfc:calendar_clock')
+    rm.item_model('calendar_clock')
+
     # Candles
     for color in [None, *COLORS]:
         namespace = 'tfc:candle' + ('/' + color if color else '')
