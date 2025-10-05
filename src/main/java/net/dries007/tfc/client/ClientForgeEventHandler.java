@@ -172,7 +172,7 @@ public class ClientForgeEventHandler
                 ));
                 final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
                 tooltip.add(Component.translatable("tfc.tooltip.wind_speed",
-                        Mth.floor(windKMS(wind)),
+                        Mth.floor(320 * wind.length()),
                         String.format("%.0f", Mth.abs(wind.x * 100)),
                         Helpers.translateEnum(wind.x > 0 ? Direction.EAST : Direction.WEST),
                         String.format("%.0f", Mth.abs(wind.y * 100)),
