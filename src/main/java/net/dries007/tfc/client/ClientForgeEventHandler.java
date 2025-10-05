@@ -95,6 +95,7 @@ import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.RequestClimateModelPacket;
 import net.dries007.tfc.network.StackFoodPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -107,7 +108,6 @@ import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
-import static net.dries007.tfc.util.tracker.WeatherHelpers.*;
 import static net.minecraft.ChatFormatting.*;
 
 public class ClientForgeEventHandler
@@ -444,7 +444,6 @@ public class ClientForgeEventHandler
                     }
                 }
             }
-
         }
     }
 
