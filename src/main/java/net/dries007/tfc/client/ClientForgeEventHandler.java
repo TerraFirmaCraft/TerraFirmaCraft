@@ -108,6 +108,7 @@ import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
+import static net.dries007.tfc.util.tracker.WeatherHelpers.*;
 import static net.minecraft.ChatFormatting.*;
 
 public class ClientForgeEventHandler

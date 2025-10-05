@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec2;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,6 +63,9 @@ public final class WeatherHelpers
     private static final int TICKS_PER_SNOW_ACCUMULATION = 80;
     private static final int TICKS_PER_SNOW_MELT_PER_SNOW_ACCUMULATION = 3;
     private static final int TICKS_PER_SNOW_MELT = TICKS_PER_SNOW_ACCUMULATION * TICKS_PER_SNOW_MELT_PER_SNOW_ACCUMULATION;
+
+    private static final int WIND_KMS_FACTOR = 115;
+    private static final int WIND_MS_FACTOR = 32;
 
     // For fast forwarding, the number of "fast-forward" ticks that should be simulated for a given hour of either estimated
     // melting, or estimated snow accumulation.
