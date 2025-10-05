@@ -4,6 +4,7 @@
     "tfc:any_fresh_water",
     "tfc:any_infinite_water",
     "tfc:fresh_water",
+    "tfc:salt_water",
     "tfc:infinite_water",
     "tfc:ingredients",
     "tfc:mixable",

@@ -29,6 +29,11 @@ def generate(rm: ResourceManager):
     tfc_item('foods/sealed_preserves', 'Sealed Preserves')
     tfc_item('foods/sweeteners', 'Sweeteners')
     tfc_item('foods/jars', 'Jars')
+    tfc_item('foods/can_be_salted', 'Can Be Salted')
+    tfc_item('foods/empty_jars', 'Empty Jars')
+    tfc_item('foods/filled_jars', 'Filled Jars')
+    tfc_item('foods/jam', 'Jam')
+    c_item('foods/sandwiches', 'Sandwiches')
     c_item('minecarts')
     c_item('sands/hematitic', 'Hematitic Sands')
     c_item('sands/olivine', 'Olivine Sands')
@@ -45,6 +50,7 @@ def generate(rm: ResourceManager):
     c_item('tools/knife', 'Knives')
     c_item('tools/saw', 'Saws')
     c_item('tools/scythe', 'Scythes')
+    c_item('tools/propick', 'Prospector Picks')
     tfc_item('tools/sharp', 'Sharp Tools')
     c_item('stones/hardened', 'Hardened Rocks')
     c_item('stones/loose', 'Loose Rocks')
@@ -53,8 +59,14 @@ def generate(rm: ResourceManager):
     c_item('stones/smooth', 'Smooth Stones')
     c_item('stones/smooth_slabs', 'Smooth Stone Slabs')
 
+    c_item('double_ingots', 'Double Ingots')
+    c_item('sheets', 'Metal Sheets')
+    c_item('double_sheets', 'Double Metal Sheets')
+
     for metal, info in METALS.items():
         c_item('ingots/%s' % metal, lang('%s ingots', metal))
+        if info.type == 'all':
+            tfc_item('tools/%s' % metal, lang('%s tools', metal))
         if info.type == 'part' or info.type == 'all':
             c_item('double_ingots/%s' % metal, lang('%s double ingots', metal))
             c_item('sheets/%s' % metal, lang('%s double ingots', metal))
@@ -84,6 +96,7 @@ def generate(rm: ResourceManager):
     tfc_item('pig_food', 'Pig Foods')
     tfc_item('quail_food', 'Quail Foods')
     tfc_item('rabbit_food', 'Rabbit Foods')
+    tfc_item('seal_food', 'Seal Foods')
     tfc_item('sheep_food', 'Sheep Foods')
     tfc_item('turtle_food', 'Turtle Foods')
     tfc_item('yak_food', 'Yak Foods')
@@ -131,6 +144,7 @@ def generate(rm: ResourceManager):
     tfc_item('scribing_tables')
     tfc_item('aqueducts')
     tfc_item('dirt')
+    tfc_item('coarse_dirt')
     tfc_item('clay_indicators')
     tfc_item('sewing_dark_cloth', 'Dark Cloths')
     tfc_item('sewing_light_cloth', 'Light Cloths')
@@ -139,6 +153,22 @@ def generate(rm: ResourceManager):
     tfc_item('small_fishing_bait')
     tfc_item('large_fishing_bait')
     tfc_item('tannin_logs', 'Tannin Ingredients')
+
+    tfc_item('bamboo')
+    tfc_item('compost_poisons', 'Poisons Compost')
+    tfc_item('fluxstone')
+    tfc_item('glass_blowpipes')
+    tfc_item('glass_potash')
+    tfc_item('metal_ores')
+    tfc_item('metal_plated_blocks')
+    tfc_item('mud_brick_items')
+    tfc_item('scraped_hide')
+    tfc_item('scribing_ink')
+    tfc_item('tools/stone', 'Stone Tools')
+    tfc_item('twigs')
+    tfc_item('unfired_pottery')
+    tfc_item('usable_in_mold_table')
+    tfc_item('welding_flux')
 
     tfc_item('blast_furnace_fuel', 'Blast Furnace Fuels')
     tfc_item('blast_furnace_sheets', 'Blast Furnace Sheets')
@@ -188,6 +218,7 @@ def generate(rm: ResourceManager):
             'any_fresh_water',
             'any_infinite_water',
             'fresh_water',
+            'salt_water',
             'infinite_water',
             'ingredients',
             'mixable',
