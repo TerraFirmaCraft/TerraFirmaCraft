@@ -14,12 +14,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.items.ItemStackHandler;
-
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -27,7 +25,6 @@ import net.dries007.tfc.common.blockentities.TickableInventoryBlockEntity;
 import net.dries007.tfc.common.blocks.rotation.AxleBlock;
 import net.dries007.tfc.common.blocks.rotation.WindmillBlock;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.rotation.NetworkAction;
 import net.dries007.tfc.util.rotation.Node;
 import net.dries007.tfc.util.rotation.Rotation;
@@ -41,34 +38,20 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
     private static final float LERP_SPEED = MIN_SPEED / (5 * 20);
 
-    private float targetSpeed;
-
     public static void serverTick(Level level, BlockPos pos, BlockState state, WindmillBlockEntity windmill)
     {
         windmill.checkForLastTickSync();
-
-        clientTick(level, pos, state, windmill);
-
         if (windmill.needsStateUpdate)
         {
             windmill.updateState();
         }
 
-        if (level.getGameTime() % 40 == 0)
+        clientTick(level, pos, state, windmill);
+
+        if (level.getGameTime() % 40 == 0 && isObstructedBySolidBlocks(level, pos, state.getValue(WindmillBlock.AXIS)))
         {
-            final float targetBeforeWind = Mth.map(state.getValue(WindmillBlock.COUNT), 1, SLOTS, MIN_SPEED, MAX_SPEED);
-
-            float wind = Climate.get(level).getWind(level, pos).length();
-
-            float windFactor = Math.min(wind, 0.5f) + 1f; // clamp below ~57 kmh
-
-            windmill.targetSpeed = windFactor * targetBeforeWind;
-            windmill.markForSync();
-
-            if (isObstructedBySolidBlocks(level, pos, state.getValue(WindmillBlock.AXIS))){
-                // Check every two seconds if the windmill is obstructed, and if so, break
-                level.destroyBlock(pos, true);
-            }
+            // Check every two seconds if the windmill is obstructed, and if so, break
+            level.destroyBlock(pos, true);
         }
     }
 
@@ -78,7 +61,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
         rotation.tick();
 
-        final float targetSpeed = windmill.targetSpeed;
+        final float targetSpeed = Mth.map(state.getValue(WindmillBlock.COUNT), 1, SLOTS, MIN_SPEED, MAX_SPEED);
         final float currentSpeed = rotation.speed();
         final float nextSpeed = targetSpeed > currentSpeed
             ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
@@ -131,8 +114,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         final Direction.Axis axis = state.getValue(WindmillBlock.AXIS);
 
         this.invalid = false;
-        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f)
-        {
+        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f) {
             @Override
             public String toString()
             {
@@ -191,7 +173,6 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         super.saveAdditional(tag, provider);
         node.rotation().saveToTag(tag);
         tag.putBoolean("invalid", invalid);
-        tag.putFloat("targetSpeed", targetSpeed);
     }
 
     @Override
@@ -200,7 +181,6 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         super.loadAdditional(tag, provider);
         node.rotation().loadFromTag(tag);
         invalid = tag.getBoolean("invalid");
-        targetSpeed = tag.getFloat("targetSpeed");
     }
 
     @Override
