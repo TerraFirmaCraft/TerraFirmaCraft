@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
@@ -32,7 +31,6 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.data.Fertilizer;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * Common growth logic for crop blocks
@@ -90,8 +88,6 @@ public final class CropHelpers
         // This is based on an average hydration over the skipped period, and the current storm hydration
         final int startHydration = FarmlandBlock.getHydration(level, sourcePos, fromTick);
         final int endHydration = FarmlandBlock.getHydration(level, sourcePos, toTick);
-        TerraFirmaCraft.LOGGER.error("Calling hydration from CropHelpers, starting value: " + startHydration);
-        TerraFirmaCraft.LOGGER.error("Calling hydration from CropHelpers, ending value: " + endHydration);
         final boolean growing = checkClimate(range, startHydration, endHydration, startTemperature, endTemperature, false);
         final boolean healthy = growing || checkClimate(range, startHydration, endHydration, startTemperature, endTemperature, true);
 
@@ -214,7 +210,6 @@ public final class CropHelpers
         // Check if the crop should've expired.
         if (expiry >= localExpiryLimit || !healthy)
         {
-            TerraFirmaCraft.LOGGER.error("Killing crop. Expired? " + (expiry >= localExpiryLimit) + " Unhealthy? " + !healthy);
             // Lenient here - instead of assuming it expired at the start of the duration, we assume at the end. Including growth during this period.
             cropBlock.die(level, pos, state, growth >= 1);
             return false;

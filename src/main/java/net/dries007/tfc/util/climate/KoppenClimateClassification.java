@@ -6,10 +6,13 @@
 
 package net.dries007.tfc.util.climate;
 
+import java.util.Locale;
+import net.minecraft.util.StringRepresentable;
+
 /**
  * This is purely used for decoration and visualization purposes. Based on <a href="https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification> Koppen Climate Classification</a>
  */
-public enum KoppenClimateClassification
+public enum KoppenClimateClassification implements StringRepresentable
 {
     AF,
     AM,
@@ -212,5 +215,18 @@ public enum KoppenClimateClassification
         {
             return DFD;
         }
+    }
+
+    private final String name;
+
+    KoppenClimateClassification()
+    {
+        name = name().toLowerCase(Locale.ROOT);
+    }
+
+    @Override
+    public String getSerializedName()
+    {
+        return name;
     }
 }

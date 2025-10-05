@@ -545,7 +545,7 @@ public final class InteractionManager
     /**
      * Which targets an action accepts - blocks, air, or both
      */
-    enum Target
+    public enum Target
     {
         AIR, BLOCKS, BOTH;
 

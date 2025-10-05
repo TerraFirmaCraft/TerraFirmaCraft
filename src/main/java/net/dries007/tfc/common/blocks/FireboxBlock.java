@@ -101,10 +101,10 @@ public class FireboxBlock extends DeviceBlock implements IBellowsConsumer
             {
                 ParticleUtils.spawnParticleOnFace(level, pos, dir, ParticleTypes.FLAME, Helpers.getRandomSpeedRanges(random).scale(0.1), 0.55);
             }
-        }
-        if (random.nextInt(14) == 0)
-        {
-            level.playLocalSound(pos, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
+            if (random.nextInt(14) == 0)
+            {
+                level.playLocalSound(pos, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
+            }
         }
     }
 

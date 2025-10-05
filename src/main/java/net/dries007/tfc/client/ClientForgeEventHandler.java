@@ -172,11 +172,11 @@ public class ClientForgeEventHandler
                 ));
                 final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
                 tooltip.add(Component.translatable("tfc.tooltip.wind_speed",
-                    Mth.floor(320 * wind.length()),
-                    String.format("%.0f", Mth.abs(wind.x * 100)),
-                    Helpers.translateEnum(wind.x > 0 ? Direction.EAST : Direction.WEST),
-                    String.format("%.0f", Mth.abs(wind.y * 100)),
-                    Helpers.translateEnum(wind.y > 0 ? Direction.SOUTH : Direction.NORTH))
+                        Mth.floor(windKMS(wind)),
+                        String.format("%.0f", Mth.abs(wind.x * 100)),
+                        Helpers.translateEnum(wind.x > 0 ? Direction.EAST : Direction.WEST),
+                        String.format("%.0f", Mth.abs(wind.y * 100)),
+                        Helpers.translateEnum(wind.y > 0 ? Direction.SOUTH : Direction.NORTH))
                     .getString());
 
                 final ChunkData data = ChunkData.get(mc.level, pos);
@@ -416,7 +416,7 @@ public class ClientForgeEventHandler
             final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
             final float windStrength = wind.length();
             int count = 0;
-            if (windStrength > 0.3f)
+            if (windStrength > 0.07f) // spawn wind particles starting at ~8 kmh
             {
                 count = (int) (windStrength * 8);
             }

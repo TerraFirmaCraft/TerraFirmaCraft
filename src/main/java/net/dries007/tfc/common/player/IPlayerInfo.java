@@ -72,18 +72,6 @@ public interface IPlayerInfo
     void addIntoxication(long ticks);
 
     /**
-     * The possible maximum sleep duration that this player can sleep. Players accumulate "possible sleep" at a rate of 1t / 2t not spent sleeping,
-     * and can sleep once they accumulate at least 2 hours total, up to a maximum of 10 hours.
-     * @return A number of calendar ticks between 2-10 hours.
-     */
-    int getPossibleSleepDuration();
-
-    /**
-     * Resets the sleep restoration of this player, setting their effective sleep duration to zero.
-     */
-    void resetSleepRestoration();
-
-    /**
      * @return The current thirst value of the player
      */
     float getThirst();

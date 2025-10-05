@@ -713,11 +713,6 @@
     "tfc:plant/dead_cane",
     "tfc:thatch",
     "tfc:thatch_bed",
-    "tfc:tree_roots",
-    "tfc:melon",
-    "tfc:pumpkin",
-    "tfc:rotten_melon",
-    "tfc:rotten_pumpkin",
-    "tfc:jack_o_lantern"
+    "tfc:tree_roots"
   ]
 }

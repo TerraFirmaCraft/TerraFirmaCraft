@@ -21,9 +21,15 @@ public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifia
 {
     private boolean needsClientUpdate;
 
+
     protected TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory)
     {
         super(type, pos, state, inventory);
+    }
+
+    protected TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory, String modId)
+    {
+        super(type, pos, state, inventory, modId);
     }
 
     public void checkForLastTickSync()

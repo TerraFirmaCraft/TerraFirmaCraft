@@ -917,7 +917,7 @@ TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 TFC_BIOMES = ['badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'plateau_wide', 'hills', 'rolling_hills', 'highlands', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'guano_island', 'shore', 'tidal_flats', 'sea_stacks', 'terrace_upper', 'terrace_lower', 'setback_cliffs', 'coastal_dunes', 'rocky_shores', 'embayments', 'salt_flats', 'mud_flats', 'dune_sea', 'grassy_dunes', 'whorled_canyons', 'stair_step_canyons', 'mesas', 'buttes', 'hoodoos', 'rocky_plateau', 'tower_karst_plains', 'burren_plains', 'shilin_plains', 'doline_plains', 'cenote_plains', 'tower_karst_canyons', 'doline_canyons', 'cenote_canyons', 'shilin_canyons', 'tower_karst_hills', 'shilin_hills', 'doline_hills', 'cenote_hills', 'tower_karst_highlands', 'burren_badlands_tall', 'shilin_highlands', 'doline_highlands', 'cenote_highlands', 'extreme_doline_plateau', 'burren_plateau', 'shilin_plateau', 'doline_plateau', 'cenote_plateau', 'tower_karst_lake', 'tower_karst_bay', 'extreme_doline_mountains', 'burren_badlands', 'doline_rolling_hills', 'cenote_rolling_hills', 'burren_roche_moutonee', 'active_shield_volcano', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'sunken_shield_volcano', 'shield_volcano_shore', 'old_shield_volcano_shore', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake', 'ice_sheet', 'ice_sheet_mountains', 'ice_sheet_oceanic_mountains', 'ice_sheet_shield_volcano', 'ice_sheet_tuyas', 'subglacial_lake', 'ice_sheet_edge', 'ice_sheet_tuyas_edge', 'ice_sheet_mountains_edge', 'ice_sheet_oceanic_mountains_edge', 'meltwater_lake', 'ice_sheet_oceanic', 'ice_sheet_shore', 'glaciated_shield_volcano', 'glaciated_mountains', 'glaciated_oceanic_mountains', 'glacially_carved_mountains', 'glacially_carved_oceanic_mountains', 'drumlins', 'tuyas', 'knob_and_kettle', 'patterned_ground', 'inverted_patterned_ground', 'stone_circles']
 VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host', 'flow', 'bolt')
 
-BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'moth_diaphora', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashhed_frittilary', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
+BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'moth_diaphora', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashed_frittilary', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
     'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
@@ -954,6 +954,7 @@ def lang_enum(name: str, values: Sequence[str]) -> Dict[str, str]:
 VANILLA_OVERRIDE_LANG = {
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'item.minecraft.shield': 'Wooden Shield',
+    'block.minecraft.bed.no_sleep': 'You can only sleep at night',
     'block.minecraft.bell': 'Golden Bell',
     'block.minecraft.slime_block': 'Glue Block',
     'block.minecraft.loom': 'Banner Loom',
@@ -1355,7 +1356,12 @@ DEFAULT_LANG = {
     'tfc.tooltip.chance': '%s%% chance',
     'tfc.tooltip.wind_speed': '%s km/h, %s%% %s, %s%% %s',
     'tfc.tooltip.javelin.thrown_damage': '%s Thrown Damage',
-    'tfc.tooltip.rotation.angular_velocity': 'Rotating at \u03c9=%s rad/s',
+    'tfc.tooltip.rotation.angular_velocity.radians_per_second': 'Rotating at \u03c9=%s rad/s',
+    'tfc.tooltip.rotation.angular_velocity.degrees_per_second': 'Rotating at \u03c9=%s deg/s',
+    'tfc.tooltip.rotation.angular_velocity.revolutions_per_second': 'Rotating at %s rev/s',
+    'tfc.tooltip.rotation.angular_velocity.revolutions_per_minute': 'Rotating at %s RPM',
+    'tfc.tooltip.rotation.cannot_rotate.too_few_blades': 'Cannot rotate with only one blade!',
+    'tfc.tooltip.rotation.cannot_rotate.obstructed': 'Cannot rotate! Obstructed!',
     'tfc.tooltip.sewing.dark_cloth': 'Dark Cloth',
     'tfc.tooltip.sewing.light_cloth': 'Light Cloth',
     'tfc.tooltip.sewing.stitch': 'Stitch',
@@ -1942,6 +1948,7 @@ DEFAULT_LANG = {
     'tfc.config.client.effectHorizontalAdjustment': 'Effect Horizontal Adjustment',
     'tfc.config.client.enableDebug': 'Enable Debug',
     'tfc.config.client.enableExperienceBar': 'Enable Experience Bar',
+    'tfc.config.client.rotationDisplayStyle': 'Rotional Speed Display Units',
     'tfc.config.client.enableHealthBar': 'Enable Health Bar',
     'tfc.config.client.enableHungerBar': 'Enable Hunger Bar',
     'tfc.config.client.enableInkSplatter': 'Enable Ink Splatter',

@@ -27,6 +27,7 @@ import net.dries007.tfc.data.providers.BuiltinKnappingTypes;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.KnappingPattern;
 import net.dries007.tfc.util.data.KnappingType;
+import static net.dries007.tfc.util.DataGenerationHelpers.Builder;
 
 public interface KnappingRecipes extends Recipes
 {
@@ -136,7 +137,7 @@ public interface KnappingRecipes extends Recipes
             new ItemStack(output, count)
         ));
         // Un-crafting, only for non-suffixed recipes
-        if (suffix.isEmpty()) new CraftingRecipes.Builder((name, r) -> add(nameOf(output) + "_to_clay", r))
+        if (suffix.isEmpty()) new Builder((name, r) -> add(nameOf(output) + "_to_clay", r))
             .input(output)
             .shapeless(Items.CLAY_BALL, 5 / count);
     }
@@ -155,7 +156,7 @@ public interface KnappingRecipes extends Recipes
             new ItemStack(output, count)
         ));
         // Un-crafting, only for non-suffixed recipes
-        if (suffix.isEmpty()) new CraftingRecipes.Builder((name, r) -> add(nameOf(output) + "_to_fire_clay", r))
+        if (suffix.isEmpty()) new Builder((name, r) -> add(nameOf(output) + "_to_fire_clay", r))
             .input(output)
             .shapeless(TFCItems.FIRE_CLAY, 5 / count);
     }

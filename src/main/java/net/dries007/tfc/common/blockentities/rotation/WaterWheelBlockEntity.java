@@ -47,10 +47,12 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
             if (maybeFlowRate == null)
             {
                 // Water wheel is obstructed somehow
-                level.destroyBlock(pos, true);
+                wheel.obstructed = true;
+                wheel.markForSync();
             }
             else
             {
+                wheel.obstructed = false;
                 wheel.targetSpeed = maybeFlowRate * MAX_SPEED / MAX_FLOW;
                 wheel.markForSync();
             }
@@ -60,15 +62,29 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
     public static void clientTick(Level level, BlockPos pos, BlockState state, WaterWheelBlockEntity wheel)
     {
         final Rotation.Tickable rotation = wheel.node.rotation();
-        final float currentSpeed = rotation.speed();
-        final float targetSpeed = wheel.targetSpeed;
-
-        final float nextSpeed = targetSpeed > currentSpeed
-            ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
-            : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
 
         rotation.tick();
-        rotation.setSpeed(nextSpeed);
+
+        if (wheel.obstructed)
+        {
+            rotation.setSpeed(0);
+        }
+        else
+        {
+            final float currentSpeed = rotation.speed();
+            final float targetSpeed = wheel.targetSpeed;
+
+            final float nextSpeed = targetSpeed > currentSpeed
+                ? Math.min(targetSpeed, currentSpeed + LERP_SPEED)
+                : Math.max(targetSpeed, currentSpeed - LERP_SPEED);
+
+            rotation.setSpeed(nextSpeed);
+        }
+    }
+
+    public boolean isObstructed()
+    {
+        return this.obstructed;
     }
 
     /**
@@ -81,6 +97,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
      * The net flow is based on all possible contributing flows, less all possible obstructing flows.
      * <p>
      * This method also checks for possible obstructions - any non-solid blocks in the path of the water wheel - and will remove them.
+     *
      * @return {@code null} if the water wheel is obstructed, otherwise the net flow, which will be in the range [-10f, 10f]
      */
     @Nullable
@@ -152,6 +169,8 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
 
     private float targetSpeed;
 
+    private boolean obstructed;
+
     public WaterWheelBlockEntity(BlockPos pos, BlockState state)
     {
         this(TFCBlockEntities.WATER_WHEEL.get(), pos, state);
@@ -168,7 +187,8 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
 
         this.targetSpeed = 0f;
         this.invalid = false;
-        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f) {
+        this.node = new SourceNode(pos, Node.ofAxis(axis), Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE), 0f)
+        {
             @Override
             public String toString()
             {
@@ -184,6 +204,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
         node.rotation().saveToTag(tag);
         tag.putBoolean("invalid", invalid);
         tag.putFloat("targetSpeed", targetSpeed);
+        tag.putBoolean("obstructed", obstructed);
     }
 
     @Override
@@ -193,6 +214,7 @@ public class WaterWheelBlockEntity extends TickableBlockEntity implements Rotati
         node.rotation().loadFromTag(tag);
         invalid = tag.getBoolean("invalid");
         targetSpeed = tag.getFloat("targetSpeed");
+        obstructed = tag.getBoolean("obstructed");
     }
 
     @Override

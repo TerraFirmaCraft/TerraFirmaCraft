@@ -263,7 +263,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         }
         else
         {
-            TerraFirmaCraft.LOGGER.error("Failed to update block entity at: " + childPos);
+            TerraFirmaCraft.LOGGER.error("Failed to update fruit tree branch block entity at: {}", childPos);
         }
         level.getBlockState(childPos).randomTick(level, childPos, level.random);
     }
@@ -315,7 +315,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         }
         else
         {
-            TerraFirmaCraft.LOGGER.error("Fruit tree leaf block entity not present");
+            TerraFirmaCraft.LOGGER.error("Fruit tree leaf block entity not present at {}", leafPos);
             sourcePos = leafPos;
         }
         return getFruitBranchHydrationFromRootPos(level, sourcePos);

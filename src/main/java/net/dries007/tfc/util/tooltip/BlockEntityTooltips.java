@@ -7,6 +7,7 @@
 package net.dries007.tfc.util.tooltip;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -50,11 +51,12 @@ import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCountingBranchBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.WaterWheelBlockEntity;
+import net.dries007.tfc.common.blockentities.rotation.WindmillBlockEntity;
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.FireboxBlock;
 import net.dries007.tfc.common.blocks.HotPouredGlassBlock;
 import net.dries007.tfc.common.blocks.ShelfBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.TFCTorchBlock;
@@ -104,7 +106,6 @@ import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.data.LampFuel;
 import net.dries007.tfc.util.rotation.Rotation;
 
@@ -149,8 +150,8 @@ public final class BlockEntityTooltips
         callback.register("gearbox", ROTATING, GearBoxBlock.class);
         callback.register("crankshaft", ROTATING, CrankshaftBlock.class);
         callback.register("quern", ROTATING, QuernBlock.class);
-        callback.register("water_wheel", ROTATING, WaterWheelBlock.class);
-        callback.register("windmill", ROTATING, WindmillBlock.class);
+        callback.register("water_wheel", ROTATIONAL_SOURCE, WaterWheelBlock.class);
+        callback.register("windmill", ROTATIONAL_SOURCE, WindmillBlock.class);
         callback.register("hot_poured_glass", HOT_POURED_GLASS, HotPouredGlassBlock.class);
         callback.register("mold_table", MOLD_TABLE, MoldBlock.class);
         callback.register("placed_item", PLACED_ITEM, PlacedItemBlock.class);
@@ -167,10 +168,31 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip ROTATING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof RotatingBlockEntity rotating)
         {
-            final Rotation rotation = rotating.getRotationNode().rotation();
-            if (rotation != null && rotation.speed() != 0)
+            getRotationComponent(rotating).ifPresent(tooltip);
+        }
+    };
+
+    public static final BlockEntityTooltip ROTATIONAL_SOURCE = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof RotatingBlockEntity rotating)
+        {
+            getRotationComponent(rotating).ifPresent(tooltip);
+        }
+        if (entity instanceof WindmillBlockEntity windmill)
+        {
+            if (level.getBlockState(pos).getValue(WindmillBlock.COUNT) == 1)
             {
-                tooltip.accept(Component.translatable("tfc.tooltip.rotation.angular_velocity", String.format("%.2f", Math.abs(rotation.positiveSpeed()) * 20f)));
+                tooltip.accept(Component.translatable("tfc.tooltip.rotation.cannot_rotate.too_few_blades"));
+            }
+            if (windmill.isObstructed())
+            {
+                tooltip.accept(Component.translatable("tfc.tooltip.rotation.cannot_rotate.obstructed"));
+            }
+        }
+        if (entity instanceof WaterWheelBlockEntity wheel)
+        {
+            if (wheel.isObstructed())
+            {
+                tooltip.accept(Component.translatable("tfc.tooltip.rotation.cannot_rotate.obstructed"));
             }
         }
     };
@@ -306,7 +328,7 @@ public final class BlockEntityTooltips
             {
                 entity = level.getBlockEntity(pos.below());
             }
-            if (entity != null && entity instanceof CropBlockEntity crop )
+            if (entity != null && entity instanceof CropBlockEntity crop)
             {
                 tooltip.accept(Component.translatable("tfc.jade.yield", String.format("%.0f", crop.getYield() * 100)));
             }
@@ -510,6 +532,38 @@ public final class BlockEntityTooltips
         }
     };
 
+    public static Optional<Component> getRotationComponent(RotatingBlockEntity rotating)
+    {
+        final Rotation rotation = rotating.getRotationNode().rotation();
+        if (rotation != null && rotation.speed() != 0)
+        {
+            float speed = Math.abs(rotation.positiveSpeed());
+            switch (TFCConfig.CLIENT.rotationDisplayStyle.get())
+            {
+                case RADIANS_PER_SECOND ->
+                {
+                    speed *= 20f;
+                    return Optional.of(Component.translatable("tfc.tooltip.rotation.angular_velocity.radians_per_second", String.format("%.2f", speed)));
+                }
+                case DEGREES_PER_SECOND ->
+                {
+                    speed = (speed / Mth.TWO_PI) * 360f * 20f;
+                    return Optional.of(Component.translatable("tfc.tooltip.rotation.angular_velocity.degrees_per_second", String.format("%.2f", speed)));
+                }
+                case REVOLUTIONS_PER_SECOND ->
+                {
+                    speed /= Mth.TWO_PI * 20f;
+                    return Optional.of(Component.translatable("tfc.tooltip.rotation.angular_velocity.revolutions_per_second", String.format("%.4f", speed)));
+                }
+                case REVOLUTIONS_PER_MINUTE ->
+                {
+                    speed = ((speed / Mth.TWO_PI) * 20f) * 60f;
+                    return Optional.of(Component.translatable("tfc.tooltip.rotation.angular_velocity.revolutions_per_minute", String.format("%.1f", speed)));
+                }
+            }
+        }
+        return Optional.empty();
+    }
 
     private static void pitKiln(Level level, BlockPos pos, Consumer<Component> tooltip)
     {

@@ -99,12 +99,13 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
 
         final boolean axisX = state.getValue(WindmillBlock.AXIS) == Direction.Axis.X;
 
+        stack.mulPose(Axis.XN.rotationDegrees(90f));
         if (!axisX)
         {
             stack.mulPose(Axis.YN.rotationDegrees(90f));
         }
 
-        stack.translate(0.5f, -1, axisX ? 0.5f : -0.5f);
+        stack.translate(0.5f, -2, axisX ? 0.5f : -0.5f);
 
         // First, figure out if we have all identical models
         boolean hasFullIdenticalSet = bladeCount == 5;
@@ -142,7 +143,8 @@ public class WindmillBlockEntityRenderer implements BlockEntityRenderer<Windmill
             stack.pushPose();
 
             // nudge to avoid Z-fighting
-            stack.translate(0.0001f * i, 0.0001f * i,0.0001f * i);
+            stack.translate(0.0001f * i, 0.0001f * i, 0.0001f * i);
+
             bladeModel.setupAnim(windmill, partialTick, offsetAngle * i);
             bladeModel.renderToBuffer(stack, bufferSource.getBuffer(RenderType.entityCutoutNoCull(bladeTexture)), packedLight, packedOverlay, color);
 

@@ -98,7 +98,14 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
             }
             if (count == WindmillBlockEntity.SLOTS || stack.isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, inv.extractItem(count - 1, 1, false));
+                if (!player.getAbilities().instabuild)
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, inv.extractItem(count - 1, 1, false));
+                }
+                else
+                {
+                    inv.extractItem(count - 1, 1, false);
+                }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
         }

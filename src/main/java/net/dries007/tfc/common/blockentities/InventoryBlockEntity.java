@@ -56,11 +56,16 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
 
     protected InventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory)
     {
+        this(type, pos, state, inventoryFactory, TerraFirmaCraft.MOD_ID);
+    }
+
+    protected InventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, String modId)
+    {
         super(type, pos, state);
 
         this.inventory = inventoryFactory.create(this);
         this.sidedInventory = new SidedHandler<>(InventoryBlockEntity.this.inventory);
-        this.defaultName = Component.translatable(TerraFirmaCraft.MOD_ID + ".block_entity." + Objects.requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type)).getPath());
+        this.defaultName = Component.translatable(modId + ".block_entity." + Objects.requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(type)).getPath());
     }
 
     /**

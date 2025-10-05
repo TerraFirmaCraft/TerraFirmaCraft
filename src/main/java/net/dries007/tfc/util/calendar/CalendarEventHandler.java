@@ -37,6 +37,8 @@ import net.dries007.tfc.config.TFCConfig;
 public class CalendarEventHandler
 {
     private static final Logger LOGGER = LogUtils.getLogger();
+    private static final float SLEEP_TIME = 20f / 24f; // 8 pm
+    private static final float WAKE_TIME = 5f / 24f; // 5 am
 
     public static void init()
     {
@@ -78,10 +80,11 @@ public class CalendarEventHandler
     {
         if (event.getVanillaProblem() == BedSleepingProblem.NOT_POSSIBLE_NOW || event.getVanillaProblem() == null)
         {
-            // Vanilla denied it due to the time, or allowed it (without checking exhaustion). We replace this with our outcome here
-            // N.B. We can replace the vanilla tooltip from "Only at night/thunderstorm" to "You are not tired enough" because we will
+            // Vanilla denied it due to the time, or allowed it (without checking calendar time). We replace this with our outcome here
+            // N.B. We can replace the vanilla tooltip from "Only at night/thunderstorm" to "Only at night" because we will
             // never use the former, and this is easier than alternatives for trying to hook into this logic
-            event.setProblem(IPlayerInfo.get(event.getEntity()).getPossibleSleepDuration() > 0 ? null : BedSleepingProblem.NOT_POSSIBLE_NOW);
+            final float time = Calendars.SERVER.getCalendarFractionOfDay();
+            event.setProblem((time >= SLEEP_TIME || time <= WAKE_TIME) ? null : BedSleepingProblem.NOT_POSSIBLE_NOW);
         }
     }
 
@@ -104,27 +107,25 @@ public class CalendarEventHandler
      */
     public static void onPlayersFinishedSleeping(ServerLevel level)
     {
-        // For each player that is sleeping, calculate how long they are able to sleep for, and use the maximum allowed sleep duration.
-        int maxSleepDuration = 0;
-        for (ServerPlayer player : level.players())
-            if (player.isSleeping())
-                maxSleepDuration = Math.max(maxSleepDuration, IPlayerInfo.get(player).getPossibleSleepDuration());
+        // Calculate time slept
+        final float currentFractionOfDay = Calendars.SERVER.getCalendarFractionOfDay();
+        final float wakeUpTime = 5f / 24f; // 5 am, expressed as a fraction of day
+        final float targetFraction = wakeUpTime > currentFractionOfDay ? wakeUpTime : 1 + wakeUpTime;
+        final int calendarTicksSlept = (int) ((targetFraction - currentFractionOfDay) * ICalendar.CALENDAR_TICKS_IN_DAY);
 
-        // Then, calculate a real time spent sleeping with some slight variation from the maximum. The variation is ~1 calendar hour
-        // Exhaustion will be based on the player ticks, not calendar ticks, so re-scale it appropriately
-        final int calendarTicksSlept = level.random.nextInt(maxSleepDuration, ICalendar.CALENDAR_TICKS_IN_HOUR / 2);
+        // Skip the calendar forward
+        Calendars.SERVER.skipForwardBy(calendarTicksSlept);
+
+        // Exhaustion is based on the player ticks, not calendar ticks, so re-scale it appropriately
         final float exhaustion = Calendars.SERVER.getFixedCalendarTicksFromTick(calendarTicksSlept)
             * PlayerInfo.PASSIVE_EXHAUSTION_PER_TICK
             * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue();
 
-        // Skip the calendar forward
-        Calendars.SERVER.skipForwardBy(calendarTicksSlept);
         for (ServerPlayer player : level.players())
         {
-            // Consume food, and reset the sleep duration of every player - including the ones that didn't sleep
+            // Consume hunger based on time skipped
             // This doesn't really make sense in either case, but this makes the most sense to do in multiplayer
             player.causeFoodExhaustion(exhaustion);
-            IPlayerInfo.get(player).resetSleepRestoration();
         }
     }
 

@@ -127,25 +127,16 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         final Compost compost = getCompost(stack);
         if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
         {
-            if (brown == MAX_AMOUNT && green == MAX_AMOUNT)
+            if (brown == MAX_AMOUNT && green == MAX_AMOUNT && !rotten)
             {
                 Helpers.spawnItem(level, pos.above(), inventory.extractItem(0, 1, false));
             }
+            else
+            {
+                Helpers.spawnItem(level, pos.above(), inventory.extractItem(0, getRottenCount(), false));
+            }
             reset();
             Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
-            return finishUse(client);
-        }
-        else if (rotten)
-        {
-            if (!client) player.displayClientMessage(Component.translatable("tfc.composter.rotten"), true);
-            return finishUse(client);
-        }
-        else if (compost.type == AdditionType.POISON)
-        {
-            if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
-            if (!player.isCreative()) stack.shrink(1);
-            inventory.setStackInSlot(0, new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
-            Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
             return finishUse(client);
         }
         else if (green <= MAX_AMOUNT && compost.type == AdditionType.GREEN)
@@ -184,6 +175,18 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             }
             return finishUse(client);
         }
+        else if (rotten)
+        {
+            if (!client) player.displayClientMessage(Component.translatable("tfc.composter.rotten"), true);
+            return finishUse(client);
+        }
+        else if (compost.type == AdditionType.POISON)
+        {
+            if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
+            if (!player.isCreative()) stack.shrink(1);
+            Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
+            return finishUse(client);
+        }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
@@ -199,14 +202,6 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return Calendars.get(level).getTicks() - lastUpdateTick;
     }
 
-    @Override
-    public void setAndUpdateSlots(int slot)
-    {
-        super.setAndUpdateSlots(slot);
-        if (inventory.getStackInSlot(slot).isEmpty())
-            reset();
-    }
-
     public ItemInteractionResult finishUse(boolean client)
     {
         if (!client)
@@ -216,10 +211,20 @@ public class ComposterBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             {
                 stage = Math.max(stage, 1);
             }
+            if (isRotten())
+            {
+                int count = getRottenCount();
+                inventory.setStackInSlot(0, new ItemStack(TFCItems.ROTTEN_COMPOST.get(), count));
+            }
             setState(stage);
             markForSync();
         }
         return ItemInteractionResult.sidedSuccess(client);
+    }
+
+    private int getRottenCount()
+    {
+        return Math.min(green, brown) / 4;
     }
 
     public int getGreen()
