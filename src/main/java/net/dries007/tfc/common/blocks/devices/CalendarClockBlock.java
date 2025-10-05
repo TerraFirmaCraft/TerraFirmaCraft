@@ -38,7 +38,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
-public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExtension, IForgeBlockExtension
+public class CalendarClockBlock extends DeviceBlock
 {
     public static BooleanProperty CLOCK_MONTH_MODE = TFCBlockStateProperties.CLOCK_MONTH_MODE;
     public static DirectionProperty FACING = BlockStateProperties.FACING;
@@ -51,26 +51,25 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
 
     public CalendarClockBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.NOOP);
         registerDefaultState(getStateDefinition().any().setValue(CLOCK_MONTH_MODE, false).setValue(FACING, Direction.UP));
     }
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        level.updateNeighborsAt(pos, this);
-        level.updateNeighborsAt(pos.below(), this);
-        level.removeBlockEntity(pos); // wasn't getting removed otherwise?
+        super.onRemove(state, level, pos, newState, isMoving);
+        level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this); // needed for strong power update
     }
 
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState blockstate = this.defaultBlockState();
-        LevelReader levelreader = context.getLevel();
-        BlockPos blockpos = context.getClickedPos();
-        Direction[] adirection = context.getNearestLookingDirections();
-        Direction[] var6 = adirection;
+        final LevelReader levelreader = context.getLevel();
+        final BlockPos blockpos = context.getClickedPos();
+        final Direction[] adirection = context.getNearestLookingDirections();
+        final Direction[] var6 = adirection;
         int var7 = adirection.length;
 
         for (int var8 = 0; var8 < var7; ++var8)
@@ -94,7 +93,6 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
         {
             clock.needsInstantUpdate();
         }
-        level.updateNeighborsAt(pos, this);
         level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
     }
 
@@ -109,11 +107,11 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
                 {
                     clock.needsInstantUpdate();
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide());
             }
             else
             {
-                BlockState blockstate = (state.cycle(CLOCK_MONTH_MODE));
+                final BlockState blockstate = state.cycle(CLOCK_MONTH_MODE);
                 level.setBlock(pos, blockstate, 2);
                 level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
                 if (level.getBlockEntity(pos) instanceof CalendarClockBlockEntity clock)
@@ -153,17 +151,11 @@ public class CalendarClockBlock extends ExtendedBlock implements EntityBlockExte
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos blockpos, BlockPos facingPos)
     {
-        if (!this.canSurvive(state, level, blockpos))
+        if (facing == state.getValue(FACING).getOpposite() && !this.canSurvive(state, level, blockpos))
         {
             return Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, facing, facingState, level, blockpos, facingPos);
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState state)
-    {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
