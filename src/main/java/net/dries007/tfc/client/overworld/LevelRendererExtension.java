@@ -461,7 +461,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
 
                                 // select the texture based on the amount of rain
-                                RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0,3)]);
+                                RenderSystem.setShaderTexture(0, RAIN_LOCATIONS[Mth.clamp(Mth.floor(rainIntensity * 4.0f), 0, 3)]);
 
                                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                             }
