@@ -41,7 +41,9 @@ import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBlastFurnaceRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiBloomeryRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiCastingRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiChiselRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
 import net.dries007.tfc.compat.jei.category.AlloyRecipeCategory;
@@ -57,8 +59,10 @@ public final class EmiIntegration implements EmiPlugin
 {
     private static final List<EmiRecipeCategory> CATEGORIES = new ArrayList<>();
     public static final EmiRecipeCategory ALLOYING = createCategory("alloying", TFCBlocks.CRUCIBLE);
+    public static final EmiRecipeCategory BLOOMERY = createCategory("bloomery", TFCBlocks.BLOOMERY);
     public static final EmiRecipeCategory BLAST_FURNACE = createCategory("blast_furnace", TFCBlocks.BLAST_FURNACE);
     public static final EmiRecipeCategory CASTING = createCategory("casting", TFCItems.MOLDS.get(Metal.ItemType.INGOT));
+    public static final EmiRecipeCategory CHISEL = createCategory("chisel", TFCItems.METAL_ITEMS.get(Metal.BLACK_BRONZE).get(Metal.ItemType.CHISEL));
     public static final EmiRecipeCategory ANVIL = createCategory("anvil", TFCBlocks.METALS.get(Metal.BRONZE).get(Metal.BlockType.ANVIL));
     public static final EmiRecipeCategory HEATING = createCategory("heating", TFCBlocks.FIREPIT);
     public static final EmiRecipeCategory BARREL = createCategory("barrel", TFCBlocks.WOODS.get(Wood.OAK).get(Wood.BlockType.BARREL));
@@ -106,6 +110,8 @@ public final class EmiIntegration implements EmiPlugin
         registry.addWorkstation(WELDING, EmiIngredient.of(TFCTags.Blocks.ANVILS));
         registry.addWorkstation(BLAST_FURNACE, EmiStack.of(TFCBlocks.BLAST_FURNACE));
         registry.addWorkstation(CASTING, EmiIngredient.of(TFCTags.Items.FIRED_MOLDS));
+        registry.addWorkstation(BLOOMERY, EmiStack.of(TFCBlocks.BLOOMERY));
+        registry.addWorkstation(CHISEL, EmiIngredient.of(TFCTags.Items.TOOLS_CHISEL));
     }
 
     private void registerRecipes(EmiRegistry registry)
@@ -116,6 +122,8 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.WELDING, EmiWeldingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.BLAST_FURNACE, EmiBlastFurnaceRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.CASTING, EmiCastingRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.BLOOMERY, EmiBloomeryRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.CHISEL, EmiChiselRecipe::new);
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)

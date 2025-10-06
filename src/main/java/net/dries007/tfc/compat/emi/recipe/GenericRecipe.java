@@ -7,10 +7,13 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 
 public abstract class GenericRecipe<T extends Recipe<?>> extends BasicEmiRecipe
 {
@@ -22,13 +25,23 @@ public abstract class GenericRecipe<T extends Recipe<?>> extends BasicEmiRecipe
         this.recipe = recipe;
     }
 
-    public static RegistryAccess registryAccess()
+    protected static RegistryAccess registryAccess()
     {
         return ClientHelpers.getLevelOrThrow().registryAccess();
     }
 
-    public static EmiIngredient toIngredient(SizedFluidIngredient ingredient)
+    protected static EmiIngredient toIngredient(SizedFluidIngredient ingredient)
     {
         return EmiIngredient.of(Arrays.stream(ingredient.getFluids()).map(s -> EmiStack.of(s.getFluid())).toList(), ingredient.amount());
+    }
+
+    protected static EmiIngredient toIngredient(SizedIngredient ingredient)
+    {
+        return EmiIngredient.of(ingredient.ingredient(), ingredient.count());
+    }
+
+    protected static EmiIngredient toIngredient(BlockIngredient ingredient)
+    {
+        return EmiIngredient.of(ingredient.all().map(ItemStack::new).filter(item -> !item.isEmpty()).map(EmiStack::of).toList());
     }
 }
