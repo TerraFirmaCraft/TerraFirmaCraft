@@ -105,7 +105,7 @@ public final class EmiIntegration implements EmiPlugin
         registry.addWorkstation(ANVIL, EmiIngredient.of(TFCTags.Blocks.ANVILS));
         registry.addWorkstation(WELDING, EmiIngredient.of(TFCTags.Blocks.ANVILS));
         registry.addWorkstation(BLAST_FURNACE, EmiStack.of(TFCBlocks.BLAST_FURNACE));
-        registry.addWorkstation(CASTING, EmiIngredient.of(TFCTags.Items.MOLDS));
+        registry.addWorkstation(CASTING, EmiIngredient.of(TFCTags.Items.FIRED_MOLDS));
     }
 
     private void registerRecipes(EmiRegistry registry)
