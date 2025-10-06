@@ -380,6 +380,8 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             final Tesselator tesselator = Tesselator.getInstance();
             final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
+            cursor.set(blockX, blockY, blockZ);
+
             final ClimateModel model = Climate.get(level);
             final long calendarTick = Calendars.get(level).getCalendarTicks();
             final float climateRain = model.getRain(calendarTick);
@@ -406,13 +408,13 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
             int stateFlag = -1;
 
-            Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+            final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
 
             // max angle is at ~50 kmh
-            float zAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, RAIN_MAX_ANGLE));
-            float xAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, RAIN_MAX_ANGLE));
-            float xAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, SNOW_MAX_ANGLE));
-            float zAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, SNOW_MAX_ANGLE));
+            final float zAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, RAIN_MAX_ANGLE));
+            final float xAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, RAIN_MAX_ANGLE));
+            final float xAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, SNOW_MAX_ANGLE));
+            final float zAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, SNOW_MAX_ANGLE));
 
             final float defaultXOffsetRain = (float) (Math.tan(zAngleRain) * 10);
             final float defaultZOffsetRain = (float) (Math.tan(xAngleRain) * 10);
