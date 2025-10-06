@@ -43,9 +43,9 @@ import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.PoiSectionAccessor;
 import net.dries007.tfc.mixin.accessor.SectionStorageAccessor;
-import net.dries007.tfc.network.ChunkRainfallPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -69,11 +69,11 @@ public final class WeatherHelpers
 
     // For fast forwarding, the number of "fast-forward" ticks that should be simulated for a given hour of either estimated
     // melting, or estimated snow accumulation.
-    private static final int UPDATES_PER_SNOW_MELT_HOUR = 1 + 1_000 / TICKS_PER_SNOW_MELT;
-    private static final int UPDATES_PER_SNOW_ACCUMULATION_HOUR = 1 + 1_000 / TICKS_PER_SNOW_ACCUMULATION;
+    private static final int UPDATES_PER_SNOW_MELT_SKIP = 1 + 4_000 / TICKS_PER_SNOW_MELT;
+    private static final int UPDATES_PER_SNOW_ACCUMULATION_SKIP = 1 + 4_000 / TICKS_PER_SNOW_ACCUMULATION;
 
     // The maximum number of single tick updates that can be scheduled to happen
-    private static final int MAX_UPDATES_PER_TICK = 48;
+    private static final int MAX_UPDATES_PER_TICK = TFCConfig.SERVER.snowMaxAccumulationOnUpdate.get();
 
     /**
      * Replaces a call to {@link Biome#getPrecipitationAt(BlockPos)} with one that is aware of both the local climate,
@@ -220,64 +220,55 @@ public final class WeatherHelpers
         final long currentTick = Calendars.SERVER.getTicks();
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
         final long timeSinceTick = currentTick - data.getLastRandomTick();
-        final long timeSinceLastRainTick = currentTick - data.getLastRainTick();
 
         final ChunkPos chunkPos = chunk.getPos();
-        final BlockPos surfacePos = getRandomSurfacePos(level, chunkPos);
+        final BlockPos surfacePos = getSequentialSurfacePos(level, chunkPos, chunk, data, false);
         final float rainfall = model.getRainfall(level, surfacePos, data.getLastRandomTick(), currentTick, Calendars.SERVER.getCalendarDaysInMonth());
         final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
 
-        // Update rainfall accumulation for this chunk periodically
-        if (timeSinceLastRainTick > 1_000)
-        {
-            final long firstCalendarTick = Calendars.SERVER.getCalendarTicks() + Calendars.SERVER.getFixedCalendarTicksFromTick(data.getLastRainTick() - Calendars.SERVER.getTicks());
-            final long secondCalendarTick = Calendars.SERVER.getCalendarTicks();
-
-            final float rainfallForRainTick = model.getRainfall(level, surfacePos, firstCalendarTick, secondCalendarTick, daysInMonth);
-            data.addAccumulatedRainfall(chunk, model.getDeltaRainInMillimeters(level, surfacePos, firstCalendarTick, secondCalendarTick, rainfallForRainTick, Calendars.SERVER.getCalendarTicksInYear(), Calendars.SERVER.getCalendarDaysInMonth()));
-            data.setLastRainTick(chunk, currentTick);
-            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new ChunkRainfallPacket(chunkPos, data.getAccumulatedRainfall()));
-        }
-
-        if (timeSinceTick > 1_000)
+        if (timeSinceTick > 4_000)
         {
             // We have not ticked this chunk in a short while, so run catch-up ticks to see if we missed anything
             // First, we need to check for what we might've missed
 
-            // Iterates for maximum of two days of weather
-            long calendarTick = currentCalendarTick - Math.min(48_000, timeSinceTick);
+            // Iterates for maximum of one month of weather
+            long calendarTick = currentCalendarTick - Math.min(192_000, timeSinceTick);
             int netChangeInSnow = 0; // >0 indicates melting, <0 indicates freezing
 
             while (calendarTick < currentCalendarTick)
             {
-                calendarTick += 1_000;
+                calendarTick += 4_000;
                 final float estimatedTemperature = model.getTemperature(level, surfacePos, calendarTick, daysInMonth);
                 if (estimatedTemperature > 2f)
                 {
-                    netChangeInSnow = Math.max(netChangeInSnow - UPDATES_PER_SNOW_MELT_HOUR, -MAX_UPDATES_PER_TICK);
+                    netChangeInSnow = netChangeInSnow - UPDATES_PER_SNOW_MELT_SKIP;
                 }
                 else if (estimatedTemperature < -2f && isPrecipitating(model.getRain(calendarTick), rainfall))
                 {
-                    netChangeInSnow = Math.min(netChangeInSnow + UPDATES_PER_SNOW_ACCUMULATION_HOUR, MAX_UPDATES_PER_TICK);
+                    // Reduce amount of snow accumulated if near the temperature threshold
+                    final float fuzz = Mth.clampedMap(estimatedTemperature, -2f, -12f, 0.5f, 1f);
+                    netChangeInSnow = netChangeInSnow + (int) (UPDATES_PER_SNOW_ACCUMULATION_SKIP * fuzz);
                 }
             }
 
             if (netChangeInSnow > 0)
             {
-                // First, if we're performing a large number of updates, we want to first count the amount of snow in the chunk,
+                // Then, if we're performing a large number of updates, we want to first count the amount of snow in the chunk,
                 // and only do updates if it's between a threshold
-                netChangeInSnow = Math.min(64 - countExistingSnowInChunk(level, chunkPos), netChangeInSnow);
+                netChangeInSnow = Math.min(MAX_UPDATES_PER_TICK, Math.min(256 - countExistingSnowInChunk(level, chunkPos), netChangeInSnow));
+
                 for (int i = 0; i < netChangeInSnow; i++)
                 {
-                    handleSnowAccumulation(level, getRandomSurfacePos(level, chunkPos));
+                    handleSnowAccumulation(level, getSequentialSurfacePos(level, chunkPos, chunk, data, true));
                 }
             }
             else if (netChangeInSnow < 0)
             {
-                // If it has been more than two days since the chunk was ticked,
+                // If it has been more than a month since the chunk was ticked,
                 // apply a multiplier to the melt based on how long it has been
-                final int meltFactor = (int) (Math.max(timeSinceTick / 48_000, 1));
-                handleSnowMelting(level, chunkPos, -netChangeInSnow * meltFactor);
+                final int meltFactor = (int) (Math.max(timeSinceTick / 192_000, 1));
+                netChangeInSnow = Math.min(MAX_UPDATES_PER_TICK, -netChangeInSnow * meltFactor);
+                handleSnowMelting(level, chunkPos, netChangeInSnow);
             }
         }
         else if (level.random.nextInt(TICKS_PER_SNOW_ACCUMULATION) == 0)
@@ -293,16 +284,22 @@ public final class WeatherHelpers
             {
                 // Trigger accumulation
                 handleSnowAccumulation(level, surfacePos);
+                // We delay iterating the position until we know whether snow will actually get placed
+                data.iterateSnowPos(chunk);
             }
         }
 
         data.setLastRandomTick(chunk, currentTick);
     }
 
-    private static BlockPos getRandomSurfacePos(ServerLevel level, ChunkPos chunkPos)
+    private static BlockPos getSequentialSurfacePos(ServerLevel level, ChunkPos chunkPos, ChunkAccess access, ChunkData data, boolean updateChunk)
     {
-        final BlockPos randomPos = level.getBlockRandomPos(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ(), 15);
-        return level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, randomPos);
+        final BlockPos pos = data.getNextSnowPos(chunkPos);
+        if (updateChunk)
+        {
+            data.iterateSnowPos(access);
+        }
+        return level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos);
     }
 
     private static int countExistingSnowInChunk(ServerLevel level, ChunkPos chunkPos)

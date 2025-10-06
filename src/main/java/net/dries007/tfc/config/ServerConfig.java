@@ -53,8 +53,9 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Boolean> enableDirtToMudCreation;
     // Blocks - Snow
     public final Supplier<Boolean> enableSnowSlowEntities;
-    public final Supplier<Integer> snowAccumulateChance;
-    public final Supplier<Integer> snowMeltChance;
+    public final Supplier<Integer> snowMaxAccumulationOnUpdate;
+    public final Supplier<Integer> ticksPerSnowAccumulation;
+    public final Supplier<Integer> snowMeltMultiplier;
     // Blocks - Leaves
     public final Supplier<Double> leavesMovementModifier;
     // Blocks - Plants
@@ -332,8 +333,9 @@ public class ServerConfig extends BaseConfig
         builder.swap("snow");
 
         enableSnowSlowEntities = builder.comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey.").define("enableSnowSlowEntities", true);
-        snowAccumulateChance = builder.comment("The chance that snow will accumulate during a storm. Lower values = faster snow accumulation, but also more block updates (aka lag).").define("snowAccumulateChance", 20, 1, Integer.MAX_VALUE);
-        snowMeltChance = builder.comment("The chance that snow will melt during a storm. Lower values = faster snow melting, but also more block updates (aka lag).").define("snowMeltChance", 36, 1, Integer.MAX_VALUE);
+        snowMaxAccumulationOnUpdate = builder.comment("[Requires MC Restart] The maximum number of snow blocks that can be placed when entering an unloaded chunk. Lower values = matches nearby loaded chunks better, but more lag when entering these chunks.").define("snowMaxAccumulationOnUpdate", 64, 0, 256);
+        ticksPerSnowAccumulation = builder.comment("[Requires MC Restart] The number of game ticks between attempts at snow accumulation. Lower = faster accumulation, but more lag. Default: 80 Vanilla: 16").define("ticksPerSnowAccumulation", 80, 1, Integer.MAX_VALUE);
+        snowMeltMultiplier = builder.comment("[Requires MC Restart] How many times faster snow should melt than accumulate. Default: 3").define("snowMeltMultiplier", 3, 1, Integer.MAX_VALUE);
 
         builder.swap("plants");
 

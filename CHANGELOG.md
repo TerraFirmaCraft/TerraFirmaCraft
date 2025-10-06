@@ -1,19 +1,15 @@
 ### Changes
-- Re-enabled sleeping (closes #3168)
-  - Players can now sleep between 8 pm and 5 am, regardless of when the sun rises and sets
-- Added golden bamboo block
-- Composters provide 1 rotten compost per 4 brown/4 green compost items (when a compost poison is added)
+ - Changes to snow accumulation
+   - Made snow accumulation more efficient
+   - Added config for how much snow should "catch up" when loading unloaded chunks. By default, this value is 64, or 1/4 of the chunk, but it can be increased up to 256 to fully cover chunks in winter
+ - Fixed shorter ryegrass using the bluegrass model
+ - Re-scaled wind speeds to more believable levels
+ - Minor changes in internals and API
+
 ### Bug Fixes
-- Fixed numerous broken models
-- Fixed various recipes, including stairs, aggregate, golden bamboo, and more (closes #3172, closes )
-- (Internal) Fixed unit tests giving false errors
-- Fixed a bug with nutrition
-- Fixed fluid fog (closes #3181)
-- Fixed anemone flickering (closes #3161)
-- Fixed shield volcanoes generating outside the range of finite continents (closes #3190)
-- Fixed leopard seal loot table (closes #3156)
-- Added some missing propick tooltips (closes #3193)
-- Fixed composters dropping rotten compost when they shouldn't (closes #3174)
-- Restrict powder snow placement to above sea level (closes #3177)
-- Fixed hoes not counting as a valid tool for leaves/crops (closes #3152)
-- Made axes the appropriate tool for pumpkins and melons
+- Fixed shorter ryegrass using the bluegrass model
+- Fixed typo in the name of a butterfly
+- Fixed jellyfish rendering causing server crashes (closes #3159)
+- Fixed firebox sound playing while not lit
+- Fixed fruit preserves
+- Fixed some meats missing tags (closes #3200)

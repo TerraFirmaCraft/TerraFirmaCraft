@@ -28,8 +28,7 @@ public record ChunkWatchPacket(
     LerpFloatLayer rainVariance,
     LerpFloatLayer baseGroundwater,
     LerpFloatLayer temperature,
-    ForestType forestType,
-    float accumulatedRainfall
+    ForestType forestType
 ) implements CustomPacketPayload
 {
     public static final CustomPacketPayload.Type<ChunkWatchPacket> TYPE = PacketHandler.type("chunk_watch");
@@ -45,8 +44,7 @@ public record ChunkWatchPacket(
             LerpFloatLayer baseGroundwater = LerpFloatLayer.STREAM_CODEC.decode(byteBuf);
             LerpFloatLayer temperature = LerpFloatLayer.STREAM_CODEC.decode(byteBuf);
             ForestType forestType = ForestType.STREAM.decode(byteBuf);
-            float accumulatedRainfall = ByteBufCodecs.FLOAT.decode(byteBuf);
-            return new ChunkWatchPacket(chunkPos, rainfall, rainVariance, baseGroundwater, temperature, forestType, accumulatedRainfall);
+            return new ChunkWatchPacket(chunkPos, rainfall, rainVariance, baseGroundwater, temperature, forestType);
         }
 
         @Override
@@ -58,7 +56,6 @@ public record ChunkWatchPacket(
             LerpFloatLayer.STREAM_CODEC.encode(o, chunkWatchPacket.baseGroundwater);
             LerpFloatLayer.STREAM_CODEC.encode(o, chunkWatchPacket.temperature);
             ForestType.STREAM.encode(o, chunkWatchPacket.forestType);
-            ByteBufCodecs.FLOAT.encode(o, chunkWatchPacket.accumulatedRainfall);
         }
     };
 
@@ -77,7 +74,7 @@ public record ChunkWatchPacket(
             final ChunkData data = ChunkData.get(chunk);
             if (data.status() != ChunkData.Status.INVALID)
             {
-                data.onUpdatePacket(rainfall, rainVariance, baseGroundwater, temperature, forestType, accumulatedRainfall);
+                data.onUpdatePacket(rainfall, rainVariance, baseGroundwater, temperature, forestType);
             }
         }
     }
