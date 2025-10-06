@@ -52,10 +52,10 @@ import net.dries007.tfc.util.Metal;
 public final class EmiIntegration implements EmiPlugin
 {
     private static final List<EmiRecipeCategory> CATEGORIES = new ArrayList<>();
-    public static final EmiRecipeCategory ALLOYING = createCategory("alloying", TFCBlocks.CRUCIBLE.get());
-    public static final EmiRecipeCategory BLAST_FURNACE = createCategory("blast_furnace", TFCBlocks.BLAST_FURNACE.get());
+    public static final EmiRecipeCategory ALLOYING = createCategory("alloying", TFCBlocks.CRUCIBLE);
+    public static final EmiRecipeCategory BLAST_FURNACE = createCategory("blast_furnace", TFCBlocks.BLAST_FURNACE);
     public static final EmiRecipeCategory ANVIL = createCategory("anvil", TFCBlocks.METALS.get(Metal.BRONZE).get(Metal.BlockType.ANVIL));
-    public static final EmiRecipeCategory HEATING = createCategory("heating", TFCBlocks.FIREPIT.get());
+    public static final EmiRecipeCategory HEATING = createCategory("heating", TFCBlocks.FIREPIT);
     public static final EmiRecipeCategory BARREL = createCategory("barrel", TFCBlocks.WOODS.get(Wood.OAK).get(Wood.BlockType.BARREL));
     public static final EmiRecipeCategory WELDING = createCategory("welding", TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.HAMMER));
 
@@ -77,7 +77,6 @@ public final class EmiIntegration implements EmiPlugin
     @Override
     public void register(EmiRegistry registry)
     {
-        Supplier<EmiRecipe> sup;
         registerCategories(registry);
         registerWorkstations(registry);
         registerRecipes(registry);
@@ -94,9 +93,9 @@ public final class EmiIntegration implements EmiPlugin
 
     private void registerWorkstations(EmiRegistry registry)
     {
-        registry.addWorkstation(HEATING, EmiStack.of(new ItemStack(TFCBlocks.FIREPIT.get())));
+        registry.addWorkstation(HEATING, EmiStack.of(TFCBlocks.FIREPIT));
         registry.addWorkstation(BARREL, EmiIngredient.of(TFCTags.Items.BARRELS));
-        registry.addWorkstation(ALLOYING, EmiStack.of(TFCBlocks.CRUCIBLE.get()));
+        registry.addWorkstation(ALLOYING, EmiStack.of(TFCBlocks.CRUCIBLE));
         registry.addWorkstation(ALLOYING, EmiIngredient.of(TFCTags.Items.FIRED_VESSELS));
         registry.addWorkstation(ANVIL, EmiIngredient.of(TFCTags.Blocks.ANVILS));
         registry.addWorkstation(WELDING, EmiIngredient.of(TFCTags.Blocks.ANVILS));
