@@ -40,7 +40,14 @@ public class EmiHeatingRecipe extends GenericRecipe<HeatingRecipe>
     public void addWidgets(WidgetHolder widgets)
     {
         widgets.addSlot(inputs.getFirst(), 21, 17);
-        widgets.addSlot(outputs.getFirst(), 85, 17).recipeContext(this);
+        if (outputs.isEmpty())
+        {
+            widgets.addSlot(85, 17).recipeContext(this);
+        }
+        else
+        {
+            widgets.addSlot(outputs.getFirst(), 85, 17).recipeContext(this);
+        }
 
         widgets.addTexture(EmiTexture.EMPTY_FLAME, 54, 19);
         widgets.addAnimatedTexture(EmiTexture.FULL_FLAME, 54, 19, 8000, false, true, true);
