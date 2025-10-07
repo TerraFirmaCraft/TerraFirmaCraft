@@ -44,6 +44,7 @@ import net.dries007.tfc.compat.emi.recipe.EmiBlastFurnaceRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBloomeryRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiCastingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiChiselRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiGlassworkingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
 import net.dries007.tfc.compat.jei.category.AlloyRecipeCategory;
@@ -67,6 +68,7 @@ public final class EmiIntegration implements EmiPlugin
     public static final EmiRecipeCategory HEATING = createCategory("heating", TFCBlocks.FIREPIT);
     public static final EmiRecipeCategory BARREL = createCategory("barrel", TFCBlocks.WOODS.get(Wood.OAK).get(Wood.BlockType.BARREL));
     public static final EmiRecipeCategory WELDING = createCategory("welding", TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.HAMMER));
+    public static final EmiRecipeCategory GLASSWORKING = createCategory("glassworking", TFCItems.BLOWPIPE_WITH_GLASS);
 
     private static EmiRecipeCategory createCategory(String name, ItemLike item)
     {
@@ -124,6 +126,7 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.CASTING, EmiCastingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.BLOOMERY, EmiBloomeryRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.CHISEL, EmiChiselRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.GLASSWORKING, EmiGlassworkingRecipe::new);
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)
