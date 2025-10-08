@@ -30,8 +30,8 @@ public class WindParticle extends TextureSheetParticle
         age = random.nextInt(20);
         amplitude = random.nextFloat() * 0.034f;
         final float speed = 0.4f * (wind.length() * 0.2f + 0.9f) + amplitude;
-        xBias = wind.x * speed;
-        zBias = wind.y * speed;
+        xBias = wind.x * speed * 2f;
+        zBias = wind.y * speed * 2f;
         scale(random.nextFloat() * 0.4f + 0.1f);
     }
 

@@ -47,8 +47,8 @@ public class LeafParticle extends TextureSheetParticle
 
         final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
         final float windStrength = wind.length();
-        windMoveX = wind.x * windStrength * 0.2f;
-        windMoveZ = wind.y * windStrength * 0.2f;
+        windMoveX = wind.x * windStrength * 0.4f;
+        windMoveZ = wind.y * windStrength * 0.4f;
     }
 
     @Override

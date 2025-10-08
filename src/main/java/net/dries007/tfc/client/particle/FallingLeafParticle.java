@@ -62,8 +62,8 @@ public class FallingLeafParticle extends CherryParticle
 
         final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
         final float windStrength = wind.length();
-        windMoveX = wind.x * windStrength * 0.6f;
-        windMoveZ = wind.y * windStrength * 0.6f;
+        windMoveX = wind.x * windStrength;
+        windMoveZ = wind.y * windStrength;
     }
 
     @Override
