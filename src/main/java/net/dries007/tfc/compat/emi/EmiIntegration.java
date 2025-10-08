@@ -113,6 +113,10 @@ public final class EmiIntegration implements EmiPlugin
         registry.addWorkstation(CASTING, EmiIngredient.of(TFCTags.Items.FIRED_MOLDS));
         registry.addWorkstation(BLOOMERY, EmiStack.of(TFCBlocks.BLOOMERY));
         registry.addWorkstation(CHISEL, EmiIngredient.of(TFCTags.Items.TOOLS_CHISEL));
+        registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.BLOWPIPE_WITH_GLASS));
+        registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS));
+        registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.GEM_SAW));
+        registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.JACKS));
     }
 
     private void registerRecipes(EmiRegistry registry)
