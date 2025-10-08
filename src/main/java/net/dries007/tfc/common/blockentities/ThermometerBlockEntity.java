@@ -8,8 +8,6 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,11 +17,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.component.heat.Heat;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.ClimateModel;
-
-import static net.dries007.tfc.util.calendar.ICalendar.*;
 
 public class ThermometerBlockEntity extends TickableBlockEntity
 {
@@ -65,7 +59,6 @@ public class ThermometerBlockEntity extends TickableBlockEntity
                 {
                     temperature = crucible.getTemperature();
                 }
-
                 newPower = (int) Math.floor(Mth.clampedMap(temperature, 0, Heat.BRILLIANT_WHITE.getMax(), 0, 15));
             }
             else
