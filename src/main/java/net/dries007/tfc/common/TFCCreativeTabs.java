@@ -541,6 +541,8 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.FIREPIT);
         out.accept(TFCBlocks.GRILL);
         out.accept(TFCBlocks.POT);
+        out.accept(TFCBlocks.STOVE);
+        out.accept(TFCBlocks.STOVE_POT);
         out.accept(TFCBlocks.BELLOWS);
         out.accept(TFCBlocks.POWDERKEG);
         out.accept(TFCBlocks.BARREL_RACK);

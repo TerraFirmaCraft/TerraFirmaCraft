@@ -45,6 +45,11 @@ public class PotBlock extends FirepitBlock
         super(properties, POT_SHAPE);
     }
 
+    public PotBlock(ExtendedProperties properties, VoxelShape shape)
+    {
+        super(properties, shape);
+    }
+
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {

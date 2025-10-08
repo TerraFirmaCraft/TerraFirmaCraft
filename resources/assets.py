@@ -608,6 +608,18 @@ def generate(rm: ResourceManager):
     }).with_lang(lang('Firepit')).with_block_loot('tfc:powder/wood_ash')
     rm.item_model('firepit', 'tfc:item/firepit')
 
+    rm.blockstate('stove', variants={
+        'lit=true,facing=north': {'model': 'tfc:block/stove_lit', 'y' : 270},
+        'lit=true,facing=south': {'model': 'tfc:block/stove_lit', 'y': 90},
+        'lit=true,facing=east': {'model': 'tfc:block/stove_lit'},
+        'lit=true,facing=west': {'model': 'tfc:block/stove_lit', 'y': 180},
+        'lit=false,facing=north': {'model': 'tfc:block/stove_unlit', 'y' : 270},
+        'lit=false,facing=south': {'model': 'tfc:block/stove_unlit', 'y': 90},
+        'lit=false,facing=east': {'model': 'tfc:block/stove_unlit'},
+        'lit=false,facing=west': {'model': 'tfc:block/stove_unlit', 'y': 180},
+    }).with_lang(lang('Stove')).with_block_loot('tfc:stove')
+    rm.item_model('stove', 'tfc:item/stove')
+
     for stage in ('cold', 'dried', 'fresh', 'white', 'red'):
         for i in range(1, 5):
             rm.block_model('firepit_log_%s_%s' % (i, stage), {'all': 'tfc:block/devices/firepit/log_%s' % stage}, parent='tfc:block/firepit_log_%s' % i)
@@ -631,6 +643,22 @@ def generate(rm: ResourceManager):
         ({'lit': False, 'axis': 'z'}, {'model': 'tfc:block/firepit_unlit', 'y': 90})
     ).with_lang(lang('Pot')).with_block_loot('tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', 'tfc:item/firepit_pot')
+
+    rm.blockstate_multipart('stove_pot',
+        ({'facing': 'north'}, {'model': 'tfc:block/pot_stove', 'y' : 270}),
+        ({'facing': 'south'}, {'model': 'tfc:block/pot_stove', 'y': 90}),
+        ({'facing': 'east'}, {'model': 'tfc:block/pot_stove'}),
+        ({'facing': 'west'}, {'model': 'tfc:block/pot_stove', 'y': 180}),
+        ({'lit': True, 'facing': 'north'}, {'model': 'tfc:block/stove_lit', 'y' : 270}),
+        ({'lit': True, 'facing': 'south'}, {'model': 'tfc:block/stove_lit', 'y': 90}),
+        ({'lit': True, 'facing': 'east'}, {'model': 'tfc:block/stove_lit'}),
+        ({'lit': True, 'facing': 'west'}, {'model': 'tfc:block/stove_lit', 'y': 180}),
+        ({'lit': False, 'facing': 'north'}, {'model': 'tfc:block/stove_unlit', 'y' : 270}),
+        ({'lit': False, 'facing': 'south'}, {'model': 'tfc:block/stove_unlit', 'y': 90}),
+        ({'lit': False, 'facing': 'east'}, {'model': 'tfc:block/stove_unlit'}),
+        ({'lit': False, 'facing': 'west'}, {'model': 'tfc:block/stove_unlit', 'y': 180}),
+        ).with_lang(lang('Pot')).with_block_loot('tfc:stove', 'tfc:ceramic/pot')
+    rm.item_model('stove_pot', 'tfc:item/stove_pot')
 
     block = rm.blockstate('powderkeg', variants={
         'lit=false,sealed=true': {'model': 'tfc:block/powderkeg_sealed'},

@@ -25,7 +25,9 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
+import net.dries007.tfc.common.blocks.devices.StoveBlock;
 import net.dries007.tfc.util.Helpers;
 
 public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>> implements BlockEntityRenderer<T>
@@ -62,9 +64,16 @@ public class FirepitBlockEntityRenderer<T extends AbstractFirepitBlockEntity<?>>
                     poseStack.mulPose(Axis.YP.rotationDegrees(90f));
                     poseStack.translate(-0.5f, -0.5f, -0.5f);
                 }
+
+                if (firepit.getBlockState().is(TFCBlocks.STOVE.get()) || firepit.getBlockState().is(TFCBlocks.STOVE_POT.get()))
+                {
+                    poseStack.translate(0, 0.1875d, 0);
+                }
+
                 AbstractFirepitBlockEntity.BurnStage stage = firepit.getBurnStage(i);
                 final BakedModel baked = mc.getModelManager().getModel(BURN_STAGE_MODELS.get(stage).get(i));
                 final VertexConsumer buffer = bufferSource.getBuffer(RenderType.solid());
+
                 mc.getBlockRenderer().getModelRenderer().tesselateWithAO(firepit.getLevel(), baked, firepit.getBlockState(), firepit.getBlockPos(), poseStack, buffer, true, random, combinedLight, combinedOverlay, ModelData.EMPTY, RenderType.solid());
                 poseStack.popPose();
             }

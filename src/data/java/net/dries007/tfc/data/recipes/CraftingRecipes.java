@@ -1209,6 +1209,10 @@ public interface CraftingRecipes extends Recipes
         recipe("from_canola")
             .input(TFCItems.CANOLA)
             .shapeless(TFCItems.STRAW);
+        recipe()
+            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.DOUBLE_SHEET))
+            .pattern(" S ", "S S", " S ")
+            .shaped(TFCBlocks.STOVE);
     }
 
     /**
