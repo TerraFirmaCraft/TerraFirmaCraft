@@ -46,9 +46,14 @@ public final class TFCBlockEntities
 
     public static final Id<FarmlandBlockEntity> FARMLAND = register("farmland", FarmlandBlockEntity::new, TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).values().stream());
     public static final Id<PileBlockEntity> PILE = register("pile", PileBlockEntity::new, Stream.of(TFCBlocks.ICE_PILE, TFCBlocks.SNOW_PILE));
-    public static final Id<FirepitBlockEntity> FIREPIT = register("firepit", FirepitBlockEntity::new, TFCBlocks.FIREPIT);
+    public static final Id<FirepitBlockEntity> FIREPIT = register("firepit", FirepitBlockEntity::new, Stream.of(TFCBlocks.FIREPIT, TFCBlocks.STOVE));
     public static final Id<GrillBlockEntity> GRILL = register("grill", GrillBlockEntity::new, TFCBlocks.GRILL);
-    public static final Id<PotBlockEntity> POT = register("pot", PotBlockEntity::new, TFCBlocks.POT);
+    public static final Id<PotBlockEntity> POT = register("pot", PotBlockEntity::new, Stream.of(TFCBlocks.POT, TFCBlocks.STOVE_POT));
+    /*
+    public static final Id<FirepitBlockEntity> STOVE = register("stove", FirepitBlockEntity::new, TFCBlocks.STOVE);
+    public static final Id<PotBlockEntity> STOVE_POT = register("stove_pot", PotBlockEntity::new, TFCBlocks.STOVE_POT);
+
+     */
     public static final Id<BowlBlockEntity> BOWL = register("bowl", BowlBlockEntity::new, Stream.of(TFCBlocks.CERAMIC_BOWL, TFCBlocks.WOODEN_BOWL));
     public static final Id<HotPouredGlassBlockEntity> HOT_POURED_GLASS = register("hot_poured_glass", HotPouredGlassBlockEntity::new, TFCBlocks.HOT_POURED_GLASS);
     public static final Id<GlassBasinBlockEntity> GLASS_BASIN = register("glass_basin", GlassBasinBlockEntity::new, TFCBlocks.GLASS_BASIN);

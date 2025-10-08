@@ -12,11 +12,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.outputs.PotOutput;
 
@@ -29,6 +31,17 @@ public class PotBlockEntityRenderer extends FirepitBlockEntityRenderer<PotBlockE
     {
         super.render(pot, partialTicks, poseStack, buffer, combinedLight, combinedOverlay);
         if (pot.getLevel() == null) return;
+
+        if (pot.getBlockState().is(TFCBlocks.STOVE_POT.get()))
+        {
+            poseStack.translate(0, 0.4375d, 0);
+            switch (pot.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+                case NORTH -> poseStack.translate(0, 0, -0.0625d);
+                case SOUTH -> poseStack.translate(0, 0, 0.0625d);
+                case EAST -> poseStack.translate(0.0625d, 0, 0);
+                case WEST -> poseStack.translate(-0.0625d, 0, 0);
+            }
+        }
 
         final PotOutput output = pot.getOutput();
         if (output != null && output.getRenderTexture() != null)

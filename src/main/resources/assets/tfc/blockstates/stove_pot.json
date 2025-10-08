@@ -1,0 +1,118 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "tfc:block/pot_stove",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "tfc:block/pot_stove",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "tfc:block/pot_stove"
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "tfc:block/pot_stove",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "lit": true,
+        "facing": "north"
+      },
+      "apply": {
+        "model": "tfc:block/stove_lit",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "lit": true,
+        "facing": "south"
+      },
+      "apply": {
+        "model": "tfc:block/stove_lit",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "lit": true,
+        "facing": "east"
+      },
+      "apply": {
+        "model": "tfc:block/stove_lit"
+      }
+    },
+    {
+      "when": {
+        "lit": true,
+        "facing": "west"
+      },
+      "apply": {
+        "model": "tfc:block/stove_lit",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "lit": false,
+        "facing": "north"
+      },
+      "apply": {
+        "model": "tfc:block/stove_unlit",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "lit": false,
+        "facing": "south"
+      },
+      "apply": {
+        "model": "tfc:block/stove_unlit",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "lit": false,
+        "facing": "east"
+      },
+      "apply": {
+        "model": "tfc:block/stove_unlit"
+      }
+    },
+    {
+      "when": {
+        "lit": false,
+        "facing": "west"
+      },
+      "apply": {
+        "model": "tfc:block/stove_unlit",
+        "y": 180
+      }
+    }
+  ]
+}

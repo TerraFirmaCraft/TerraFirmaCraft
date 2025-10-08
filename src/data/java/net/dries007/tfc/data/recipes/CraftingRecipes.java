@@ -46,7 +46,6 @@ import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
 import net.dries007.tfc.common.recipes.outputs.MealModifier;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.util.MetalItem;
 
 import static net.dries007.tfc.util.DataGenerationHelpers.Builder;
 
@@ -792,7 +791,7 @@ public interface CraftingRecipes extends Recipes
             .input('L', Tags.Items.LEATHERS)
             .pattern("SSS", "SLS", "SSS")
             .shaped(Items.ITEM_FRAME, 4);
-        recipe()
+        replace("ladder")
             .input('L', TFCTags.Items.LUMBER)
             .pattern("L L", "L L", "L L")
             .shaped(Items.LADDER, 16);
@@ -1211,6 +1210,10 @@ public interface CraftingRecipes extends Recipes
         recipe("from_canola")
             .input(TFCItems.CANOLA)
             .shapeless(TFCItems.STRAW);
+        recipe()
+            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.DOUBLE_SHEET))
+            .pattern(" S ", "S S", " S ")
+            .shaped(TFCBlocks.STOVE);
         recipe()
             .input('R', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.ROD))
             .input('B', TFCItems.BRASS_MECHANISMS)

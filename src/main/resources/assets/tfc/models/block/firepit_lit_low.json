@@ -1,10 +1,11 @@
 {
+	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
 		"1": "tfc:block/devices/firepit/rocks",
-		"unlit": "tfc:block/devices/firepit/hot_coals",
 		"particle": "tfc:block/devices/firepit/hot_coals",
+		"unlit": "tfc:block/devices/firepit/hot_coals",
 		"fire": "block/campfire_fire"
 	},
 	"elements": [
@@ -167,8 +168,8 @@
 			"shade": false,
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
 			"faces": {
-				"north": {"uv": [15.4, 0, 1, 8], "texture": "#fire"},
-				"south": {"uv": [1, 0, 15.4, 8], "texture": "#fire"}
+				"north": {"uv": [15.4, 0, 1, 6], "texture": "#fire"},
+				"south": {"uv": [1, 0, 15.4, 6], "texture": "#fire"}
 			}
 		},
 		{
@@ -177,8 +178,8 @@
 			"shade": false,
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
 			"faces": {
-				"east": {"uv": [1, 0, 15.4, 8], "texture": "#fire"},
-				"west": {"uv": [15.4, 0, 1, 8], "texture": "#fire"}
+				"east": {"uv": [1, 0, 15.4, 6], "texture": "#fire"},
+				"west": {"uv": [15.4, 0, 1, 6], "texture": "#fire"}
 			}
 		}
 	]

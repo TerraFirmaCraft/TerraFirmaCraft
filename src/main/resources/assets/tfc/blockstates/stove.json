@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "lit=true,facing=north": {
+      "model": "tfc:block/stove_lit",
+      "y": 270
+    },
+    "lit=true,facing=south": {
+      "model": "tfc:block/stove_lit",
+      "y": 90
+    },
+    "lit=true,facing=east": {
+      "model": "tfc:block/stove_lit"
+    },
+    "lit=true,facing=west": {
+      "model": "tfc:block/stove_lit",
+      "y": 180
+    },
+    "lit=false,facing=north": {
+      "model": "tfc:block/stove_unlit",
+      "y": 270
+    },
+    "lit=false,facing=south": {
+      "model": "tfc:block/stove_unlit",
+      "y": 90
+    },
+    "lit=false,facing=east": {
+      "model": "tfc:block/stove_unlit"
+    },
+    "lit=false,facing=west": {
+      "model": "tfc:block/stove_unlit",
+      "y": 180
+    }
+  }
+}
