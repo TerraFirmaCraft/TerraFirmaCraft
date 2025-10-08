@@ -1,5 +1,7 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import java.util.Comparator;
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
@@ -59,5 +61,15 @@ public class EmiHeatingRecipe extends GenericRecipe<HeatingRecipe>
             Font font = mc.font;
             widgets.addText(color, getDisplayWidth() / 2 - font.width(color) / 2, 4, 0xFFFFFF, true);
         }
+    }
+
+    @Override
+    public int compareTo(EmiRecipe other)
+    {
+        if (other instanceof EmiHeatingRecipe heating)
+        {
+            return (int) (recipe.getTemperature() - heating.recipe.getTemperature());
+        }
+        return super.compareTo(other);
     }
 }

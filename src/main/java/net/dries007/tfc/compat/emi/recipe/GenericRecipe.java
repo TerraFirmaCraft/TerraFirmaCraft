@@ -2,6 +2,7 @@ package net.dries007.tfc.compat.emi.recipe;
 
 import java.util.Arrays;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
@@ -43,5 +44,14 @@ public abstract class GenericRecipe<T extends Recipe<?>> extends BasicEmiRecipe
     protected static EmiIngredient toIngredient(BlockIngredient ingredient)
     {
         return EmiIngredient.of(ingredient.all().map(ItemStack::new).filter(item -> !item.isEmpty()).map(EmiStack::of).toList());
+    }
+
+    public int compareTo(EmiRecipe other)
+    {
+        if (other instanceof GenericRecipe<?> generic)
+        {
+            return id.compareTo(generic.id);
+        }
+        return 0;
     }
 }

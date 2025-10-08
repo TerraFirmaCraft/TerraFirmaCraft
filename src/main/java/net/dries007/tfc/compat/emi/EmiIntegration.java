@@ -7,9 +7,9 @@
 package net.dries007.tfc.compat.emi;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
@@ -19,7 +19,6 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -31,13 +30,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.recipes.AlloyRecipe;
-import net.dries007.tfc.common.recipes.AnvilRecipe;
-import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
-import net.dries007.tfc.common.recipes.CastingRecipe;
-import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBlastFurnaceRecipe;
@@ -47,7 +40,7 @@ import net.dries007.tfc.compat.emi.recipe.EmiChiselRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiGlassworkingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
-import net.dries007.tfc.compat.jei.category.AlloyRecipeCategory;
+import net.dries007.tfc.compat.emi.recipe.GenericRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
@@ -100,6 +93,12 @@ public final class EmiIntegration implements EmiPlugin
         {
             registry.addCategory(category);
         }
+        ALLOYING.sorter = sortByInput();
+        GLASSWORKING.sorter = sortByInput();
+        ANVIL.sorter = basicSorter();
+        WELDING.sorter = basicSorter();
+        CASTING.sorter = basicSorter();
+        HEATING.sorter = basicSorter();
     }
 
     private void registerWorkstations(EmiRegistry registry)
@@ -135,6 +134,22 @@ public final class EmiIntegration implements EmiPlugin
         {
             registry.addRecipe(mapper.apply(recipe.id(), recipe.value()));
         }
+    }
+
+    private static Comparator<EmiRecipe> sortByInput()
+    {
+        return Comparator.comparingInt(r -> r.getInputs().size());
+    }
+
+    private static Comparator<EmiRecipe> basicSorter()
+    {
+        return (o1, o2) -> {
+            if (o1 instanceof GenericRecipe<?> recipe)
+            {
+                return recipe.compareTo(o2);
+            }
+            return 0;
+        };
     }
 
 }

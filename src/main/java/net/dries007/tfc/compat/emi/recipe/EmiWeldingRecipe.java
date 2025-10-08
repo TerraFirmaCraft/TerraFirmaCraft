@@ -1,5 +1,6 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
@@ -31,5 +32,15 @@ public class EmiWeldingRecipe extends GenericRecipe<WeldingRecipe>
         widgets.addSlot(inputs.get(2), 46, 5);
         widgets.addSlot(outputs.getFirst(), 96, 5).recipeContext(this).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getTier())));
         widgets.addFillingArrow(68, 5, 3000);
+    }
+
+    @Override
+    public int compareTo(EmiRecipe other)
+    {
+        if (other instanceof EmiWeldingRecipe r)
+        {
+            return recipe.getTier() - r.recipe.getTier();
+        }
+        return super.compareTo(other);
     }
 }

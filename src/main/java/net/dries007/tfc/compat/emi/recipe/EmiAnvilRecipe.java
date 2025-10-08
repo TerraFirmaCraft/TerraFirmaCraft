@@ -1,5 +1,6 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
@@ -32,5 +33,15 @@ public class EmiAnvilRecipe extends GenericRecipe<AnvilRecipe>
     public static RegistryAccess registryAccess()
     {
         return ClientHelpers.getLevelOrThrow().registryAccess();
+    }
+
+    @Override
+    public int compareTo(EmiRecipe other)
+    {
+        if (other instanceof EmiAnvilRecipe r)
+        {
+            return recipe.getMinTier() - r.recipe.getMinTier();
+        }
+        return super.compareTo(other);
     }
 }
