@@ -433,6 +433,7 @@
   "tfc.tooltip.glass.olivine": "Szkło Oliwinowe",
   "tfc.tooltip.glass.volcanic": "Szkło wulkaniczne",
   "tfc.tooltip.glass.flatten_me": "Nacziśnij prawym trzymając łopatke by spłaszczyć Right",
+  "tfc.tooltip.glass.step_count": "%s of %s",
   "tfc.tooltip.sealed": "Szczelne",
   "tfc.tooltip.unsealed": "Rozszczelnione",
   "tfc.tooltip.switch_sides": "Zmień strony",

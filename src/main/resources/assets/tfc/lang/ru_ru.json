@@ -438,6 +438,7 @@
   "tfc.tooltip.glass.olivine": "Оливиновое стекло",
   "tfc.tooltip.glass.volcanic": "Вулканическое стекло",
   "tfc.tooltip.glass.flatten_me": "Щелкните правой кнопкой мыши с лопаткой, чтобы выровнять",
+  "tfc.tooltip.glass.step_count": "%s of %s",
   "tfc.tooltip.sealed": "Запечатана",
   "tfc.tooltip.unsealed": "Распечатана",
   "tfc.tooltip.switch_sides": "Поменять сторону",

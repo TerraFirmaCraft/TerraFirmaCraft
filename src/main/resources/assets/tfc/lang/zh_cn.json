@@ -442,6 +442,7 @@
   "tfc.tooltip.glass.olivine": "橄榄岩玻璃",
   "tfc.tooltip.glass.volcanic": "火山岩玻璃",
   "tfc.tooltip.glass.flatten_me": "Right click with a paddle to flatten",
+  "tfc.tooltip.glass.step_count": "%s of %s",
   "tfc.tooltip.sealed": "密封",
   "tfc.tooltip.unsealed": "未密封",
   "tfc.tooltip.switch_sides": "Switch Sides",

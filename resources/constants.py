@@ -1362,6 +1362,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.glass.olivine': 'Olivine Glass',
     'tfc.tooltip.glass.volcanic': 'Volcanic Glass',
     'tfc.tooltip.glass.flatten_me': 'Right click with a paddle to flatten',
+    'tfc.tooltip.glass.step_count': '%s of %s',
     'tfc.tooltip.sealed': 'Sealed',
     'tfc.tooltip.unsealed': 'Unsealed',
     'tfc.tooltip.switch_sides': 'Switch Sides',
