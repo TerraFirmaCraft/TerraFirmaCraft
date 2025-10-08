@@ -49,8 +49,8 @@ public interface KnappingRecipes extends Recipes
         clayKnapping(TFCItems.UNFIRED_LARGE_VESSEL, "X   X", "X   X", "X   X", "X   X", "XXXXX");
         clayKnapping(TFCItems.UNFIRED_JUG, " X   ", "XXXX ", "XXX X", "XXXX ", "XXX  ");
         clayKnapping(TFCItems.UNFIRED_POT, "X   X", "X   X", "X   X", "XXXXX", " XXX ");
-        clayKnapping(TFCItems.UNFIRED_BOWL, 2, "X   X", " XXX ");
-        clayKnapping("2", TFCItems.UNFIRED_BOWL, 4, false, "X   X", " XXX ", "     ", "X   X", " XXX ");
+        clayKnapping("1", TFCItems.UNFIRED_BOWL, 2, false, "X   X", " XXX ");
+        clayKnapping(TFCItems.UNFIRED_BOWL, 4, "X   X", " XXX ", "     ", "X   X", " XXX ");
         clayKnapping(TFCItems.UNFIRED_BRICK, 3, "XXXXX", "     ", "XXXXX", "     ", "XXXXX");
         clayKnapping(TFCItems.UNFIRED_FLOWER_POT, 2, " X X ", " XXX ", "     ", " X X ", " XXX ");
         clayKnapping(TFCItems.UNFIRED_SPINDLE_HEAD, 1, "  X  ", "XXXXX", "  X  ");
@@ -76,8 +76,8 @@ public interface KnappingRecipes extends Recipes
         fireClayKnapping(TFCItems.UNFIRED_CRUCIBLE, 1, "X   X", "X   X", "X   X", "X   X", "XXXXX");
         fireClayKnapping(TFCItems.UNFIRED_FIRE_BRICK, 3, "XXXXX", "     ", "XXXXX", "     ", "XXXXX");
         fireClayKnapping(TFCItems.UNFIRED_FIRE_INGOT_MOLD, 2, "XXXX", "X  X", "X  X", "X  X", "XXXX");
-        fireClayKnapping(TFCItems.UNFIRED_CHANNEL, 2, "X   X", " XXX ");
-        fireClayKnapping("4", TFCItems.UNFIRED_CHANNEL, 4, "X   X", " XXX ", "     ", "X   X", " XXX ");
+        fireClayKnapping("2", TFCItems.UNFIRED_CHANNEL, 2, "X   X", " XXX ");
+        fireClayKnapping(TFCItems.UNFIRED_CHANNEL, 4, "X   X", " XXX ", "     ", "X   X", " XXX ");
         fireClayKnapping(TFCItems.UNFIRED_MOLD_TABLE, 1, "XXXXX", "X   X", "X   X", "X   X", "XXXXX");
 
         leatherKnapping(Items.LEATHER_HELMET, "XXXXX", "X   X", "X   X", "     ", "     ");

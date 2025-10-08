@@ -64,26 +64,16 @@ public enum PlaceBlockSpecialPacket implements CustomPacketPayload
                     // If successful, then interact with the existing placed item
                     placedItem.onRightClick(player, stack, blockResult);
                 }
-                else if (!stack.isEmpty())
+                // Otherwise, if we're not interacting with an existing placed item, we must be placing a new stack
+                // The block we clicked on must be a solid surface (which includes shelves), and the block above must be empty.
+                else if (!stack.isEmpty() && level.isEmptyBlock(above))
                 {
-                    // Otherwise, if we're not interacting with an existing placed item, we must be placing a new stack
-                    // The block we clicked on must be a solid surface (which includes shelves), and the block above must be empty,
-                    // or a shelf. First, check for a shelf which we can place beneath.
-                    placedItem = level.getBlockEntity(above, TFCBlockEntities.SHELF.get())
-                        .orElse(null);
-                    if (placedItem != null)
+                    // Try and place a block on top of the surface that we clicked.
+                    final BlockState toPlace = PlacedItemBlock.updateStateValues(level, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState());
+                    if (PlacedItemBlock.isSlotSupported(toPlace, blockResult))
                     {
-                        placedItem.onRightClick(player, stack, blockResult);
-                    }
-                    else if (level.isEmptyBlock(above))
-                    {
-                        // Otherwise, try and place a block on top of the surface that we clicked.
-                        final BlockState toPlace = PlacedItemBlock.updateStateValues(level, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState());
-                        if (!PlacedItemBlock.isEmptyContents(toPlace))
-                        {
-                            level.setBlockAndUpdate(above, toPlace);
-                            level.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, blockResult));
-                        }
+                        level.setBlockAndUpdate(above, toPlace);
+                        level.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, blockResult));
                     }
                 }
             }

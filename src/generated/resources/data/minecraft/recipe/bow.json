@@ -1,7 +1,21 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:false"
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "tag": "c:strings"
+    },
+    "T": {
+      "tag": "c:rods/wooden"
     }
-  ]
+  },
+  "pattern": [
+    "ST ",
+    "S T",
+    "ST "
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:bow"
+  }
 }
