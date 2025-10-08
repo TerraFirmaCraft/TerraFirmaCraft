@@ -52,6 +52,7 @@ public final class TFCContainerTypes
     public static final Id<SewingTableContainer> SEWING_TABLE = register("sewing_table", ((windowId, inv, data) -> SewingTableContainer.create(inv, windowId, ContainerLevelAccess.NULL)));
 
     public static final Id<FirepitContainer> FIREPIT = TFCContainerTypes.<FirepitBlockEntity, FirepitContainer>registerBlock("firepit", TFCBlockEntities.FIREPIT, FirepitContainer::create);
+    public static final Id<FirepitContainer> STOVE = TFCContainerTypes.<FirepitBlockEntity, FirepitContainer>registerBlock("stove", TFCBlockEntities.FIREPIT, FirepitContainer::create);
     public static final Id<GrillContainer> GRILL = TFCContainerTypes.<GrillBlockEntity, GrillContainer>registerBlock("grill", TFCBlockEntities.GRILL, GrillContainer::create);
     public static final Id<PotContainer> POT = TFCContainerTypes.<PotBlockEntity, PotContainer>registerBlock("pot", TFCBlockEntities.POT, PotContainer::create);
     public static final Id<CharcoalForgeContainer> CHARCOAL_FORGE = TFCContainerTypes.<CharcoalForgeBlockEntity, CharcoalForgeContainer>registerBlock("charcoal_forge", TFCBlockEntities.CHARCOAL_FORGE, CharcoalForgeContainer::create);
