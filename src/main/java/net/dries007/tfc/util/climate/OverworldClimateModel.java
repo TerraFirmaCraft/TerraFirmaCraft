@@ -410,6 +410,30 @@ public class OverworldClimateModel implements ClimateModel
         final boolean isRaining = WeatherHelpers.isPrecipitating(getRain(calendarTicks), getRainfall(level, pos, calendarTicks, daysInMonth));
         final Holder<Biome> biome = level.getBiome(pos);
 
+        // the distribution of wind speed should be based relatively in reality -- we should be using a Weibull distribution
+        // but a normal distribution works fine for this simple application
+
+        float intensity = (float) random.nextGaussian() * 0.3f + 0.45f;
+
+        intensity = intensity * (isRaining ? 0.35f : 0.25f); // it becomes more likely to have higher wind speeds when raining
+
+        // top number the normal dist can normally generate - 0.25f - should equal 8 m/s or 28 kmh
+        // 1.0f should equal 32 m/s or 115 km/h
+        // i.e. factor is 32 for m/s, 115 for km/h
+        // anything higher than this should be impossible unless we add weather events like hurricanes
+
+        // somewhat faking the shape of a Weibull distribution by picking a random higher intensity if the wind is higher than a certain threshold
+        if (intensity > 0.23f)
+        {
+            intensity = random.nextFloat() * 0.75f + 0.25f;
+        }
+
+        // change the wind speed based on altitude (additive)
+        intensity = intensity + Mth.clamp(Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 128, 0f, 0.25f), 0, 1f);
+
+        // defensive in case I'm dumb
+        intensity = Mth.clamp(intensity, 0f, 1f);
+
         if (biome.is(TFCTags.Biomes.HAS_PREDICTABLE_WINDS))
         {
             // Predictable winds occur in oceans, and other biomes which want to have a wind functionality that is more than cosmetic
@@ -424,7 +448,6 @@ public class OverworldClimateModel implements ClimateModel
             final boolean oddBand = pos.getZ() < 0 ?
                 pos.getZ() % (windScale * 2) < windScale :
                 pos.getZ() % (windScale * 2) > windScale;
-            final float intensity = random.nextFloat() * 0.3f + 0.3f + (isRaining ? 0.4f : 0);
             float angle;
             if (isDay && oddBand)
                 angle = Mth.PI / 4;
@@ -435,15 +458,16 @@ public class OverworldClimateModel implements ClimateModel
             else
                 angle = 3 * Mth.PI / 4;
             angle += random.nextFloat() * 0.2f - 0.1f;
+            intensity = Math.max(intensity, 0.08f); // minimum wind speed
             return new Vec2(Mth.cos(angle), Mth.sin(angle)).scale(intensity);
         }
+        else
+        {
+            final float angle = random.nextFloat() * Mth.TWO_PI;
+            return new Vec2(Mth.cos(angle) * intensity, Mth.sin(angle) * intensity);
+        }
 
-        final float preventFrequentWindyDays = random.nextFloat() < 0.1f ? 1f : random.nextFloat();
-        final float intensity = Math.min(0.5f * random.nextFloat() * preventFrequentWindyDays
-            + 0.4f * Mth.clampedMap(y, SEA_LEVEL, SEA_LEVEL + 65, 0f, 1f)
-            + (isRaining ? 0.6f : 0), 1f);
-        final float angle = random.nextFloat() * Mth.TWO_PI;
-        return new Vec2(Mth.cos(angle) * intensity, Mth.sin(angle) * intensity);
+
     }
 
     /**
