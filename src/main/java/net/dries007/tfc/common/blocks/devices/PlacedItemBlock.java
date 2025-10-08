@@ -7,8 +7,20 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Map;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -31,18 +43,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
-import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
-import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.util.Helpers;
 
 public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -68,6 +68,15 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             if (!state.getValue(property))
                 return false;
         return true;
+    }
+
+    /**
+     * @return If the given {@code state} has the {@code ITEM[n]} property of the targetted slot set to {@code true}. This
+     * is required in order to place a new placed item block.
+     */
+    public static boolean isSlotSupported(BlockState state, BlockHitResult rayTrace)
+    {
+        return state.getValue(ITEM_PROPERTIES[PlacedItemBlockEntity.getSlotSelected(rayTrace)]);
     }
 
     /**

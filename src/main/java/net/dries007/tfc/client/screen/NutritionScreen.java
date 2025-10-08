@@ -60,8 +60,8 @@ public class NutritionScreen extends TFCContainerScreen<Container>
             final INutritionData nutrition = IPlayerInfo.get(player).nutrition();
             for (Nutrient nutrient : Nutrient.VALUES)
             {
-                final int width = (int) (nutrition.getNutrient(nutrient) * 50);
-                graphics.blit(texture, leftPos + 118, topPos + 21 + 13 * nutrient.ordinal(), 176, 0, width, 5);
+                final int width = (int) (nutrition.getNutrient(nutrient) * 93);
+                graphics.blit(texture, leftPos + 76, topPos + 18 + 11 * nutrient.ordinal(), 0, 166, width, 5);
             }
         }
     }
@@ -73,8 +73,8 @@ public class NutritionScreen extends TFCContainerScreen<Container>
 
         for (Nutrient nutrient : Nutrient.VALUES)
         {
-            final Component text = Helpers.translateEnum(nutrient).withStyle(nutrient.getColor());
-            graphics.drawString(font, text, 112 - font.width(text), 19 + 13 * nutrient.ordinal(), 0x404040, false);
+            final Component text = Helpers.translateEnum(nutrient);
+            drawLine(graphics, text, TextAlignment.RIGHT, -1,105, 17 + 11 * nutrient.ordinal());
         }
     }
 }

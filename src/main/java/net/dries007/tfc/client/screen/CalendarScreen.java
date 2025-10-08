@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,10 +22,14 @@ import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
+
+import static net.dries007.tfc.client.screen.TFCContainerScreen.TextAlignment.*;
 
 public class CalendarScreen extends TFCContainerScreen<Container>
 {
@@ -55,14 +60,43 @@ public class CalendarScreen extends TFCContainerScreen<Container>
     {
         super.renderLabels(graphics, mouseX, mouseY);
 
-        String month = I18n.get("tfc.tooltip.calendar_month", I18n.get(Calendars.CLIENT.getAbsoluteCalendarMonthOfYear().getTranslationKey(Month.Style.LONG_MONTH)));
-        String season = I18n.get("tfc.tooltip.calendar_season", I18n.get(Calendars.CLIENT.getHemispheralCalendarMonthOfYear(ClientHelpers.inNorthernHemisphere()).getTranslationKey(Month.Style.SEASON)));
-        String day = I18n.get("tfc.tooltip.calendar_day", Calendars.CLIENT.getCalendarDayOfYear().getString());
-        String date = I18n.get("tfc.tooltip.calendar_date", Calendars.CLIENT.getTimeAndDate().getString());
+        String date =
+            Calendars.CLIENT.getCalendarDayOfYear().getString() + ", " +
+                I18n.get(Calendars.CLIENT.getAbsoluteCalendarMonthOfYear().getTranslationKey(Month.Style.LONG_MONTH)) + " " +
+                Calendars.CLIENT.getCalendarDayOfMonth() + ", " + Calendars.CLIENT.getCalendarYear();
 
-        graphics.drawString(font, month, (imageWidth - font.width(month)) / 2, 20, 0x404040, false);
-        graphics.drawString(font, season, (imageWidth - font.width(season)) / 2, 31, 0x404040, false);
-        graphics.drawString(font, day, (imageWidth - font.width(day)) / 2, 42, 0x404040, false);
-        graphics.drawString(font, date, (imageWidth - font.width(date)) / 2, 53, 0x404040, false);
+        // this is kind of unnecessary with the default font, but it can potentially make the time look nicer with other fonts
+        drawLine(graphics, Component.literal(":"), CENTER, 22);
+        drawLine(graphics, Component.literal(String.format("%02d", Calendars.CLIENT.getHourOfDay())), RIGHT, -1, 83, 22);
+        drawLine(graphics, Component.literal(String.format("%02d", Calendars.CLIENT.getMinuteOfHour())), LEFT, -1, 83, 22);
+
+        drawLine(graphics, Component.translatable(date), CENTER, 33);
+
+        if (Calendars.CLIENT.getBirthday().equals(Component.empty()))
+        {
+            int daysLeft = Calendars.CLIENT.getCalendarDaysInMonth() - Calendars.CLIENT.getCalendarDayOfMonth();
+            String daysLeftKey = "tfc.tooltip.calendar_days_left_in_month";
+
+            if (daysLeft == 1)
+            {
+                daysLeftKey = "tfc.tooltip.calendar_second_last_day_in_month";
+            }
+            if (daysLeft == 0)
+            {
+                daysLeftKey = "tfc.tooltip.calendar_last_day_in_month";
+                drawLine(graphics, Component.translatable(daysLeftKey, I18n.get(Calendars.CLIENT.getAbsoluteCalendarMonthOfYear().getTranslationKey(Month.Style.LONG_MONTH))), CENTER, 44);
+            }
+            else
+            {
+                drawLine(graphics, Component.translatable(daysLeftKey, daysLeft, I18n.get(Calendars.CLIENT.getAbsoluteCalendarMonthOfYear().getTranslationKey(Month.Style.LONG_MONTH))), CENTER, 44);
+            }
+
+        }
+        else
+        {
+            drawLine(graphics, Calendars.CLIENT.getBirthday(), CENTER, 44);
+        }
+
+        drawLine(graphics, Component.translatable(Calendars.CLIENT.getHemispheralCalendarMonthOfYear(ClientHelpers.inNorthernHemisphere()).getTranslationKey(Month.Style.SEASON)), CENTER, 55);
     }
 }

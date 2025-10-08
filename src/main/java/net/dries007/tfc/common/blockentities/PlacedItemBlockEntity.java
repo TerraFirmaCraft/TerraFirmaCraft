@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blockentities;
 
 
 import java.util.List;
-import com.google.errorprone.annotations.DoNotCall;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

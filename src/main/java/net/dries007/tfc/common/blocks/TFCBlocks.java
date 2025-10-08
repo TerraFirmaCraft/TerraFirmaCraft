@@ -56,6 +56,7 @@ import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
+import net.dries007.tfc.common.blockentities.CalendarClockBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
@@ -80,6 +81,7 @@ import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
+import net.dries007.tfc.common.blocks.devices.CalendarClockBlock;
 import net.dries007.tfc.common.blocks.devices.ChannelBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.CrucibleBlock;
@@ -477,10 +479,11 @@ public final class TFCBlocks
     public static final Id<Block> STEEL_PUMP = register("steel_pump", () -> new FluidPumpBlock(ExtendedProperties.of().strength(5f).sound(SoundType.METAL).blockEntity(TFCBlockEntities.PUMP).serverTicks(PumpBlockEntity::serverTick).forceSolidOn()));
 
     public static final Id<Block> CHANNEL = register("channel", () -> new ChannelBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CHANNEL).lightLevel(s -> s.getValue(ChannelBlock.WITH_METAL) ? 10 : 0)));
-
     public static final Id<Block> MOLD_TABLE = register("mold_table", () -> new MoldBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.MOLD_TABLE).serverTicks(MoldBlockEntity::serverTick)));
+    
     public static final Id<Block> VANE = register("vane", () -> new VaneBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.VANE).requiresCorrectToolForDrops().<VaneBlockEntity>ticks(VaneBlockEntity::serverTick, VaneBlockEntity::clientTick)));
     public static final Id<Block> ANEMOMETER = register("anemometer", () -> new AnemometerBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.ANEMOMETER).requiresCorrectToolForDrops().<AnemometerBlockEntity>ticks(AnemometerBlockEntity::serverTick, AnemometerBlockEntity::clientTick)));
+    public static final Id<Block> CALENDAR_CLOCK = register("calendar_clock", () -> new CalendarClockBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CALENDAR_CLOCK).requiresCorrectToolForDrops().<CalendarClockBlockEntity>ticks(CalendarClockBlockEntity::serverTick, CalendarClockBlockEntity::clientTick)));
 
     public static final Map<DyeColor, Id<Block>> DYED_CANDLE_CAKES = Helpers.mapOf(DyeColor.class, color ->
         registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER).cloneItem(Blocks.CAKE)))

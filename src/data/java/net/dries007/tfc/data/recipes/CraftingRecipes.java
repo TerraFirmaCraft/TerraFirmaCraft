@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.dries007.tfc.common.TFCTags;
@@ -45,6 +46,7 @@ import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
 import net.dries007.tfc.common.recipes.outputs.MealModifier;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.MetalItem;
 
 import static net.dries007.tfc.util.DataGenerationHelpers.Builder;
 
@@ -64,7 +66,6 @@ public interface CraftingRecipes extends Recipes
             "bolt_armor_trim_smithing_template",
             "bone_meal",
             "bookshelf",
-            "bow",
             "bricks",
             "bucket",
             "campfire",
@@ -618,6 +619,11 @@ public interface CraftingRecipes extends Recipes
             .input('T', Items.REDSTONE_TORCH)
             .pattern("ISI", "ITI", "ISI")
             .shaped(Items.ACTIVATOR_RAIL, 12);
+        replace("bow")
+            .input('S', Tags.Items.STRINGS)
+            .input('T', Tags.Items.RODS_WOODEN)
+            .pattern("ST ", "S T", "ST ")
+            .shaped(Items.BOW);
         replace("comparator")
             .input('S', TFCTags.Items.STONES_RAW)
             .input('R', Tags.Items.DUSTS_REDSTONE)
@@ -786,7 +792,7 @@ public interface CraftingRecipes extends Recipes
             .input('L', Tags.Items.LEATHERS)
             .pattern("SSS", "SLS", "SSS")
             .shaped(Items.ITEM_FRAME, 4);
-        replace("ladder")
+        recipe()
             .input('L', TFCTags.Items.LUMBER)
             .pattern("L L", "L L", "L L")
             .shaped(Items.LADDER, 16);
@@ -1216,6 +1222,12 @@ public interface CraftingRecipes extends Recipes
             .input('B', TFCItems.BRASS_MECHANISMS)
             .pattern(" S ", "WBW", " W ")
             .shaped(TFCBlocks.VANE);
+        recipe()
+            .input('G', Blocks.GLASS_PANE)
+            .input('B', TFCItems.BRASS_MECHANISMS)
+            .input('S', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.SHEET))
+            .pattern(" G ", "SBS", " B ")
+            .shaped(TFCBlocks.CALENDAR_CLOCK);
     }
 
     /**
