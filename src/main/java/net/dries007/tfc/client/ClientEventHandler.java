@@ -99,6 +99,7 @@ import net.dries007.tfc.client.model.entity.BlackBearModel;
 import net.dries007.tfc.client.model.entity.BluegillModel;
 import net.dries007.tfc.client.model.entity.BoarModel;
 import net.dries007.tfc.client.model.entity.BongoModel;
+import net.dries007.tfc.client.model.entity.CalendarClockModel;
 import net.dries007.tfc.client.model.entity.CaribouModel;
 import net.dries007.tfc.client.model.entity.CougarModel;
 import net.dries007.tfc.client.model.entity.CrocodileModel;
@@ -168,6 +169,7 @@ import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BladedAxleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BowlBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.CalendarClockBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ChannelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CharcoalForgeBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
@@ -677,6 +679,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.BELL.get(), TFCBellBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.CHANNEL.get(), ctx -> new ChannelBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.MOLD_TABLE.get(), ctx -> new MoldBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.CALENDAR_CLOCK.get(), CalendarClockBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -760,7 +763,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.layerId("horse_chest"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("mule"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("donkey"), ChestedHorseModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.layerId("water_wheel"), WaterWheelModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("calendar_clock"), CalendarClockModel::createBodyLayer);
     }
 
 

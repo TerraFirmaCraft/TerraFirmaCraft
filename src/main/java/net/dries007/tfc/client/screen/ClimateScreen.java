@@ -25,6 +25,8 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 
+import static net.dries007.tfc.client.screen.TFCContainerScreen.TextAlignment.*;
+
 public class ClimateScreen extends TFCContainerScreen<Container>
 {
     public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/player_climate.png");
@@ -64,10 +66,20 @@ public class ClimateScreen extends TFCContainerScreen<Container>
 
         final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
 
-        drawCenteredLine(stack, Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, averageRainfall, rainVar, ClientHelpers.inNorthernHemisphere())), 21);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_temperature", style.formatRange(averageTemp), style.formatRange(currentTemp)), 32);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_rainfall", String.format("%.0f", averageRainfall), String.format("%.0f", currentRainfall)), 43);
-        drawCenteredLine(stack, Component.translatable(rainVar > 0 ? "tfc.tooltip.climate_peak_rainfall_july" : "tfc.tooltip.climate_peak_rainfall_january", String.format("%.0f", averageRainfall * (1 + Math.abs(rainVar)))), 54);
+        drawLine(stack, Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, averageRainfall, rainVar, ClientHelpers.inNorthernHemisphere())), CENTER, 18);
+
+        drawLine(stack, Component.translatable("tfc.tooltip.climate_temperature_name"), LEFT,32);
+        drawLine(stack, Component.translatable("tfc.tooltip.climate_temperature_average", style.formatRange(averageTemp)), LEFT, -1,36, 32);
+        drawLine(stack, Component.translatable("tfc.tooltip.climate_temperature_now", style.formatRange(currentTemp)), LEFT, -1,96,32);
+
+
+        drawLine(stack, Component.translatable("tfc.tooltip.climate_rainfall_name"), LEFT, 0x202080, 46);
+        drawLine(stack, Component.translatable("tfc.tooltip.climate_rainfall_average", String.format("%.0f", averageRainfall)), LEFT,0x202080, 36, 46);
+        drawLine(stack, Component.translatable("tfc.tooltip.climate_rainfall_now", String.format("%.0f", currentRainfall)), LEFT,0x202080, 96, 46);
+
+        drawLine(stack, Component.translatable("tfc.tooltip.climate_peak_rainfall"), LEFT,0x202080, 57);
+
+        drawLine(stack, Component.translatable(rainVar > 0 ? "tfc.tooltip.climate_peak_rainfall_july" : "tfc.tooltip.climate_peak_rainfall_january", String.format("%.0f", averageRainfall * (1 + Math.abs(rainVar)))), LEFT, 0x202080,36, 57);
     }
 
 }
