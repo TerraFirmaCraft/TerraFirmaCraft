@@ -59,7 +59,7 @@ public class ThermometerBlockEntity extends TickableBlockEntity
                 {
                     temperature = crucible.getTemperature();
                 }
-                newPower = (int) Math.floor(Mth.clampedMap(temperature, 0, Heat.BRILLIANT_WHITE.getMax(), 0, 15));
+                newPower = (int) Math.floor(Mth.clampedMap(temperature, 0, Heat.maxVisibleTemperature(), 0, 15));
             }
             else
             {
