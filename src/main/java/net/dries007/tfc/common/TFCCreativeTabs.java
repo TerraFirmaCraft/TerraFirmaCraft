@@ -568,6 +568,7 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.FIREBOX);
         out.accept(TFCBlocks.FIRE_CLAY_BLOCK);
         out.accept(TFCBlocks.CALENDAR_CLOCK);
+        out.accept(TFCBlocks.THERMOMETER);
 
         out.accept(TFCBlocks.AGGREGATE);
         out.accept(TFCBlocks.PLAIN_ALABASTER);

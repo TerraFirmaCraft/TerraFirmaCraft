@@ -2406,6 +2406,7 @@
     "tfc:ceramic/large_vessel",
     "tfc:mold_table",
     "tfc:channel",
-    "tfc:calendar_clock"
+    "tfc:calendar_clock",
+    "tfc:thermometer"
   ]
 }
