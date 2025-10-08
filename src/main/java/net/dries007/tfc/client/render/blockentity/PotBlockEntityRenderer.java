@@ -35,7 +35,8 @@ public class PotBlockEntityRenderer extends FirepitBlockEntityRenderer<PotBlockE
         if (pot.getBlockState().is(TFCBlocks.STOVE_POT.get()))
         {
             poseStack.translate(0, 0.4375d, 0);
-            switch (pot.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING)) {
+            switch (pot.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING))
+            {
                 case NORTH -> poseStack.translate(0, 0, -0.0625d);
                 case SOUTH -> poseStack.translate(0, 0, 0.0625d);
                 case EAST -> poseStack.translate(0.0625d, 0, 0);
