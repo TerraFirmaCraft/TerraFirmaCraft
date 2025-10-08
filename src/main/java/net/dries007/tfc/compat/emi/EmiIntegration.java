@@ -18,6 +18,7 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -30,6 +31,9 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.recipes.JamPotRecipe;
+import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
@@ -39,6 +43,7 @@ import net.dries007.tfc.compat.emi.recipe.EmiCastingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiChiselRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiGlassworkingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiJamPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
 import net.dries007.tfc.compat.emi.recipe.GenericRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -62,6 +67,7 @@ public final class EmiIntegration implements EmiPlugin
     public static final EmiRecipeCategory BARREL = createCategory("barrel", TFCBlocks.WOODS.get(Wood.OAK).get(Wood.BlockType.BARREL));
     public static final EmiRecipeCategory WELDING = createCategory("welding", TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.HAMMER));
     public static final EmiRecipeCategory GLASSWORKING = createCategory("glassworking", TFCItems.BLOWPIPE_WITH_GLASS);
+    public static final EmiRecipeCategory POT = createCategory("pot", TFCItems.POT);
 
     private static EmiRecipeCategory createCategory(String name, ItemLike item)
     {
@@ -92,13 +98,10 @@ public final class EmiIntegration implements EmiPlugin
         for (EmiRecipeCategory category : CATEGORIES)
         {
             registry.addCategory(category);
+            category.sorter = basicSorter();
         }
         ALLOYING.sorter = sortByInput();
         GLASSWORKING.sorter = sortByInput();
-        ANVIL.sorter = basicSorter();
-        WELDING.sorter = basicSorter();
-        CASTING.sorter = basicSorter();
-        HEATING.sorter = basicSorter();
     }
 
     private void registerWorkstations(EmiRegistry registry)
@@ -130,6 +133,17 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.BLOOMERY, EmiBloomeryRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.CHISEL, EmiChiselRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.GLASSWORKING, EmiGlassworkingRecipe::new);
+
+        for (RecipeHolder<PotRecipe> entry : recipes(TFCRecipeTypes.POT))
+        {
+            ResourceLocation id = entry.id();
+            PotRecipe recipe = entry.value();
+            var serializer = recipe.getSerializer();
+            if (serializer == TFCRecipeSerializers.POT_JAM.get())
+            {
+                registry.addRecipe(new EmiJamPotRecipe(id, (JamPotRecipe) recipe));
+            }
+        }
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)
