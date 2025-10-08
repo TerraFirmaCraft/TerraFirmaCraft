@@ -15,6 +15,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.client.screen.TFCContainerScreen.TextAlignment.*;
+
 public class TFCContainerScreen<C extends AbstractContainerMenu> extends AbstractContainerScreen<C>
 {
     public static final ResourceLocation INVENTORY_1x1 = Helpers.identifier("textures/gui/single_inventory.png");
@@ -22,6 +24,13 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
 
     protected final ResourceLocation texture;
     protected final Inventory playerInventory;
+
+    public enum TextAlignment
+    {
+        LEFT,
+        CENTER,
+        RIGHT
+    }
 
     public TFCContainerScreen(C container, Inventory playerInventory, Component name, ResourceLocation texture)
     {
@@ -49,10 +58,46 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         graphics.blit(texture, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 
-    protected void drawCenteredLine(GuiGraphics graphics, Component text, int y)
+
+    /**
+     * Use to draw a line with a particular text alignment and a y offset
+     */
+
+    protected void drawLine(GuiGraphics graphics, Component text, TextAlignment alignment, int y)
     {
-        final int x = (imageWidth - font.width(text)) / 2;
-        graphics.drawString(font, text, x, y, 0x404040, false);
+        drawLine(graphics, text, alignment, 0x404040, y);
+    }
+
+    /**
+     * Use to draw a line with a particular text alignment with a color and y offset
+     */
+    protected void drawLine(GuiGraphics graphics, Component text, TextAlignment alignment, int color, int y)
+    {
+        drawLine(graphics, text, alignment, color, 0, y);
+    }
+
+    /**
+     * Use to draw a line with a particular text alignment with a color and x and y offsets
+     * x is counted from the right with right alignment
+     * color will be ignored if -1
+     */
+    protected void drawLine(GuiGraphics graphics, Component text, TextAlignment alignment, int color, int x, int y)
+    {
+        if (alignment == RIGHT)
+        {
+            x *= -1;
+        }
+        if (color == -1)
+        {
+            color = 0x404040;
+        }
+        switch (alignment)
+        {
+            case LEFT -> x += 8;
+            case CENTER -> x += (imageWidth - font.width(text)) / 2;
+            default -> x += imageWidth - font.width(text) - 8;
+        }
+        graphics.drawString(font, text, x, y, color, false);
     }
 
     public Inventory getPlayerInventory()

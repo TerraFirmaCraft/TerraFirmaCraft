@@ -22,6 +22,8 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.FluidHeat;
 import net.dries007.tfc.util.tooltip.Tooltips;
 
+import static net.dries007.tfc.client.screen.TFCContainerScreen.TextAlignment.*;
+
 public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContainer>
 {
     public MoldLikeAlloyScreen(MoldLikeAlloyContainer container, Inventory playerInventory, Component name)
@@ -42,14 +44,14 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
             final FluidHeat metal = FluidHeat.get(fluid.getFluid());
             if (metal != null)
             {
-                drawCenteredLine(stack, fluid.getHoverName(), 14);
-                drawCenteredLine(stack, Tooltips.fluidUnits(fluid.getAmount()), 23);
+                drawLine(stack, fluid.getHoverName(), CENTER,14);
+                drawLine(stack, Tooltips.fluidUnits(fluid.getAmount()), CENTER,23);
 
                 final float temperature = mold.getTemperature();
                 final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().format(temperature);
                 if (tooltip != null)
                 {
-                    drawCenteredLine(stack, tooltip, 56);
+                    drawLine(stack, tooltip, CENTER,56);
                 }
 
                 final ItemStack outputStack = this.menu.getInventory().getStackInSlot(0);
@@ -57,7 +59,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
 
                 if (outputFluidHandler != null && !outputFluidHandler.isFluidValid(0, fluid))
                 {
-                    drawCenteredLine(stack, Component.translatable("tfc.tooltip.mold.fluid_incompatible"), 65);
+                    drawLine(stack, Component.translatable("tfc.tooltip.mold.fluid_incompatible"), CENTER,65);
                 }
             }
         }

@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.dries007.tfc.common.TFCTags;
@@ -45,6 +46,7 @@ import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
 import net.dries007.tfc.common.recipes.outputs.MealModifier;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.MetalItem;
 
 import static net.dries007.tfc.util.DataGenerationHelpers.Builder;
 
@@ -790,7 +792,7 @@ public interface CraftingRecipes extends Recipes
             .input('L', Tags.Items.LEATHERS)
             .pattern("SSS", "SLS", "SSS")
             .shaped(Items.ITEM_FRAME, 4);
-        replace("ladder")
+        recipe()
             .input('L', TFCTags.Items.LUMBER)
             .pattern("L L", "L L", "L L")
             .shaped(Items.LADDER, 16);
@@ -1213,6 +1215,12 @@ public interface CraftingRecipes extends Recipes
             .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.DOUBLE_SHEET))
             .pattern(" S ", "S S", " S ")
             .shaped(TFCBlocks.STOVE);
+        recipe()
+            .input('G', Blocks.GLASS_PANE)
+            .input('B', TFCItems.BRASS_MECHANISMS)
+            .input('S', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.SHEET))
+            .pattern(" G ", "SBS", " B ")
+            .shaped(TFCBlocks.CALENDAR_CLOCK);
     }
 
     /**
