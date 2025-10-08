@@ -59,8 +59,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     @Override
     public Component getDisplayName()
     {
-        // use the block name since this is also use for stoves, which don't have their own BE class
-        return this.getBlockState().getBlock().getName();
+        return customName == null ? this.getBlockState().getBlock().getName() : customName;
     }
 
     @Override
