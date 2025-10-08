@@ -54,7 +54,7 @@ public class ThermometerBlockEntity extends TickableBlockEntity
         }
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state)
+    public static void serverTick(Level level, BlockPos pos, BlockState state, ThermometerBlockEntity thermometer)
     {
         if (level.getGameTime() % 40 == 0)
         {
