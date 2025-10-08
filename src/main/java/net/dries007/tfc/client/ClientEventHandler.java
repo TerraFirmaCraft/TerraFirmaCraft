@@ -522,7 +522,6 @@ public final class ClientEventHandler
         event.register(TFCContainerTypes.SALAD.get(), SaladScreen::new);
         event.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
         event.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
-        event.register(TFCContainerTypes.STOVE.get(), FirepitScreen::new);
         event.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
         event.register(TFCContainerTypes.POT.get(), PotScreen::new);
         event.register(TFCContainerTypes.POWDERKEG.get(), PowderkegScreen::new);
