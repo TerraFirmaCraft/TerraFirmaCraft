@@ -744,6 +744,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(KAOLIN_CLAY_REPLACEABLE)
             .addTags(DIRT, Tags.Blocks.GRAVELS)
             .add(Blocks.SNOW_BLOCK);
+        tag(THERMOMETER_READABLE)
+            .add(TFCBlocks.FIREBOX)
+            .add(TFCBlocks.BLAST_FURNACE)
+            .add(TFCBlocks.CRUCIBLE);
         tag(SEA_STACK_ROCKS).add(
             TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.HARDENED),
             TFCBlocks.ROCK_BLOCKS.get(Rock.LIMESTONE).get(Rock.BlockType.HARDENED),

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -15,7 +16,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -45,7 +48,31 @@ public class ThermometerBlockEntity extends TickableBlockEntity
     {
         if (state.is(TFCBlocks.THERMOMETER.get()))
         {
-            final int newPower = (int) Math.floor(Mth.clampedMap(Climate.get(level).getTemperature(level, pos), -40, 40, 0, 15));
+            int newPower;
+            if (state.getValue(TFCBlockStateProperties.THERMOMETER_ATTACHED))
+            {
+                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+                float temperature = 0;
+                if (level.getBlockEntity(pos.relative(direction)) instanceof BlastFurnaceBlockEntity blastFurnace)
+                {
+                    temperature = blastFurnace.getTemperature();
+                }
+                if (level.getBlockEntity(pos.relative(direction)) instanceof FireboxBlockEntity firebox)
+                {
+                    temperature = firebox.getTemperature();
+                }
+                if (level.getBlockEntity(pos.relative(direction)) instanceof CrucibleBlockEntity crucible)
+                {
+                    temperature = crucible.getTemperature();
+                }
+
+                newPower = (int) Math.floor(Mth.clampedMap(temperature, 0, Heat.BRILLIANT_WHITE.getMax(), 0, 15));
+            }
+            else
+            {
+                newPower = (int) Math.floor(Mth.clampedMap(Climate.get(level).getTemperature(level, pos), -40, 40, 0, 15));
+            }
+
             if (newPower != state.getValue(BlockStateProperties.POWER))
             {
                 level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.POWER, newPower));

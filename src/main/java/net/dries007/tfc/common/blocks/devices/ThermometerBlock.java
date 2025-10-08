@@ -19,19 +19,22 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.dries007.tfc.common.blockentities.CalendarClockBlockEntity;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.ThermometerBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
 public class ThermometerBlock extends DeviceBlock
 {
     public static IntegerProperty POWER = BlockStateProperties.POWER;
+    public static BooleanProperty ATTACHED = TFCBlockStateProperties.THERMOMETER_ATTACHED;
     public static DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape SHAPE_NORTH = box(4D, 1D, 14D, 12D, 15D, 16D);
     private static final VoxelShape SHAPE_SOUTH = box(4D, 1D, 0D, 12D, 15D, 2D);
@@ -41,7 +44,7 @@ public class ThermometerBlock extends DeviceBlock
     public ThermometerBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.NOOP);
-        registerDefaultState(getStateDefinition().any().setValue(POWER, 0).setValue(FACING, Direction.NORTH));
+        registerDefaultState(getStateDefinition().any().setValue(POWER, 0).setValue(FACING, Direction.NORTH).setValue(ATTACHED, Boolean.FALSE));
 
     }
 
@@ -58,6 +61,9 @@ public class ThermometerBlock extends DeviceBlock
         BlockState blockstate = this.defaultBlockState();
         final LevelReader levelreader = context.getLevel();
         final BlockPos blockpos = context.getClickedPos();
+
+
+
         final Direction[] adirection = context.getNearestLookingDirections();
         final Direction[] var6 = adirection;
         int var7 = adirection.length;
@@ -71,6 +77,10 @@ public class ThermometerBlock extends DeviceBlock
                 blockstate = blockstate.setValue(FACING, direction1);
                 if (blockstate.canSurvive(levelreader, blockpos))
                 {
+                    if (levelreader.getBlockState(blockpos.relative(direction1.getOpposite())).is(TFCTags.Blocks.THERMOMETER_READABLE))
+                    {
+                        blockstate = blockstate.setValue(ATTACHED, true);
+                    }
                     return blockstate;
                 }
             }
@@ -92,7 +102,7 @@ public class ThermometerBlock extends DeviceBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(POWER).add(FACING);
+        builder.add(POWER).add(FACING).add(ATTACHED);
     }
 
     @Override
@@ -126,7 +136,7 @@ public class ThermometerBlock extends DeviceBlock
     @Override
     protected int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
     {
-        if (blockState.getValue(FACING) == side)
+        if (blockState.getValue(FACING) == side && !blockState.getValue(ATTACHED))
         {
             return getSignal(blockState, blockAccess, pos, side);
         }
@@ -153,6 +163,10 @@ public class ThermometerBlock extends DeviceBlock
     {
         BlockPos blockpos = pos.relative(facing.getOpposite());
         BlockState blockstate = level.getBlockState(blockpos);
+        if (blockstate.is(TFCBlocks.CRUCIBLE.get()))
+        {
+            return true;
+        }
         return blockstate.isFaceSturdy(level, blockpos, facing);
     }
 }
