@@ -1,18 +1,17 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 
-import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.compat.emi.EmiIntegration;
 
 public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
 {
@@ -20,11 +19,9 @@ public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
     {
         super(id, recipe, 113, 80);
         List<Ingredient> ing = recipe.getItemIngredients();
-        for (Ingredient ingredient : ing)
-        {
-            inputs.add(EmiIngredient.of(ingredient));
-        }
+        inputs.addAll(groupSimilar(ing, EmiIngredient::of, Objects::equals));
 
+        List<ItemStack> unsortedStacks = new ArrayList<>();
         int j = 0;
         for (ItemStackProvider provider : recipe.getOutputItems())
         {
@@ -36,12 +33,16 @@ public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
             {
                 if (!stack.isEmpty())
                 {
-                    outputs.add(EmiStack.of(stack));
+                    unsortedStacks.add(stack);
                 }
             }
         }
+        outputs.addAll(groupSimilar(unsortedStacks, EmiStack::of, ItemStack::matches));
         FluidStack fluidOut = recipe.getDisplayFluid();
-        outputs.add(EmiStack.of(fluidOut.getFluid(), fluidOut.getAmount()));
+        if (!fluidOut.isEmpty())
+        {
+            outputs.add(EmiStack.of(fluidOut.getFluid(), fluidOut.getAmount()));
+        }
 
     }
 }

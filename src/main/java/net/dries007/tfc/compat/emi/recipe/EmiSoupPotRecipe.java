@@ -1,20 +1,17 @@
 package net.dries007.tfc.compat.emi.recipe;
 
-import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import java.util.List;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
-import org.joml.Vector2i;
 
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
-import net.dries007.tfc.compat.emi.EmiIntegration;
 
 public class EmiSoupPotRecipe extends EmiBasePotRecipe<SoupPotRecipe>
 {
@@ -44,26 +41,27 @@ public class EmiSoupPotRecipe extends EmiBasePotRecipe<SoupPotRecipe>
     @Override
     protected void addOutputWidgets(WidgetHolder widgets)
     {
-        Vector2i pos = outputSlotPosition();
-        widgets.add(new CyclingSlotWidget(EmiIngredient.of(outputs, servings), pos.x, pos.y, 25)).recipeContext(this);
+        widgets.add(new CyclingSlotWidget(outputs, 90, 24, 25)).recipeContext(this);
     }
 
     private static class CyclingSlotWidget extends SlotWidget
     {
         private final float cycleTime;
+        private final EmiIngredient[] ingredients;
         private float currentTime = 0;
         private int index = 0;
 
-        public CyclingSlotWidget(EmiIngredient stack, int x, int y, float cycleTime)
+        public CyclingSlotWidget(List<? extends EmiIngredient> ingredients, int x, int y, float cycleTime)
         {
-            super(stack, x, y);
+            super(ingredients.getFirst(), x, y);
+            this.ingredients = ingredients.toArray(EmiIngredient[]::new);
             this.cycleTime = cycleTime;
         }
 
         @Override
         public EmiIngredient getStack()
         {
-            return super.getStack().getEmiStacks().get(index);
+            return ingredients[index];
         }
 
         @Override
@@ -73,7 +71,7 @@ public class EmiSoupPotRecipe extends EmiBasePotRecipe<SoupPotRecipe>
             if (currentTime >= cycleTime)
             {
                 currentTime -= cycleTime;
-                index = (index + 1) % stack.getEmiStacks().size();
+                index = (index + 1) % ingredients.length;
             }
             super.render(draw, mouseX, mouseY, delta);
         }

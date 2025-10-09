@@ -1,11 +1,13 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.BiFunction;
 import dev.emi.emi.api.render.EmiTexture;
-import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec2;
 import org.joml.Vector2i;
 
 import net.dries007.tfc.common.recipes.PotRecipe;
@@ -64,12 +66,58 @@ public class EmiBasePotRecipe<T extends PotRecipe> extends GenericRecipe<T>
 
     protected void addOutputWidgets(WidgetHolder widgets)
     {
-        Vector2i pos = outputSlotPosition();
-        widgets.addSlot(outputs.getFirst(), pos.x, pos.y).recipeContext(this);
+        int index = 0;
+        for (Vector2i pos : outputSlotPositions())
+        {
+            if (index < inputs.size())
+            {
+                widgets.addSlot(outputs.get(index), pos.x, pos.y).recipeContext(this);
+            }
+            else
+            {
+                widgets.addSlot(pos.x, pos.y);
+            }
+            index++;
+        }
     }
 
-    protected Vector2i outputSlotPosition()
+    protected Vector2i[] outputSlotPositions()
     {
-        return new Vector2i(90, 24);
+        int count = getOutputs().size();
+        int distancePerStep = 20;
+        int heightTotal = count * distancePerStep;
+        int yOff = TextWidget.Alignment.CENTER.offset(heightTotal);
+        List<Vector2i> points = new ArrayList<>();
+        for (int i = 0; i < count; i++)
+        {
+            points.add(new Vector2i(90, 34 + yOff + distancePerStep * i));
+        }
+        return points.toArray(Vector2i[]::new);
+    }
+
+    protected static <T, V> List<V> groupSimilar(List<T> list, BiFunction<T, Integer, V> mapper, BiFunction<T, T, Boolean> comp)
+    {
+        List<T> ordered = new ArrayList<>();
+        HashMap<T, Integer> stacked = new HashMap<>();
+        for (T entry : list)
+        {
+            boolean found = false;
+            T target = entry;
+            for (T existing : ordered)
+            {
+                if (comp.apply(existing, entry))
+                {
+                    found = true;
+                    target = existing;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                ordered.add(entry);
+            }
+            stacked.compute(target, (x, i) -> i == null ? 1 : i + 1);
+        }
+        return ordered.stream().map(i -> mapper.apply(i, stacked.get(i))).toList();
     }
 }
