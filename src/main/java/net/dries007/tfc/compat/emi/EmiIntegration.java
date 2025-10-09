@@ -33,6 +33,8 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.SimplePotRecipe;
+import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
@@ -44,6 +46,8 @@ import net.dries007.tfc.compat.emi.recipe.EmiChiselRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiGlassworkingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiJamPotRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiSimplePotRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiSoupPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
 import net.dries007.tfc.compat.emi.recipe.GenericRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -142,6 +146,14 @@ public final class EmiIntegration implements EmiPlugin
             if (serializer == TFCRecipeSerializers.POT_JAM.get())
             {
                 registry.addRecipe(new EmiJamPotRecipe(id, (JamPotRecipe) recipe));
+            }
+            else if (serializer == TFCRecipeSerializers.POT_SOUP.get())
+            {
+                registry.addRecipe(new EmiSoupPotRecipe(id, (SoupPotRecipe) recipe));
+            }
+            else if (serializer == TFCRecipeSerializers.POT_SIMPLE.get())
+            {
+                registry.addRecipe(new EmiSimplePotRecipe(id, (SimplePotRecipe) recipe));
             }
         }
     }

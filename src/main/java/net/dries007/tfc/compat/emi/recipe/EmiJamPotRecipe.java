@@ -14,13 +14,12 @@ import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 
-public class EmiJamPotRecipe extends GenericRecipe<JamPotRecipe>
+public class EmiJamPotRecipe extends EmiBasePotRecipe<JamPotRecipe>
 {
     public EmiJamPotRecipe(ResourceLocation id, JamPotRecipe recipe)
     {
-        super(EmiIntegration.POT, id, recipe, 175, 50);
+        super(id, recipe, 113, 80);
 
-        inputs.add(toIngredient(recipe.getFluidIngredient()));
         HashMap<Ingredient, Integer> stackedIngredients = new HashMap<>();
         for (var ingredient : recipe.getItemIngredients())
         {
@@ -30,16 +29,6 @@ public class EmiJamPotRecipe extends GenericRecipe<JamPotRecipe>
         stackedIngredients.forEach(((ingredient, count) -> inputs.add(EmiIngredient.of(ingredient, count))));
 
         outputs.add(EmiStack.of(recipe.getResultItem(registryAccess())));
-    }
-
-    @Override
-    public void addWidgets(WidgetHolder widgets)
-    {
-        for (int i = 0; i < inputs.size(); i++)
-        {
-            widgets.addSlot(inputs.get(i), 6 + 18 * i, 6);
-        }
-        widgets.addSlot(outputs.getFirst(), 40, 40).recipeContext(this);
     }
 
     @Override

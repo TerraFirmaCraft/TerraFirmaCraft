@@ -19,6 +19,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.SoupPotRecipe;
 
 
 public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
@@ -39,7 +40,7 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
             if (!ingredient.isEmpty())
                 ingredientCount++;
         }
-        final int servings = (int) (ingredientCount / 2f) + 1;
+        final int servings = SoupPotRecipe.ingredientsToServings(ingredientCount);
 
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 126, 6);
         outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get(), servings)).toList());

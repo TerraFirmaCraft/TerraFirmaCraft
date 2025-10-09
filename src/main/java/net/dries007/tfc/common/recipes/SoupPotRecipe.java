@@ -50,6 +50,11 @@ public class SoupPotRecipe extends PotRecipe
     public static final int SOUP_HUNGER_VALUE = 4;
     public static final float SOUP_DECAY_MODIFIER = 3.5F;
 
+    public static int ingredientsToServings(int ingredientCount)
+    {
+        return (int) (ingredientCount / 2f) + 1;
+    }
+
     public SoupPotRecipe(PotRecipe base)
     {
         super(base);
@@ -89,7 +94,8 @@ public class SoupPotRecipe extends PotRecipe
         if (ingredientCount > 0)
         {
             float multiplier = 1 - (0.05f * ingredientCount); // per-serving multiplier of nutrition
-            water *= multiplier; saturation *= multiplier;
+            water *= multiplier;
+            saturation *= multiplier;
             Nutrient maxNutrient = Nutrient.GRAIN; // determines what item you get. this is a default
             float maxNutrientValue = 0;
             for (Nutrient nutrient : Nutrient.VALUES)
@@ -103,7 +109,7 @@ public class SoupPotRecipe extends PotRecipe
                 }
             }
 
-            soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), (int) (ingredientCount / 2f) + 1);
+            soupStack = new ItemStack(TFCItems.SOUPS.get(maxNutrient).get(), ingredientsToServings(ingredientCount));
             soupStack.set(TFCComponents.INGREDIENTS, ItemListComponent.of(itemIngredients));
             FoodCapability.setFoodForDynamicItemOnCreate(
                 soupStack,
