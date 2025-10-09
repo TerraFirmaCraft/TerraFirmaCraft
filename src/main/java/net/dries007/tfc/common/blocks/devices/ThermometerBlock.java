@@ -16,6 +16,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,6 +32,7 @@ import net.dries007.tfc.common.blockentities.ThermometerBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.Helpers;
 
 public class ThermometerBlock extends DeviceBlock
 {
@@ -62,15 +65,10 @@ public class ThermometerBlock extends DeviceBlock
         final LevelReader levelreader = context.getLevel();
         final BlockPos blockpos = context.getClickedPos();
 
+        final Direction[] looking = context.getNearestLookingDirections();
 
-
-        final Direction[] adirection = context.getNearestLookingDirections();
-        final Direction[] var6 = adirection;
-        int var7 = adirection.length;
-
-        for (int var8 = 0; var8 < var7; ++var8)
+        for (Direction direction : looking)
         {
-            Direction direction = var6[var8];
             if (direction.getAxis().isHorizontal())
             {
                 Direction direction1 = direction.getOpposite();
@@ -146,7 +144,7 @@ public class ThermometerBlock extends DeviceBlock
     @Override
     protected int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side)
     {
-        if (blockState.is(TFCBlocks.THERMOMETER.get()))
+        if (Helpers.isBlock(blockState, TFCBlocks.THERMOMETER.get()))
         {
             return blockState.getValue(POWER);
         }
@@ -168,5 +166,15 @@ public class ThermometerBlock extends DeviceBlock
             return true;
         }
         return blockstate.isFaceSturdy(level, blockpos, facing);
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 }

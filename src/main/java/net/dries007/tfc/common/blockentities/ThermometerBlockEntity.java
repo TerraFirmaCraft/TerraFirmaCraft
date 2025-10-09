@@ -17,12 +17,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.component.heat.Heat;
+import net.dries007.tfc.common.component.heat.IHeat;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 
 public class ThermometerBlockEntity extends TickableBlockEntity
 {
 
-    protected ThermometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
+    public ThermometerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
     }
@@ -40,24 +42,16 @@ public class ThermometerBlockEntity extends TickableBlockEntity
 
     public static void updatePower(Level level, BlockPos pos, BlockState state)
     {
-        if (state.is(TFCBlocks.THERMOMETER.get()))
+        if (Helpers.isBlock(state, TFCBlocks.THERMOMETER.get()))
         {
             int newPower;
             if (state.getValue(TFCBlockStateProperties.THERMOMETER_ATTACHED))
             {
-                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
+                final Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite();
                 float temperature = 0;
-                if (level.getBlockEntity(pos.relative(direction)) instanceof BlastFurnaceBlockEntity blastFurnace)
+                if (level.getBlockEntity(pos.relative(direction)) instanceof IHeatable heatable)
                 {
-                    temperature = blastFurnace.getTemperature();
-                }
-                if (level.getBlockEntity(pos.relative(direction)) instanceof FireboxBlockEntity firebox)
-                {
-                    temperature = firebox.getTemperature();
-                }
-                if (level.getBlockEntity(pos.relative(direction)) instanceof CrucibleBlockEntity crucible)
-                {
-                    temperature = crucible.getTemperature();
+                    temperature = heatable.getTemperature();
                 }
                 newPower = (int) Math.floor(Mth.clampedMap(temperature, 0, Heat.maxVisibleTemperature(), 0, 15));
             }

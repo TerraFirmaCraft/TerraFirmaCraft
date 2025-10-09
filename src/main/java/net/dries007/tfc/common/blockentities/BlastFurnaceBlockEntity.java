@@ -57,7 +57,7 @@ import net.dries007.tfc.util.data.Fuel;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
-public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastFurnaceBlockEntity.BlastFurnaceInventory> implements ICalendarTickable
+public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastFurnaceBlockEntity.BlastFurnaceInventory> implements ICalendarTickable, IHeatable
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, BlastFurnaceBlockEntity entity)
     {
