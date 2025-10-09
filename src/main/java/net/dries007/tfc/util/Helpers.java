@@ -69,6 +69,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -85,6 +86,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.material.Fluid;
@@ -1578,6 +1580,30 @@ public final class Helpers
         {
             tooltips.add(Component.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
+    }
+
+    @Nullable
+    public static BlockState getSupportedDirectionalStateForPlacement(Block block, BlockPlaceContext context, boolean horizontal){
+        BlockState blockstate = block.defaultBlockState();
+        final LevelReader levelreader = context.getLevel();
+        final BlockPos blockpos = context.getClickedPos();
+
+        final Direction[] looking = context.getNearestLookingDirections();
+
+        for (Direction direction : looking)
+        {
+            if (direction.getAxis().isHorizontal() || !horizontal)
+            {
+                Direction direction1 = direction.getOpposite();
+                blockstate = blockstate.setValue(BlockStateProperties.FACING, direction1);
+                if (blockstate.canSurvive(levelreader, blockpos))
+                {
+                    return blockstate;
+                }
+            }
+        }
+
+        return null;
     }
 
     public static boolean isItem(ItemStack stack, ItemLike item)

@@ -18,8 +18,10 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.ObserverBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -37,6 +39,7 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.util.Helpers;
 
 public class CalendarClockBlock extends DeviceBlock
 {
@@ -65,25 +68,7 @@ public class CalendarClockBlock extends DeviceBlock
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        BlockState blockstate = this.defaultBlockState();
-        final LevelReader levelreader = context.getLevel();
-        final BlockPos blockpos = context.getClickedPos();
-        final Direction[] adirection = context.getNearestLookingDirections();
-        final Direction[] var6 = adirection;
-        int var7 = adirection.length;
-
-        for (int var8 = 0; var8 < var7; ++var8)
-        {
-            Direction direction = var6[var8];
-            Direction direction1 = direction.getOpposite();
-            blockstate = blockstate.setValue(FACING, direction1);
-            if (blockstate.canSurvive(levelreader, blockpos))
-            {
-                return blockstate;
-            }
-        }
-
-        return null;
+        return Helpers.getSupportedDirectionalStateForPlacement(this, context, false);
     }
 
     @Override
@@ -195,5 +180,17 @@ public class CalendarClockBlock extends DeviceBlock
         BlockPos blockpos = pos.relative(facing.getOpposite());
         BlockState blockstate = level.getBlockState(blockpos);
         return blockstate.isFaceSturdy(level, blockpos, facing);
+    }
+
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rot)
+    {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror)
+    {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 }
