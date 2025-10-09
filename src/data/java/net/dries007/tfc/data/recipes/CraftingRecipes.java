@@ -1219,7 +1219,7 @@ public interface CraftingRecipes extends Recipes
             .shaped(TFCBlocks.CALENDAR_CLOCK);
         recipe()
             .input('G', Blocks.GLASS_PANE)
-            .input('B', TFCItems.SILICA_GLASS_BOTTLE)
+            .input('B', TFCTags.Items.GLASS_BOTTLES)
             .input('R', Items.REDSTONE)
             .input('S', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.SHEET))
             .pattern(" G ", "RBR", " S ")

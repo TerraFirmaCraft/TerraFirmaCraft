@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "tfc:silica_glass_bottle"
+      "tag": "tfc:glass_bottles"
     },
     "G": {
       "item": "minecraft:glass_pane"
