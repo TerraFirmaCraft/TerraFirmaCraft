@@ -635,9 +635,9 @@ def generate(rm: ResourceManager):
 
     # easier to just use a loop since 0 - 15 power needs to be mapped to 0 - 10 models
     thermometer_states = {}
-    for p in range (0, 15):
+    for p in range (0, 16):
         for f, y in {'north': None, 'south': 180, 'east': 90, 'west': 270}.items():
-            m = math.floor(p * (11/15))
+            m = math.floor(p * (11/16))
             thermometer_states.update({'power=%s,facing=%s' % (p, f) : {'model': 'tfc:block/thermometer/thermometer_%s' % m, 'y': y}})
 
     rm.blockstate('thermometer', variants=thermometer_states).with_lang(lang('Thermometer')).with_block_loot('tfc:thermometer')
