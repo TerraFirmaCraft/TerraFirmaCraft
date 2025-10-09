@@ -567,6 +567,8 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.FIREPROOF_DOOR);
         out.accept(TFCBlocks.FIREBOX);
         out.accept(TFCBlocks.FIRE_CLAY_BLOCK);
+        out.accept(TFCBlocks.VANE);
+        out.accept(TFCBlocks.ANEMOMETER);
         out.accept(TFCBlocks.CALENDAR_CLOCK);
         out.accept(TFCBlocks.THERMOMETER);
 

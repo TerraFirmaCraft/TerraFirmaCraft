@@ -60,13 +60,14 @@ public final class WeatherHelpers
 
     // The number of ticks per a single snow accumulation/melt event in a single chunk. For reference, vanilla operates at
     // (48 / randomTickSpeed), or 16 ticks. We do melting much slower, since it's statistically much less likely to be raining
-    private static final int TICKS_PER_SNOW_ACCUMULATION = TFCConfig.SERVER.ticksPerSnowAccumulation.get();
-    private static final int TICKS_PER_SNOW_MELT_PER_SNOW_ACCUMULATION = TFCConfig.SERVER.snowMeltMultiplier.get();
-    private static final int WIND_KMS_FACTOR = 115;
-    private static final int WIND_MS_FACTOR = 32;
+    private static final int TICKS_PER_SNOW_ACCUMULATION = 80;
+    private static final int TICKS_PER_SNOW_MELT_PER_SNOW_ACCUMULATION = 3;
     private static final int TICKS_PER_SNOW_MELT = TICKS_PER_SNOW_ACCUMULATION * TICKS_PER_SNOW_MELT_PER_SNOW_ACCUMULATION;
 
-    // For fast forwarding, the number of "fast-forward" ticks that should be simulated for each step of estimated
+    private static final int WIND_KMS_FACTOR = 115;
+    private static final int WIND_MS_FACTOR = 32;
+
+    // For fast forwarding, the number of "fast-forward" ticks that should be simulated for a given hour of either estimated
     // melting, or estimated snow accumulation.
     private static final int UPDATES_PER_SNOW_MELT_SKIP = 1 + 4_000 / TICKS_PER_SNOW_MELT;
     private static final int UPDATES_PER_SNOW_ACCUMULATION_SKIP = 1 + 4_000 / TICKS_PER_SNOW_ACCUMULATION;

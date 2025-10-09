@@ -93,6 +93,8 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
             Ingredient.of(TFCItems.UNFIRED_MOLD_TABLE), 
             Ingredient.of(TFCBlocks.MOLD_TABLE)
         ), Size.HUGE, Weight.HEAVY);
+        add("vane", TFCBlocks.VANE, Size.NORMAL, Weight.MEDIUM);
+        add("anemometer", TFCBlocks.VANE, Size.NORMAL, Weight.MEDIUM);
         add("small_tools", ingredientOf(
             Ingredient.of(TFCTags.Items.TOOLS_CHISEL),
             Ingredient.of(TFCTags.Items.TOOLS_KNIFE),

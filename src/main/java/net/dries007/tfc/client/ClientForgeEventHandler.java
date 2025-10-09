@@ -95,6 +95,7 @@ import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.RequestClimateModelPacket;
 import net.dries007.tfc.network.StackFoodPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -306,10 +307,10 @@ public class ClientForgeEventHandler
                         first = false;
                     }
                     tooltip.add(Component.literal(DARK_GRAY
-                            + typeOfComponent(stack.getComponentsPatch().get(component.type()))
-                            + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
-                            + " = "
-                            + component.value()
+                        + typeOfComponent(stack.getComponentsPatch().get(component.type()))
+                        + BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(component.type())
+                        + " = "
+                        + component.value()
                         // Avoid showing the encoding, it's interesting but not necessary. Uncomment if needing to debug
                         //+ " = "
                         //+ component.encodeValue(RegistryOps.create(NbtOps.INSTANCE, Minecraft.getInstance().level.registryAccess()))
@@ -466,7 +467,7 @@ public class ClientForgeEventHandler
             Slot slot = inv.getSlotUnderMouse();
             if (slot != null)
             {
-                PacketDistributor.sendToServer(new StackFoodPacket(slot.index));
+               PacketDistributor.sendToServer(new StackFoodPacket(slot.index));
             }
         }
     }

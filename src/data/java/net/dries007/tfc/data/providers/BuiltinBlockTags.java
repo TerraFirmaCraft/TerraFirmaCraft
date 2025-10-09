@@ -246,6 +246,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.FIRE_BRICK_SHELF)
             .add(TFCBlocks.FIREPROOF_DOOR)
             .add(TFCBlocks.FIREBOX)
+            .add(TFCBlocks.VANE)
+            .add(TFCBlocks.ANEMOMETER)
             .add(
                 TFCBlocks.ICICLE,
                 TFCBlocks.SEA_ICE,

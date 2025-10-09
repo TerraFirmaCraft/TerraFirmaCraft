@@ -2302,6 +2302,13 @@ def generate(rm: ResourceManager):
     block.with_block_loot('tfc:trip_hammer')
     rm.item_model('trip_hammer', parent='tfc:block/trip_hammer', no_textures=True)
 
+    block = rm.blockstate('vane').with_block_model({'particle': 'tfc:block/metal/block/wrought_iron'}, parent=None)
+    block.with_lang(lang('weather vane')).with_block_loot('tfc:vane')
+    rm.item_model('vane')
+
+    block = rm.blockstate('anemometer').with_block_model({'particle': 'tfc:block/metal/block/brass'}, parent=None)
+    block.with_lang(lang('anemometer')).with_block_loot('tfc:anemometer')
+    rm.item_model('anemometer')
     block = rm.blockstate('calendar_clock').with_block_model({'particle': 'tfc:block/metal/block/brass'}, parent=None)
     block.with_lang(lang('precision clock')).with_block_loot('tfc:calendar_clock')
     rm.item_model('calendar_clock')
@@ -2403,7 +2410,6 @@ def generate(rm: ResourceManager):
 
     rm.custom_block_model('ingot_pile', 'tfc:ingot_pile', {})
     rm.custom_block_model('double_ingot_pile', 'tfc:double_ingot_pile', {})
-
 
     for fluid in SIMPLE_FLUIDS:
         water_based_fluid(rm, fluid)

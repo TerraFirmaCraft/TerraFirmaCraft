@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "tfc:brass_mechanisms"
+    },
+    "R": {
+      "item": "tfc:metal/rod/brass"
+    }
+  },
+  "pattern": [
+    " R ",
+    "RBR",
+    " R "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:anemometer"
+  }
+}

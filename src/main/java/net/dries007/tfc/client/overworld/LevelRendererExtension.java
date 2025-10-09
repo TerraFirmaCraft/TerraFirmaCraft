@@ -103,8 +103,8 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     private static final ResourceLocation MOON_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/moon_phases.png");
     private static final ResourceLocation SUN_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/sun.png");
 
-    private static final float RAIN_MAX_ANGLE = Mth.TWO_PI * (360f / 20);
-    private static final float SNOW_MAX_ANGLE = Mth.TWO_PI * (360f / 30);
+    private static final float RAIN_MAX_ANGLE = 20 * Mth.DEG_TO_RAD;
+    private static final float SNOW_MAX_ANGLE = 30 * Mth.DEG_TO_RAD;
 
     private static VertexBuffer createBuffer(ThrowingSupplier<?> draw)
     {
@@ -408,19 +408,20 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
             int stateFlag = -1;
 
-            final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
+            Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
 
             // max angle is at ~50 kmh
-            final float zAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, RAIN_MAX_ANGLE));
-            final float xAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, RAIN_MAX_ANGLE));
-            final float xAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, 0, 0.4f, 0, SNOW_MAX_ANGLE));
-            final float zAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, 0, 0.4f, 0, SNOW_MAX_ANGLE));
 
-            final float defaultXOffsetRain = (float) (Math.tan(zAngleRain) * 10);
-            final float defaultZOffsetRain = (float) (Math.tan(xAngleRain) * 10);
+            final float xAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, -0.4f, 0.4f, -RAIN_MAX_ANGLE, RAIN_MAX_ANGLE));
+            final float zAngleRain = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, -0.4f, 0.4f, -RAIN_MAX_ANGLE, RAIN_MAX_ANGLE));
+            final float xAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.x, -0.4f, 0.4f, -SNOW_MAX_ANGLE, SNOW_MAX_ANGLE));
+            final float zAngleSnow = Mth.TWO_PI / (360f / Mth.clampedMap(wind.y, -0.4f, 0.4f, -SNOW_MAX_ANGLE, SNOW_MAX_ANGLE));
 
-            final float defaultXOffsetSnow = (float) (Math.tan(xAngleSnow) * 10);
-            final float defaultZOffsetSnow = (float) (Math.tan(zAngleSnow) * 10);
+            final float defaultXOffsetRain = (float) (Math.tan(xAngleRain * Mth.RAD_TO_DEG) * 10);
+            final float defaultZOffsetRain = (float) (Math.tan(zAngleRain * Mth.RAD_TO_DEG) * 10);
+
+            final float defaultXOffsetSnow = (float) (Math.tan(xAngleSnow * Mth.RAD_TO_DEG) * 10);
+            final float defaultZOffsetSnow = (float) (Math.tan(zAngleSnow * Mth.RAD_TO_DEG) * 10);
 
             for (int z = blockZ - blockRadius; z <= blockZ + blockRadius; z++)
             {
@@ -489,13 +490,13 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
                             float height = maxY - minY;
 
-                            float zOffset = defaultXOffsetRain;
-                            float xOffset = defaultZOffsetRain;
+                            float xOffset = defaultXOffsetRain;
+                            float zOffset = defaultZOffsetRain;
                             if (height != 10)
                             {
                                 // avoid extra math for most of these quads
-                                zOffset = (float) (Math.tan(zAngleRain) * height);
-                                xOffset = (float) (Math.tan(xAngleRain) * height);
+                                zOffset = (float) (Math.tan(zAngleRain * Mth.RAD_TO_DEG) * height);
+                                xOffset = (float) (Math.tan(xAngleRain * Mth.RAD_TO_DEG) * height);
                             }
 
                             cursor.set(x, y, z);
@@ -507,10 +508,10 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             Vector3f vert2 = new Vector3f(x - camX + rainSizeX + 0.5f, minY - camY, z - camZ + rainSizeZ + 0.5f);
                             Vector3f vert3 = new Vector3f(x - camX - rainSizeX + 0.5f, minY - camY, z - camZ - rainSizeZ + 0.5f);
 
-                            vert0 = vert0.add(-zOffset / 2, 0, -xOffset / 2);
-                            vert1 = vert1.add(-zOffset / 2, 0, -xOffset / 2);
-                            vert2 = vert2.add(zOffset / 2, 0, xOffset / 2);
-                            vert3 = vert3.add(zOffset / 2, 0, xOffset / 2);
+                            vert0 = vert0.add(-xOffset / 2, 0, -zOffset / 2);
+                            vert1 = vert1.add(-xOffset / 2, 0, -zOffset / 2);
+                            vert2 = vert2.add(xOffset / 2, 0, zOffset / 2);
+                            vert3 = vert3.add(xOffset / 2, 0, zOffset / 2);
 
                             buffer.addVertex(vert0)
                                 .setUv(0.0F, minY * 0.25F + v)
@@ -575,8 +576,8 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                             float zoffset = defaultZOffsetSnow;
                             if (height != 10)
                             {
-                                xoffset = (float) (Math.tan(xAngleSnow) * height);
-                                zoffset = (float) (Math.tan(zAngleSnow) * height);
+                                xoffset = (float) (Math.tan(xAngleSnow * Mth.RAD_TO_DEG) * height);
+                                zoffset = (float) (Math.tan(zAngleSnow * Mth.DEG_TO_RAD) * height);
                             }
 
                             cursor.set(x, y, z);
