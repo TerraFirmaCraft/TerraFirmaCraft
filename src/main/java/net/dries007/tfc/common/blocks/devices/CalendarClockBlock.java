@@ -121,16 +121,15 @@ public class CalendarClockBlock extends DeviceBlock
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        switch (state.getValue(FACING))
+        return switch (state.getValue(FACING))
         {
-            case NORTH -> {return SHAPE_NORTH;}
-            case SOUTH -> {return SHAPE_SOUTH;}
-            case EAST -> {return SHAPE_EAST;}
-            case WEST -> {return SHAPE_WEST;}
-            case UP -> {return SHAPE_UP;}
-            case DOWN -> {return SHAPE_DOWN;}
-        }
-        return SHAPE_DOWN;
+            case NORTH -> SHAPE_NORTH;
+            case SOUTH -> SHAPE_SOUTH;
+            case EAST -> SHAPE_EAST;
+            case WEST -> SHAPE_WEST;
+            case UP -> SHAPE_UP;
+            case DOWN -> SHAPE_DOWN;
+        };
     }
 
     @Override
