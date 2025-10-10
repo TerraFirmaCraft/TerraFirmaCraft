@@ -32,7 +32,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "minecraft:snowball"
+              "name": "minecraft:air"
             }
           ]
         }
