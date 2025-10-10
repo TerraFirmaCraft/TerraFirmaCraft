@@ -28,6 +28,7 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
+import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.fluids.SimpleFluid;
@@ -232,6 +233,13 @@ public interface BarrelRecipes extends Recipes
         musicDisc(DyeColor.BLUE, Items.MUSIC_DISC_WARD);
 
         // Instant Recipes
+        for (SoilBlockType.Variant soil: SoilBlockType.Variant.values())
+        {
+            barrel()
+                .input(soil.getBlock(SoilBlockType.DIRT).get()).input(Fluids.WATER, 250)
+                .output(soil.getBlock(SoilBlockType.MUD).get())
+                .instant();
+        }
         barrel()
             .input(TFCItems.POWDERS.get(Powder.SALT))
             .input(Fluids.WATER, 125)
@@ -284,6 +292,7 @@ public interface BarrelRecipes extends Recipes
             .input(Fluids.WATER, 100)
             .output(TFCItems.JUTE_NET)
             .instant();
+
 
         // Instant Fluid Mixing
         barrel()
