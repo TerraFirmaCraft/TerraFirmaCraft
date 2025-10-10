@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import dev.emi.emi.api.EmiEntrypoint;
@@ -50,6 +51,7 @@ import net.dries007.tfc.compat.emi.recipe.EmiGlassworkingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiJamPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiKnappingRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiLoomRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSimplePotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSoupPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
@@ -77,6 +79,7 @@ public final class EmiIntegration implements EmiPlugin
     public static final EmiRecipeCategory WELDING = createCategory("welding", TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.HAMMER));
     public static final EmiRecipeCategory GLASSWORKING = createCategory("glassworking", TFCItems.BLOWPIPE_WITH_GLASS);
     public static final EmiRecipeCategory POT = createCategory("pot", TFCItems.POT);
+    public static final EmiRecipeCategory LOOM = createCategory("loom", TFCItems.BURLAP_CLOTH);
 
     public static final HashMap<KnappingType, EmiRecipeCategory> KNAPPING = new HashMap<>();
 
@@ -146,6 +149,7 @@ public final class EmiIntegration implements EmiPlugin
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS));
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.GEM_SAW));
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.JACKS));
+        registry.addWorkstation(LOOM, EmiIngredient.of(TFCBlocks.WOODS.values().stream().map(wood -> wood.get(Wood.BlockType.LOOM)).map(EmiStack::of).toList()));
 
         for (var knap : KNAPPING.entrySet())
         {
@@ -166,6 +170,7 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.BLOOMERY, EmiBloomeryRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.CHISEL, EmiChiselRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.GLASSWORKING, EmiGlassworkingRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.LOOM, EmiLoomRecipe::new);
 
         for (RecipeHolder<PotRecipe> entry : recipes(TFCRecipeTypes.POT))
         {

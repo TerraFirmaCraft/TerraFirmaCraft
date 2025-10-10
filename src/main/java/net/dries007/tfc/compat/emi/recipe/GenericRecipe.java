@@ -7,6 +7,9 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.api.widget.Widget;
+import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +31,30 @@ public abstract class GenericRecipe<T extends Recipe<?>> extends BasicEmiRecipe
     {
         super(category, id, width, height);
         this.recipe = recipe;
+    }
+
+    @Override
+    public void addWidgets(WidgetHolder widgets)
+    {
+        int x = 6;
+        int y = 6;
+
+        for (EmiIngredient ingredient : getInputs())
+        {
+            Widget slot = widgets.addSlot(ingredient, x, y);
+            Bounds bounds = slot.getBounds();
+            x = bounds.right() + 3;
+        }
+
+        Widget arrow = widgets.addFillingArrow(x, y, 3000);
+        x = arrow.getBounds().right() + 3;
+
+        for (EmiIngredient stack : getOutputs())
+        {
+            Widget slot = widgets.addSlot(stack, x, y).recipeContext(this);
+            Bounds bounds = slot.getBounds();
+            x = bounds.right() + 3;
+        }
     }
 
     protected static RegistryAccess registryAccess()
@@ -75,7 +102,7 @@ public abstract class GenericRecipe<T extends Recipe<?>> extends BasicEmiRecipe
             .map(FoodCapability::setTransientNonDecaying) // Avoid decaying in JEI views
             .toList();
     }
-    
+
     public static List<ItemStack> collapse(ItemStackProvider output)
     {
         return List.of(output.getEmptyStack());
