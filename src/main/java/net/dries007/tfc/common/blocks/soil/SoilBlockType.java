@@ -90,7 +90,7 @@ public enum SoilBlockType
         ALFISOL,
         MOLLISOL;
 
-        public static final Variant[] VALUES = values();
+        private static final Variant[] VALUES = values();
 
         public static Variant valueOf(int i)
         {
