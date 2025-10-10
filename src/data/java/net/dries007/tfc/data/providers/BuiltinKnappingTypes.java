@@ -68,7 +68,7 @@ public class BuiltinKnappingTypes extends DataManagerProvider<KnappingType>
         add(GOAT_HORN,
             TFCTags.Items.GOAT_HORN_KNAPPING, 1, 1,
             TFCSounds.KNAP_STONE,
-            false, false, false,
+            false, true, false,
             TFCItems.GOAT_HORN);
     }
 

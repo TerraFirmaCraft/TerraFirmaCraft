@@ -7,7 +7,9 @@
 package net.dries007.tfc.compat.emi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -19,6 +21,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -31,6 +34,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
+import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
@@ -45,12 +49,14 @@ import net.dries007.tfc.compat.emi.recipe.EmiChiselRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiGlassworkingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiJamPotRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiKnappingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSimplePotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSoupPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
 import net.dries007.tfc.compat.emi.recipe.GenericRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.data.KnappingType;
 
 /**
  * todo: it is worth having a native EMI plugin, as otherwise it will populate from JEI, which keeps both JEI and EMI
@@ -72,7 +78,17 @@ public final class EmiIntegration implements EmiPlugin
     public static final EmiRecipeCategory GLASSWORKING = createCategory("glassworking", TFCItems.BLOWPIPE_WITH_GLASS);
     public static final EmiRecipeCategory POT = createCategory("pot", TFCItems.POT);
 
+    public static final HashMap<KnappingType, EmiRecipeCategory> KNAPPING = new HashMap<>();
+
+
     private static EmiRecipeCategory createCategory(String name, ItemLike item)
+    {
+        EmiRecipeCategory category = new EmiRecipeCategory(Helpers.identifier(name), EmiStack.of(item));
+        CATEGORIES.add(category);
+        return category;
+    }
+
+    private static EmiRecipeCategory createCategory(String name, ItemStack item)
     {
         EmiRecipeCategory category = new EmiRecipeCategory(Helpers.identifier(name), EmiStack.of(item));
         CATEGORIES.add(category);
@@ -98,6 +114,13 @@ public final class EmiIntegration implements EmiPlugin
 
     private void registerCategories(EmiRegistry registry)
     {
+        for (var entry : KnappingType.MANAGER.getElements().entrySet())
+        {
+            KnappingType knappingType = entry.getValue();
+            EmiRecipeCategory category = createCategory(entry.getKey().getPath() + "_knapping", knappingType.icon());
+            KNAPPING.put(knappingType, category);
+        }
+
         for (EmiRecipeCategory category : CATEGORIES)
         {
             registry.addCategory(category);
@@ -123,6 +146,13 @@ public final class EmiIntegration implements EmiPlugin
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS));
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.GEM_SAW));
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.JACKS));
+
+        for (var knap : KNAPPING.entrySet())
+        {
+            KnappingType type = knap.getKey();
+            EmiRecipeCategory category = knap.getValue();
+            registry.addWorkstation(category, EmiIngredient.of(Arrays.stream(type.inputItem().getItems()).map(EmiStack::of).toList()));
+        }
     }
 
     private void registerRecipes(EmiRegistry registry)
@@ -155,6 +185,14 @@ public final class EmiIntegration implements EmiPlugin
                 registry.addRecipe(new EmiSimplePotRecipe(id, (SimplePotRecipe) recipe));
             }
         }
+
+        for (RecipeHolder<KnappingRecipe> entry : recipes(TFCRecipeTypes.KNAPPING))
+        {
+            KnappingRecipe recipe = entry.value();
+            KnappingType type = recipe.knappingType().get();
+            EmiRecipeCategory category = KNAPPING.get(type);
+            registry.addRecipe(new EmiKnappingRecipe(category, entry.id(), recipe));
+        }
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)
@@ -180,5 +218,4 @@ public final class EmiIntegration implements EmiPlugin
             return 0;
         };
     }
-
 }
