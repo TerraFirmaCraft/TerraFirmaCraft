@@ -12,6 +12,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 
 public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
 {
@@ -26,8 +27,8 @@ public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
         for (ItemStackProvider provider : recipe.getOutputItems())
         {
             final List<ItemStack> stacks = provider.dependsOnInput()
-                ? collapse(List.of(ing.get(j).getItems()), provider)
-                : collapse(provider);
+                ? EmiHelpers.collapse(List.of(ing.get(j).getItems()), provider)
+                : EmiHelpers.collapse(provider);
 
             for (ItemStack stack : stacks)
             {

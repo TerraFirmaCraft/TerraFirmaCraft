@@ -11,15 +11,16 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Vector2i;
 
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public class EmiBasePotRecipe<T extends PotRecipe> extends GenericRecipe<T>
+public class EmiBasePotRecipe<T extends PotRecipe> extends BasicRecipe<T>
 {
     public EmiBasePotRecipe(ResourceLocation id, T recipe, int width, int height)
     {
         super(EmiIntegration.POT, id, recipe, width, height);
-        inputs.add(toIngredient(recipe.getFluidIngredient()));
+        inputs.add(EmiHelpers.toIngredient(recipe.getFluidIngredient()));
     }
 
     @Override

@@ -27,12 +27,12 @@ import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.recipes.GlassworkingRecipe;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 
-public class EmiGlassworkingRecipe extends GenericRecipe<GlassworkingRecipe>
+public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
 {
     private static final int OPERATIONS_PER_PAGE = 6;
     private final GlassworkingStepWidget[] stepWidgets;
     private int currentPage = 0;
-    private PageControlsWidget pageControls;
+    private @Nullable PageControlsWidget pageControls;
 
 
     public EmiGlassworkingRecipe(ResourceLocation id, GlassworkingRecipe recipe)
@@ -43,7 +43,7 @@ public class EmiGlassworkingRecipe extends GenericRecipe<GlassworkingRecipe>
         {
             inputs.add(EmiIngredient.of(operation.getItems().stream().map(Holder::value).map(EmiStack::of).toList()));
         }
-        
+
         ItemStack result = recipe.getResultItem(null);
         if (result.getItem() instanceof BlockItem bi && bi.getBlock() instanceof PouredGlassBlock block)
         {

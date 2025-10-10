@@ -1,5 +1,6 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
@@ -9,9 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.player.ChiselMode;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 
-public class EmiChiselRecipe extends GenericRecipe<ChiselRecipe>
+public class EmiChiselRecipe extends BasicRecipe<ChiselRecipe>
 {
     private final ChiselMode mode;
 
@@ -20,7 +22,7 @@ public class EmiChiselRecipe extends GenericRecipe<ChiselRecipe>
         super(EmiIntegration.CHISEL, id, recipe, 118, 26);
         mode = recipe.getMode();
 
-        inputs.add(toIngredient(recipe.getIngredient()));
+        inputs.add(EmiHelpers.toIngredient(recipe.getIngredient()));
         inputs.add(EmiIngredient.of(TFCTags.Items.TOOLS_CHISEL));
         outputs.add(EmiStack.of(recipe.getResultItem(null)));
         outputs.add(EmiStack.of(recipe.getItemOutput(ItemStack.EMPTY)));
@@ -34,5 +36,17 @@ public class EmiChiselRecipe extends GenericRecipe<ChiselRecipe>
         widgets.addSlot(outputs.get(0), 76, 5).recipeContext(this);
         widgets.addSlot(outputs.get(1), 96, 5).recipeContext(this);
         mode.createIcon((id, u, v, width, height) -> widgets.addTexture(id, 50, 3, width, height, u, v));
+    }
+
+    @Override
+    public int compareTo(EmiRecipe other)
+    {
+        if (other instanceof EmiChiselRecipe chisel)
+        {
+            ResourceLocation modeA = ChiselMode.REGISTRY.getKey(mode);
+            ResourceLocation modeB = ChiselMode.REGISTRY.getKey(chisel.mode);
+            return modeA.compareTo(modeB);
+        }
+        return super.compareTo(other);
     }
 }

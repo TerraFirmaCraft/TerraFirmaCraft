@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import dev.emi.emi.api.EmiEntrypoint;
@@ -41,6 +40,7 @@ import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.compat.emi.recipe.ComparableRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBlastFurnaceRecipe;
@@ -55,7 +55,6 @@ import net.dries007.tfc.compat.emi.recipe.EmiLoomRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSimplePotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSoupPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
-import net.dries007.tfc.compat.emi.recipe.GenericRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.KnappingType;
@@ -216,7 +215,7 @@ public final class EmiIntegration implements EmiPlugin
     private static Comparator<EmiRecipe> basicSorter()
     {
         return (o1, o2) -> {
-            if (o1 instanceof GenericRecipe<?> recipe)
+            if (o1 instanceof ComparableRecipe recipe)
             {
                 return recipe.compareTo(o2);
             }

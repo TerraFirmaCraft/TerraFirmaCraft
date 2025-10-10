@@ -1,6 +1,5 @@
 package net.dries007.tfc.compat.emi.recipe;
 
-import java.util.Comparator;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
@@ -14,10 +13,11 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 import net.dries007.tfc.config.TFCConfig;
 
-public class EmiHeatingRecipe extends GenericRecipe<HeatingRecipe>
+public class EmiHeatingRecipe extends BasicRecipe<HeatingRecipe>
 {
     // Positions and dimensions taken from the JEI HeatingRecipeCategory
     public EmiHeatingRecipe(ResourceLocation id, HeatingRecipe recipe)
@@ -26,7 +26,7 @@ public class EmiHeatingRecipe extends GenericRecipe<HeatingRecipe>
 
         inputs.add(EmiIngredient.of(recipe.getIngredient()));
 
-        ItemStack itemOut = recipe.getResultItem(registryAccess());
+        ItemStack itemOut = recipe.getResultItem(EmiHelpers.registryAccess());
         FluidStack fluidOut = recipe.getDisplayOutputFluid();
         if (!itemOut.isEmpty())
         {

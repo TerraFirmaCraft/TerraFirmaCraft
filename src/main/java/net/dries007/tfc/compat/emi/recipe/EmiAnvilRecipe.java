@@ -3,36 +3,33 @@ package net.dries007.tfc.compat.emi.recipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.core.RegistryAccess;
+import dev.emi.emi.api.widget.SlotWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 import net.dries007.tfc.util.tooltip.Tooltips;
 
-public class EmiAnvilRecipe extends GenericRecipe<AnvilRecipe>
+public class EmiAnvilRecipe extends AutoLayoutRecipe<AnvilRecipe>
 {
     public EmiAnvilRecipe(ResourceLocation id, AnvilRecipe recipe)
     {
-        super(EmiIntegration.ANVIL, id, recipe, 98, 26);
-        inputs.add(EmiIngredient.of(recipe.getInput()));
-        outputs.add(EmiStack.of(recipe.getResultItem(registryAccess())));
+        super(EmiIntegration.ANVIL, id, recipe);
     }
 
     @Override
-    public void addWidgets(WidgetHolder widgets)
+    protected void processRecipe()
     {
-        widgets.addSlot(inputs.getFirst(), 6, 5);
-        widgets.addSlot(outputs.getFirst(), 76, 5).recipeContext(this).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getMinTier())));
-        widgets.addFillingArrow(36, 5, 3000);
+        inputs.add(EmiIngredient.of(recipe.getInput()));
+        outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));
     }
 
-    public static RegistryAccess registryAccess()
+    @Override
+    protected SlotWidget generateOutputSlot(EmiStack stack, int x, int y)
     {
-        return ClientHelpers.getLevelOrThrow().registryAccess();
+        return super.generateOutputSlot(stack, x, y).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getMinTier())));
     }
 
     @Override

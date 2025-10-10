@@ -14,7 +14,7 @@ import net.dries007.tfc.util.FluidAlloy;
 
 //TODO: look into making the input fluid amounts be valid for the recipe, so that recipe trees that include alloying work
 // or implement a range slot (if possible)
-public class EmiAlloyingRecipe extends GenericRecipe<AlloyRecipe>
+public class EmiAlloyingRecipe extends BasicRecipe<AlloyRecipe>
 {
     // Make sure this is an even number
     private static final int MAX_HEIGHT = 82;

@@ -4,23 +4,21 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Bounds;
-import dev.emi.emi.api.widget.DrawableWidget;
 import dev.emi.emi.api.widget.TextWidget;
-import dev.emi.emi.api.widget.TextureWidget;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.util.data.KnappingPattern;
 
-public class EmiKnappingRecipe extends GenericRecipe<KnappingRecipe>
+public class EmiKnappingRecipe extends BasicRecipe<KnappingRecipe>
 {
     private final SizedIngredient inputItem;
     private final PatternWidget pattern;
@@ -36,7 +34,7 @@ public class EmiKnappingRecipe extends GenericRecipe<KnappingRecipe>
             : recipe.knappingType().get().inputItem();
 
         inputs.add(EmiIngredient.of(recipe.getIngredient()));
-        outputs.add(EmiStack.of(recipe.getResultItem(registryAccess())));
+        outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));
         pattern = new PatternWidget(recipe, recipe.getPattern(), inputItem.ingredient(), 5, 5);
     }
 
