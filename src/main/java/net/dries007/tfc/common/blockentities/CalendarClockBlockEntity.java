@@ -47,8 +47,9 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
             clock.markForSync();
             clock.needsUpdate = false;
         }
-        if (level.getGameTime() % 40 == 0)
+        if (Calendars.SERVER.getCalendarTicks() % 60 == 0)
         {
+            int signal = clock.getRedstoneSignal();
             if (Calendars.SERVER.getAbsoluteCalendarMonthOfYear().ordinal() != clock.month)
             {
                 clock.month = Calendars.SERVER.getAbsoluteCalendarMonthOfYear().ordinal();
@@ -57,8 +58,12 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
             {
                 clock.hour = getHourOfDay(Calendars.SERVER.getCalendarTicks());
             }
-            level.updateNeighborsAt(pos, state.getBlock());
-            level.updateNeighborsAt(pos.relative(state.getValue(BlockStateProperties.FACING).getOpposite()), state.getBlock());
+            // only needs to update blocks when the signal strength has changed
+            if (signal != clock.getRedstoneSignal())
+            {
+                level.updateNeighborsAt(pos, state.getBlock());
+                level.updateNeighborsAt(pos.relative(state.getValue(BlockStateProperties.FACING).getOpposite()), state.getBlock());
+            }
         }
         clientTick(level, pos, state, clock);
     }
