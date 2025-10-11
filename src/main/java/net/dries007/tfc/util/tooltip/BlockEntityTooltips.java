@@ -73,7 +73,7 @@ import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.CrucibleBlock;
 import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
-import net.dries007.tfc.common.blockentities.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.JackOLanternBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.MoldBlock;

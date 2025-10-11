@@ -48,7 +48,7 @@ import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThatchBedBlock;
 import net.dries007.tfc.common.blocks.devices.DoubleIngotPileBlock;
-import net.dries007.tfc.common.blockentities.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.LogPileBlock;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.KnappingContainer;

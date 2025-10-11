@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.util.MetalItem;
 
 public enum IngotPileBlockModel implements SimpleStaticBlockEntityModel<IngotPileBlockModel, IngotPileBlockEntity>

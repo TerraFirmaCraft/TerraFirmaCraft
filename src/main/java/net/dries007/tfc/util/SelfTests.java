@@ -64,7 +64,7 @@ import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.PouredGlassBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blockentities.IngotPileBlock;
+import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import net.dries007.tfc.common.blocks.rock.RockDisplayCategory;
