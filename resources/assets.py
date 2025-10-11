@@ -898,14 +898,7 @@ def generate(rm: ResourceManager):
 
     # Loot table for snow blocks and snow piles - override the vanilla one to return nothing (snowballs are useless and annoying)
     def snow_block_loot_table(block: str):
-        rm.block_loot(block, loot_tables.pool(loot_tables.alternatives(
-            when_silk_touch('minecraft:snow'),
-            'minecraft:air'
-        ), conditions=({
-            'condition': 'minecraft:entity_properties',
-            'predicate': {},
-            'entity': 'this'
-        })))
+        rm.block_loot(block, when_silk_touch('minecraft:snow'))
 
     snow_block_loot_table('snow_pile')
     snow_block_loot_table('minecraft:snow')
