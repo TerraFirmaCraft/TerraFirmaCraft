@@ -52,6 +52,9 @@ import net.dries007.tfc.compat.emi.recipe.EmiHeatingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiJamPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiKnappingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiLoomRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiQuernRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiScrapingRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiSewingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSimplePotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSoupPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
@@ -79,6 +82,9 @@ public final class EmiIntegration implements EmiPlugin
     public static final EmiRecipeCategory GLASSWORKING = createCategory("glassworking", TFCItems.BLOWPIPE_WITH_GLASS);
     public static final EmiRecipeCategory POT = createCategory("pot", TFCItems.POT);
     public static final EmiRecipeCategory LOOM = createCategory("loom", TFCItems.BURLAP_CLOTH);
+    public static final EmiRecipeCategory QUERN = createCategory("quern", TFCBlocks.QUERN);
+    public static final EmiRecipeCategory SCRAPING = createCategory("scraping", TFCItems.METAL_ITEMS.get(Metal.BLACK_BRONZE).get(Metal.ItemType.KNIFE));
+    public static final EmiRecipeCategory SEWING = createCategory("sewing", TFCItems.BONE_NEEDLE);
 
     public static final HashMap<KnappingType, EmiRecipeCategory> KNAPPING = new HashMap<>();
 
@@ -170,6 +176,9 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.CHISEL, EmiChiselRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.GLASSWORKING, EmiGlassworkingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.LOOM, EmiLoomRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.QUERN, EmiQuernRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.SCRAPING, EmiScrapingRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.SEWING, EmiSewingRecipe::new);
 
         for (RecipeHolder<PotRecipe> entry : recipes(TFCRecipeTypes.POT))
         {
