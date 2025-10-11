@@ -15,8 +15,7 @@
         "type": "tfc:copy_input"
       },
       {
-        "type": "tfc:dye_leather",
-        "color": "white"
+        "type": "tfc:remove_dye"
       }
     ]
   }
