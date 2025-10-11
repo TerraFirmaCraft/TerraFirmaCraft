@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe, ComparableRecipe
 {
-    private final int MARGIN = 4;
 
     private final ResourceLocation id;
     private final EmiRecipeCategory category;
@@ -45,8 +44,8 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
             w = Math.max(w, bounds.right());
             h = Math.max(h, bounds.bottom());
         }
-        width = w + MARGIN;
-        height = h + MARGIN;
+        width = w + getMargin() + getPaddingRight();
+        height = h + getMargin() + getPaddingBottom();
     }
 
     @Override
@@ -105,8 +104,8 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
     protected List<Widget> generateWidgets()
     {
         List<Widget> widgets = new ArrayList<>();
-        int x = MARGIN;
-        int y = MARGIN;
+        int x = getMargin() + getPaddingLeft();
+        int y = getMargin() + getPaddingTop();
 
         for (EmiIngredient ingredient : getInputs())
         {
@@ -153,6 +152,31 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
         {
             return id.compareTo(other.getId());
         }
+        return 0;
+    }
+
+    protected int getMargin()
+    {
+        return 4;
+    }
+
+    protected int getPaddingTop()
+    {
+        return 0;
+    }
+
+    protected int getPaddingBottom()
+    {
+        return 0;
+    }
+
+    protected int getPaddingLeft()
+    {
+        return 0;
+    }
+
+    protected int getPaddingRight()
+    {
         return 0;
     }
 }
