@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "tfc:glass_bottles"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "tfc:metal/sheet/brass"
+    }
+  },
+  "pattern": [
+    " G ",
+    "RBR",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:thermometer"
+  }
+}

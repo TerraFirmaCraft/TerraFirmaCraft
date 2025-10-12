@@ -18,7 +18,7 @@ public enum EmptyBowlModifier implements ItemStackModifier
     @Override
     public ItemStack apply(ItemStack stack, ItemStack input, Context context)
     {
-        return stack.getOrDefault(TFCComponents.BOWL, Bowl.DISPLAY).stack();
+        return input.getOrDefault(TFCComponents.BOWL, Bowl.DISPLAY).stack();
     }
 
     @Override

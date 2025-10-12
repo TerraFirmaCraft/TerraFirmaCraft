@@ -69,6 +69,7 @@ import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.ThermometerBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.PumpBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
 import net.dries007.tfc.common.blockentities.VaneBlockEntity;
@@ -102,6 +103,7 @@ import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.StoveBlock;
 import net.dries007.tfc.common.blocks.devices.StovePotBlock;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.blocks.devices.ThermometerBlock;
 import net.dries007.tfc.common.blocks.devices.VaneBlock;
 import net.dries007.tfc.common.blocks.devices.AnemometerBlock;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
@@ -123,7 +125,6 @@ import net.dries007.tfc.common.blocks.soil.ColoredBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.blocks.wood.ExtendedRotatedPillarBlock;
 import net.dries007.tfc.common.blocks.wood.TFCCeilingHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.TFCDoorBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
@@ -489,6 +490,7 @@ public final class TFCBlocks
     public static final Id<Block> VANE = register("vane", () -> new VaneBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.VANE).requiresCorrectToolForDrops().<VaneBlockEntity>ticks(VaneBlockEntity::serverTick, VaneBlockEntity::clientTick)));
     public static final Id<Block> ANEMOMETER = register("anemometer", () -> new AnemometerBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.ANEMOMETER).requiresCorrectToolForDrops().<AnemometerBlockEntity>ticks(AnemometerBlockEntity::serverTick, AnemometerBlockEntity::clientTick)));
     public static final Id<Block> CALENDAR_CLOCK = register("calendar_clock", () -> new CalendarClockBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CALENDAR_CLOCK).requiresCorrectToolForDrops().<CalendarClockBlockEntity>ticks(CalendarClockBlockEntity::serverTick, CalendarClockBlockEntity::clientTick)));
+    public static final Id<Block> THERMOMETER = register("thermometer", () -> new ThermometerBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.THERMOMETER).requiresCorrectToolForDrops().<ThermometerBlockEntity>serverTicks(ThermometerBlockEntity::serverTick)));
 
     public static final Map<DyeColor, Id<Block>> DYED_CANDLE_CAKES = Helpers.mapOf(DyeColor.class, color ->
         registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER).cloneItem(Blocks.CAKE)))

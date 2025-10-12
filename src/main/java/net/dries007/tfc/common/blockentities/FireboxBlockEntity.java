@@ -41,7 +41,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.Fuel;
 
-public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements ICalendarTickable
+public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler> implements ICalendarTickable, IHeatable
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, FireboxBlockEntity box)
     {

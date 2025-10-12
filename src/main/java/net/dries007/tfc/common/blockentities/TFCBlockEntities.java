@@ -55,6 +55,7 @@ public final class TFCBlockEntities
     public static final Id<ShelfBlockEntity> SHELF = register("shelf", ShelfBlockEntity::new, Stream.concat(Stream.of(TFCBlocks.FIRE_BRICK_SHELF), woodBlocks(Wood.BlockType.SHELF)));
     public static final Id<FireboxBlockEntity> FIREBOX = register("firebox", FireboxBlockEntity::new, TFCBlocks.FIREBOX);
     public static final Id<CalendarClockBlockEntity> CALENDAR_CLOCK = register("calendar_clock", CalendarClockBlockEntity::new, TFCBlocks.CALENDAR_CLOCK);
+    public static final Id<ThermometerBlockEntity> THERMOMETER = register("thermometer", ThermometerBlockEntity::new, TFCBlocks.THERMOMETER);
 
     public static final Id<TickCounterBlockEntity> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
             woodBlocks(Wood.BlockType.SAPLING),

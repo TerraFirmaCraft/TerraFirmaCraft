@@ -422,8 +422,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(TOOLS_SHARP).addTags(
             ItemTags.HOES,
             TOOLS_KNIFE,
-            TOOLS_SCYTHE,
-            TOOLS_SAW);
+            TOOLS_SCYTHE);
         tag(SCRAPED_HIDES)
             .add(TFCItems.HIDES.get(HideItemType.SCRAPED));
         tag(TOOLS_STONE)

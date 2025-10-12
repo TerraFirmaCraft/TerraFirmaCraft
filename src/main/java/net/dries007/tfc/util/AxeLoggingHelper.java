@@ -13,14 +13,13 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.neoforged.neoforge.common.ItemAbilities;
-
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.wood.BranchDirection;
@@ -98,7 +97,7 @@ public class AxeLoggingHelper
 
     public static boolean isLoggingAxe(ItemStack stack)
     {
-        return stack.canPerformAction(ItemAbilities.AXE_DIG);
+        return Helpers.isItem(stack, ItemTags.AXES);
     }
 
     public static boolean isInefficientAxe(ItemStack stack)

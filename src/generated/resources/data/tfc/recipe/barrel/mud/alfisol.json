@@ -1,0 +1,15 @@
+{
+  "type": "tfc:barrel_instant",
+  "input_fluid": {
+    "amount": 250,
+    "fluid": "minecraft:water"
+  },
+  "input_item": {
+    "count": 1,
+    "item": "tfc:dirt/alfisol"
+  },
+  "output_item": {
+    "count": 1,
+    "id": "tfc:mud/alfisol"
+  }
+}
