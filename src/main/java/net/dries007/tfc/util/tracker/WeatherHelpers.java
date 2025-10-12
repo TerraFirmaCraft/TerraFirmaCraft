@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec2;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCPoiTypes;
@@ -621,9 +621,120 @@ public final class WeatherHelpers
     /**
      * Converts wind speed to KM/h
      */
-    public static float windKMS(Vec2 wind)
+    public static float windKMH(Vec2 wind)
     {
         return wind.length() * WIND_KMS_FACTOR;
+    }
+
+    public static float wrappedPositiveAngle(float angleIn)
+    {
+        float angle = angleIn < 0
+            ? angleIn += Mth.TWO_PI
+            : angleIn;
+        // rotate so North is signal 0/15
+        angle += Mth.PI / 2;
+        // wrap
+        if (angle > Mth.TWO_PI)
+        {
+            angle -= Mth.TWO_PI;
+        }
+        return angle;
+    }
+
+    public static Component windGranularCardinal(Vec2 wind)
+    {
+        float angle = wrappedPositiveAngle((float) Mth.atan2(wind.y, wind.x)) * Mth.RAD_TO_DEG;
+
+        float m = 11.25f;
+
+        Component direction = Component.empty();
+        if (angle < 0 + m && angle > 0 - m)
+        {
+            // north
+            direction = Helpers.translateEnum(Direction.NORTH);
+        }
+        else if (angle < 22.5 + m && angle > 22.5 - m)
+        {
+            // north by northeast
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.NORTH), Component.translatable("tfc.direction.cardinal_northeast"));
+        }
+        else if (angle < 45 + m && angle > 45 - m)
+        {
+            // northeast
+            direction = Component.translatable("tfc.direction.cardinal_northeast");
+        }
+        else if (angle < 67.5 + m && angle > 67.5 - m)
+        {
+            // east by northeast
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.EAST), Component.translatable("tfc.direction.cardinal_northeast"));
+        }
+        else if (angle < 90 + m && angle > 90 - m)
+        {
+            // east
+            direction = Helpers.translateEnum(Direction.EAST);
+        }
+        else if (angle < 112.5 + m && angle > 112.5 - m)
+        {
+            // east by southeast
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.EAST), Component.translatable("tfc.direction.cardinal_southeast"));
+        }
+        else if (angle < 135 + m && angle > 135 - m)
+        {
+            // southeast
+            direction = Component.translatable("tfc.direction.cardinal_southeast");
+        }
+        else if (angle < 157.5 + m && angle > 157.5 - m)
+        {
+            // south by southeast
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.SOUTH), Component.translatable("tfc.direction.cardinal_southeast"));
+        }
+        else if (angle < 180 + m && angle > 180 - m)
+        {
+            // south
+            direction = Helpers.translateEnum(Direction.SOUTH);
+        }
+        else if (angle < 202.5 + m && angle > 202.5 - m)
+        {
+            // south by southwest
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.SOUTH), Component.translatable("tfc.direction.cardinal_southwest"));
+        }
+        else if (angle < 225 + m && angle > 225 - m)
+        {
+            // southwest
+            direction = Component.translatable("tfc.direction.cardinal_southwest");
+        }
+        else if (angle < 247.5 + m && angle > 247.5 - m)
+        {
+            // west by southwest
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.WEST), Component.translatable("tfc.direction.cardinal_southwest"));
+        }
+        else if (angle < 270 + m && angle > 270 - m)
+        {
+            // west
+            direction = Helpers.translateEnum(Direction.WEST);
+        }
+        else if (angle < 292.5 + m && angle > 292.5 - m)
+        {
+            // west by northwest
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.WEST), Component.translatable("tfc.direction.cardinal_northwest"));
+        }
+        else if (angle < 315 + m && angle > 315 - m)
+        {
+            // northwest
+            direction = Component.translatable("tfc.direction.cardinal_northwest");
+        }
+        else if (angle < 337.5 + m && angle > 337.5 - m)
+        {
+            // north by northwest
+            direction = Component.translatable("tfc.direction.cardinal_granular", Helpers.translateEnum(Direction.NORTH), Component.translatable("tfc.direction.cardinal_northwest"));
+        }
+        else if (angle < 360 + m && angle > 360 - m)
+        {
+            // north
+            direction = Helpers.translateEnum(Direction.NORTH);
+        }
+
+        return direction;
     }
 
 }

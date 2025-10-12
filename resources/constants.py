@@ -155,7 +155,8 @@ class Metal(NamedTuple):
     type: Literal['ingot', 'part', 'all']
     weathering: bool
 
-    def has_block(self, item: str) -> bool: return self.has(METAL_BLOCKS[item])
+    def has_block(self, item: str) -> bool:
+        return self.has(METAL_BLOCKS[item])
 
     def has(self, item: MetalItem) -> bool:
         if item.type == 'weathering':
@@ -796,7 +797,7 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'labrador_tea': [0, 1, 2, 3, 4, 5],
     'lily_of_the_valley': [0, 1, 2, 3, 4, 5],
     'kinnikinnick': [0, 1, 2, 3, 4, 4],
-    'meads_milkweed': [0, 1, 2, 3, 4, 5,],
+    'meads_milkweed': [0, 1, 2, 3, 4, 5, ],
     'moss_campion': [0, 1, 1, 1, 2, 3],
     'nasturtium': [0, 1, 1, 2, 3, 4],
     'oxeye_daisy': [0, 1, 2, 3, 4, 5],
@@ -914,7 +915,9 @@ BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'ch
 
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
-TFC_BIOMES = ['badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'plateau_wide', 'hills', 'rolling_hills', 'highlands', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'guano_island', 'shore', 'tidal_flats', 'sea_stacks', 'terrace_upper', 'terrace_lower', 'setback_cliffs', 'coastal_dunes', 'rocky_shores', 'embayments', 'salt_flats', 'mud_flats', 'dune_sea', 'grassy_dunes', 'whorled_canyons', 'stair_step_canyons', 'mesas', 'buttes', 'hoodoos', 'rocky_plateau', 'tower_karst_plains', 'burren_plains', 'shilin_plains', 'doline_plains', 'cenote_plains', 'tower_karst_canyons', 'doline_canyons', 'cenote_canyons', 'shilin_canyons', 'tower_karst_hills', 'shilin_hills', 'doline_hills', 'cenote_hills', 'tower_karst_highlands', 'burren_badlands_tall', 'shilin_highlands', 'doline_highlands', 'cenote_highlands', 'extreme_doline_plateau', 'burren_plateau', 'shilin_plateau', 'doline_plateau', 'cenote_plateau', 'tower_karst_lake', 'tower_karst_bay', 'extreme_doline_mountains', 'burren_badlands', 'doline_rolling_hills', 'cenote_rolling_hills', 'burren_roche_moutonee', 'active_shield_volcano', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'sunken_shield_volcano', 'shield_volcano_shore', 'old_shield_volcano_shore', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake', 'ice_sheet', 'ice_sheet_mountains', 'ice_sheet_oceanic_mountains', 'ice_sheet_shield_volcano', 'ice_sheet_tuyas', 'subglacial_lake', 'ice_sheet_edge', 'ice_sheet_tuyas_edge', 'ice_sheet_mountains_edge', 'ice_sheet_oceanic_mountains_edge', 'meltwater_lake', 'ice_sheet_oceanic', 'ice_sheet_shore', 'glaciated_shield_volcano', 'glaciated_mountains', 'glaciated_oceanic_mountains', 'glacially_carved_mountains', 'glacially_carved_oceanic_mountains', 'drumlins', 'tuyas', 'knob_and_kettle', 'patterned_ground', 'inverted_patterned_ground', 'stone_circles']
+TFC_BIOMES = ['badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'plateau_wide', 'hills', 'rolling_hills', 'highlands', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'guano_island', 'shore', 'tidal_flats', 'sea_stacks', 'terrace_upper', 'terrace_lower', 'setback_cliffs', 'coastal_dunes', 'rocky_shores', 'embayments', 'salt_flats', 'mud_flats', 'dune_sea', 'grassy_dunes', 'whorled_canyons', 'stair_step_canyons', 'mesas', 'buttes', 'hoodoos', 'rocky_plateau', 'tower_karst_plains', 'burren_plains', 'shilin_plains', 'doline_plains', 'cenote_plains', 'tower_karst_canyons', 'doline_canyons', 'cenote_canyons', 'shilin_canyons', 'tower_karst_hills', 'shilin_hills', 'doline_hills', 'cenote_hills', 'tower_karst_highlands', 'burren_badlands_tall', 'shilin_highlands', 'doline_highlands', 'cenote_highlands', 'extreme_doline_plateau',
+              'burren_plateau', 'shilin_plateau', 'doline_plateau', 'cenote_plateau', 'tower_karst_lake', 'tower_karst_bay', 'extreme_doline_mountains', 'burren_badlands', 'doline_rolling_hills', 'cenote_rolling_hills', 'burren_roche_moutonee', 'active_shield_volcano', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'sunken_shield_volcano', 'shield_volcano_shore', 'old_shield_volcano_shore', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake', 'ice_sheet', 'ice_sheet_mountains', 'ice_sheet_oceanic_mountains', 'ice_sheet_shield_volcano', 'ice_sheet_tuyas', 'subglacial_lake', 'ice_sheet_edge', 'ice_sheet_tuyas_edge', 'ice_sheet_mountains_edge', 'ice_sheet_oceanic_mountains_edge', 'meltwater_lake', 'ice_sheet_oceanic', 'ice_sheet_shore', 'glaciated_shield_volcano', 'glaciated_mountains', 'glaciated_oceanic_mountains', 'glacially_carved_mountains',
+              'glacially_carved_oceanic_mountains', 'drumlins', 'tuyas', 'knob_and_kettle', 'patterned_ground', 'inverted_patterned_ground', 'stone_circles']
 VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host', 'flow', 'bolt')
 
 BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'moth_diaphora', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashed_frittilary', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
@@ -1310,6 +1313,12 @@ DEFAULT_LANG = {
     'tfc.tooltip.while_sealed': 'While sealed',
     'tfc.tooltip.while_sealed_description': 'While the barrel is sealed and the required fluid is present',
     'tfc.tooltip.windmill_not_enough_space': 'There is not enough space to place a windmill here!',
+    'tfc.tooltip.calendar_clock_month_mode': 'Month Mode',
+    'tfc.tooltip.calendar_clock_hour_mode': 'Hour Mode',
+    'tfc.tooltip.thermometer_ambient_mode': 'Reading Ambient Temperature',
+    'tfc.tooltip.thermometer_device_mode': 'Reading Device Temperature',
+    'tfc.tooltip.anemometer_speed': 'Wind Speed: %skmh',
+    'tfc.tooltip.vane_direction': 'Wind Direction: %s',
     'tfc.tooltip.anvil_is_too_low_tier_to_weld': 'The Anvil is not a high enough tier to weld that!',
     'tfc.tooltip.anvil_is_too_low_tier_to_work': 'The Anvil is not a high enough tier to work that!',
     'tfc.tooltip.not_hot_enough_to_weld': 'Not hot enough to weld!',
@@ -1378,6 +1387,12 @@ DEFAULT_LANG = {
     'tfc.tooltip.firebox.time_to_heat': 'Heating %s blocks in %s',
     'tfc.tooltip.firebox.heated': 'Heated %s blocks',
     'tfc.tooltip.firebox.no_heat': 'No heatable area detected',
+
+    'tfc.direction.cardinal_granular': '%s by %s',
+    'tfc.direction.cardinal_northeast': 'Northeast',
+    'tfc.direction.cardinal_southeast': 'Southeast',
+    'tfc.direction.cardinal_southwest': 'Southwest',
+    'tfc.direction.cardinal_northwest': 'Northwest',
 
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
@@ -1465,6 +1480,10 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.shelf': 'Shelf',
     'config.jade.plugin_tfc.placed_item': 'Placed Item',
     'config.jade.plugin_tfc.mold_table': 'Mold Table',
+    'config.jade.plugin_tfc.anemometer': 'Anemometer',
+    'config.jade.plugin_tfc.vane': 'Weather Vane',
+    'config.jade.plugin_tfc.thermometer': 'Thermometer',
+    'config.jade.plugin_tfc.calendar_clock': 'Precision Clock',
 
     'config.jade.plugin_tfc.animal': 'Animal',
     'config.jade.plugin_tfc.frog': 'Frog',
@@ -1478,7 +1497,6 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.ocelot': 'Ocelot',
     'config.jade.plugin_tfc.rabbit': 'Rabbit',
     'config.jade.plugin_tfc.fishing_hook': 'Fishing Hook',
-
 
     # Commands
 
