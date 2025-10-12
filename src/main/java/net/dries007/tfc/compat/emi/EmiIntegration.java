@@ -33,9 +33,11 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
@@ -43,6 +45,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.compat.emi.recipe.ComparableRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiBarrelRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBlastFurnaceRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBloomeryRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiCastingRecipe;
@@ -179,6 +182,7 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.QUERN, EmiQuernRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.SCRAPING, EmiScrapingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.SEWING, EmiSewingRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.BARREL_SEALED, EmiBarrelRecipe::new);
 
         for (RecipeHolder<PotRecipe> entry : recipes(TFCRecipeTypes.POT))
         {
@@ -206,6 +210,7 @@ public final class EmiIntegration implements EmiPlugin
             EmiRecipeCategory category = KNAPPING.get(type);
             registry.addRecipe(new EmiKnappingRecipe(category, entry.id(), recipe));
         }
+
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)
