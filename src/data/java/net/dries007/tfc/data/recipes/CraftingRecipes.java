@@ -1211,6 +1211,21 @@ public interface CraftingRecipes extends Recipes
             .input(TFCItems.CANOLA)
             .shapeless(TFCItems.STRAW);
         recipe()
+            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.DOUBLE_SHEET))
+            .pattern(" S ", "S S", " S ")
+            .shaped(TFCBlocks.STOVE);
+        recipe()
+            .input('R', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.ROD))
+            .input('B', TFCItems.BRASS_MECHANISMS)
+            .pattern(" R ", "RBR", " R ")
+            .shaped(TFCBlocks.ANEMOMETER);
+        recipe()
+            .input('S', TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.SHEET))
+            .input('W', TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.ROD))
+            .input('B', TFCItems.BRASS_MECHANISMS)
+            .pattern(" S ", "WBW", " W ")
+            .shaped(TFCBlocks.VANE);
+        recipe()
             .input('G', Blocks.GLASS_PANE)
             .input('B', TFCItems.BRASS_MECHANISMS)
             .input('S', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.SHEET))
