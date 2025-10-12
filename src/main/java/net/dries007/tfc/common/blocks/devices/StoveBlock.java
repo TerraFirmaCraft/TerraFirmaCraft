@@ -46,6 +46,7 @@ public class StoveBlock extends FirepitBlock
         registerDefaultState(getStateDefinition().any().setValue(LIT, false).setValue(SMOKE_LEVEL, 0).setValue(AXIS, Direction.Axis.X).setValue(FACING, Direction.NORTH));
     }
 
+    @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         final BlockState state = super.getStateForPlacement(context);
