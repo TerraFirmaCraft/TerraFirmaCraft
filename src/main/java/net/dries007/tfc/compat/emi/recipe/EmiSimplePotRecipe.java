@@ -26,9 +26,7 @@ public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
         int j = 0;
         for (ItemStackProvider provider : recipe.getOutputItems())
         {
-            final List<ItemStack> stacks = provider.dependsOnInput()
-                ? EmiHelpers.collapse(List.of(ing.get(j).getItems()), provider)
-                : EmiHelpers.collapse(provider);
+            final List<ItemStack> stacks = EmiHelpers.collapse(provider, ing.get(j));
 
             for (ItemStack stack : stacks)
             {
@@ -46,4 +44,5 @@ public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
         }
 
     }
+
 }
