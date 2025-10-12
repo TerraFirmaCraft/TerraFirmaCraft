@@ -28,6 +28,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCDamageTypes;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -81,12 +83,22 @@ public class StovePotBlock extends PotBlock
         {
             if (!pot.isBoiling() && stack.isEmpty() && player.isShiftKeyDown())
             {
-                if (!(!state.getValue(LIT) && !pot.isBoiling() && !state.getValue(LIT) && pot.getAsh() > 0))
+                if (!(!state.getValue(LIT) && !pot.isBoiling() && pot.getAsh() > 0))
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POT.get()));
                     AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.STOVE.get());
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+            else
+            {
+                ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POT.get()));
+                AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.STOVE.get());
+            }
+            if (state.getValue(LIT))
+            {
+                TFCDamageTypes.pot(player, 1f);
+                Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
             }
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
