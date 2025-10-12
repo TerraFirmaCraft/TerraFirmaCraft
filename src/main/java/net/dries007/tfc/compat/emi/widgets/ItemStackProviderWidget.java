@@ -20,4 +20,9 @@ public class ItemStackProviderWidget extends GeneratedSlotWidget
             return EmiStack.of(provider.getSingleStack(stack.getItemStack()));
         }, unique, x, y);
     }
+
+    public ItemStackProviderWidget(ItemStackProvider provider, int unique, int x, int y)
+    {
+        super(r -> EmiStack.of(provider.getEmptyStack()), unique, x, y);
+    }
 }

@@ -74,6 +74,10 @@ public class EmiSizedIngredient implements EmiIngredient
     @Override
     public void render(GuiGraphics draw, int x, int y, float delta, int flags)
     {
+        if (stacks.isEmpty())
+        {
+            return;
+        }
         int item = (int) (System.currentTimeMillis() / 1000 % stacks.size());
         stacks.get(item).render(draw, x, y, delta, flags);
     }

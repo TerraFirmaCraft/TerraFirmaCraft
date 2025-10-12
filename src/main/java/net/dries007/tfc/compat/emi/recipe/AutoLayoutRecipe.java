@@ -2,6 +2,7 @@ package net.dries007.tfc.compat.emi.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
@@ -182,5 +183,64 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
     protected int getPaddingRight()
     {
         return 0;
+    }
+
+    /**
+     * Utility class to make calculating widget positions a little easier
+     */
+    public static class WidgetLayout extends ArrayList<Widget>
+    {
+        private final Bounds initialPos;
+
+        public WidgetLayout(Bounds bounds)
+        {
+            super();
+            initialPos = bounds;
+        }
+
+        public int last(Position p, int offset)
+        {
+            if (isEmpty())
+            {
+                return p.apply(initialPos) + offset;
+            }
+            return p.apply(getLast().getBounds()) + offset;
+        }
+
+        public int last(Position p)
+        {
+            return last(p, 0);
+        }
+
+        public <T extends Widget> T addWidget(T widget)
+        {
+            add(widget);
+            return widget;
+        }
+    }
+
+    public enum Position implements Function<Bounds, Integer>
+    {
+        TOP(Bounds::top),
+        BOTTOM(Bounds::bottom),
+        X(Bounds::x),
+        Y(Bounds::y),
+        WIDTH(Bounds::height),
+        HEIGHT(Bounds::height),
+        LEFT(Bounds::left),
+        RIGHT(Bounds::right);
+
+        private final Function<Bounds, Integer> function;
+
+        Position(Function<Bounds, Integer> function)
+        {
+            this.function = function;
+        }
+
+        @Override
+        public Integer apply(Bounds bounds)
+        {
+            return function.apply(bounds);
+        }
     }
 }
