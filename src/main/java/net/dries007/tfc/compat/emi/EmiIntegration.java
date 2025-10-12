@@ -18,6 +18,7 @@ import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +37,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
@@ -56,7 +58,6 @@ import net.dries007.tfc.compat.emi.recipe.EmiJamPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiKnappingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiLoomRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiQuernRecipe;
-import net.dries007.tfc.compat.emi.recipe.EmiScrapingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSewingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSimplePotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSoupPotRecipe;
@@ -158,6 +159,9 @@ public final class EmiIntegration implements EmiPlugin
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.GEM_SAW));
         registry.addWorkstation(GLASSWORKING, EmiStack.of(TFCItems.JACKS));
         registry.addWorkstation(LOOM, EmiIngredient.of(TFCBlocks.WOODS.values().stream().map(wood -> wood.get(Wood.BlockType.LOOM)).map(EmiStack::of).toList()));
+        registry.addWorkstation(QUERN, EmiStack.of(TFCBlocks.QUERN));
+        registry.addWorkstation(QUERN, EmiStack.of(TFCItems.HANDSTONE));
+        registry.addWorkstation(POT, EmiStack.of(TFCBlocks.POT));
 
         for (var knap : KNAPPING.entrySet())
         {
@@ -180,7 +184,6 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.GLASSWORKING, EmiGlassworkingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.LOOM, EmiLoomRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.QUERN, EmiQuernRecipe::new);
-        basicRecipeMapping(registry, TFCRecipeTypes.SCRAPING, EmiScrapingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.SEWING, EmiSewingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.BARREL_SEALED, EmiSealedBarrelRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.BARREL_INSTANT, EmiInstantBarrelRecipe::new);
@@ -213,6 +216,24 @@ public final class EmiIntegration implements EmiPlugin
             registry.addRecipe(new EmiKnappingRecipe(category, entry.id(), recipe));
         }
 
+        for (RecipeHolder<ScrapingRecipe> entry : recipes(TFCRecipeTypes.SCRAPING))
+        {
+            ResourceLocation id = entry.id();
+            ScrapingRecipe recipe = entry.value();
+            ItemStack extra = recipe.getExtraDrop().getEmptyStack();
+            EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder()
+                .id(id)
+                .leftInput(EmiIngredient.of(recipe.getIngredient()))
+                .rightInput(EmiIngredient.of(TFCTags.Blocks.SCRAPING_SURFACE), true)
+                .rightInput(damagedTool(EmiIngredient.of(TFCTags.Items.TOOLS_KNIFE), 1), true)
+                .output(EmiStack.of(recipe.getResultItem(null)));
+            if (!extra.isEmpty())
+            {
+                builder.output(EmiStack.of(extra));
+            }
+            registry.addRecipe(builder.build());
+        }
+
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)
@@ -237,5 +258,16 @@ public final class EmiIntegration implements EmiPlugin
             }
             return 0;
         };
+    }
+
+    private static EmiIngredient damagedTool(EmiIngredient tool, int damage)
+    {
+        for (EmiStack stack : tool.getEmiStacks())
+        {
+            ItemStack is = stack.getItemStack().copy();
+            is.setDamageValue(damage);
+            stack.setRemainder(EmiStack.of(is));
+        }
+        return tool;
     }
 }
