@@ -403,6 +403,11 @@ public final class FoodCapability
      */
     private static long calculateNewCreationDate(long ci, float p)
     {
+        // Maintain flags
+        if (ci == IFood.INVISIBLE_NEVER_DECAY_FLAG || ci == IFood.NEVER_DECAY_FLAG)
+        {
+            return ci;
+        }
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);
     }
