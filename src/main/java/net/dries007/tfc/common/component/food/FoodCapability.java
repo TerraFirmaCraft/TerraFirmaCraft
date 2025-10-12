@@ -339,7 +339,7 @@ public final class FoodCapability
      */
     public static boolean isRotten(long creationDate, float decayDateModifier)
     {
-        if (creationDate == IFood.TRANSIENT_NEVER_DECAY_FLAG || creationDate == IFood.NEVER_DECAY_FLAG)
+        if (creationDate == IFood.TRANSIENT_NEVER_DECAY_FLAG || creationDate == IFood.NEVER_DECAY_FLAG || creationDate == IFood.INVISIBLE_NEVER_DECAY_FLAG)
         {
             return false; // Food can never be rotten
         }
