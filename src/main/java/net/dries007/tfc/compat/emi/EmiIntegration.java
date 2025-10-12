@@ -43,6 +43,8 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.compat.emi.recipe.ComparableRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiInstantBarrelRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiInstantFluidBarrelRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSealedBarrelRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBlastFurnaceRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBloomeryRecipe;
@@ -181,6 +183,8 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.SCRAPING, EmiScrapingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.SEWING, EmiSewingRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.BARREL_SEALED, EmiSealedBarrelRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.BARREL_INSTANT, EmiInstantBarrelRecipe::new);
+        basicRecipeMapping(registry, TFCRecipeTypes.BARREL_INSTANT_FLUID, EmiInstantFluidBarrelRecipe::new);
 
         for (RecipeHolder<PotRecipe> entry : recipes(TFCRecipeTypes.POT))
         {

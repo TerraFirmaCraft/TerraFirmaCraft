@@ -23,6 +23,7 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 import net.dries007.tfc.compat.emi.stack.EmiSizedIngredient;
+import net.dries007.tfc.compat.emi.widgets.CyclingSlotWidget;
 import net.dries007.tfc.compat.emi.widgets.ItemStackProviderWidget;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -148,10 +149,7 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
         EmiIngredient ingredient = inputs.getFirst();
         if (ingredient.getEmiStacks().size() > 1 && (onSeal != null || outputProvider != null))
         {
-            return new GeneratedSlotWidget(r -> {
-                List<EmiStack> stacks = ingredient.getEmiStacks();
-                return stacks.get(r.nextInt(stacks.size()));
-            }, SEED_UNIQUE, x, y);
+            return new CyclingSlotWidget(ingredient, SEED_UNIQUE, x, y);
         }
         if (ingredient.isEmpty())
         {
