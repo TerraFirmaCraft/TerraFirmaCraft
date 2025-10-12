@@ -2381,6 +2381,8 @@
     "tfc:anemometer",
     "tfc:stove",
     "tfc:stove_pot",
+    "tfc:stove",
+    "tfc:stove_pot",
     "tfc:icicle",
     "tfc:sea_ice",
     "tfc:ice_pile",

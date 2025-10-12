@@ -250,6 +250,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.ANEMOMETER)
             .add(TFCBlocks.STOVE)
             .add(TFCBlocks.STOVE_POT)
+            .add(TFCBlocks.STOVE)
+            .add(TFCBlocks.STOVE_POT)
             .add(
                 TFCBlocks.ICICLE,
                 TFCBlocks.SEA_ICE,
