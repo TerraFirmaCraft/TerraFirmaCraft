@@ -43,6 +43,7 @@ public class ItemStackModifiers
     public static final Id<RemoveTraitModifier> REMOVE_TRAIT = register("remove_trait", RemoveTraitModifier.CODEC, RemoveTraitModifier.STREAM_CODEC);
     public static final Id<AddHeatModifier> ADD_HEAT = register("add_heat", AddHeatModifier.CODEC, AddHeatModifier.STREAM_CODEC);
     public static final Id<DyeLeatherModifier> DYE_LEATHER = register("dye_leather", DyeLeatherModifier.CODEC, DyeLeatherModifier.STREAM_CODEC);
+    public static final Id<RemoveDyeModifier> REMOVE_DYE = register("remove_dye", RemoveDyeModifier.INSTANCE);
     public static final Id<MealModifier> MEAL = register("meal", MealModifier.CODEC, MealModifier.STREAM_CODEC);
     public static final Id<ExtraProductModifier> EXTRA_PRODUCT = register("extra_products", ExtraProductModifier.CODEC, ExtraProductModifier.STREAM_CODEC);
     public static final Id<ChanceModifier> CHANCE = register("chance", ChanceModifier.CHANCE, ChanceModifier.STREAM_CODEC);

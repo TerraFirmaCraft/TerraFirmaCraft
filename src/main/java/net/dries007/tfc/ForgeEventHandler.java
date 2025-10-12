@@ -869,8 +869,8 @@ public final class ForgeEventHandler
         {
             final ItemStack newItem = new ItemStack(BlowpipeItem.transform(pipe.getItem()));
             GlassWorking.createNewBatch(newItem, batch);
-            event.getCarriedSlotAccess().set(newItem);
-            event.getSlot().getItem().shrink(1);
+            event.getSlot().set(newItem);
+            event.getCarriedSlotAccess().get().shrink(1);
             event.setCanceled(true);
         }
     }

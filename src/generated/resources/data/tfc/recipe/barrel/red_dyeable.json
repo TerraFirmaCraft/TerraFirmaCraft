@@ -1,0 +1,23 @@
+{
+  "type": "tfc:barrel_sealed",
+  "duration": 1000,
+  "input_fluid": {
+    "amount": 25,
+    "fluid": "tfc:red_dye"
+  },
+  "input_item": {
+    "count": 1,
+    "tag": "minecraft:dyeable"
+  },
+  "output_item": {
+    "modifiers": [
+      {
+        "type": "tfc:copy_input"
+      },
+      {
+        "type": "tfc:dye_leather",
+        "color": "red"
+      }
+    ]
+  }
+}

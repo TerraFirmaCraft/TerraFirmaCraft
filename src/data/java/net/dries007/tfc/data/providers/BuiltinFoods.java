@@ -123,8 +123,8 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(Food.TOMATO, ofFood(1f, 5, 3.5f).vegetables(2.0f));
         add(Food.YELLOW_BELL_PEPPER, ofFood(1, 0, 2.5f).vegetables(1.5f));
         add(Food.RADISH, ofFood(0.5f, 5, 1.5f).vegetables(0.5f));
-        add(TFCBlocks.PUMPKIN, of(0.5f));
-        add(TFCBlocks.MELON, of(0.5f));
+        add(TFCBlocks.PUMPKIN, of(0.5f), false);
+        add(TFCBlocks.MELON, of(0.5f), false);
         add(Food.MELON_SLICE, ofFood(0.4f, 10, 2.5f).fruit(1f));
         add(Items.PUMPKIN_PIE, ofFood(2, 5, 2.5f).fruit(1.5f).grain(1f).protein(1f).dairy(0.3f));
         add(Food.PUMPKIN_CHUNKS, ofFood(1, 5, 2.5f).fruit(0.75f));

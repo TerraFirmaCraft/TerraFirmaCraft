@@ -114,6 +114,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
     public static final BooleanProperty WATTLE_WOVEN = BooleanProperty.create("woven");
     public static final BooleanProperty CLOCK_MONTH_MODE = BooleanProperty.create("clock_month_mode");
+    public static final BooleanProperty THERMOMETER_ATTACHED = BooleanProperty.create("thermometer_attached");
 
     public static final IntegerProperty PIT_KILN_STAGE = IntegerProperty.create("stage", 0, 16);
     public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);

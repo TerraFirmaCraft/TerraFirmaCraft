@@ -572,6 +572,7 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.VANE);
         out.accept(TFCBlocks.ANEMOMETER);
         out.accept(TFCBlocks.CALENDAR_CLOCK);
+        out.accept(TFCBlocks.THERMOMETER);
 
         out.accept(TFCBlocks.AGGREGATE);
         out.accept(TFCBlocks.PLAIN_ALABASTER);
