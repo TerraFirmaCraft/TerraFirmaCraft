@@ -107,24 +107,28 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
         int x = getMargin() + getPaddingLeft();
         int y = getMargin() + getPaddingTop();
 
+        int index = 0;
         for (EmiIngredient ingredient : getInputs())
         {
-            Widget slot = generateInputSlot(ingredient, x, y);
+            Widget slot = generateInputSlot(ingredient, x, y, index);
             Bounds bounds = slot.getBounds();
             x = bounds.right() + 3;
             widgets.add(slot);
+            index++;
         }
 
         Widget middle = generateMiddleWidget(x, y);
         widgets.add(middle);
         x = middle.getBounds().right() + 3;
 
+        index = 0;
         for (EmiStack stack : getOutputs())
         {
-            Widget slot = generateOutputSlot(stack, x, y);
+            Widget slot = generateOutputSlot(stack, x, y, index);
             Bounds bounds = slot.getBounds();
             x = bounds.right() + 3;
             widgets.add(slot);
+            index++;
         }
         return widgets;
     }
@@ -134,12 +138,12 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
         return new FillingArrowWidget(x, y, 3000);
     }
 
-    protected SlotWidget generateInputSlot(EmiIngredient ingredient, int x, int y)
+    protected SlotWidget generateInputSlot(EmiIngredient ingredient, int x, int y, int index)
     {
         return new SlotWidget(ingredient, x, y);
     }
 
-    protected SlotWidget generateOutputSlot(EmiStack stack, int x, int y)
+    protected SlotWidget generateOutputSlot(EmiStack stack, int x, int y, int index)
     {
         return new SlotWidget(stack, x, y).recipeContext(this);
     }
