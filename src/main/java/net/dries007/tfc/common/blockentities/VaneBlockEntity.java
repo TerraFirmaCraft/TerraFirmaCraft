@@ -101,7 +101,8 @@ public class VaneBlockEntity extends TickableBlockEntity
         return angle;
     }
 
-    public float getWrappedPositiveAngle(){
+    public float getWrappedPositiveAngle()
+    {
         return WeatherHelpers.wrappedPositiveAngle(targetAngle);
     }
 
