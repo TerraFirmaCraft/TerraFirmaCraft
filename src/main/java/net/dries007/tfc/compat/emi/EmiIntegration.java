@@ -21,13 +21,16 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCTags;
@@ -145,6 +148,7 @@ public final class EmiIntegration implements EmiPlugin
     private void registerWorkstations(EmiRegistry registry)
     {
         registry.addWorkstation(HEATING, EmiStack.of(TFCBlocks.FIREPIT));
+        registry.addWorkstation(HEATING, EmiStack.of(TFCBlocks.GRILL));
         registry.addWorkstation(BARREL, EmiIngredient.of(TFCTags.Items.BARRELS));
         registry.addWorkstation(ALLOYING, EmiStack.of(TFCBlocks.CRUCIBLE));
         registry.addWorkstation(ALLOYING, EmiIngredient.of(TFCTags.Items.FIRED_VESSELS));
@@ -223,15 +227,36 @@ public final class EmiIntegration implements EmiPlugin
             ItemStack extra = recipe.getExtraDrop().getEmptyStack();
             EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder()
                 .id(id)
-                .leftInput(EmiIngredient.of(recipe.getIngredient()))
+                .leftInput(EmiIngredient.of(recipe.getIngredient()), s -> s.appendTooltip(Component.translatable("tfc.tooltip.use_on_top")))
                 .rightInput(EmiIngredient.of(TFCTags.Blocks.SCRAPING_SURFACE), true)
-                .rightInput(damagedTool(EmiIngredient.of(TFCTags.Items.TOOLS_KNIFE), 1), true)
+                .rightInput(damagedTool(EmiIngredient.of(TFCTags.Items.TOOLS_KNIFE), 16), true)
                 .output(EmiStack.of(recipe.getResultItem(null)));
             if (!extra.isEmpty())
             {
                 builder.output(EmiStack.of(extra));
             }
             registry.addRecipe(builder.build());
+        }
+
+        registry.addRecipe(EmiWorldInteractionRecipe.builder()
+            .id(Helpers.identifier("/build_firepit"))
+            .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_LOGS))
+            .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_STICKS, 4))
+            .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_KINDLING), s -> s.appendTooltip(Component.translatable("tfc.tooltip.kindling")))
+            .rightInput(damagedTool(EmiStack.of(TFCItems.FIRESTARTER), 1), false)
+            .output(EmiStack.of(TFCBlocks.FIREPIT))
+            .build()
+        );
+
+        registry.addRecipe(useItemOn("build_grill", EmiStack.of(TFCItems.WROUGHT_IRON_GRILL), EmiStack.of(TFCBlocks.FIREPIT), EmiStack.of(TFCBlocks.GRILL)));
+        registry.addRecipe(useItemOn("build_pot", EmiStack.of(TFCItems.POT), EmiStack.of(TFCBlocks.FIREPIT), EmiStack.of(TFCBlocks.POT)));
+
+        List<ItemLike> wattle = new ArrayList<>(TFCBlocks.STAINED_WATTLE.values());
+        wattle.add(TFCBlocks.UNSTAINED_WATTLE);
+        registry.addRecipe(useItemOn("daub_wattle", List.of(EmiIngredient.of(Tags.Items.RODS_WOODEN, 4), EmiStack.of(TFCItems.DAUB)), EmiStack.of(TFCBlocks.WATTLE), EmiStack.of(TFCBlocks.UNSTAINED_WATTLE), false));
+        for (DyeColor color : DyeColor.values())
+        {
+            registry.addRecipe(useItemOn("dye_wattle/" + color.getName(), EmiIngredient.of(color.getTag()), EmiIngredient.of(wattle.stream().map(EmiStack::of).toList()), EmiStack.of(TFCBlocks.STAINED_WATTLE.get(color))));
         }
 
     }
@@ -269,5 +294,25 @@ public final class EmiIntegration implements EmiPlugin
             stack.setRemainder(EmiStack.of(is));
         }
         return tool;
+    }
+
+    private static EmiWorldInteractionRecipe useItemOn(String id, EmiIngredient item, EmiIngredient target, EmiStack result)
+    {
+        return useItemOn(id, item, target, result, true);
+    }
+
+    private static EmiWorldInteractionRecipe useItemOn(String id, EmiIngredient item, EmiIngredient target, EmiStack result, boolean catalyst)
+    {
+        return EmiWorldInteractionRecipe.builder().id(Helpers.identifier("/" + id)).leftInput(target).rightInput(item, catalyst).output(result).build();
+    }
+
+    private static EmiWorldInteractionRecipe useItemOn(String id, List<EmiIngredient> item, EmiIngredient target, EmiStack result, boolean catalyst)
+    {
+        EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder().id(Helpers.identifier("/" + id)).leftInput(target).output(result);
+        for (EmiIngredient ingredient : item)
+        {
+            builder.rightInput(ingredient, catalyst);
+        }
+        return builder.build();
     }
 }
