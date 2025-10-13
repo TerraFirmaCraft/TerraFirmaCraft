@@ -243,11 +243,6 @@ public interface ClimateModel
         return -1;
     }
 
-    default float getDeltaRainInMillimeters(Level level, BlockPos pos, long fromTick, long toTick, float rainfall, long calendarTicksInYear, int calendarDaysInMonth)
-    {
-        return 0.0f;
-    }
-
     /**
      * @return {@code true} if, given that it is raining at the given timestamp, it should also be thundering.
      * @see #getRain(long)
