@@ -1310,6 +1310,12 @@ DEFAULT_LANG = {
     'tfc.tooltip.while_sealed': 'While sealed',
     'tfc.tooltip.while_sealed_description': 'While the barrel is sealed and the required fluid is present',
     'tfc.tooltip.windmill_not_enough_space': 'There is not enough space to place a windmill here!',
+    'tfc.tooltip.calendar_clock_month_mode': 'Month Mode',
+    'tfc.tooltip.calendar_clock_hour_mode': 'Hour Mode',
+    'tfc.tooltip.thermometer_ambient_mode': 'Reading Ambient Temperature',
+    'tfc.tooltip.thermometer_device_mode': 'Reading Device Temperature',
+    'tfc.tooltip.anemometer_speed': 'Wind Speed: %skmh',
+    'tfc.tooltip.vane_direction': 'Wind Direction: %s',
     'tfc.tooltip.anvil_is_too_low_tier_to_weld': 'The Anvil is not a high enough tier to weld that!',
     'tfc.tooltip.anvil_is_too_low_tier_to_work': 'The Anvil is not a high enough tier to work that!',
     'tfc.tooltip.not_hot_enough_to_weld': 'Not hot enough to weld!',
@@ -1378,6 +1384,12 @@ DEFAULT_LANG = {
     'tfc.tooltip.firebox.time_to_heat': 'Heating %s blocks in %s',
     'tfc.tooltip.firebox.heated': 'Heated %s blocks',
     'tfc.tooltip.firebox.no_heat': 'No heatable area detected',
+
+    'tfc.direction.cardinal_granular': '%s by %s',
+    'tfc.direction.cardinal_northeast': 'Northeast',
+    'tfc.direction.cardinal_southeast': 'Southeast',
+    'tfc.direction.cardinal_southwest': 'Southwest',
+    'tfc.direction.cardinal_northwest': 'Northwest',
 
     **dict(('trim_material.tfc.%s' % mat, lang('%s material', mat)) for mat in TRIM_MATERIALS),
 
@@ -1465,6 +1477,10 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.shelf': 'Shelf',
     'config.jade.plugin_tfc.placed_item': 'Placed Item',
     'config.jade.plugin_tfc.mold_table': 'Mold Table',
+    'config.jade.plugin_tfc.anemometer': 'Anemometer',
+    'config.jade.plugin_tfc.vane': 'Weather Vane',
+    'config.jade.plugin_tfc.thermometer': 'Thermometer',
+    'config.jade.plugin_tfc.calendar_clock': 'Precision Clock',
 
     'config.jade.plugin_tfc.animal': 'Animal',
     'config.jade.plugin_tfc.frog': 'Frog',

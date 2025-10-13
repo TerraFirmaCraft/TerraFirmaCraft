@@ -95,7 +95,6 @@ import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.RequestClimateModelPacket;
 import net.dries007.tfc.network.StackFoodPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
-import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -173,7 +172,7 @@ public class ClientForgeEventHandler
                 ));
                 final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
                 tooltip.add(Component.translatable("tfc.tooltip.wind_speed",
-                        Mth.floor(windKMS(wind)),
+                        Mth.floor(windKMH(wind)),
                         String.format("%.0f", Mth.abs(wind.x * 100)),
                         Helpers.translateEnum(wind.x > 0 ? Direction.EAST : Direction.WEST),
                         String.format("%.0f", Mth.abs(wind.y * 100)),

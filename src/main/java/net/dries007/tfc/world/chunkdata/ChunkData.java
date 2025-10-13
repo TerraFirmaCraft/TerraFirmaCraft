@@ -101,7 +101,6 @@ public sealed class ChunkData
     private final byte[] shuffledBlockPositions = getShuffledByteArray();
 
     private long lastRandomTick;
-    private long lastRainTick;
     private byte nextSnowPosition;
 
     public ChunkData(ChunkPos pos)
@@ -117,7 +116,6 @@ public sealed class ChunkData
         this.rockData = new RockData(generator);
         this.forestType = ForestType.GRASSLAND;
         this.lastRandomTick = -1;
-        this.lastRainTick = -1;
         this.nextSnowPosition = 0;
     }
 
@@ -239,20 +237,9 @@ public sealed class ChunkData
         return lastRandomTick;
     }
 
-    public long getLastRainTick()
-    {
-        return lastRainTick;
-    }
-
     public void setLastRandomTick(ChunkAccess chunk, long lastRandomTick)
     {
         this.lastRandomTick = lastRandomTick;
-        chunk.setUnsaved(true); // Flag the chunk, since we need to re-save the data
-    }
-
-    public void setLastRainTick(ChunkAccess chunk, long lastRainTick)
-    {
-        this.lastRainTick = lastRainTick;
         chunk.setUnsaved(true); // Flag the chunk, since we need to re-save the data
     }
 
@@ -367,7 +354,6 @@ public sealed class ChunkData
             nbt.put("temperature", temperatureLayer.write());
             nbt.putByte("forestType", (byte) forestType.ordinal());
             nbt.putLong("lastRandomTick", lastRandomTick);
-            nbt.putLong("lastRainTick", lastRainTick);
         }
         return nbt;
     }
@@ -390,7 +376,6 @@ public sealed class ChunkData
             temperatureLayer = new LerpFloatLayer(nbt.getCompound("temperature"));
             forestType = ForestType.valueOf(nbt.getByte("forestType"));
             lastRandomTick = nbt.getLong("lastRandomTick");
-            lastRainTick = nbt.getLong("lastRainTick");
         }
     }
 

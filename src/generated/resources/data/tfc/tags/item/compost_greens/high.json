@@ -1,6 +1,8 @@
 {
   "values": [
     "#c:foods/vegetable",
-    "#c:foods/fruit"
+    "#c:foods/fruit",
+    "tfc:pumpkin",
+    "tfc:melon"
   ]
 }

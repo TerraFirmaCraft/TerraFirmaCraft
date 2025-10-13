@@ -908,11 +908,9 @@ def generate(rm: ResourceManager):
     rm.item_model('ice_pile', parent='minecraft:item/ice', no_textures=True)
 
     # Loot table for snow blocks and snow piles - override the vanilla one to return nothing (snowballs are useless and annoying)
-    def snow_block_loot_table(block: str):
-        rm.block_loot(block, when_silk_touch('minecraft:snow'))
-
-    snow_block_loot_table('snow_pile')
-    snow_block_loot_table('minecraft:snow')
+    rm.block_loot('snow_pile', when_silk_touch('minecraft:snow'))
+    rm.block_loot('minecraft:snow', when_silk_touch('minecraft:snow'))
+    rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'))
 
     # Sea Ice
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))

@@ -1,15 +1,32 @@
 ### Changes
- - Changes to snow accumulation
-   - Made snow accumulation more efficient
-   - Added config for how much snow should "catch up" when loading unloaded chunks. By default, this value is 64, or 1/4 of the chunk, but it can be increased up to 256 to fully cover chunks in winter
- - Fixed shorter ryegrass using the bluegrass model
- - Re-scaled wind speeds to more believable levels
- - Minor changes in internals and API
+- Visual rework to nutrition, climate, and calendar screens
+- Added Precision Clock
+  - Outputs an analog redstone signal based on the month or the hour
+- Added Weather Vane
+  - Outputs an analog redstone signal based on the wind direction
+- Added Anemometer
+  - Outputs an analog redstone signal based on the wind speed
+- Added Thermometer
+  - Outputs an analog redstone signal based on the ambient temperature, or the temperature of a device
+- Shoveling snow no longer drops snowballs
+- Add barrel recipe for mass crafting of mud from dirt
+- Rain and snow are now pushed by the wind
+  - Both weather types are angled by the wind
+  - Snow is sped up by the wind
 
 ### Bug Fixes
-- Fixed shorter ryegrass using the bluegrass model
-- Fixed typo in the name of a butterfly
-- Fixed jellyfish rendering causing server crashes (closes #3159)
-- Fixed firebox sound playing while not lit
-- Fixed fruit preserves
-- Fixed some meats missing tags (closes #3200)
+- Fix invalid item placement below shelves (Closes #3154)
+- Fix broken windmill rotation rendering
+- Prevent invalid item placement on stairs
+- Fix bows not being craftable
+- Fixed a visual big in firepit textures
+- Fixed a clay dupe exploit via bowl uncrafting (Closes #3212)
+- Re-add recipes to recycle cobble slabs/stairs/walls into loose rocks (Closes #3220)
+- Fix saws being able to fell trees (Closes #3215)
+- Prevent players from eating whole melons and pumpkins (Closes #3211)
+- Fix washing ceramic bowls returning wooden bowls
+- Fix glassworking recipes giving invalid item stacks and bricking servers (Closes #3214)
+- Fix crops that grow with sticks dropping extra items on death
+- Allow whole pumpkins and melons to be composted
+- Fix Barrels deleting their contents upon placement into a barrel rack (Closes #3178)
+- Fix Fireboxes playing lit sounds while unlit
