@@ -127,7 +127,7 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
     {
         if (recipe.isInfinite())
         {
-            return Component.translatable("tfc.tooltip.barrel_infinite");
+            return Component.translatable("tfc.tooltip.barrel.infinite");
         }
         return Calendars.CLIENT.getTimeDelta(recipe.getDuration());
     }

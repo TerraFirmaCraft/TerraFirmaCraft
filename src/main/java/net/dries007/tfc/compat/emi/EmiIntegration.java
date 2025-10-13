@@ -227,7 +227,7 @@ public final class EmiIntegration implements EmiPlugin
             ItemStack extra = recipe.getExtraDrop().getEmptyStack();
             EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder()
                 .id(id)
-                .leftInput(EmiIngredient.of(recipe.getIngredient()), s -> s.appendTooltip(Component.translatable("tfc.tooltip.use_on_top")))
+                .leftInput(EmiIngredient.of(recipe.getIngredient()), s -> s.appendTooltip(Component.translatable("tfc.tooltip.scraping.placement")))
                 .rightInput(EmiIngredient.of(TFCTags.Blocks.SCRAPING_SURFACE), true)
                 .rightInput(damagedTool(EmiIngredient.of(TFCTags.Items.TOOLS_KNIFE), 16), true)
                 .output(EmiStack.of(recipe.getResultItem(null)));

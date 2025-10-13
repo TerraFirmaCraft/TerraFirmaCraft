@@ -54,7 +54,7 @@ public class EmiInstantFluidBarrelRecipe extends AutoLayoutRecipe<InstantFluidBa
     public void addWidgets(WidgetHolder widgets)
     {
         super.addWidgets(widgets);
-        widgets.addText(Component.translatable("tfc.tooltip.barrel_instant"), getDisplayWidth() / 2, getDisplayHeight() - 2, 0xffffffff, true).verticalAlign(TextWidget.Alignment.END).horizontalAlign(TextWidget.Alignment.CENTER);
+        widgets.addText(Component.translatable("tfc.tooltip.barrel.instant"), getDisplayWidth() / 2, getDisplayHeight() - 2, 0xffffffff, true).verticalAlign(TextWidget.Alignment.END).horizontalAlign(TextWidget.Alignment.CENTER);
     }
 
     @Override
