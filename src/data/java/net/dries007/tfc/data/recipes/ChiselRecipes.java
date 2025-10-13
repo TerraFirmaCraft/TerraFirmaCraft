@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.data.recipes;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -29,7 +27,6 @@ public interface ChiselRecipes extends Recipes
 {
     default void chiselRecipes()
     {
-        Set<Block> smoothRegistery = new HashSet<>();
         TFCBlocks.ROCK_BLOCKS.forEach((type, blocks) -> {
             blocks.forEach((variant, block) -> {
                 if (TFCBlocks.ROCK_DECORATIONS.get(type).get(variant) != null && variant != Rock.BlockType.CHISELED)
