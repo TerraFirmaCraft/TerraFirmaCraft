@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/bricks/diorite"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/bricks/diorite_stairs"
+}

@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/chert",
-    "tfc:rock/hardened/chert"
+    "tfc:rock/raw/chert"
   ],
   "item_output": {
     "count": 1,

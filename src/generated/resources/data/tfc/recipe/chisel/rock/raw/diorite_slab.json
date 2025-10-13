@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/diorite",
-    "tfc:rock/hardened/diorite"
+    "tfc:rock/raw/diorite"
   ],
   "item_output": {
     "count": 1,

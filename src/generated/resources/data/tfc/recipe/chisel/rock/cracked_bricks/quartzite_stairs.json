@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/cracked_bricks/quartzite"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/cracked_bricks/quartzite_stairs"
+}

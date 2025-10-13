@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/conglomerate",
-    "tfc:rock/hardened/conglomerate"
+    "tfc:rock/raw/conglomerate"
   ],
   "item_output": {
     "count": 1,

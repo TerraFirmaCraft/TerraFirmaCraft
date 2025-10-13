@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/rhyolite",
-    "tfc:rock/hardened/rhyolite"
+    "tfc:rock/raw/rhyolite"
   ],
   "item_output": {
     "count": 1,

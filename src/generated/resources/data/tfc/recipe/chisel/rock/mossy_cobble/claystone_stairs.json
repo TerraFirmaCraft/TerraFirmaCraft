@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/mossy_cobble/claystone"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/mossy_cobble/claystone_stairs"
+}

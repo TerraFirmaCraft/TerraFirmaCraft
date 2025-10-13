@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/gabbro",
-    "tfc:rock/hardened/gabbro"
+    "tfc:rock/raw/gabbro"
   ],
   "item_output": {
     "count": 1,

@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/mossy_bricks/limestone"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/mossy_bricks/limestone_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/mossy_bricks/limestone_slab"
+}

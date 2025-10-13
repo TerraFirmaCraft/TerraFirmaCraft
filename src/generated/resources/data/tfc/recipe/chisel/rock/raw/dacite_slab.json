@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/dacite",
-    "tfc:rock/hardened/dacite"
+    "tfc:rock/raw/dacite"
   ],
   "item_output": {
     "count": 1,

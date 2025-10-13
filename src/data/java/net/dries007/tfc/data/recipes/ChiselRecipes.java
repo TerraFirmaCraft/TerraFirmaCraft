@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.data.recipes;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Supplier;
+
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 
@@ -26,10 +29,14 @@ public interface ChiselRecipes extends Recipes
 {
     default void chiselRecipes()
     {
+        Set<Block> smoothRegistery = new HashSet<>();
         TFCBlocks.ROCK_BLOCKS.forEach((type, blocks) -> {
-            stairSlab(
-                List.of(blocks.get(Rock.BlockType.RAW), blocks.get(Rock.BlockType.HARDENED)),
-                TFCBlocks.ROCK_DECORATIONS.get(type).get(Rock.BlockType.RAW));
+            blocks.forEach((variant, block) -> {
+                if (TFCBlocks.ROCK_DECORATIONS.get(type).get(variant) != null && variant != Rock.BlockType.CHISELED)
+                {
+                    stairSlab(block, TFCBlocks.ROCK_DECORATIONS.get(type).get(variant));
+                }
+            });
             chisel(
                 List.of(blocks.get(Rock.BlockType.RAW), blocks.get(Rock.BlockType.HARDENED)),
                 blocks.get(Rock.BlockType.SMOOTH));

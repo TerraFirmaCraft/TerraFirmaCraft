@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/mossy_bricks/andesite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/mossy_bricks/andesite_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/mossy_bricks/andesite_slab"
+}

@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/dolomite",
-    "tfc:rock/hardened/dolomite"
+    "tfc:rock/raw/dolomite"
   ],
   "item_output": {
     "count": 1,

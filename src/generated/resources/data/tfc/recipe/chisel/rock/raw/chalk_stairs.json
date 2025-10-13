@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/chalk",
-    "tfc:rock/hardened/chalk"
+    "tfc:rock/raw/chalk"
   ],
   "mode": "tfc:stair",
   "result": "tfc:rock/raw/chalk_stairs"

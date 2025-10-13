@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/cobble/slate"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/cobble/slate_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/cobble/slate_slab"
+}

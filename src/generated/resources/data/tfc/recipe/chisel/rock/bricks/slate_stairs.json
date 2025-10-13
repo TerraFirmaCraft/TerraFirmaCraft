@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/bricks/slate"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/bricks/slate_stairs"
+}

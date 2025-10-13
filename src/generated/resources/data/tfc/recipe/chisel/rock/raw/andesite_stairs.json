@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/andesite",
-    "tfc:rock/hardened/andesite"
+    "tfc:rock/raw/andesite"
   ],
   "mode": "tfc:stair",
   "result": "tfc:rock/raw/andesite_stairs"

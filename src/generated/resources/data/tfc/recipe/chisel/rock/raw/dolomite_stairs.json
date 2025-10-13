@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/dolomite",
-    "tfc:rock/hardened/dolomite"
+    "tfc:rock/raw/dolomite"
   ],
   "mode": "tfc:stair",
   "result": "tfc:rock/raw/dolomite_stairs"

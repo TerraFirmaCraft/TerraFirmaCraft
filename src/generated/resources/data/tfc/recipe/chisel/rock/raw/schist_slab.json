@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/schist",
-    "tfc:rock/hardened/schist"
+    "tfc:rock/raw/schist"
   ],
   "item_output": {
     "count": 1,

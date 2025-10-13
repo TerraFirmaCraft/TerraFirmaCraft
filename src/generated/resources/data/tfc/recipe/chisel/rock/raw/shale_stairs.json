@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/shale",
-    "tfc:rock/hardened/shale"
+    "tfc:rock/raw/shale"
   ],
   "mode": "tfc:stair",
   "result": "tfc:rock/raw/shale_stairs"

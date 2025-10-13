@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/smooth/diorite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/smooth/diorite_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/smooth/diorite_slab"
+}

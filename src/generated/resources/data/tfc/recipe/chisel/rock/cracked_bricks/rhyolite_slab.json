@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/cracked_bricks/rhyolite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/cracked_bricks/rhyolite_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/cracked_bricks/rhyolite_slab"
+}

@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/bricks/gneiss"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/bricks/gneiss_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/bricks/gneiss_slab"
+}

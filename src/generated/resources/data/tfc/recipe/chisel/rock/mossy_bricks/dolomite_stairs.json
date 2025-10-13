@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/mossy_bricks/dolomite"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/mossy_bricks/dolomite_stairs"
+}

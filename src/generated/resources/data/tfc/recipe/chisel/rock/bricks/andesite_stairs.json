@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/bricks/andesite"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/bricks/andesite_stairs"
+}

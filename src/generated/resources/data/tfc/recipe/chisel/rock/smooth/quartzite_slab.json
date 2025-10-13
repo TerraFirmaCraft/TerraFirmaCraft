@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/smooth/quartzite"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/smooth/quartzite_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/smooth/quartzite_slab"
+}

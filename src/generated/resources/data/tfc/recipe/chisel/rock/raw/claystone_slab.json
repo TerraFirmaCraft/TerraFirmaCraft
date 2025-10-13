@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/claystone",
-    "tfc:rock/hardened/claystone"
+    "tfc:rock/raw/claystone"
   ],
   "item_output": {
     "count": 1,

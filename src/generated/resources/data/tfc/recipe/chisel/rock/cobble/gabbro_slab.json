@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/cobble/gabbro"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/cobble/gabbro_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/cobble/gabbro_slab"
+}

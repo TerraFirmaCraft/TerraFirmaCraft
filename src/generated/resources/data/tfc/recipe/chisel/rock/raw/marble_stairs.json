@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/marble",
-    "tfc:rock/hardened/marble"
+    "tfc:rock/raw/marble"
   ],
   "mode": "tfc:stair",
   "result": "tfc:rock/raw/marble_stairs"

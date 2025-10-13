@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/slate",
-    "tfc:rock/hardened/slate"
+    "tfc:rock/raw/slate"
   ],
   "item_output": {
     "count": 1,

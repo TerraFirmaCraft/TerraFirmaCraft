@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/mossy_bricks/gabbro"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/mossy_bricks/gabbro_stairs"
+}

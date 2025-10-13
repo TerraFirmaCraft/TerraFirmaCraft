@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/quartzite",
-    "tfc:rock/hardened/quartzite"
+    "tfc:rock/raw/quartzite"
   ],
   "item_output": {
     "count": 1,

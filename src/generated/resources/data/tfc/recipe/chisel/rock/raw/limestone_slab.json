@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/limestone",
-    "tfc:rock/hardened/limestone"
+    "tfc:rock/raw/limestone"
   ],
   "item_output": {
     "count": 1,

@@ -1,0 +1,12 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/bricks/claystone"
+  ],
+  "item_output": {
+    "count": 1,
+    "id": "tfc:rock/bricks/claystone_slab"
+  },
+  "mode": "tfc:slab",
+  "result": "tfc:rock/bricks/claystone_slab"
+}

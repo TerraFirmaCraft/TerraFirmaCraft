@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/granite",
-    "tfc:rock/hardened/granite"
+    "tfc:rock/raw/granite"
   ],
   "item_output": {
     "count": 1,

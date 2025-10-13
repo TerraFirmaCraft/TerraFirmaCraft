@@ -252,7 +252,7 @@ public final class TFCBlocks
     );
 
     public static final Map<Rock, Map<Rock.BlockType, DecorationBlockHolder>> ROCK_DECORATIONS = Helpers.mapOf(Rock.class, rock ->
-        Helpers.mapOf(Rock.BlockType.class, Rock.BlockType::hasVariants, type -> registerDecorations(
+        Helpers.mapOf(Rock.BlockType.class, type -> type.hasVariants() || type == Rock.BlockType.MOSSY_COBBLE || type == Rock.BlockType.MOSSY_BRICKS, type -> registerDecorations(
             "rock/" + type.name() + "/" + rock.name(),
             () -> type.createSlab(rock),
             () -> type.createStairs(rock),

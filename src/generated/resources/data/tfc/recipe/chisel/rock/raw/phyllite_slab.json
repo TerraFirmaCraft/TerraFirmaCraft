@@ -1,8 +1,7 @@
 {
   "type": "tfc:chisel",
   "ingredient": [
-    "tfc:rock/raw/phyllite",
-    "tfc:rock/hardened/phyllite"
+    "tfc:rock/raw/phyllite"
   ],
   "item_output": {
     "count": 1,

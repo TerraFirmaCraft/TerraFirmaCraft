@@ -1,0 +1,8 @@
+{
+  "type": "tfc:chisel",
+  "ingredient": [
+    "tfc:rock/cobble/basalt"
+  ],
+  "mode": "tfc:stair",
+  "result": "tfc:rock/cobble/basalt_stairs"
+}
