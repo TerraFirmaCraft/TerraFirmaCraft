@@ -99,20 +99,8 @@
 				"east": {"uv": [0, 15.999, 16, 15.999], "texture": "#missing"},
 				"south": {"uv": [0, 15.999, 16, 15.999], "texture": "#missing"},
 				"west": {"uv": [0, 15.999, 16, 15.999], "texture": "#missing"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#3"}
-			}
-		},
-		{
-			"name": "base",
-			"from": [0, -7.99, 8],
-			"to": [16, 8.01, 8],
-			"rotation": {"angle": -90, "axis": "x", "origin": [8, 0.01, 8]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#3"},
-				"east": {"uv": [0, 15.999, 16, 15.999], "rotation": 90, "texture": "#missing"},
-				"west": {"uv": [0, 15.999, 16, 15.999], "rotation": 270, "texture": "#missing"},
-				"up": {"uv": [0, 15.999, 16, 15.999], "texture": "#missing"},
-				"down": {"uv": [0, 15.999, 16, 15.999], "rotation": 180, "texture": "#missing"}
+				"up": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#3"}
 			}
 		},
 		{
@@ -196,7 +184,7 @@
 			"name": "cube",
 			"origin": [7.995, 2.5, 7.995],
 			"color": 0,
-			"children": [5, 6, 7, 8, 9, 10, 11, 12, 13]
+			"children": [5, 6, 7, 8, 9, 10, 11, 12]
 		}
 	]
 }
