@@ -115,7 +115,7 @@ public class SewingRecipe implements ISimpleRecipe<SewingTableContainer.Input>
     @Override
     public ItemStack getResultItem(HolderLookup.Provider registries)
     {
-        return result;
+        return result.copy();
     }
 
     @Override
