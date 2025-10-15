@@ -101,6 +101,9 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
             createButton(getScreenX(x * 12 + 6), getScreenY(y * 12 + 6), 12, 12, 208, 32, 0, id, null);
         });
 
+        // init can be called more than once per screen instance, via Screen#rebuildWidgets
+        // EMI does this for example
+        recipes.clear();
         for (RecipeHolder<SewingRecipe> holder : RecipeHelpers.getRecipes(ClientHelpers.getLevelOrThrow(), TFCRecipeTypes.SEWING))
         {
             recipes.add(holder.value());
@@ -360,5 +363,12 @@ public class SewingTableScreen extends TFCContainerScreen<SewingTableContainer>
     private void playSound(SoundEvent sound)
     {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0F));
+    }
+
+    public void setRecipe(SewingRecipe recipe)
+    {
+        selectedRecipe = recipe;
+        showRecipes = false;
+        startIndex = 0;
     }
 }

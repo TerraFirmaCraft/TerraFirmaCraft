@@ -72,4 +72,9 @@ public class EmiHeatingRecipe extends BasicRecipe<HeatingRecipe>
         }
         return super.compareTo(other);
     }
+
+    public boolean hasSolidOutput()
+    {
+        return !recipe.getResultItem(EmiHelpers.registryAccess()).isEmpty() && recipe.getDisplayOutputFluid().isEmpty();
+    }
 }

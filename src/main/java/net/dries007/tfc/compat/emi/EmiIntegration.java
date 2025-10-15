@@ -36,6 +36,7 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
@@ -45,6 +46,13 @@ import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.compat.emi.handlers.EmiAnvilHandler;
+import net.dries007.tfc.compat.emi.handlers.EmiBarrelHandler;
+import net.dries007.tfc.compat.emi.handlers.EmiFirepitHandler;
+import net.dries007.tfc.compat.emi.handlers.EmiForgeHandler;
+import net.dries007.tfc.compat.emi.handlers.EmiGrillHandler;
+import net.dries007.tfc.compat.emi.handlers.EmiSewingHandler;
+import net.dries007.tfc.compat.emi.handlers.EmiWeldingHandler;
 import net.dries007.tfc.compat.emi.recipe.ComparableRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
@@ -124,6 +132,7 @@ public final class EmiIntegration implements EmiPlugin
         registerCategories(registry);
         registerWorkstations(registry);
         registerRecipes(registry);
+        registerRecipeHandlers(registry);
         CATEGORIES.clear();
     }
 
@@ -238,6 +247,8 @@ public final class EmiIntegration implements EmiPlugin
             registry.addRecipe(builder.build());
         }
 
+        // TODO include forge WI recipe, but currently there is no item representation of it to display
+
         registry.addRecipe(EmiWorldInteractionRecipe.builder()
             .id(Helpers.identifier("/build_firepit"))
             .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_LOGS))
@@ -259,6 +270,17 @@ public final class EmiIntegration implements EmiPlugin
             registry.addRecipe(useItemOn("dye_wattle/" + color.getName(), EmiIngredient.of(color.getTag()), EmiIngredient.of(wattle.stream().map(EmiStack::of).toList()), EmiStack.of(TFCBlocks.STAINED_WATTLE.get(color))));
         }
 
+    }
+
+    private void registerRecipeHandlers(EmiRegistry registry)
+    {
+        registry.addRecipeHandler(TFCContainerTypes.ANVIL.get(), new EmiWeldingHandler());
+        registry.addRecipeHandler(TFCContainerTypes.ANVIL.get(), new EmiAnvilHandler());
+        registry.addRecipeHandler(TFCContainerTypes.BARREL.get(), new EmiBarrelHandler());
+        registry.addRecipeHandler(TFCContainerTypes.FIREPIT.get(), new EmiFirepitHandler());
+        registry.addRecipeHandler(TFCContainerTypes.GRILL.get(), new EmiGrillHandler());
+        registry.addRecipeHandler(TFCContainerTypes.CHARCOAL_FORGE.get(), new EmiForgeHandler());
+        registry.addRecipeHandler(TFCContainerTypes.SEWING_TABLE.get(), new EmiSewingHandler());
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)

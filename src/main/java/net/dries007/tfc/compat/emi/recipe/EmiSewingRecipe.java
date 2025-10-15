@@ -93,6 +93,11 @@ public class EmiSewingRecipe extends AutoLayoutRecipe<SewingRecipe>
         widgets.add(new SewingPatternWidget(6, 6, recipe));
     }
 
+    public SewingRecipe getRecipe()
+    {
+        return recipe;
+    }
+
     private static class SewingPatternWidget extends Widget
     {
         private static final int MATERIAL_SPRITE_SIZE = 12;
