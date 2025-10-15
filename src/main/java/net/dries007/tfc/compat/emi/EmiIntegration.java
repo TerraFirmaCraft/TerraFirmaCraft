@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import dev.emi.emi.api.EmiEntrypoint;
+import dev.emi.emi.api.EmiExclusionArea;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -21,6 +22,9 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.Bounds;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -33,6 +37,9 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.screen.CalendarScreen;
+import net.dries007.tfc.client.screen.ClimateScreen;
+import net.dries007.tfc.client.screen.NutritionScreen;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -129,10 +136,12 @@ public final class EmiIntegration implements EmiPlugin
     @Override
     public void register(EmiRegistry registry)
     {
+        //TODO add drag+drop handlers for things that make sense
         registerCategories(registry);
         registerWorkstations(registry);
         registerRecipes(registry);
         registerRecipeHandlers(registry);
+        registerExclusionZones(registry);
         CATEGORIES.clear();
     }
 
@@ -283,6 +292,14 @@ public final class EmiIntegration implements EmiPlugin
         registry.addRecipeHandler(TFCContainerTypes.SEWING_TABLE.get(), new EmiSewingHandler());
     }
 
+    private void registerExclusionZones(EmiRegistry registry)
+    {
+        registry.addExclusionArea(InventoryScreen.class, inventoryTabExclusionArea());
+        registry.addExclusionArea(CalendarScreen.class, inventoryTabExclusionArea());
+        registry.addExclusionArea(NutritionScreen.class, inventoryTabExclusionArea());
+        registry.addExclusionArea(ClimateScreen.class, inventoryTabExclusionArea());
+    }
+
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)
     {
         for (RecipeHolder<T> recipe : recipes(type))
@@ -336,5 +353,12 @@ public final class EmiIntegration implements EmiPlugin
             builder.rightInput(ingredient, catalyst);
         }
         return builder.build();
+    }
+
+    private static <T extends AbstractContainerScreen<?>> EmiExclusionArea<T> inventoryTabExclusionArea()
+    {
+        return (screen, consumer) -> {
+            consumer.accept(new Bounds(screen.getGuiLeft() + screen.getXSize(), screen.getGuiTop(), 20, 120));
+        };
     }
 }
