@@ -1,27 +1,18 @@
 package net.dries007.tfc.compat.emi.recipe;
 
 import dev.emi.emi.api.recipe.EmiRecipe;
-import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
-import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.recipes.InstantBarrelRecipe;
 import net.dries007.tfc.common.recipes.InstantFluidBarrelRecipe;
-import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.EmiIntegration;
-import net.dries007.tfc.compat.emi.stack.EmiSizedIngredient;
-import net.dries007.tfc.compat.emi.widgets.CyclingSlotWidget;
-import net.dries007.tfc.compat.emi.widgets.ItemStackProviderWidget;
 
 public class EmiInstantFluidBarrelRecipe extends AutoLayoutRecipe<InstantFluidBarrelRecipe>
 {

@@ -101,7 +101,7 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
 
     private void prevStepPage(double x, double y, int button)
     {
-        if (hasPrevPage())
+        if (hasPrevPage() && pageControls != null)
         {
             currentPage -= 1;
             pageControls.updateText(getLabelText());
@@ -112,7 +112,7 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
 
     private void nextStepPage(double x, double y, int button)
     {
-        if (hasNextPage())
+        if (hasNextPage() && pageControls != null)
         {
             currentPage += 1;
             pageControls.updateText(getLabelText());
@@ -160,7 +160,7 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
     private static class GlassworkingStepWidget extends SlotWidget
     {
         private EmiIngredient displayStack;
-        private TextWidget label;
+        private @Nullable TextWidget label;
 
         public GlassworkingStepWidget(int x, int y)
         {
@@ -231,8 +231,8 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
         private final int x;
         private final int y;
         private TextWidget text;
-        private SilentButtonWidget prevButton;
-        private SilentButtonWidget nextButton;
+        private @Nullable SilentButtonWidget prevButton;
+        private @Nullable SilentButtonWidget nextButton;
         private final BooleanSupplier checkPrev;
         private final ButtonWidget.ClickAction onPrev;
         private final BooleanSupplier checkNext;
@@ -270,6 +270,10 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
         @Override
         public Bounds getBounds()
         {
+            if (prevButton == null || nextButton == null)
+            {
+                return text.getBounds();
+            }
             Bounds prevBounds = prevButton.getBounds();
             Bounds nextBounds = nextButton.getBounds();
             Bounds textBounds = text.getBounds();
@@ -282,8 +286,14 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
         public void render(GuiGraphics draw, int mouseX, int mouseY, float delta)
         {
             text.render(draw, mouseX, mouseY, delta);
-            prevButton.render(draw, mouseX, mouseY, delta);
-            nextButton.render(draw, mouseX, mouseY, delta);
+            if (prevButton != null)
+            {
+                prevButton.render(draw, mouseX, mouseY, delta);
+            }
+            if (nextButton != null)
+            {
+                nextButton.render(draw, mouseX, mouseY, delta);
+            }
         }
 
         @Override
@@ -293,11 +303,11 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
             {
                 return text.mouseClicked(mouseX, mouseY, button);
             }
-            if (prevButton.getBounds().contains(mouseX, mouseY))
+            if (prevButton != null && prevButton.getBounds().contains(mouseX, mouseY))
             {
                 return prevButton.mouseClicked(mouseX, mouseY, button);
             }
-            if (nextButton.getBounds().contains(mouseX, mouseY))
+            if (nextButton != null && nextButton.getBounds().contains(mouseX, mouseY))
             {
                 return nextButton.mouseClicked(mouseX, mouseY, button);
             }

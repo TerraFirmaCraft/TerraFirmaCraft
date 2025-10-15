@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
-import org.jetbrains.annotations.NotNull;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.component.food.FoodCapability;
@@ -61,11 +60,10 @@ public class EmiHelpers
         return List.of(output.getEmptyStack());
     }
 
-    public static @NotNull List<ItemStack> collapse(ItemStackProvider provider, Ingredient ing)
+    public static List<ItemStack> collapse(ItemStackProvider provider, Ingredient ing)
     {
-        final List<ItemStack> stacks = provider.dependsOnInput()
+        return provider.dependsOnInput()
             ? collapse(List.of(ing.getItems()), provider)
             : collapse(provider);
-        return stacks;
     }
 }

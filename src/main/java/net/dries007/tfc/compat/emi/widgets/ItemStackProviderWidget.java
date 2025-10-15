@@ -1,9 +1,6 @@
 package net.dries007.tfc.compat.emi.widgets;
 
 import java.util.List;
-import java.util.Random;
-import java.util.function.Function;
-import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
