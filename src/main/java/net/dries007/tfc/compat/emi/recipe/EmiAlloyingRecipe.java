@@ -1,41 +1,36 @@
 package net.dries007.tfc.compat.emi.recipe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.api.widget.SlotWidget;
+import dev.emi.emi.api.widget.TextWidget;
+import dev.emi.emi.api.widget.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.util.FormattedCharSequence;
 
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 import net.dries007.tfc.util.AlloyRange;
 import net.dries007.tfc.util.FluidAlloy;
 
-//TODO: look into making the input fluid amounts be valid for the recipe, so that recipe trees that include alloying work
-// or implement a range slot (if possible)
-public class EmiAlloyingRecipe extends BasicRecipe<AlloyRecipe>
+public class EmiAlloyingRecipe extends AutoLayoutRecipe<AlloyRecipe>
 {
-    // Make sure this is an even number
-    private static final int MAX_HEIGHT = 82;
-    // Determines where the input columns start
-    private static final int FIRST_COLUMN_X = 4;
-    private static final int SECOND_COLUMN_X = 70;
-    private static final int SLOT_WIDTH = 18;
-    private static final int SLOT_HEIGHT = 18;
+    private static final int COLUMN_SPACING = 70;
 
     public EmiAlloyingRecipe(ResourceLocation id, AlloyRecipe recipe)
     {
-        super(EmiIntegration.ALLOYING, id, recipe, 170, MAX_HEIGHT);
+        super(EmiIntegration.ALLOYING, id, recipe);
+    }
 
+    @Override
+    protected void processRecipe()
+    {
         List<AlloyRange> ranges = recipe.contents();
 
+        //TODO this will be inaccurate for recipes that require high precision inputs
         double min = 0;
         for (AlloyRange range : ranges)
         {
@@ -55,49 +50,43 @@ public class EmiAlloyingRecipe extends BasicRecipe<AlloyRecipe>
     }
 
     @Override
-    public void addWidgets(WidgetHolder widgets)
+    protected List<Widget> generateWidgets()
     {
-        // Logic taken from JEI AlloyRecipeCategory
-        int fontHeight = Minecraft.getInstance().font.lineHeight;
-        int[] positions = getPositions(recipe.contents().size());
-        int iteration = 0;
-        for (AlloyRange range : recipe.contents())
+        int firstColumn = getMargin() + getPaddingLeft();
+        int secondColumn = firstColumn + COLUMN_SPACING;
+        int startY = getMargin() + getPaddingTop();
+        WidgetLayout widgets = new WidgetLayout(new Bounds(firstColumn, startY, 0, 0));
+
+        List<AlloyRange> ranges = recipe.contents();
+        for (int i = 0; i < inputs.size(); i++)
         {
-            int x = (iteration % 2 == 0 ? FIRST_COLUMN_X : SECOND_COLUMN_X) + 1;
-            int y = positions[Math.floorDiv(iteration, 2)] + 1;
-
-            int textYOffset = positions[Math.floorDiv(iteration, 2)] + SLOT_HEIGHT / 2 - Math.floorDiv(fontHeight, 2) + 1;
-            widgets.addSlot(EmiStack.of(range.fluid()), x, y);
-            widgets.addText(formatRange(range), x + SLOT_WIDTH + 2, textYOffset, 0xFFFFFF, false);
-            iteration++;
-        }
-        widgets.addSlot(outputs.getFirst(), 149, MAX_HEIGHT / 2 - SLOT_HEIGHT / 2 + 1).recipeContext(this);
-
-    }
-
-    protected int[] getPositions(int rangesSize)
-    {
-        int rows = (int) Math.ceil(rangesSize / 2d);
-        int spacing = 2;
-        int[] positions = new int[rows];
-        int totalHeight = SLOT_HEIGHT * rows + spacing * (rows - 1);
-        int currentHeight = (MAX_HEIGHT - totalHeight) / 2;
-        for (int i = 0; i < rows; i++)
-        {
-            positions[i] = currentHeight;
-            currentHeight += SLOT_HEIGHT + spacing;
+            AlloyRange range = ranges.get(i);
+            if (i == 0)
+            {
+                widgets.add(new SlotWidget(inputs.get(i), firstColumn, startY));
+            }
+            else if (i % 2 == 0)
+            {
+                widgets.add(new SlotWidget(inputs.get(i), firstColumn, widgets.last(Position.BOTTOM, 6)));
+            }
+            else
+            {
+                widgets.add(new SlotWidget(inputs.get(i), secondColumn, widgets.index(widgets.size() - 2, Position.TOP)));
+            }
+            widgets.add(new TextWidget(formatRange(range), widgets.last(Position.RIGHT, 4), widgets.last(Position.Y, widgets.last(Position.HEIGHT) / 2), 0xff000000, false).verticalAlign(TextWidget.Alignment.CENTER));
         }
 
-        return positions;
+        widgets.add(new SlotWidget(outputs.getFirst(), secondColumn + COLUMN_SPACING, widgets.max(Position.BOTTOM) / 2 - 9).recipeContext(this));
+        return widgets;
     }
 
-    protected Component formatRange(AlloyRange range)
+    protected FormattedCharSequence formatRange(AlloyRange range)
     {
         // Min and max are (roughly) equal, so just so one number to display
         if (Math.abs(range.max() - range.min()) < FluidAlloy.EPSILON)
         {
-            return Component.literal(String.format("%.0f%%", range.max() * 100)).withStyle(ChatFormatting.BLACK);
+            return Component.literal(String.format("%.0f%%", range.max() * 100)).getVisualOrderText();
         }
-        return Component.literal(String.format("%.0f-%.0f%%", range.min() * 100, range.max() * 100)).withStyle(ChatFormatting.BLACK);
+        return Component.literal(String.format("%.0f-%.0f%%", range.min() * 100, range.max() * 100)).getVisualOrderText();
     }
 }

@@ -212,6 +212,25 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
             return last(p, 0);
         }
 
+        public int index(int index, Position p, int offset)
+        {
+            if (isEmpty())
+            {
+                return p.apply(initialPos) + offset;
+            }
+            return p.apply(get(index).getBounds()) + offset;
+        }
+
+        public int index(int index, Position p)
+        {
+            return index(index, p, 0);
+        }
+
+        public int max(Position p)
+        {
+            return stream().map(Widget::getBounds).mapToInt(p::apply).max().orElse(0);
+        }
+
         public <T extends Widget> T addWidget(T widget)
         {
             add(widget);
