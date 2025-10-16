@@ -1,11 +1,17 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.compat.emi.EmiIntegration;
@@ -28,11 +34,24 @@ public class EmiAlloyingRecipe extends BasicRecipe<AlloyRecipe>
     {
         super(EmiIntegration.ALLOYING, id, recipe, 170, MAX_HEIGHT);
 
-        outputs.add(EmiStack.of(recipe.result()));
-        for (AlloyRange range : recipe.contents())
+        List<AlloyRange> ranges = recipe.contents();
+
+        double min = 0;
+        for (AlloyRange range : ranges)
         {
-            inputs.add(EmiStack.of(range.fluid()));
+            min += range.min();
         }
+        // Distribute the remaining first come, first served
+        double remaining = 1 - min;
+        for (AlloyRange range : ranges)
+        {
+            double consumed = Math.min(range.max() - range.min(), remaining);
+            double amount = range.min() + consumed;
+            remaining -= consumed;
+            inputs.add(EmiStack.of(range.fluid(), Math.round(amount * 100)));
+        }
+
+        outputs.add(EmiStack.of(recipe.result(), inputs.stream().mapToLong(EmiIngredient::getAmount).sum()));
     }
 
     @Override
