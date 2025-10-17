@@ -1,13 +1,18 @@
 package net.dries007.tfc.compat.emi.recipe;
 
+import java.util.List;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.AnimatedTextureWidget;
+import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.api.widget.SlotWidget;
+import dev.emi.emi.api.widget.TextWidget;
+import dev.emi.emi.api.widget.TextureWidget;
+import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -17,13 +22,19 @@ import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.EmiIntegration;
 import net.dries007.tfc.config.TFCConfig;
 
-public class EmiHeatingRecipe extends BasicRecipe<HeatingRecipe>
+public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
 {
-    // Positions and dimensions taken from the JEI HeatingRecipeCategory
+    private static final EmiTexture emptyFlame = EmiTexture.EMPTY_FLAME;
+    private static final EmiTexture fullFlame = EmiTexture.FULL_FLAME;
+
     public EmiHeatingRecipe(ResourceLocation id, HeatingRecipe recipe)
     {
-        super(EmiIntegration.HEATING, id, recipe, 120, 38);
+        super(EmiIntegration.HEATING, id, recipe);
+    }
 
+    @Override
+    protected void processRecipe()
+    {
         inputs.add(EmiIngredient.of(recipe.getIngredient()));
 
         ItemStack itemOut = recipe.getResultItem(EmiHelpers.registryAccess());
@@ -39,27 +50,27 @@ public class EmiHeatingRecipe extends BasicRecipe<HeatingRecipe>
     }
 
     @Override
+    protected List<Widget> generateWidgets()
+    {
+        WidgetLayout widgets = new WidgetLayout(new Bounds(getMargin() + getPaddingLeft(), getMargin() + getPaddingTop(), 0, 0));
+        widgets.add(new SlotWidget(inputs.getFirst(), widgets.last(Position.X), widgets.last(Position.Y)));
+        widgets.add(new TextureWidget(emptyFlame.texture, widgets.last(Position.RIGHT, 4), widgets.last(Position.Y), emptyFlame.width, emptyFlame.height, emptyFlame.u, emptyFlame.v));
+        widgets.add(new AnimatedTextureWidget(fullFlame.texture, widgets.last(Position.X), widgets.last(Position.Y), fullFlame.width, fullFlame.height, fullFlame.u, fullFlame.v, 8000, false, true, true));
+
+        EmiStack output = outputs.isEmpty() ? EmiStack.EMPTY : outputs.getLast();
+        widgets.add(new SlotWidget(output, widgets.last(Position.RIGHT, 4), widgets.index(0, Position.Y)).recipeContext(this));
+        return widgets;
+    }
+
+    @Override
     public void addWidgets(WidgetHolder widgets)
     {
-        widgets.addSlot(inputs.getFirst(), 21, 17);
-        if (outputs.isEmpty())
-        {
-            widgets.addSlot(85, 17).recipeContext(this);
-        }
-        else
-        {
-            widgets.addSlot(outputs.getFirst(), 85, 17).recipeContext(this);
-        }
+        super.addWidgets(widgets);
 
-        widgets.addTexture(EmiTexture.EMPTY_FLAME, 54, 19);
-        widgets.addAnimatedTexture(EmiTexture.FULL_FLAME, 54, 19, 8000, false, true, true);
-
-        MutableComponent color = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
-        if (color != null)
+        Component text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
+        if (text != null)
         {
-            Minecraft mc = Minecraft.getInstance();
-            Font font = mc.font;
-            widgets.addText(color, getDisplayWidth() / 2 - font.width(color) / 2, 4, 0xFFFFFF, true);
+            widgets.addText(text, getDisplayWidth() / 2, getMargin() + 2, 0xff000000, true).horizontalAlign(TextWidget.Alignment.CENTER).verticalAlign(TextWidget.Alignment.CENTER);
         }
     }
 
@@ -76,5 +87,23 @@ public class EmiHeatingRecipe extends BasicRecipe<HeatingRecipe>
     public boolean hasSolidOutput()
     {
         return !recipe.getResultItem(EmiHelpers.registryAccess()).isEmpty() && recipe.getDisplayOutputFluid().isEmpty();
+    }
+
+    @Override
+    protected int getPaddingTop()
+    {
+        return 10;
+    }
+
+    @Override
+    protected int getPaddingLeft()
+    {
+        return 10;
+    }
+
+    @Override
+    protected int getPaddingRight()
+    {
+        return 10;
     }
 }
