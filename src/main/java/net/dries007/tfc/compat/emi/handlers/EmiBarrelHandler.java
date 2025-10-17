@@ -14,7 +14,7 @@ import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.compat.emi.recipe.EmiSealedBarrelRecipe;
 
-//TODO make this actually move items
+//TODO make this actually move items, will require a custom fluid handler transfer packet
 public class EmiBarrelHandler implements StandardRecipeHandler<BarrelContainer>
 {
     @Override
@@ -49,6 +49,7 @@ public class EmiBarrelHandler implements StandardRecipeHandler<BarrelContainer>
     public List<Slot> getCraftingSlots(BarrelContainer handler)
     {
         return List.of(
+            handler.getSlot(BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN),
             handler.getSlot(BarrelBlockEntity.SLOT_ITEM)
         );
     }
