@@ -15,11 +15,11 @@ import net.minecraft.world.level.ItemLike;
 
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 import net.dries007.tfc.compat.emi.widgets.CyclingSlotWidget;
 
 public class EmiSoupPotRecipe extends EmiBasePotRecipe<SoupPotRecipe>
 {
-    private final int servings;
 
     public EmiSoupPotRecipe(ResourceLocation id, SoupPotRecipe recipe)
     {
@@ -34,11 +34,11 @@ public class EmiSoupPotRecipe extends EmiBasePotRecipe<SoupPotRecipe>
                 inputs.add(EmiIngredient.of(ingredient));
             }
         }
-        servings = SoupPotRecipe.ingredientsToServings(ingredientCount);
+        int servings = SoupPotRecipe.ingredientsToServings(ingredientCount);
 
         for (ItemLike soup : TFCItems.SOUPS.values())
         {
-            outputs.add(EmiStack.of(soup, servings));
+            outputs.add(EmiStack.of(EmiHelpers.setDefaultNonDecay(soup.asItem().getDefaultInstance()), servings));
         }
     }
 

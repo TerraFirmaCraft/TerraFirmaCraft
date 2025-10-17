@@ -42,13 +42,18 @@ public class EmiSimplePotRecipe extends EmiBasePotRecipe<SimplePotRecipe>
                 }
             }
         }
-        outputs.addAll(groupSimilar(unsortedStacks, EmiStack::of, ItemStack::matches));
+        outputs.addAll(groupSimilar(unsortedStacks, EmiSimplePotRecipe::toStack, ItemStack::matches));
         FluidStack fluidOut = recipe.getDisplayFluid();
         if (!fluidOut.isEmpty())
         {
             outputs.add(EmiStack.of(fluidOut.getFluid(), fluidOut.getAmount()));
         }
 
+    }
+
+    private static EmiStack toStack(ItemStack stack, int size)
+    {
+        return EmiStack.of(EmiHelpers.setDefaultNonDecay(stack), size);
     }
 
 }

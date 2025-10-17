@@ -47,7 +47,7 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
         FluidStack fluidOut = recipe.getDisplayOutputFluid();
         if (!itemOut.isEmpty())
         {
-            outputs.add(EmiStack.of(itemOut));
+            outputs.add(EmiHelpers.nonDecayStack(itemOut));
         }
         if (!fluidOut.isEmpty())
         {

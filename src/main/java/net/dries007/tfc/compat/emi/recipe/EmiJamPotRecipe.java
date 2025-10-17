@@ -9,7 +9,6 @@ package net.dries007.tfc.compat.emi.recipe;
 import java.util.Objects;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.common.recipes.JamPotRecipe;
@@ -21,7 +20,7 @@ public class EmiJamPotRecipe extends EmiBasePotRecipe<JamPotRecipe>
     {
         super(id, recipe, 113, 80);
         inputs.addAll(groupSimilar(recipe.getItemIngredients(), EmiIngredient::of, Objects::equals));
-        outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));
+        outputs.add(EmiHelpers.nonDecayStack(recipe.getResultItem(EmiHelpers.registryAccess())));
     }
 
     @Override

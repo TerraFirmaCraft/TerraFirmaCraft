@@ -15,9 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.component.food.FoodCapability;
+import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.emi.stack.EmiSizedIngredient;
@@ -57,7 +59,7 @@ public class EmiHelpers
         }
         return inputs.stream()
             .map(output::getStack)
-            .map(FoodCapability::setTransientNonDecaying) // Avoid decaying in JEI views
+            .map(EmiHelpers::setDefaultNonDecay)
             .toList();
     }
 
@@ -71,5 +73,36 @@ public class EmiHelpers
         return provider.dependsOnInput()
             ? collapse(List.of(ing.getItems()), provider)
             : collapse(provider);
+    }
+
+    public static ItemStack setDefaultNonDecay(ItemStack stack)
+    {
+        return setNewOrCurrentFoodFlag(stack, IFood.TRANSIENT_NEVER_DECAY_FLAG);
+    }
+
+    public static EmiStack nonDecayStack(ItemStack stack)
+    {
+        return EmiStack.of(setDefaultNonDecay(stack));
+    }
+
+    /**
+     * Sets a food creation date flag without overwriting the current one if present.
+     * Should be used for input stacks because their ingredients MIGHT require they be rotten, and we don't want to override that.
+     */
+    public static ItemStack setNewOrCurrentFoodFlag(ItemStack stack, long flag)
+    {
+        @Nullable IFood food = FoodCapability.get(stack);
+        if (food != null)
+        {
+            long creationDate = food.getCreationDate();
+            if (creationDate == IFood.TRANSIENT_NEVER_DECAY_FLAG || creationDate == IFood.INVISIBLE_NEVER_DECAY_FLAG || creationDate == IFood.NEVER_DECAY_FLAG || creationDate == IFood.ROTTEN_FLAG)
+            {
+                // Keep current flag
+                return stack;
+            }
+            return FoodCapability.setCreationDate(stack, flag);
+        }
+        // Not food
+        return stack;
     }
 }

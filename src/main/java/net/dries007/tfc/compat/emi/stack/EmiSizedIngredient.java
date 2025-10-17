@@ -33,7 +33,7 @@ public class EmiSizedIngredient implements EmiIngredient
         stacks = Arrays.stream(ingredient.getItems()).map(EmiStack::of).toList();
     }
 
-    private EmiSizedIngredient(List<EmiStack> stack, long amount)
+    public EmiSizedIngredient(List<EmiStack> stack, long amount)
     {
         this.amount = amount;
         this.stacks = List.copyOf(stack);
