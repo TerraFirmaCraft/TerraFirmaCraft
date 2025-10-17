@@ -20,4 +20,9 @@ public class CyclingSlotWidget extends GeneratedSlotWidget
             return stacks.get(r.nextInt(stacks.size()));
         }, unique, x, y);
     }
+
+    public CyclingSlotWidget(List<? extends EmiIngredient> ingredients, int unique, int x, int y)
+    {
+        super((r) -> ingredients.get(r.nextInt(ingredients.size())), unique, x, y);
+    }
 }

@@ -7,7 +7,6 @@
 package net.dries007.tfc.compat.emi.recipe;
 
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -38,14 +37,14 @@ public class EmiSoupPotRecipe extends EmiBasePotRecipe<SoupPotRecipe>
 
         for (ItemLike soup : TFCItems.SOUPS.values())
         {
-            outputs.add(EmiStack.of(EmiHelpers.setDefaultNonDecay(soup.asItem().getDefaultInstance()), servings));
+            outputs.add(EmiHelpers.nonDecayStack(soup.asItem().getDefaultInstance().copyWithCount(servings)));
         }
     }
 
     @Override
     protected void addOutputWidgets(WidgetHolder widgets)
     {
-        widgets.add(new CyclingSlotWidget(EmiIngredient.of(outputs), 25, 90, 24)).recipeContext(this);
+        widgets.add(new CyclingSlotWidget(outputs, 25, 90, 24)).recipeContext(this);
     }
 
 }
