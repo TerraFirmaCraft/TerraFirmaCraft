@@ -198,6 +198,12 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
     {
         private final Bounds initialPos;
 
+        public WidgetLayout()
+        {
+            super();
+            initialPos = new Bounds(0, 0, 0, 0);
+        }
+
         public WidgetLayout(Bounds bounds)
         {
             super();
