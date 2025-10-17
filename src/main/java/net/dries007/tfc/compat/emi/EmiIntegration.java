@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiExclusionArea;
@@ -23,6 +24,7 @@ import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.api.widget.SlotWidget;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
@@ -136,7 +138,8 @@ public final class EmiIntegration implements EmiPlugin
     @Override
     public void register(EmiRegistry registry)
     {
-        //TODO add drag+drop handlers for things that make sense
+        //TODO add drag+drop handlers for things that make sense?
+        //TODO fix?: patchouli integration does not work for displayed items in EMI, because it does not post RenderTooltipEvents
         registerCategories(registry);
         registerWorkstations(registry);
         registerRecipes(registry);
@@ -245,7 +248,7 @@ public final class EmiIntegration implements EmiPlugin
             ItemStack extra = recipe.getExtraDrop().getEmptyStack();
             EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder()
                 .id(id)
-                .leftInput(EmiIngredient.of(recipe.getIngredient()), s -> s.appendTooltip(Component.translatable("tfc.tooltip.scraping.placement")))
+                .leftInput(EmiIngredient.of(recipe.getIngredient()), addTooltipToSlot("tfc.tooltip.scraping.placement"))
                 .rightInput(EmiIngredient.of(TFCTags.Blocks.SCRAPING_SURFACE), true)
                 .rightInput(damagedTool(EmiIngredient.of(TFCTags.Items.TOOLS_KNIFE), 16), true)
                 .output(EmiStack.of(recipe.getResultItem(null)));
@@ -259,24 +262,57 @@ public final class EmiIntegration implements EmiPlugin
         // TODO include forge WI recipe, but currently there is no item representation of it to display
 
         registry.addRecipe(EmiWorldInteractionRecipe.builder()
-            .id(Helpers.identifier("/build_firepit"))
+            .id(syntheticId("build_firepit"))
             .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_LOGS))
             .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_STICKS, 4))
-            .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_KINDLING), s -> s.appendTooltip(Component.translatable("tfc.tooltip.kindling")))
+            .leftInput(EmiIngredient.of(TFCTags.Items.FIREPIT_KINDLING), addTooltipToSlot("tfc.tooltip.kindling"))
             .rightInput(damagedTool(EmiStack.of(TFCItems.FIRESTARTER), 1), false)
             .output(EmiStack.of(TFCBlocks.FIREPIT))
             .build()
         );
 
-        registry.addRecipe(useItemOn("build_grill", EmiStack.of(TFCItems.WROUGHT_IRON_GRILL), EmiStack.of(TFCBlocks.FIREPIT), EmiStack.of(TFCBlocks.GRILL)));
-        registry.addRecipe(useItemOn("build_pot", EmiStack.of(TFCItems.POT), EmiStack.of(TFCBlocks.FIREPIT), EmiStack.of(TFCBlocks.POT)));
+        registry.addRecipe(
+            useItemOn(
+                "build_grill",
+                EmiStack.of(TFCItems.WROUGHT_IRON_GRILL),
+                EmiStack.of(TFCBlocks.FIREPIT),
+                EmiStack.of(TFCBlocks.GRILL)
+            )
+        );
+        registry.addRecipe(
+            useItemOn(
+                "build_pot",
+                EmiStack.of(TFCItems.POT),
+                EmiStack.of(TFCBlocks.FIREPIT),
+                EmiStack.of(TFCBlocks.POT)
+            )
+        );
 
+        //TODO replace with a tag maybe?
         List<ItemLike> wattle = new ArrayList<>(TFCBlocks.STAINED_WATTLE.values());
         wattle.add(TFCBlocks.UNSTAINED_WATTLE);
-        registry.addRecipe(useItemOn("daub_wattle", List.of(EmiIngredient.of(Tags.Items.RODS_WOODEN, 4), EmiStack.of(TFCItems.DAUB)), EmiStack.of(TFCBlocks.WATTLE), EmiStack.of(TFCBlocks.UNSTAINED_WATTLE), false));
+        registry.addRecipe(
+            useItemOn(
+                "daub_wattle",
+                List.of(
+                    EmiIngredient.of(Tags.Items.RODS_WOODEN, 4),
+                    EmiStack.of(TFCItems.DAUB)
+                ),
+                EmiStack.of(TFCBlocks.WATTLE),
+                EmiStack.of(TFCBlocks.UNSTAINED_WATTLE),
+                false
+            )
+        );
         for (DyeColor color : DyeColor.values())
         {
-            registry.addRecipe(useItemOn("dye_wattle/" + color.getName(), EmiIngredient.of(color.getTag()), EmiIngredient.of(wattle.stream().map(EmiStack::of).toList()), EmiStack.of(TFCBlocks.STAINED_WATTLE.get(color))));
+            registry.addRecipe(
+                useItemOn(
+                    "dye_wattle/" + color.getName(),
+                    EmiIngredient.of(color.getTag()),
+                    EmiIngredient.of(wattle.stream().map(EmiStack::of).toList()),
+                    EmiStack.of(TFCBlocks.STAINED_WATTLE.get(color))
+                )
+            );
         }
 
     }
@@ -342,13 +378,13 @@ public final class EmiIntegration implements EmiPlugin
 
     private static EmiWorldInteractionRecipe useItemOn(String id, EmiIngredient item, EmiIngredient target, EmiStack result, boolean catalyst)
     {
-        return EmiWorldInteractionRecipe.builder().id(Helpers.identifier("/" + id)).leftInput(target).rightInput(item, catalyst).output(result).build();
+        return useItemOn(id, List.of(item), target, result, catalyst);
     }
 
-    private static EmiWorldInteractionRecipe useItemOn(String id, List<EmiIngredient> item, EmiIngredient target, EmiStack result, boolean catalyst)
+    private static EmiWorldInteractionRecipe useItemOn(String id, List<EmiIngredient> items, EmiIngredient target, EmiStack result, boolean catalyst)
     {
-        EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder().id(Helpers.identifier("/" + id)).leftInput(target).output(result);
-        for (EmiIngredient ingredient : item)
+        EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder().id(syntheticId(id)).leftInput(target).output(result);
+        for (EmiIngredient ingredient : items)
         {
             builder.rightInput(ingredient, catalyst);
         }
@@ -360,5 +396,18 @@ public final class EmiIntegration implements EmiPlugin
         return (screen, consumer) -> {
             consumer.accept(new Bounds(screen.getGuiLeft() + screen.getXSize(), screen.getGuiTop(), 20, 120));
         };
+    }
+
+    private static Function<SlotWidget, SlotWidget> addTooltipToSlot(String key)
+    {
+        return slot -> slot.appendTooltip(Component.translatable(key));
+    }
+
+    /**
+     * Creates a "synthetic" ID for EMI, used for recipes that do not map to an actual registered recipe.
+     */
+    private static ResourceLocation syntheticId(String id)
+    {
+        return Helpers.identifier("/" + id);
     }
 }
