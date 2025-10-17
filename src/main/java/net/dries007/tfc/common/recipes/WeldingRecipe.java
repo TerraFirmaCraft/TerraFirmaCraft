@@ -33,7 +33,7 @@ public class WeldingRecipe implements INoopInputRecipe, IRecipePredicate<Welding
     public static final MapCodec<WeldingRecipe> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
         Ingredient.CODEC.fieldOf("first_input").forGetter(c -> c.firstInput),
         Ingredient.CODEC.fieldOf("second_input").forGetter(c -> c.secondInput),
-        Codec.INT.optionalFieldOf("tier", -1).forGetter(c -> c.tier),
+        Codec.INT.optionalFieldOf("tier", 0).forGetter(c -> c.tier),
         ItemStackProvider.CODEC.fieldOf("result").forGetter(c -> c.output),
         Behavior.CODEC.optionalFieldOf("bonus", Behavior.IGNORE).forGetter(c -> c.bonus)
     ).apply(i, WeldingRecipe::new));
