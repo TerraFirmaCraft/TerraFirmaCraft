@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import dev.emi.emi.api.EmiEntrypoint;
+import dev.emi.emi.api.EmiInitRegistry;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -25,6 +26,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -41,6 +43,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.recipes.AdvancedShapelessRecipe;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
@@ -56,6 +59,7 @@ import net.dries007.tfc.compat.emi.handlers.EmiGrillHandler;
 import net.dries007.tfc.compat.emi.handlers.EmiSewingHandler;
 import net.dries007.tfc.compat.emi.handlers.EmiWeldingHandler;
 import net.dries007.tfc.compat.emi.recipe.ComparableRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiAdvancedShapelessRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiBlastFurnaceRecipe;
@@ -129,6 +133,12 @@ public final class EmiIntegration implements EmiPlugin
     }
 
     @Override
+    public void initialize(EmiInitRegistry registry)
+    {
+        //TODO add serializer for EmiSizedIngredient?
+    }
+
+    @Override
     public void register(EmiRegistry registry)
     {
         //TODO add drag+drop handlers for things that make sense?
@@ -138,6 +148,9 @@ public final class EmiIntegration implements EmiPlugin
         registerRecipes(registry);
         registerRecipeHandlers(registry);
         registerExclusionZones(registry);
+
+        // warning: ghosts and ghouls ahead
+        overrideRecipes(registry);
     }
 
     private void registerCategories(EmiRegistry registry)
@@ -279,6 +292,14 @@ public final class EmiIntegration implements EmiPlugin
                 EmiStack.of(TFCBlocks.POT)
             )
         );
+        registry.addRecipe(
+            EmiHelpers.useItemOn(
+                "build_stove_pot",
+                EmiStack.of(TFCItems.POT),
+                EmiStack.of(TFCBlocks.STOVE),
+                EmiStack.of(TFCBlocks.STOVE_POT)
+            )
+        );
 
         //TODO replace with a tag maybe?
         List<ItemLike> wattle = new ArrayList<>(TFCBlocks.STAINED_WATTLE.values());
@@ -327,6 +348,35 @@ public final class EmiIntegration implements EmiPlugin
         registry.addExclusionArea(CalendarScreen.class, EmiHelpers.inventoryTabExclusionArea());
         registry.addExclusionArea(NutritionScreen.class, EmiHelpers.inventoryTabExclusionArea());
         registry.addExclusionArea(ClimateScreen.class, EmiHelpers.inventoryTabExclusionArea());
+    }
+
+    /**
+     * EMI currently only ignores crafting recipes that extend CustomRecipe, rather than using Recipe#isSpecial... for whatever reason
+     * see EMI's <a href="https://github.com/emilyploszaj/emi/blob/4014299650cb42f08283148f4fae6f4707e20627/xplat/src/main/java/dev/emi/emi/VanillaPlugin.java#L409-L429">VanillaPlugin</a>
+     * TODO: if this ever changes add recipe handling for our special crafting types e.g. AdvancedShapelessRecipe
+     *
+     * Ew.
+     */
+    private void overrideRecipes(EmiRegistry registry)
+    {
+        // Not sure if plugin run order is deterministic and AdvancedShapelessRecipes will be found
+        // TODO replace with specific recipe IDs?
+        List<ResourceLocation> removedRecipes = new ArrayList<>();
+        for (RecipeHolder<CraftingRecipe> entry : ClientHelpers.getLevelOrThrow().getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().filter(r -> r.value().isSpecial()).toList())
+        {
+            ResourceLocation id = entry.id();
+            CraftingRecipe recipe = entry.value();
+
+            if (recipe instanceof AdvancedShapelessRecipe asr)
+            {
+                removedRecipes.add(id);
+                // Recipe ID has to be different because removing a recipe prevents it from EVER being added, or re-added
+                // No way to remove the filter either
+                registry.addRecipe(new EmiAdvancedShapelessRecipe(EmiHelpers.syntheticId(id.getPath()), asr));
+            }
+        }
+        registry.removeRecipes(r -> removedRecipes.contains(r.getId()));
+
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)

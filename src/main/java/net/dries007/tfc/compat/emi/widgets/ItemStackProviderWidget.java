@@ -18,9 +18,10 @@ public class ItemStackProviderWidget extends GeneratedSlotWidget
     public ItemStackProviderWidget(SlotWidget input, ItemStackProvider provider, int unique, int x, int y)
     {
         super(r -> {
+            //TODO needs to use RecipeHelpers#setCraftingInput??
             List<EmiStack> stacks = input.getStack().getEmiStacks();
             EmiStack stack = stacks.get(r.nextInt(stacks.size()));
-            return EmiStack.of(provider.getSingleStack(stack.getItemStack()));
+            return EmiStack.of(provider.getSingleStackDisplayOnly(stack.getItemStack()));
         }, unique, x, y);
     }
 
