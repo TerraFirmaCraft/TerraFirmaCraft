@@ -11,12 +11,12 @@ import java.util.List;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.emi.emi.api.EmiApi;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -25,13 +25,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.compat.emi.EmiHelpers;
+import net.dries007.tfc.compat.emi.stack.EmiSizedIngredient;
 import net.dries007.tfc.util.data.KnappingPattern;
 import net.dries007.tfc.util.data.KnappingType;
 
@@ -50,9 +50,9 @@ public class EmiKnappingRecipe extends BasicRecipe<KnappingRecipe>
             ? new SizedIngredient(recipe.getIngredient(), recipe.knappingType().get().inputItem().count())
             : recipe.knappingType().get().inputItem();
 
-        inputs.add(EmiIngredient.of(recipe.getIngredient()));
+        inputs.add(new EmiSizedIngredient(inputItem));
         outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));
-        pattern = new PatternWidget(recipe, recipe.getPattern(), inputItem.ingredient(), 5, 5);
+        pattern = new PatternWidget(recipe, recipe.getPattern(), inputItem.getItems(), 5, 5);
     }
 
     @Override
@@ -94,21 +94,21 @@ public class EmiKnappingRecipe extends BasicRecipe<KnappingRecipe>
         private int displayIndex;
 
 
-        public PatternWidget(KnappingRecipe recipe, KnappingPattern pattern, Ingredient input, int x, int y)
+        public PatternWidget(KnappingRecipe recipe, KnappingPattern pattern, ItemStack[] input, int x, int y)
         {
             this.x = x;
             this.y = y;
-            this.width = KnappingPattern.MAX_WIDTH * 16;
-            this.height = KnappingPattern.MAX_HEIGHT * 16;
+            this.width = pattern.getWidth();
+            this.height = pattern.getHeight();
             this.pattern = pattern;
-            stacks = input.getItems();
+            stacks = input;
             knappingType = recipe.knappingType().get();
         }
 
         @Override
         public Bounds getBounds()
         {
-            return new Bounds(x, y, width, height);
+            return new Bounds(x, y, width * 16, height * 16);
         }
 
         private void cycleTextures()
@@ -132,10 +132,10 @@ public class EmiKnappingRecipe extends BasicRecipe<KnappingRecipe>
         public void render(GuiGraphics draw, int mouseX, int mouseY, float delta)
         {
             cycleTextures();
-            draw.fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xffaaaaaa);
-            for (int xi = 0; xi < KnappingPattern.MAX_WIDTH; xi++)
+            draw.fill(x - 1, y - 1, x + width * 16 + 1, y + height * 16 + 1, 0xffaaaaaa);
+            for (int xi = 0; xi < width; xi++)
             {
-                for (int yi = 0; yi < KnappingPattern.MAX_HEIGHT; yi++)
+                for (int yi = 0; yi < height; yi++)
                 {
                     int xp = x + 16 * xi;
                     int yp = y + 16 * yi;
@@ -167,6 +167,7 @@ public class EmiKnappingRecipe extends BasicRecipe<KnappingRecipe>
             {
                 List<Component> display = displayStack.getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.NORMAL);
                 lines.addAll(display.stream().map(Component::getVisualOrderText).map(ClientTooltipComponent::create).toList());
+                lines.add(new StackTooltip(displayStack));
             }
             return lines;
         }
@@ -188,6 +189,36 @@ public class EmiKnappingRecipe extends BasicRecipe<KnappingRecipe>
                 EmiApi.displayUses(EmiStack.of(displayStack));
             }
             return true;
+        }
+    }
+
+    private record StackTooltip(ItemStack stack) implements ClientTooltipComponent
+    {
+        @Override
+        public int getHeight()
+        {
+            return 18;
+        }
+
+        @Override
+        public int getWidth(Font font)
+        {
+            return 18;
+        }
+
+        @Override
+        public void renderImage(Font font, int x, int y, GuiGraphics draw)
+        {
+            draw.renderItem(stack, x, y);
+
+            String amount = String.valueOf(stack.getCount());
+            int xp = x + getWidth(font) - Math.min(14, font.width(amount));
+            int yp = y + getHeight() - font.lineHeight;
+
+            draw.pose().pushPose();
+            draw.pose().translate(0, 0, 300); // Try to position the text in front of the item
+            draw.drawString(font, amount, xp, yp, 0xffffffff, true);
+            draw.pose().popPose();
         }
     }
 }
