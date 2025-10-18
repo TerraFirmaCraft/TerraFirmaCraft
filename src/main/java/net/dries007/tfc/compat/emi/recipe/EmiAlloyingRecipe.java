@@ -15,7 +15,6 @@ import dev.emi.emi.api.widget.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.Mth;
 
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.compat.emi.EmiIntegration;
@@ -82,10 +81,11 @@ public class EmiAlloyingRecipe extends AutoLayoutRecipe<AlloyRecipe>
             {
                 widgets.add(new SlotWidget(inputs.get(i), secondColumn, widgets.index(widgets.size() - Y_SPACING, Position.TOP)));
             }
-            widgets.add(new TextWidget(formatRange(range), widgets.last(Position.RIGHT, 4), widgets.last(Position.Y, widgets.last(Position.HEIGHT) / 2), 0xff000000, false).verticalAlign(TextWidget.Alignment.CENTER));
+            int x = widgets.last(Position.RIGHT, 4);
+            int y = widgets.last(Position.Y, widgets.last(Position.HEIGHT) / 2);
+            widgets.add(new TextWidget(formatRange(range), x, y, 0xff000000, false).verticalAlign(TextWidget.Alignment.CENTER));
         }
-        int rows = Mth.floorDiv(ranges.size(), 2);
-        widgets.add(new SlotWidget(outputs.getFirst(), secondColumn + COLUMN_SPACING, widgets.max(Position.BOTTOM) / 2 - (9 + Y_SPACING * rows)).recipeContext(this));
+        widgets.add(new SlotWidget(outputs.getFirst(), secondColumn + COLUMN_SPACING, widgets.max(Position.BOTTOM) / 2 - (9 - Y_SPACING)).recipeContext(this));
         return widgets;
     }
 
