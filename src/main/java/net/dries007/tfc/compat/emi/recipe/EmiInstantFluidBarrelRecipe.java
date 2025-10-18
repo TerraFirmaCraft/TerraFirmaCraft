@@ -28,7 +28,7 @@ public class EmiInstantFluidBarrelRecipe extends AutoLayoutRecipe<InstantFluidBa
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(InstantFluidBarrelRecipe recipe)
     {
         SizedFluidIngredient fluidA = recipe.getInputFluid();
         SizedFluidIngredient fluidB = recipe.getAddedFluid();

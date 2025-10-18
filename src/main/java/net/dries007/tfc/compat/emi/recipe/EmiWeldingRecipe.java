@@ -21,13 +21,16 @@ import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class EmiWeldingRecipe extends AutoLayoutRecipe<WeldingRecipe>
 {
+    private final int tier;
+
     public EmiWeldingRecipe(ResourceLocation id, WeldingRecipe recipe)
     {
         super(EmiIntegration.WELDING, id, recipe);
+        tier = recipe.getTier();
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(WeldingRecipe recipe)
     {
         inputs.add(EmiIngredient.of(recipe.getFirstInput()));
         inputs.add(EmiIngredient.of(recipe.getSecondInput()));
@@ -38,7 +41,7 @@ public class EmiWeldingRecipe extends AutoLayoutRecipe<WeldingRecipe>
     @Override
     protected SlotWidget generateOutputSlot(EmiStack stack, int x, int y, int index)
     {
-        return super.generateOutputSlot(stack, x, y, index).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getTier())));
+        return super.generateOutputSlot(stack, x, y, index).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(tier)));
     }
 
     @Override
@@ -46,7 +49,7 @@ public class EmiWeldingRecipe extends AutoLayoutRecipe<WeldingRecipe>
     {
         if (other instanceof EmiWeldingRecipe r)
         {
-            return recipe.getTier() - r.recipe.getTier();
+            return tier - r.tier;
         }
         return super.compareTo(other);
     }

@@ -35,6 +35,8 @@ import net.dries007.tfc.util.calendar.Calendars;
 public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
 {
     private static final int SEED_UNIQUE = 16777216;
+    private final boolean infinite;
+    private final int duration;
     private @Nullable ItemStackProvider outputProvider;
     private @Nullable ItemStackProvider onSeal;
     private @Nullable ItemStackProvider onUnseal;
@@ -42,10 +44,12 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
     public EmiSealedBarrelRecipe(ResourceLocation id, SealedBarrelRecipe recipe)
     {
         super(EmiIntegration.BARREL, id, recipe);
+        infinite = recipe.isInfinite();
+        duration = recipe.getDuration();
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(SealedBarrelRecipe recipe)
     {
         onSeal = recipe.onSeal();
         onUnseal = recipe.onUnseal();
@@ -78,7 +82,7 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
     }
 
     @Override
-    protected List<Widget> generateWidgets()
+    protected List<Widget> generateWidgets(SealedBarrelRecipe recipe)
     {
         int y = getMargin() + getPaddingTop();
         WidgetLayout widgets = new WidgetLayout(new Bounds(getMargin() + getPaddingLeft(), getMargin() + getPaddingTop(), 0, 0));
@@ -130,11 +134,11 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
 
     private MutableComponent getTimeText()
     {
-        if (recipe.isInfinite())
+        if (infinite)
         {
             return Component.translatable("tfc.tooltip.barrel.infinite");
         }
-        return Calendars.CLIENT.getTimeDelta(recipe.getDuration());
+        return Calendars.CLIENT.getTimeDelta(duration);
     }
 
     @Override

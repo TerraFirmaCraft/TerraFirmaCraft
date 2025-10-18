@@ -20,13 +20,16 @@ import net.dries007.tfc.util.tooltip.Tooltips;
 
 public class EmiAnvilRecipe extends AutoLayoutRecipe<AnvilRecipe>
 {
+    protected final int tier;
+
     public EmiAnvilRecipe(ResourceLocation id, AnvilRecipe recipe)
     {
         super(EmiIntegration.ANVIL, id, recipe);
+        tier = recipe.getMinTier();
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(AnvilRecipe recipe)
     {
         inputs.add(EmiIngredient.of(recipe.getInput()));
         outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));
@@ -35,7 +38,7 @@ public class EmiAnvilRecipe extends AutoLayoutRecipe<AnvilRecipe>
     @Override
     protected SlotWidget generateOutputSlot(EmiStack stack, int x, int y, int index)
     {
-        return super.generateOutputSlot(stack, x, y, index).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getMinTier())));
+        return super.generateOutputSlot(stack, x, y, index).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(tier)));
     }
 
     @Override
@@ -43,7 +46,7 @@ public class EmiAnvilRecipe extends AutoLayoutRecipe<AnvilRecipe>
     {
         if (other instanceof EmiAnvilRecipe r)
         {
-            return recipe.getMinTier() - r.recipe.getMinTier();
+            return tier - r.tier;
         }
         return super.compareTo(other);
     }

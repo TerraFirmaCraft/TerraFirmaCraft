@@ -23,7 +23,7 @@ public class EmiCastingRecipe extends AutoLayoutRecipe<CastingRecipe>
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(CastingRecipe recipe)
     {
         inputs.add(EmiIngredient.of(recipe.getIngredient()));
         inputs.add(EmiHelpers.toIngredient(recipe.getFluidIngredient()));

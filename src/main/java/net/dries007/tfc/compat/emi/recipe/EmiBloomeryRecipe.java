@@ -21,7 +21,7 @@ public class EmiBloomeryRecipe extends AutoLayoutRecipe<BloomeryRecipe>
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(BloomeryRecipe recipe)
     {
         inputs.add(EmiHelpers.toIngredient(recipe.getInputFluid()));
         inputs.add(EmiHelpers.toIngredient(recipe.getCatalyst()));

@@ -29,7 +29,6 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
     private final EmiRecipeCategory category;
     private final Widget[] generatedWidgets;
 
-    protected final T recipe;
     protected final List<EmiIngredient> inputs = new ArrayList<>();
     protected final List<EmiIngredient> catalysts = new ArrayList<>();
     protected final List<EmiStack> outputs = new ArrayList<>();
@@ -39,10 +38,9 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
     public AutoLayoutRecipe(EmiRecipeCategory category, ResourceLocation id, T recipe)
     {
         this.id = id;
-        this.recipe = recipe;
         this.category = category;
-        processRecipe();
-        generatedWidgets = generateWidgets().toArray(Widget[]::new);
+        processRecipe(recipe);
+        generatedWidgets = generateWidgets(recipe).toArray(Widget[]::new);
         int w = 0;
         int h = 0;
         for (Widget widget : generatedWidgets)
@@ -106,9 +104,9 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
         }
     }
 
-    protected abstract void processRecipe();
+    protected abstract void processRecipe(T recipe);
 
-    protected List<Widget> generateWidgets()
+    protected List<Widget> generateWidgets(T recipe)
     {
         List<Widget> widgets = new ArrayList<>();
         int x = getMargin() + getPaddingLeft();

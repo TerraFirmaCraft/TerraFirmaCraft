@@ -22,7 +22,7 @@ public class EmiQuernRecipe extends AutoLayoutRecipe<QuernRecipe>
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(QuernRecipe recipe)
     {
         inputs.add(EmiIngredient.of(recipe.getIngredient()));
         outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));

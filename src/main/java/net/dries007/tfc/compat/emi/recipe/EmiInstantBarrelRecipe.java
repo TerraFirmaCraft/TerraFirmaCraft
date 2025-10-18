@@ -32,6 +32,7 @@ public class EmiInstantBarrelRecipe extends AutoLayoutRecipe<InstantBarrelRecipe
     private static final int SEED_UNIQUE = 134217728;
     private boolean isStatic;
     private @Nullable SlotWidget itemInputSlot;
+    private ItemStackProvider outputProvider;
 
     public EmiInstantBarrelRecipe(ResourceLocation id, InstantBarrelRecipe recipe)
     {
@@ -39,9 +40,9 @@ public class EmiInstantBarrelRecipe extends AutoLayoutRecipe<InstantBarrelRecipe
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(InstantBarrelRecipe recipe)
     {
-        ItemStackProvider outputProvider = recipe.getOutputItem();
+        outputProvider = recipe.getOutputItem();
         ItemStack outputStack = outputProvider.getEmptyStack();
         SizedIngredient inputItem = recipe.getInputItem();
         FluidStack fluidOut = recipe.getOutputFluid();
@@ -82,7 +83,7 @@ public class EmiInstantBarrelRecipe extends AutoLayoutRecipe<InstantBarrelRecipe
     {
         if (!isStatic && index == 0 && itemInputSlot != null)
         {
-            return new ItemStackProviderWidget(itemInputSlot, recipe.getOutputItem(), SEED_UNIQUE, x, y);
+            return new ItemStackProviderWidget(itemInputSlot, outputProvider, SEED_UNIQUE, x, y);
         }
         return super.generateOutputSlot(stack, x, y, index);
     }

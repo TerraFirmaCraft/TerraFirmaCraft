@@ -21,7 +21,7 @@ public class EmiLoomRecipe extends AutoLayoutRecipe<LoomRecipe>
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(LoomRecipe recipe)
     {
         inputs.add(EmiHelpers.toIngredient(recipe.getItemStackIngredient()));
         outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));

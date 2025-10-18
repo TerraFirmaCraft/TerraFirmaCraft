@@ -33,13 +33,18 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
     private static final EmiTexture emptyFlame = EmiTexture.EMPTY_FLAME;
     private static final EmiTexture fullFlame = EmiTexture.FULL_FLAME;
 
+    protected final float temperature;
+    protected final boolean outputsSolid;
+
     public EmiHeatingRecipe(ResourceLocation id, HeatingRecipe recipe)
     {
         super(EmiIntegration.HEATING, id, recipe);
+        temperature = recipe.getTemperature();
+        outputsSolid = !recipe.getResultItem(EmiHelpers.registryAccess()).isEmpty() && recipe.getDisplayOutputFluid().isEmpty();
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(HeatingRecipe recipe)
     {
         inputs.add(EmiIngredient.of(recipe.getIngredient()));
 
@@ -56,7 +61,7 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
     }
 
     @Override
-    protected List<Widget> generateWidgets()
+    protected List<Widget> generateWidgets(HeatingRecipe recipe)
     {
         WidgetLayout widgets = new WidgetLayout(new Bounds(getMargin() + getPaddingLeft(), getMargin() + getPaddingTop(), 0, 0));
         widgets.add(new SlotWidget(inputs.getFirst(), widgets.last(Position.X), widgets.last(Position.Y)));
@@ -73,7 +78,7 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
     {
         super.addWidgets(widgets);
 
-        Component text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
+        Component text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
         if (text != null)
         {
             widgets.addText(text, getDisplayWidth() / 2, getMargin() + 2, 0xff000000, true).horizontalAlign(TextWidget.Alignment.CENTER).verticalAlign(TextWidget.Alignment.CENTER);
@@ -85,14 +90,14 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
     {
         if (other instanceof EmiHeatingRecipe heating)
         {
-            return (int) (recipe.getTemperature() - heating.recipe.getTemperature());
+            return (int) (temperature - heating.temperature);
         }
         return super.compareTo(other);
     }
 
     public boolean hasSolidOutput()
     {
-        return !recipe.getResultItem(EmiHelpers.registryAccess()).isEmpty() && recipe.getDisplayOutputFluid().isEmpty();
+        return outputsSolid;
     }
 
     @Override

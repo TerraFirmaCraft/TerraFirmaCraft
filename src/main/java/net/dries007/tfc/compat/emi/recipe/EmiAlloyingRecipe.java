@@ -32,7 +32,7 @@ public class EmiAlloyingRecipe extends AutoLayoutRecipe<AlloyRecipe>
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(AlloyRecipe recipe)
     {
         List<AlloyRange> ranges = recipe.contents();
 
@@ -58,7 +58,7 @@ public class EmiAlloyingRecipe extends AutoLayoutRecipe<AlloyRecipe>
     }
 
     @Override
-    protected List<Widget> generateWidgets()
+    protected List<Widget> generateWidgets(AlloyRecipe recipe)
     {
         int firstColumn = getMargin() + getPaddingLeft();
         int secondColumn = firstColumn + COLUMN_SPACING;

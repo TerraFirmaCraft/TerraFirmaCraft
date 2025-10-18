@@ -26,9 +26,12 @@ import static net.dries007.tfc.common.container.SewingTableContainer.*;
 
 public class EmiSewingRecipe extends AutoLayoutRecipe<SewingRecipe>
 {
+    private final SewingRecipe recipe;
+
     public EmiSewingRecipe(ResourceLocation id, SewingRecipe recipe)
     {
         super(EmiIntegration.SEWING, id, recipe);
+        this.recipe = recipe;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class EmiSewingRecipe extends AutoLayoutRecipe<SewingRecipe>
     }
 
     @Override
-    protected void processRecipe()
+    protected void processRecipe(SewingRecipe recipe)
     {
         int wool = 0;
         int burlap = 0;
