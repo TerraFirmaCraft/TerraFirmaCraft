@@ -35,7 +35,9 @@ public class EmiBasePotRecipe<T extends PotRecipe> extends BasicRecipe<T>
     @Override
     public void addWidgets(WidgetHolder widgets)
     {
-        widgets.addText(Calendars.CLIENT.getTimeDelta(duration), getDisplayWidth() / 2, getDisplayHeight(), 0xffffff, true).horizontalAlign(TextWidget.Alignment.CENTER).verticalAlign(TextWidget.Alignment.END);
+        widgets.addText(Calendars.CLIENT.getTimeDelta(duration), getDisplayWidth() / 2, getDisplayHeight(), 0xffffff, true)
+            .horizontalAlign(TextWidget.Alignment.CENTER)
+            .verticalAlign(TextWidget.Alignment.END);
         addInputWidgets(widgets);
         addOutputWidgets(widgets);
 

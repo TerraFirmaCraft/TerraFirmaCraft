@@ -65,7 +65,9 @@ public class EmiInstantBarrelRecipe extends AutoLayoutRecipe<InstantBarrelRecipe
     public void addWidgets(WidgetHolder widgets)
     {
         super.addWidgets(widgets);
-        widgets.addText(Component.translatable("tfc.tooltip.barrel.instant"), getDisplayWidth() / 2, getDisplayHeight() - 2, 0xffffffff, true).verticalAlign(TextWidget.Alignment.END).horizontalAlign(TextWidget.Alignment.CENTER);
+        widgets.addText(Component.translatable("tfc.tooltip.barrel.instant"), getDisplayWidth() / 2, getDisplayHeight() - 2, 0xffffffff, true)
+            .verticalAlign(TextWidget.Alignment.END)
+            .horizontalAlign(TextWidget.Alignment.CENTER);
     }
 
     @Override

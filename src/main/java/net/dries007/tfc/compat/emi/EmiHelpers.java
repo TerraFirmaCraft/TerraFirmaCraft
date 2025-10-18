@@ -8,9 +8,17 @@ package net.dries007.tfc.compat.emi;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import dev.emi.emi.api.EmiExclusionArea;
+import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.api.widget.SlotWidget;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -23,6 +31,7 @@ import net.dries007.tfc.common.component.food.IFood;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.emi.stack.EmiSizedIngredient;
+import net.dries007.tfc.util.Helpers;
 
 public class EmiHelpers
 {
@@ -104,5 +113,56 @@ public class EmiHelpers
         }
         // Not food
         return stack;
+    }
+
+    static EmiIngredient damagedTool(EmiIngredient tool, int damage)
+    {
+        for (EmiStack stack : tool.getEmiStacks())
+        {
+            ItemStack is = stack.getItemStack().copy();
+            is.setDamageValue(damage);
+            stack.setRemainder(EmiStack.of(is));
+        }
+        return tool;
+    }
+
+    static EmiWorldInteractionRecipe useItemOn(String id, EmiIngredient item, EmiIngredient target, EmiStack result)
+    {
+        return useItemOn(id, item, target, result, true);
+    }
+
+    private static EmiWorldInteractionRecipe useItemOn(String id, EmiIngredient item, EmiIngredient target, EmiStack result, boolean catalyst)
+    {
+        return useItemOn(id, List.of(item), target, result, catalyst);
+    }
+
+    static EmiWorldInteractionRecipe useItemOn(String id, List<EmiIngredient> items, EmiIngredient target, EmiStack result, boolean catalyst)
+    {
+        EmiWorldInteractionRecipe.Builder builder = EmiWorldInteractionRecipe.builder().id(syntheticId(id)).leftInput(target).output(result);
+        for (EmiIngredient ingredient : items)
+        {
+            builder.rightInput(ingredient, catalyst);
+        }
+        return builder.build();
+    }
+
+    static <T extends AbstractContainerScreen<?>> EmiExclusionArea<T> inventoryTabExclusionArea()
+    {
+        return (screen, consumer) -> {
+            consumer.accept(new Bounds(screen.getGuiLeft() + screen.getXSize(), screen.getGuiTop(), 20, 120));
+        };
+    }
+
+    static Function<SlotWidget, SlotWidget> addTooltipToSlot(String key)
+    {
+        return slot -> slot.appendTooltip(Component.translatable(key));
+    }
+
+    /**
+     * Creates a "synthetic" ID for EMI, used for recipes that do not map to an actual registered recipe.
+     */
+    static ResourceLocation syntheticId(String id)
+    {
+        return Helpers.identifier("/" + id);
     }
 }

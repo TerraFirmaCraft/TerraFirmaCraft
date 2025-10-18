@@ -66,8 +66,28 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
     {
         WidgetLayout widgets = new WidgetLayout(new Bounds(getMargin() + getPaddingLeft(), getMargin() + getPaddingTop(), 0, 0));
         widgets.add(new SlotWidget(inputs.getFirst(), widgets.last(Position.X), widgets.last(Position.Y)));
-        widgets.add(new TextureWidget(emptyFlame.texture, widgets.last(Position.RIGHT, 4), widgets.last(Position.Y), emptyFlame.width, emptyFlame.height, emptyFlame.u, emptyFlame.v));
-        widgets.add(new AnimatedTextureWidget(fullFlame.texture, widgets.last(Position.X), widgets.last(Position.Y), fullFlame.width, fullFlame.height, fullFlame.u, fullFlame.v, 8000, false, true, true));
+        widgets.add(new TextureWidget(
+            emptyFlame.texture,
+            widgets.last(Position.RIGHT, 4),
+            widgets.last(Position.Y),
+            emptyFlame.width,
+            emptyFlame.height,
+            emptyFlame.u,
+            emptyFlame.v
+        ));
+        widgets.add(new AnimatedTextureWidget(
+            fullFlame.texture,
+            widgets.last(Position.X),
+            widgets.last(Position.Y),
+            fullFlame.width,
+            fullFlame.height,
+            fullFlame.u,
+            fullFlame.v,
+            8000,
+            false,
+            true,
+            true
+        ));
 
         EmiStack output = outputs.isEmpty() ? EmiStack.EMPTY : outputs.getLast();
         widgets.add(new SlotWidget(output, widgets.last(Position.RIGHT, 4), widgets.index(0, Position.Y)).recipeContext(this));
@@ -82,7 +102,9 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
         Component text = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
         if (text != null)
         {
-            widgets.addText(text, getDisplayWidth() / 2, getMargin() + 2, 0xff000000, true).horizontalAlign(TextWidget.Alignment.CENTER).verticalAlign(TextWidget.Alignment.CENTER);
+            widgets.addText(text, getDisplayWidth() / 2, getMargin() + 2, 0xff000000, true)
+                .horizontalAlign(TextWidget.Alignment.CENTER)
+                .verticalAlign(TextWidget.Alignment.CENTER);
         }
     }
 

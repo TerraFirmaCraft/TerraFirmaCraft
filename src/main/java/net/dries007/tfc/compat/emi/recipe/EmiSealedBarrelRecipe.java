@@ -105,17 +105,35 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
         {
             if (onSeal != null)
             {
-                sealSlot = widgets.addWidget(new ItemStackProviderWidget(itemInputSlot, onSeal, SEED_UNIQUE, widgets.last(Position.RIGHT, 3), y).recipeContext(this).appendTooltip(Component.translatable("tfc.tooltip.while_sealed_description")));
+                sealSlot = widgets.addWidget(new ItemStackProviderWidget(
+                    itemInputSlot,
+                    onSeal,
+                    SEED_UNIQUE,
+                    widgets.last(Position.RIGHT, 3),
+                    y
+                ).recipeContext(this).appendTooltip(Component.translatable("tfc.tooltip.while_sealed_description")));
                 widgets.add(new FillingArrowWidget(widgets.last(Position.RIGHT, 3), y, 3000));
             }
             //TODO ok what is the actual order of this
             if (outputProvider != null)
             {
-                widgets.add(new ItemStackProviderWidget(itemInputSlot, outputProvider, SEED_UNIQUE, widgets.last(Position.RIGHT, 3), y).recipeContext(this));
+                widgets.add(new ItemStackProviderWidget(
+                    itemInputSlot,
+                    outputProvider,
+                    SEED_UNIQUE,
+                    widgets.last(Position.RIGHT, 3),
+                    y
+                ).recipeContext(this));
             }
             if (onUnseal != null)
             {
-                widgets.add(new ItemStackProviderWidget(sealSlot != null ? sealSlot : itemInputSlot, onUnseal, SEED_UNIQUE, widgets.last(Position.RIGHT, 3), y).recipeContext(this));
+                widgets.add(new ItemStackProviderWidget(
+                    sealSlot != null ? sealSlot : itemInputSlot,
+                    onUnseal,
+                    SEED_UNIQUE,
+                    widgets.last(Position.RIGHT, 3),
+                    y
+                ).recipeContext(this));
             }
         }
 
@@ -131,7 +149,9 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
     public void addWidgets(WidgetHolder widgets)
     {
         super.addWidgets(widgets);
-        widgets.addText(getTimeText(), getDisplayWidth() / 2, getDisplayHeight() - 2, 0xffffffff, true).verticalAlign(TextWidget.Alignment.END).horizontalAlign(TextWidget.Alignment.CENTER);
+        widgets.addText(getTimeText(), getDisplayWidth() / 2, getDisplayHeight() - 2, 0xffffffff, true)
+            .verticalAlign(TextWidget.Alignment.END)
+            .horizontalAlign(TextWidget.Alignment.CENTER);
     }
 
     private MutableComponent getTimeText()
