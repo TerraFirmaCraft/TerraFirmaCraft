@@ -27,18 +27,22 @@ public abstract class AutoLayoutRecipe<T extends Recipe<?>> implements EmiRecipe
 
     private final ResourceLocation id;
     private final EmiRecipeCategory category;
-    private final Widget[] generatedWidgets;
-
     protected final List<EmiIngredient> inputs = new ArrayList<>();
     protected final List<EmiIngredient> catalysts = new ArrayList<>();
     protected final List<EmiStack> outputs = new ArrayList<>();
-    protected final int width;
-    protected final int height;
+
+    private Widget[] generatedWidgets;
+    protected int width;
+    protected int height;
 
     public AutoLayoutRecipe(EmiRecipeCategory category, ResourceLocation id, T recipe)
     {
         this.id = id;
         this.category = category;
+    }
+
+    protected void init(T recipe)
+    {
         processRecipe(recipe);
         generatedWidgets = generateWidgets(recipe).toArray(Widget[]::new);
         int w = 0;

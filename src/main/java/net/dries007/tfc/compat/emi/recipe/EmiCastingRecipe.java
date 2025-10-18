@@ -20,6 +20,7 @@ public class EmiCastingRecipe extends AutoLayoutRecipe<CastingRecipe>
     public EmiCastingRecipe(ResourceLocation id, CastingRecipe recipe)
     {
         super(EmiIntegration.CASTING, id, recipe);
+        init(recipe);
     }
 
     @Override

@@ -19,6 +19,7 @@ public class EmiQuernRecipe extends AutoLayoutRecipe<QuernRecipe>
     public EmiQuernRecipe(ResourceLocation id, QuernRecipe recipe)
     {
         super(EmiIntegration.QUERN, id, recipe);
+        init(recipe);
     }
 
     @Override

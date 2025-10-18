@@ -32,6 +32,7 @@ public class EmiSewingRecipe extends AutoLayoutRecipe<SewingRecipe>
     {
         super(EmiIntegration.SEWING, id, recipe);
         this.recipe = recipe;
+        init(recipe);
     }
 
     @Override

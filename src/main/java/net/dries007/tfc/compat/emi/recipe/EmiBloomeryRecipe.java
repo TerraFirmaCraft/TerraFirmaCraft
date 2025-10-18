@@ -18,6 +18,7 @@ public class EmiBloomeryRecipe extends AutoLayoutRecipe<BloomeryRecipe>
     public EmiBloomeryRecipe(ResourceLocation id, BloomeryRecipe recipe)
     {
         super(EmiIntegration.BLOOMERY, id, recipe);
+        init(recipe);
     }
 
     @Override

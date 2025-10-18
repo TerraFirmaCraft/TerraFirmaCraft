@@ -30,23 +30,24 @@ import net.dries007.tfc.compat.emi.widgets.ItemStackProviderWidget;
 public class EmiInstantBarrelRecipe extends AutoLayoutRecipe<InstantBarrelRecipe>
 {
     private static final int SEED_UNIQUE = 134217728;
-    private boolean isStatic;
+    private final boolean isStatic;
+    private final ItemStackProvider outputProvider;
     private @Nullable SlotWidget itemInputSlot;
-    private ItemStackProvider outputProvider;
 
     public EmiInstantBarrelRecipe(ResourceLocation id, InstantBarrelRecipe recipe)
     {
         super(EmiIntegration.BARREL, id, recipe);
+        outputProvider = recipe.getOutputItem();
+        isStatic = !outputProvider.dependsOnInput();
+        init(recipe);
     }
 
     @Override
     protected void processRecipe(InstantBarrelRecipe recipe)
     {
-        outputProvider = recipe.getOutputItem();
         ItemStack outputStack = outputProvider.getEmptyStack();
         SizedIngredient inputItem = recipe.getInputItem();
         FluidStack fluidOut = recipe.getOutputFluid();
-        isStatic = !outputProvider.dependsOnInput();
         inputs.add(isStatic ? EmiIngredient.of(inputItem.ingredient()) : new EmiSizedIngredient(inputItem));
         inputs.add(EmiHelpers.toIngredient(recipe.getInputFluid()));
         if (!outputStack.isEmpty() || !isStatic)

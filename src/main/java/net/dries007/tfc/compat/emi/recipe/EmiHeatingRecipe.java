@@ -41,6 +41,7 @@ public class EmiHeatingRecipe extends AutoLayoutRecipe<HeatingRecipe>
         super(EmiIntegration.HEATING, id, recipe);
         temperature = recipe.getTemperature();
         outputsSolid = !recipe.getResultItem(EmiHelpers.registryAccess()).isEmpty() && recipe.getDisplayOutputFluid().isEmpty();
+        init(recipe);
     }
 
     @Override

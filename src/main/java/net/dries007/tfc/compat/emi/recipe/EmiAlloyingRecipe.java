@@ -29,6 +29,7 @@ public class EmiAlloyingRecipe extends AutoLayoutRecipe<AlloyRecipe>
     public EmiAlloyingRecipe(ResourceLocation id, AlloyRecipe recipe)
     {
         super(EmiIntegration.ALLOYING, id, recipe);
+        init(recipe);
     }
 
     @Override

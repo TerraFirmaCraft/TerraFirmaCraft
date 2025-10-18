@@ -27,6 +27,7 @@ public class EmiWeldingRecipe extends AutoLayoutRecipe<WeldingRecipe>
     {
         super(EmiIntegration.WELDING, id, recipe);
         tier = recipe.getTier();
+        init(recipe);
     }
 
     @Override

@@ -26,6 +26,7 @@ public class EmiAnvilRecipe extends AutoLayoutRecipe<AnvilRecipe>
     {
         super(EmiIntegration.ANVIL, id, recipe);
         tier = recipe.getMinTier();
+        init(recipe);
     }
 
     @Override

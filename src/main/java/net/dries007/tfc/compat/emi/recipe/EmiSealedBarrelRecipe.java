@@ -46,6 +46,7 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
         super(EmiIntegration.BARREL, id, recipe);
         infinite = recipe.isInfinite();
         duration = recipe.getDuration();
+        init(recipe);
     }
 
     @Override

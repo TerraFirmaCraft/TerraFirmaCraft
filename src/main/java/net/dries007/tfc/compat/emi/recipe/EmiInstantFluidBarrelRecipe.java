@@ -25,6 +25,7 @@ public class EmiInstantFluidBarrelRecipe extends AutoLayoutRecipe<InstantFluidBa
     public EmiInstantFluidBarrelRecipe(ResourceLocation id, InstantFluidBarrelRecipe recipe)
     {
         super(EmiIntegration.BARREL, id, recipe);
+        init(recipe);
     }
 
     @Override

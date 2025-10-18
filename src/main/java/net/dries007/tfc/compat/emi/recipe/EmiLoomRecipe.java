@@ -18,6 +18,7 @@ public class EmiLoomRecipe extends AutoLayoutRecipe<LoomRecipe>
     public EmiLoomRecipe(ResourceLocation id, LoomRecipe recipe)
     {
         super(EmiIntegration.LOOM, id, recipe);
+        init(recipe);
     }
 
     @Override
