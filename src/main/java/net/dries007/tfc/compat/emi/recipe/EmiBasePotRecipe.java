@@ -23,16 +23,19 @@ import net.dries007.tfc.util.calendar.Calendars;
 
 public class EmiBasePotRecipe<T extends PotRecipe> extends BasicRecipe<T>
 {
+    private final int duration;
+
     public EmiBasePotRecipe(ResourceLocation id, T recipe, int width, int height)
     {
-        super(EmiIntegration.POT, id, recipe, width, height);
+        super(EmiIntegration.POT, id, width, height);
         inputs.add(EmiHelpers.toIngredient(recipe.getFluidIngredient()));
+        duration = recipe.getDuration();
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets)
     {
-        widgets.addText(Calendars.CLIENT.getTimeDelta(recipe.getDuration()), getDisplayWidth() / 2, getDisplayHeight(), 0xffffff, true).horizontalAlign(TextWidget.Alignment.CENTER).verticalAlign(TextWidget.Alignment.END);
+        widgets.addText(Calendars.CLIENT.getTimeDelta(duration), getDisplayWidth() / 2, getDisplayHeight(), 0xffffff, true).horizontalAlign(TextWidget.Alignment.CENTER).verticalAlign(TextWidget.Alignment.END);
         addInputWidgets(widgets);
         addOutputWidgets(widgets);
 

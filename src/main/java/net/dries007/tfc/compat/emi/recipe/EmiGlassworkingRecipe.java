@@ -37,15 +37,17 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
 {
     private static final int OPERATIONS_PER_PAGE = 6;
     private final GlassworkingStepWidget[] stepWidgets;
+    private final List<GlassOperation> operations;
     private int currentPage = 0;
     private @Nullable PageControlsWidget pageControls;
 
 
     public EmiGlassworkingRecipe(ResourceLocation id, GlassworkingRecipe recipe)
     {
-        super(EmiIntegration.GLASSWORKING, id, recipe, 175, 30);
+        super(EmiIntegration.GLASSWORKING, id, 175, 30);
         inputs.add(EmiIngredient.of(recipe.batchItem()));
-        for (GlassOperation operation : recipe.operations())
+        operations = recipe.operations();
+        for (GlassOperation operation : operations)
         {
             inputs.add(EmiIngredient.of(operation.getItems().stream().map(Holder::value).map(EmiStack::of).toList()));
         }
@@ -60,14 +62,14 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
         // These widgets MUST be created here
         // addWidgets can be called while viewing this recipe by looking at a pinned recipe,
         // which would replace our widgets with new widgets that do not respond to input
-        int widgetCount = Math.min(recipe.operations().size(), OPERATIONS_PER_PAGE);
+        int widgetCount = Math.min(operations.size(), OPERATIONS_PER_PAGE);
         stepWidgets = new GlassworkingStepWidget[widgetCount];
         for (int i = 0; i < widgetCount; i++)
         {
             stepWidgets[i] = new GlassworkingStepWidget(6, 30 + (i * 20));
         }
         updateSteps();
-        if (recipe.operations().size() > OPERATIONS_PER_PAGE)
+        if (operations.size() > OPERATIONS_PER_PAGE)
         {
             pageControls = new PageControlsWidget(getLabelText(), 125, 20, this::hasPrevPage, this::prevStepPage, this::hasNextPage, this::nextStepPage);
         }
@@ -100,7 +102,7 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
 
     private MutableComponent getLabelText()
     {
-        int operationCount = recipe.operations().size();
+        int operationCount = operations.size();
         int currentSteps = Math.min(operationCount, (currentPage + 1) * OPERATIONS_PER_PAGE);
         return Component.translatable("tfc.tooltip.glass.step_count", currentSteps, operationCount);
     }
@@ -130,7 +132,7 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
     private boolean hasNextPage()
     {
         int viewedOperations = (currentPage + 1) * OPERATIONS_PER_PAGE;
-        return viewedOperations < recipe.operations().size();
+        return viewedOperations < operations.size();
     }
 
     private boolean hasPrevPage()
@@ -140,9 +142,8 @@ public class EmiGlassworkingRecipe extends BasicRecipe<GlassworkingRecipe>
 
     private void updateSteps()
     {
-        List<GlassOperation> operations = recipe.operations();
         int startingStep = currentPage * OPERATIONS_PER_PAGE;
-        int operationCount = recipe.operations().size();
+        int operationCount = operations.size();
         for (int i = 0; i < stepWidgets.length; i++)
         {
             GlassworkingStepWidget widget = stepWidgets[i];

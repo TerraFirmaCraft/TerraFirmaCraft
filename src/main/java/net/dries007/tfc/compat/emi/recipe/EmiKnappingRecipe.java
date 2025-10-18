@@ -42,7 +42,7 @@ public class EmiKnappingRecipe extends BasicRecipe<KnappingRecipe>
 
     public EmiKnappingRecipe(EmiRecipeCategory category, ResourceLocation id, KnappingRecipe recipe)
     {
-        super(category, id, recipe, 250, 250);
+        super(category, id, 250, 250);
 
         inputItem = recipe.getIngredient() != null
             // If this knapping recipe has an ingredient, we need to apply the count of the type's ingredient to it

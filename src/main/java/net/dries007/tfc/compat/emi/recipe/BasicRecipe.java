@@ -14,12 +14,10 @@ import net.minecraft.world.item.crafting.Recipe;
 
 public abstract class BasicRecipe<T extends Recipe<?>> extends BasicEmiRecipe implements ComparableRecipe
 {
-    protected final T recipe;
 
-    public BasicRecipe(EmiRecipeCategory category, ResourceLocation id, T recipe, int width, int height)
+    public BasicRecipe(EmiRecipeCategory category, ResourceLocation id, int width, int height)
     {
         super(category, id, width, height);
-        this.recipe = recipe;
     }
 
     @Override

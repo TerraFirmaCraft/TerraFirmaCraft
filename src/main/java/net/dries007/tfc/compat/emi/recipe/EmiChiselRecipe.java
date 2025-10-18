@@ -25,7 +25,7 @@ public class EmiChiselRecipe extends BasicRecipe<ChiselRecipe>
 
     public EmiChiselRecipe(ResourceLocation id, ChiselRecipe recipe)
     {
-        super(EmiIntegration.CHISEL, id, recipe, 118, 26);
+        super(EmiIntegration.CHISEL, id, 118, 26);
         mode = recipe.getMode();
 
         inputs.add(EmiHelpers.toIngredient(recipe.getIngredient()));

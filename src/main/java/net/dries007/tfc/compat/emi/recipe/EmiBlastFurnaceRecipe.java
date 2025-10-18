@@ -22,7 +22,7 @@ public class EmiBlastFurnaceRecipe extends BasicRecipe<BlastFurnaceRecipe>
 
     public EmiBlastFurnaceRecipe(ResourceLocation id, BlastFurnaceRecipe recipe)
     {
-        super(EmiIntegration.BLAST_FURNACE, id, recipe, 98, 26);
+        super(EmiIntegration.BLAST_FURNACE, id, 98, 26);
         inputs.add(EmiHelpers.toIngredient(recipe.inputFluid()));
         catalyst = EmiIngredient.of(recipe.catalyst());
         outputs.add(EmiStack.of(recipe.outputFluid().getFluid(), recipe.outputFluid().getAmount()));
