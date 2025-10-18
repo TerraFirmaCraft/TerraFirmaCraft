@@ -47,7 +47,11 @@ public class EmiAnvilRecipe extends AutoLayoutRecipe<AnvilRecipe>
     {
         if (other instanceof EmiAnvilRecipe r)
         {
-            return tier - r.tier;
+            int tierDiff = tier - r.tier;
+            if (tierDiff != 0)
+            {
+                return tier - r.tier;
+            }
         }
         return super.compareTo(other);
     }

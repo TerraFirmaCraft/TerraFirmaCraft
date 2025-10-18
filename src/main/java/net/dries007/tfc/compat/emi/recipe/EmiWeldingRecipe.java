@@ -50,7 +50,11 @@ public class EmiWeldingRecipe extends AutoLayoutRecipe<WeldingRecipe>
     {
         if (other instanceof EmiWeldingRecipe r)
         {
-            return tier - r.tier;
+            int tierDiff = tier - r.tier;
+            if (tierDiff != 0)
+            {
+                return tier - r.tier;
+            }
         }
         return super.compareTo(other);
     }

@@ -7,6 +7,7 @@
 package net.dries007.tfc.compat.emi.recipe;
 
 import java.util.List;
+import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Bounds;
@@ -168,5 +169,25 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
         return new SlotWidget(ingredient, x, y);
     }
 
-
+    @Override
+    public int compareTo(EmiRecipe other)
+    {
+        if (other instanceof EmiSealedBarrelRecipe recipe)
+        {
+            if (infinite != recipe.infinite)
+            {
+                // Infinite recipes go last
+                return infinite ? 1 : -1;
+            }
+            // Shorter duration recipes first
+            int durationDiff = duration - recipe.duration;
+            if (durationDiff != 0)
+            {
+                return durationDiff;
+            }
+            return super.compareTo(recipe);
+        }
+        // Go after all the instant recipe types
+        return 1;
+    }
 }
