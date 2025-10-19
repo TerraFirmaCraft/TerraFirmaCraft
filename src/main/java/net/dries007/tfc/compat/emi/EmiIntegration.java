@@ -30,11 +30,11 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.CalendarScreen;
 import net.dries007.tfc.client.screen.ClimateScreen;
 import net.dries007.tfc.client.screen.NutritionScreen;
@@ -124,12 +124,9 @@ public final class EmiIntegration implements EmiPlugin
         return category;
     }
 
-    private static <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> recipes(Supplier<RecipeType<T>> type)
+    private static <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> recipes(RecipeManager manager, Supplier<RecipeType<T>> type)
     {
-        return ClientHelpers.getLevelOrThrow().getRecipeManager()
-            .getAllRecipesFor(type.get())
-            .stream()
-            .toList();
+        return manager.getAllRecipesFor(type.get()).stream().toList();
     }
 
     @Override
@@ -219,7 +216,7 @@ public final class EmiIntegration implements EmiPlugin
         basicRecipeMapping(registry, TFCRecipeTypes.BARREL_INSTANT, EmiInstantBarrelRecipe::new);
         basicRecipeMapping(registry, TFCRecipeTypes.BARREL_INSTANT_FLUID, EmiInstantFluidBarrelRecipe::new);
 
-        for (RecipeHolder<PotRecipe> entry : recipes(TFCRecipeTypes.POT))
+        for (RecipeHolder<PotRecipe> entry : recipes(registry.getRecipeManager(), TFCRecipeTypes.POT))
         {
             ResourceLocation id = entry.id();
             PotRecipe recipe = entry.value();
@@ -238,7 +235,7 @@ public final class EmiIntegration implements EmiPlugin
             }
         }
 
-        for (RecipeHolder<KnappingRecipe> entry : recipes(TFCRecipeTypes.KNAPPING))
+        for (RecipeHolder<KnappingRecipe> entry : recipes(registry.getRecipeManager(), TFCRecipeTypes.KNAPPING))
         {
             KnappingRecipe recipe = entry.value();
             KnappingType type = recipe.knappingType().get();
@@ -246,7 +243,7 @@ public final class EmiIntegration implements EmiPlugin
             registry.addRecipe(new EmiKnappingRecipe(category, entry.id(), recipe));
         }
 
-        for (RecipeHolder<ScrapingRecipe> entry : recipes(TFCRecipeTypes.SCRAPING))
+        for (RecipeHolder<ScrapingRecipe> entry : recipes(registry.getRecipeManager(), TFCRecipeTypes.SCRAPING))
         {
             ResourceLocation id = entry.id();
             ScrapingRecipe recipe = entry.value();
@@ -362,7 +359,7 @@ public final class EmiIntegration implements EmiPlugin
         // Not sure if plugin run order is deterministic and AdvancedShapelessRecipes will be found
         // TODO replace with specific recipe IDs?
         List<ResourceLocation> removedRecipes = new ArrayList<>();
-        for (RecipeHolder<CraftingRecipe> entry : ClientHelpers.getLevelOrThrow().getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().filter(r -> r.value().isSpecial()).toList())
+        for (RecipeHolder<CraftingRecipe> entry : registry.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().filter(r -> r.value().isSpecial()).toList())
         {
             ResourceLocation id = entry.id();
             CraftingRecipe recipe = entry.value();
@@ -381,7 +378,7 @@ public final class EmiIntegration implements EmiPlugin
 
     private static <C extends RecipeInput, T extends Recipe<C>> void basicRecipeMapping(EmiRegistry registry, Supplier<RecipeType<T>> type, BiFunction<ResourceLocation, T, EmiRecipe> mapper)
     {
-        for (RecipeHolder<T> recipe : recipes(type))
+        for (RecipeHolder<T> recipe : recipes(registry.getRecipeManager(), type))
         {
             registry.addRecipe(mapper.apply(recipe.id(), recipe.value()));
         }
