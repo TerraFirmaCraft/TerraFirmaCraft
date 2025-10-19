@@ -115,6 +115,7 @@ public class EmiHelpers
         return stack;
     }
 
+    // Stuff used just by the plugin
     static EmiIngredient damagedTool(EmiIngredient tool, int damage)
     {
         for (EmiStack stack : tool.getEmiStacks())

@@ -43,6 +43,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
 import net.dries007.tfc.common.recipes.AdvancedShapelessRecipe;
 import net.dries007.tfc.common.recipes.JamPotRecipe;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
@@ -59,6 +60,7 @@ import net.dries007.tfc.compat.emi.handlers.EmiGrillHandler;
 import net.dries007.tfc.compat.emi.handlers.EmiSewingHandler;
 import net.dries007.tfc.compat.emi.handlers.EmiWeldingHandler;
 import net.dries007.tfc.compat.emi.recipe.ComparableRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiAdvancedShapedRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAdvancedShapelessRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAlloyingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiAnvilRecipe;
@@ -356,8 +358,6 @@ public final class EmiIntegration implements EmiPlugin
      */
     private void overrideRecipes(EmiRegistry registry)
     {
-        // Not sure if plugin run order is deterministic and AdvancedShapelessRecipes will be found
-        // TODO replace with specific recipe IDs?
         List<ResourceLocation> removedRecipes = new ArrayList<>();
         for (RecipeHolder<CraftingRecipe> entry : registry.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().filter(r -> r.value().isSpecial()).toList())
         {
@@ -369,7 +369,12 @@ public final class EmiIntegration implements EmiPlugin
                 removedRecipes.add(id);
                 // Recipe ID has to be different because removing a recipe prevents it from EVER being added, or re-added
                 // No way to remove the filter either
-                registry.addRecipe(new EmiAdvancedShapelessRecipe(EmiHelpers.syntheticId(id.getPath()), asr));
+                registry.addRecipe(new EmiAdvancedShapelessRecipe(id.withPath("/" + id.getPath()), asr));
+            }
+            else if (recipe instanceof AdvancedShapedRecipe asr)
+            {
+                removedRecipes.add(id);
+                registry.addRecipe(new EmiAdvancedShapedRecipe(id.withPath("/" + id.getPath()), asr));
             }
         }
         registry.removeRecipes(r -> removedRecipes.contains(r.getId()));
