@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import dev.emi.emi.api.EmiEntrypoint;
-import dev.emi.emi.api.EmiInitRegistry;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -85,10 +84,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.KnappingType;
 
-/**
- * todo: it is worth having a native EMI plugin, as otherwise it will populate from JEI, which keeps both JEI and EMI
- * runtime loaded. Ultimately this is poor, and I would like to provide first-class EMI compat
- */
 @EmiEntrypoint
 public final class EmiIntegration implements EmiPlugin
 {
@@ -129,12 +124,6 @@ public final class EmiIntegration implements EmiPlugin
     private static <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> recipes(RecipeManager manager, Supplier<RecipeType<T>> type)
     {
         return manager.getAllRecipesFor(type.get()).stream().toList();
-    }
-
-    @Override
-    public void initialize(EmiInitRegistry registry)
-    {
-        //TODO add serializer for EmiSizedIngredient?
     }
 
     @Override

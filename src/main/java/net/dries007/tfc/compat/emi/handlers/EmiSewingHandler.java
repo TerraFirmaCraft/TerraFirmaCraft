@@ -18,8 +18,6 @@ import net.dries007.tfc.client.screen.SewingTableScreen;
 import net.dries007.tfc.common.container.SewingTableContainer;
 import net.dries007.tfc.compat.emi.recipe.EmiSewingRecipe;
 
-//TODO "bolt armor trim" is uncraftable after the first time crafting it, result item is empty on recipe object,
-// possibly related?
 public class EmiSewingHandler implements StandardRecipeHandler<SewingTableContainer>
 {
     @Override
