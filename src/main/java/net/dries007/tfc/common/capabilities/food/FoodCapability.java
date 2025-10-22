@@ -388,12 +388,20 @@ public final class FoodCapability
      * via 1. > (1 - p) * T + p * T = T
      * QED
      * </pre>
+     *
+     * Some addon or bundle packs tend to use ci < 0 to create non-decaying food,
+     * make them happy by leaving this sort of ci untouched please.
+     * 
      * @param ci The initial creation date
      * @param p  The decay date modifier (1 / standard decay modifier)
      * @return cf the final creation date, rounded to the nearest hour, for ease of stackability.
      */
     private static long calculateNewCreationDate(long ci, float p)
     {
+        if (ci < 0)
+        {
+            return ci;
+        }
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);
     }
