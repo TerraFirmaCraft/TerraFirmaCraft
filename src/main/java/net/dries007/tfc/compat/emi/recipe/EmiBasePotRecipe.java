@@ -24,6 +24,16 @@ import net.dries007.tfc.util.calendar.Calendars;
 public class EmiBasePotRecipe<T extends PotRecipe> extends BasicRecipe<T>
 {
     private final int duration;
+    private final Vector2i[] SLOT_POSITIONS = new Vector2i[] {
+        // Fluid slot
+        new Vector2i(24, 44),
+        // Input slots
+        new Vector2i(15, 6),
+        new Vector2i(33, 6),
+        new Vector2i(6, 24),
+        new Vector2i(24, 24),
+        new Vector2i(42, 24)
+    };
 
     public EmiBasePotRecipe(ResourceLocation id, T recipe, int width, int height)
     {
@@ -48,7 +58,7 @@ public class EmiBasePotRecipe<T extends PotRecipe> extends BasicRecipe<T>
     protected void addInputWidgets(WidgetHolder widgets)
     {
         int index = 0;
-        for (Vector2i pos : inputSlotPositions())
+        for (Vector2i pos : SLOT_POSITIONS)
         {
             if (index < inputs.size())
             {
@@ -60,20 +70,6 @@ public class EmiBasePotRecipe<T extends PotRecipe> extends BasicRecipe<T>
             }
             index++;
         }
-    }
-
-    protected Vector2i[] inputSlotPositions()
-    {
-        return new Vector2i[] {
-            // Fluid slot
-            new Vector2i(24, 44),
-            // Input slots
-            new Vector2i(15, 6),
-            new Vector2i(33, 6),
-            new Vector2i(6, 24),
-            new Vector2i(24, 24),
-            new Vector2i(42, 24)
-        };
     }
 
     protected void addOutputWidgets(WidgetHolder widgets)
