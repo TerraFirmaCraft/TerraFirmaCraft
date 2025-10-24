@@ -397,16 +397,23 @@ public final class FoodCapability
      * via 1. > (1 - p) * T + p * T = T
      * QED
      * </pre>
+     *
      * @param ci The initial creation date
      * @param p  The decay date modifier (1 / standard decay modifier)
      * @return cf the final creation date, rounded to the nearest hour, for ease of stackability.
      */
     private static long calculateNewCreationDate(long ci, float p)
     {
-        // Maintain flags
+        if (ci == IFood.ROTTEN_FLAG)
+        {
+            // Shouldn't be possible to reach this normally, but if it's rotten it should stay rotten
+            return ci;
+        }
         if (ci == IFood.INVISIBLE_NEVER_DECAY_FLAG || ci == IFood.NEVER_DECAY_FLAG)
         {
-            return ci;
+            // Without this, foods with these flags will result in
+            // fresh OR rotten food depending on how old the world is
+            ci = getRoundedCreationDate();
         }
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);
