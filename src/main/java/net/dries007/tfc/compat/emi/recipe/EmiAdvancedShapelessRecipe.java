@@ -32,7 +32,7 @@ public class EmiAdvancedShapelessRecipe extends EmiCraftingRecipe
 
     public EmiAdvancedShapelessRecipe(ResourceLocation id, AdvancedShapelessRecipe recipe)
     {
-        super(recipe.getIngredients().stream().map(EmiIngredient::of).toList(), EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())), id, true);
+        super(recipe.getIngredients().stream().map(EmiIngredient::of).toList(), EmiHelpers.nonDecayStack(recipe.getResultItem(EmiHelpers.registryAccess())), id, true);
         primaryIngredient = recipe.getPrimaryIngredient().map(EmiIngredient::of).orElse(null);
         isSpecial = recipe.isSpecial();
         provider = recipe.getResult();

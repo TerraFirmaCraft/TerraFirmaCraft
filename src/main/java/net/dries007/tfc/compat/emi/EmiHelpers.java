@@ -86,7 +86,7 @@ public class EmiHelpers
 
     public static ItemStack setDefaultNonDecay(ItemStack stack)
     {
-        return setNewOrCurrentFoodFlag(stack, IFood.TRANSIENT_NEVER_DECAY_FLAG);
+        return setNewOrCurrentFoodFlag(stack, IFood.INVISIBLE_NEVER_DECAY_FLAG);
     }
 
     public static EmiStack nonDecayStack(ItemStack stack)
@@ -104,7 +104,7 @@ public class EmiHelpers
         if (food != null)
         {
             long creationDate = food.getCreationDate();
-            if (creationDate == IFood.TRANSIENT_NEVER_DECAY_FLAG || creationDate == IFood.INVISIBLE_NEVER_DECAY_FLAG || creationDate == IFood.NEVER_DECAY_FLAG || creationDate == IFood.ROTTEN_FLAG)
+            if (creationDate == IFood.INVISIBLE_NEVER_DECAY_FLAG || creationDate == IFood.NEVER_DECAY_FLAG || creationDate == IFood.ROTTEN_FLAG)
             {
                 // Keep current flag
                 return stack;

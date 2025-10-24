@@ -72,7 +72,7 @@ public class EmiSealedBarrelRecipe extends AutoLayoutRecipe<SealedBarrelRecipe>
             ItemStack stack = output.stack();
             if (!stack.isEmpty())
             {
-                outputs.add(EmiStack.of(stack));
+                outputs.add(EmiHelpers.nonDecayStack(stack));
             }
         }
 

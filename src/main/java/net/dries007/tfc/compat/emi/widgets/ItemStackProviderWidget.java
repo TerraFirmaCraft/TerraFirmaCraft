@@ -12,6 +12,7 @@ import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.compat.emi.EmiHelpers;
 
 public class ItemStackProviderWidget extends GeneratedSlotWidget
 {
@@ -21,7 +22,7 @@ public class ItemStackProviderWidget extends GeneratedSlotWidget
             //TODO needs to use RecipeHelpers#setCraftingInput??
             List<EmiStack> stacks = input.getStack().getEmiStacks();
             EmiStack stack = stacks.get(r.nextInt(stacks.size()));
-            return EmiStack.of(provider.getSingleStackDisplayOnly(stack.getItemStack()));
+            return EmiHelpers.nonDecayStack(provider.getSingleStackDisplayOnly(stack.getItemStack()));
         }, unique, x, y);
     }
 

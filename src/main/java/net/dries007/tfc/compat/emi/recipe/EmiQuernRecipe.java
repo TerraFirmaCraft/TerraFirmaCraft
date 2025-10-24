@@ -7,7 +7,6 @@
 package net.dries007.tfc.compat.emi.recipe;
 
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.common.recipes.QuernRecipe;
@@ -26,6 +25,6 @@ public class EmiQuernRecipe extends AutoLayoutRecipe<QuernRecipe>
     protected void processRecipe(QuernRecipe recipe)
     {
         inputs.add(EmiIngredient.of(recipe.getIngredient()));
-        outputs.add(EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())));
+        outputs.add(EmiHelpers.nonDecayStack(recipe.getResultItem(EmiHelpers.registryAccess())));
     }
 }

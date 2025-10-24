@@ -8,7 +8,6 @@ package net.dries007.tfc.compat.emi.recipe;
 
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
@@ -19,6 +18,6 @@ public class EmiAdvancedShapedRecipe extends EmiCraftingRecipe
 {
     public EmiAdvancedShapedRecipe(ResourceLocation id, AdvancedShapedRecipe recipe)
     {
-        super(recipe.getIngredients().stream().map(EmiIngredient::of).toList(), EmiStack.of(recipe.getResultItem(EmiHelpers.registryAccess())), id, false);
+        super(recipe.getIngredients().stream().map(EmiIngredient::of).toList(), EmiHelpers.nonDecayStack(recipe.getResultItem(EmiHelpers.registryAccess())), id, false);
     }
 }

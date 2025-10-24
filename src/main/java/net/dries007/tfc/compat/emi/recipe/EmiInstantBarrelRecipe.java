@@ -52,7 +52,7 @@ public class EmiInstantBarrelRecipe extends AutoLayoutRecipe<InstantBarrelRecipe
         inputs.add(EmiHelpers.toIngredient(recipe.getInputFluid()));
         if (!outputStack.isEmpty() || !isStatic)
         {
-            outputs.add(EmiStack.of(outputStack));
+            outputs.add(EmiHelpers.nonDecayStack(outputStack));
         }
         if (!fluidOut.isEmpty())
         {

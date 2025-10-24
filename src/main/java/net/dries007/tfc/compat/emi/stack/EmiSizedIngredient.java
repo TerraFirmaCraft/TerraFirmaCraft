@@ -15,6 +15,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 
+import net.dries007.tfc.compat.emi.EmiHelpers;
+
 /**
  * This exists because using {@link EmiIngredient.of} on lists of {@link EmiStack}
  * will sometimes return an EMI tag ingredient, which does not retain components for whatever reason.
@@ -30,7 +32,7 @@ public class EmiSizedIngredient implements EmiIngredient
     public EmiSizedIngredient(SizedIngredient ingredient)
     {
         amount = ingredient.count();
-        stacks = Arrays.stream(ingredient.getItems()).map(EmiStack::of).toList();
+        stacks = Arrays.stream(ingredient.getItems()).map(EmiHelpers::nonDecayStack).toList();
     }
 
     public EmiSizedIngredient(List<EmiStack> stack, long amount)

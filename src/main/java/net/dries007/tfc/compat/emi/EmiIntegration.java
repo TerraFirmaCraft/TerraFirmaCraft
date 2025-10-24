@@ -348,7 +348,7 @@ public final class EmiIntegration implements EmiPlugin
     private void overrideRecipes(EmiRegistry registry)
     {
         List<ResourceLocation> removedRecipes = new ArrayList<>();
-        for (RecipeHolder<CraftingRecipe> entry : registry.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING).stream().filter(r -> r.value().isSpecial()).toList())
+        for (RecipeHolder<CraftingRecipe> entry : registry.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING))
         {
             ResourceLocation id = entry.id();
             CraftingRecipe recipe = entry.value();
