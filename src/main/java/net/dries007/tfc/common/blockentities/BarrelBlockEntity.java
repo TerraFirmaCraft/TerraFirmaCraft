@@ -117,18 +117,17 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 barrel.updateRecipe();
                 barrel.markForSync();
 
-                // Used by recipes that have the same output as input e.g. leather dyeing
-                // Otherwise, every tick they will craft the recipe
-                if (recipe.resetSealTimerOnComplete())
-                {
-                    barrel.resetTickTimer(level);
-                }
-
                 // If a new recipe exists, then apply onSeal effects. This is for cases such as pickling -> vinegar preservation
                 final @Nullable SealedBarrelRecipe nextRecipe = barrel.getRecipe();
                 if (nextRecipe != null)
                 {
                     nextRecipe.onSealed(barrel.inventory); // We're in a sequential recipe, so apply sealed affects to the new recipe
+                    if (recipe == nextRecipe)
+                    {
+                        // Used by recipes that have the same output as input e.g. leather dyeing
+                        // Otherwise, every tick they will craft the recipe
+                        barrel.resetTickTimer(level);
+                    }
                 }
             }
         }
@@ -247,16 +246,17 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     public boolean isItemValid(int slot, ItemStack stack)
     {
         return switch (slot)
+        {
+            case SLOT_FLUID_CONTAINER_IN -> Helpers.mightHaveCapability(stack, Capabilities.FluidHandler.ITEM);
+            case SLOT_ITEM ->
             {
-                case SLOT_FLUID_CONTAINER_IN -> Helpers.mightHaveCapability(stack, Capabilities.FluidHandler.ITEM);
-                case SLOT_ITEM -> {
-                    // We only want to deny heavy/huge (aka things that can hold inventory).
-                    // Other than that, barrels don't need a size restriction, and should in general be unrestricted, so we can allow any kind of recipe input (i.e. unfired large vessel)
-                    final IItemSize size = ItemSizeManager.get(stack);
-                    yield size.getSize(stack).isSmallerThan(Size.HUGE) || size.getWeight(stack).isSmallerThan(Weight.VERY_HEAVY);
-                }
-                default -> true;
-            };
+                // We only want to deny heavy/huge (aka things that can hold inventory).
+                // Other than that, barrels don't need a size restriction, and should in general be unrestricted, so we can allow any kind of recipe input (i.e. unfired large vessel)
+                final IItemSize size = ItemSizeManager.get(stack);
+                yield size.getSize(stack).isSmallerThan(Size.HUGE) || size.getWeight(stack).isSmallerThan(Weight.VERY_HEAVY);
+            }
+            default -> true;
+        };
     }
 
     @Override
@@ -555,7 +555,8 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
     public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, NonEmptyInput, FluidTankCallback, net.dries007.tfc.common.recipes.input.BarrelInventory, INBTSerializable<CompoundTag>
     {
-        public static final FluidContainerInfo INFO = new FluidContainerInfo() {
+        public static final FluidContainerInfo INFO = new FluidContainerInfo()
+        {
             @Override
             public boolean canContainFluid(Fluid input)
             {

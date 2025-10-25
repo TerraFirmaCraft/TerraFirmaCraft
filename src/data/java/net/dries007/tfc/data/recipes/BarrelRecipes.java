@@ -215,14 +215,12 @@ public interface BarrelRecipes extends Recipes
                 .input(fluidOf(color), 25)
                 .input(Ingredient.of(ItemTags.DYEABLE))
                 .output(ItemStackProvider.of(CopyInputModifier.INSTANCE, DyeLeatherModifier.of(color)))
-                .resetTimerOnFinish()
                 .sealed(hours(1));
 
         barrel("bleach_dyeable")
             .input(fluidOf(SimpleFluid.LYE), 25)
             .input(Ingredient.of(ItemTags.DYEABLE))
             .output(ItemStackProvider.of(CopyInputModifier.INSTANCE, RemoveDyeModifier.INSTANCE))
-            .resetTimerOnFinish()
             .sealed(hours(1));
 
         musicDisc(DyeColor.YELLOW, Items.MUSIC_DISC_13);

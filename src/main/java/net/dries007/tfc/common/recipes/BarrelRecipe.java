@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -53,8 +52,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         SizedFluidIngredient.FLAT_CODEC.fieldOf("input_fluid").forGetter(c -> c.inputFluid),
         ItemStackProvider.CODEC.optionalFieldOf("output_item", ItemStackProvider.empty()).forGetter(c -> c.outputItem),
         FluidStack.CODEC.optionalFieldOf("output_fluid", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
-        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound),
-        Codec.BOOL.optionalFieldOf("reset_timer_on_finish", false).forGetter(c -> c.refreshTimer)
+        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound)
     ).apply(i, BarrelRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, BarrelRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -63,7 +61,6 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         ItemStackProvider.STREAM_CODEC, c -> c.outputItem,
         FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.sound,
-        ByteBufCodecs.BOOL, c -> c.refreshTimer,
         BarrelRecipe::new
     );
 
@@ -78,21 +75,19 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
     protected final ItemStackProvider outputItem;
     protected final FluidStack outputFluid;
     protected final Holder<SoundEvent> sound;
-    protected final boolean refreshTimer;
 
     protected BarrelRecipe(BarrelRecipe parent)
     {
-        this(parent.inputItem, parent.inputFluid, parent.outputItem, parent.outputFluid, parent.sound, parent.refreshTimer);
+        this(parent.inputItem, parent.inputFluid, parent.outputItem, parent.outputFluid, parent.sound);
     }
 
-    protected BarrelRecipe(Optional<SizedIngredient> inputItem, SizedFluidIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, Holder<SoundEvent> sound, boolean resetTimer)
+    protected BarrelRecipe(Optional<SizedIngredient> inputItem, SizedFluidIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, Holder<SoundEvent> sound)
     {
         this.inputItem = inputItem;
         this.inputFluid = inputFluid;
         this.outputItem = outputItem;
         this.outputFluid = outputFluid;
         this.sound = sound;
-        this.refreshTimer = resetTimer;
     }
 
     public boolean matches(BarrelInventory input)
@@ -223,11 +218,6 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         return sound.value();
     }
 
-    public boolean resetSealTimerOnComplete()
-    {
-        return refreshTimer;
-    }
-
     /**
      * A builder capable of building all types of barrel recipes currently implemented by TFC
      */
@@ -239,7 +229,6 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
         private ItemStackProvider outputItem = ItemStackProvider.empty();
         private FluidStack outputFluid = FluidStack.EMPTY;
         private Holder<SoundEvent> sound = Holder.direct(SoundEvents.BREWING_STAND_BREW);
-        private boolean refreshTimer;
 
         public Builder(Consumer<BarrelRecipe> onFinish)
         {
@@ -290,12 +279,6 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
             return this;
         }
 
-        public Builder resetTimerOnFinish()
-        {
-            this.refreshTimer = true;
-            return this;
-        }
-
         public void instant()
         {
             onFinish.accept(new InstantBarrelRecipe(parent()));
@@ -305,7 +288,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
 
         public void instantOnAdd(SizedFluidIngredient addedFluid)
         {
-            onFinish.accept(new InstantFluidBarrelRecipe(Objects.requireNonNull(inputFluid, "Missing input fluid"), addedFluid, outputFluid, sound, refreshTimer));
+            onFinish.accept(new InstantFluidBarrelRecipe(Objects.requireNonNull(inputFluid, "Missing input fluid"), addedFluid, outputFluid, sound));
         }
 
         public void sealed(int duration)
@@ -320,7 +303,7 @@ public class BarrelRecipe implements INoopInputRecipe, IRecipePredicate<BarrelIn
 
         private BarrelRecipe parent()
         {
-            return new BarrelRecipe(inputItem, Objects.requireNonNull(inputFluid, "Missing input fluid"), outputItem, outputFluid, sound, refreshTimer);
+            return new BarrelRecipe(inputItem, Objects.requireNonNull(inputFluid, "Missing input fluid"), outputItem, outputFluid, sound);
         }
     }
 }
