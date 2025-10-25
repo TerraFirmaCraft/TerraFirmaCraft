@@ -7,9 +7,6 @@
 package net.dries007.tfc.data.recipes;
 
 import java.util.function.Function;
-import java.util.stream.Stream;
-
-import net.dries007.tfc.common.recipes.outputs.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -17,7 +14,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -32,7 +28,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
-import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.food.FoodTraits;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -46,6 +41,14 @@ import net.dries007.tfc.common.recipes.ingredients.HasTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.HeatIngredient;
 import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
+import net.dries007.tfc.common.recipes.outputs.AddHeatModifier;
+import net.dries007.tfc.common.recipes.outputs.AddTraitModifier;
+import net.dries007.tfc.common.recipes.outputs.CopyInputModifier;
+import net.dries007.tfc.common.recipes.outputs.DyeLeatherModifier;
+import net.dries007.tfc.common.recipes.outputs.EmptyBowlModifier;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.common.recipes.outputs.RemoveDyeModifier;
+import net.dries007.tfc.common.recipes.outputs.RemoveTraitModifier;
 
 import static net.minecraft.world.item.crafting.Ingredient.*;
 
@@ -212,12 +215,14 @@ public interface BarrelRecipes extends Recipes
                 .input(fluidOf(color), 25)
                 .input(Ingredient.of(ItemTags.DYEABLE))
                 .output(ItemStackProvider.of(CopyInputModifier.INSTANCE, DyeLeatherModifier.of(color)))
+                .resetTimerOnFinish()
                 .sealed(hours(1));
 
         barrel("bleach_dyeable")
             .input(fluidOf(SimpleFluid.LYE), 25)
             .input(Ingredient.of(ItemTags.DYEABLE))
             .output(ItemStackProvider.of(CopyInputModifier.INSTANCE, RemoveDyeModifier.INSTANCE))
+            .resetTimerOnFinish()
             .sealed(hours(1));
 
         musicDisc(DyeColor.YELLOW, Items.MUSIC_DISC_13);
@@ -234,7 +239,7 @@ public interface BarrelRecipes extends Recipes
         musicDisc(DyeColor.BLUE, Items.MUSIC_DISC_WARD);
 
         // Instant Recipes
-        for (SoilBlockType.Variant soil: SoilBlockType.Variant.values())
+        for (SoilBlockType.Variant soil : SoilBlockType.Variant.values())
         {
             barrel()
                 .input(soil.getBlock(SoilBlockType.DIRT).get()).input(Fluids.WATER, 250)

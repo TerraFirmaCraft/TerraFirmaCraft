@@ -39,7 +39,8 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
         SizedFluidIngredient.FLAT_CODEC.fieldOf("primary_fluid").forGetter(c -> c.inputFluid),
         SizedFluidIngredient.FLAT_CODEC.fieldOf("added_fluid").forGetter(c -> c.addedFluid),
         FluidStack.CODEC.optionalFieldOf("output_fluid", FluidStack.EMPTY).forGetter(c -> c.outputFluid),
-        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound)
+        SoundEvent.CODEC.optionalFieldOf("sound", Holder.direct(SoundEvents.BREWING_STAND_BREW)).forGetter(c -> c.sound),
+        Codec.BOOL.optionalFieldOf("reset_timer_on_finish", false).forGetter(c -> c.refreshTimer)
     ).apply(i, InstantFluidBarrelRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, InstantFluidBarrelRecipe> STREAM_CODEC = StreamCodec.composite(
@@ -47,14 +48,15 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
         SizedFluidIngredient.STREAM_CODEC, c -> c.addedFluid,
         FluidStack.OPTIONAL_STREAM_CODEC, c -> c.outputFluid,
         ByteBufCodecs.holderRegistry(Registries.SOUND_EVENT), c -> c.sound,
+        ByteBufCodecs.BOOL, c -> c.refreshTimer,
         InstantFluidBarrelRecipe::new
     );
 
     private final SizedFluidIngredient addedFluid;
 
-    public InstantFluidBarrelRecipe(SizedFluidIngredient primaryFluid, SizedFluidIngredient addedFluid, FluidStack outputFluid, Holder<SoundEvent> sound)
+    public InstantFluidBarrelRecipe(SizedFluidIngredient primaryFluid, SizedFluidIngredient addedFluid, FluidStack outputFluid, Holder<SoundEvent> sound, boolean resetTimer)
     {
-        super(Optional.empty(), primaryFluid, ItemStackProvider.empty(), outputFluid, sound);
+        super(Optional.empty(), primaryFluid, ItemStackProvider.empty(), outputFluid, sound, resetTimer);
         this.addedFluid = addedFluid;
     }
 

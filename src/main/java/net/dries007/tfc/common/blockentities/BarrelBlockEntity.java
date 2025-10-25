@@ -17,7 +17,6 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -117,6 +116,13 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 // In both cases, update the recipe and sync
                 barrel.updateRecipe();
                 barrel.markForSync();
+
+                // Used by recipes that have the same output as input e.g. leather dyeing
+                // Otherwise, every tick they will craft the recipe
+                if (recipe.resetSealTimerOnComplete())
+                {
+                    barrel.resetTickTimer(level);
+                }
 
                 // If a new recipe exists, then apply onSeal effects. This is for cases such as pickling -> vinegar preservation
                 final @Nullable SealedBarrelRecipe nextRecipe = barrel.getRecipe();
@@ -405,7 +411,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                     }
                 }
             }
-            }
+        }
     }
 
     public void onSeal()
@@ -490,9 +496,14 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         if (oldRecipe != null && newRecipe != null && oldRecipe != newRecipe)
         {
             // The recipe has changed to a new one, so update the recipe ticks
-            recipeTick = Calendars.get(level).getTicks();
-            markForSync();
+            resetTickTimer(level);
         }
+    }
+
+    private void resetTickTimer(Level level)
+    {
+        recipeTick = Calendars.get(level).getTicks();
+        markForSync();
     }
 
     /**

@@ -18,5 +18,6 @@
         "type": "tfc:remove_dye"
       }
     ]
-  }
+  },
+  "reset_timer_on_finish": true
 }
