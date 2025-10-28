@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.wood;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -28,6 +29,13 @@ public class TFCStandingSignBlock extends StandingSignBlock implements IForgeBlo
     {
         super(type, properties.properties());
         this.properties = properties;
+    }
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        // parity with vanilla because you for some reason can't place tfc signs on top of each other without this explicit check
+        return level.getBlockState(pos.below()).isSolid() || level.getBlockState(pos.below()).getBlock() instanceof StandingSignBlock;
     }
 
     @Nullable
