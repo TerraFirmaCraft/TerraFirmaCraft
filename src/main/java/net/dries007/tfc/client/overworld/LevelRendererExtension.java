@@ -377,7 +377,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
         stack.pushPose();
         stack.mulPose(Axis.YP.rotation(pos.azimuth()));
         stack.mulPose(Axis.XN.rotation(pos.zenith()));
-        final Matrix4f pose = stack.last().pose();
+        final Matrix4f pose = new Matrix4f(stack.last().pose());
         stack.popPose();
         return pose;
     }
@@ -387,7 +387,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
         stack.pushPose();
         stack.mulPose(Axis.XN.rotation(pos.zenith()));
         stack.mulPose(Axis.YN.rotation(pos.azimuth()));
-        final Matrix4f pose = stack.last().pose();
+        final Matrix4f pose = new Matrix4f(stack.last().pose());
         stack.popPose();
         return pose;
     }
