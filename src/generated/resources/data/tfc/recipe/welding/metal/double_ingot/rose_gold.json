@@ -9,5 +9,6 @@
   },
   "second_input": {
     "tag": "c:ingots/rose_gold"
-  }
+  },
+  "tier": -1
 }

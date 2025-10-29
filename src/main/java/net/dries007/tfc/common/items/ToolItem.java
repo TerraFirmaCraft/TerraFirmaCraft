@@ -20,6 +20,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
@@ -52,11 +53,11 @@ public class ToolItem extends DiggerItem
     }
 
     /**
-     * Mining plants should consume some durability
+     * Mining plants should consume some durability, mining snow should not
      */
     public static boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
     {
-        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CONSUMES_TOOL_DURABILITY) || state.getDestroySpeed(level, pos) != 0.0F;
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CONSUMES_TOOL_DURABILITY) || state.getBlock() instanceof SnowLayerBlock || state.getDestroySpeed(level, pos) != 0.0F;
     }
 
     public ToolItem(Tier tier, TagKey<Block> mineableBlocks, Properties properties)

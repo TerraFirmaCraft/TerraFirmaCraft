@@ -9,5 +9,6 @@
   },
   "second_input": {
     "tag": "c:ingots/gold"
-  }
+  },
+  "tier": -1
 }

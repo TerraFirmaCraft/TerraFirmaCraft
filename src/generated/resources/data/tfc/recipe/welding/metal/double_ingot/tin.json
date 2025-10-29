@@ -9,5 +9,6 @@
   },
   "second_input": {
     "tag": "c:ingots/tin"
-  }
+  },
+  "tier": -1
 }

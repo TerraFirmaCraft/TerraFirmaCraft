@@ -9,5 +9,6 @@
   },
   "second_input": {
     "tag": "c:ingots/black_steel"
-  }
+  },
+  "tier": -1
 }

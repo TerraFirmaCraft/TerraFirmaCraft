@@ -11,6 +11,7 @@ from mcresources.type_definitions import ResourceIdentifier, Json, JsonObject
 from constants import *
 
 TAG_SHEARS = 'c:tools/shear'
+TAB_SHOVELS = 'c:tools/shovel'
 TAG_SHARP = 'tfc:tools/sharp'
 
 # Replaces outdated mcresources loot_tables.match_tag
@@ -19,6 +20,12 @@ def match_tag_1_21_plus(tag: str) -> Json:
     return {
         'condition': 'minecraft:match_tool',
         'predicate': {'items': tag}
+    }
+
+def match_item(item: str) -> Json:
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {'item': item}
     }
 
 def silk_touch() -> Json:
@@ -413,7 +420,7 @@ def generate(rm: ResourceManager):
         {'name': 'tfc:torch', 'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_burnt_out'}}]},
     )).with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot({'name': 'minecraft:stick', 'conditions': [loot_tables.random_chance(0.5)]}).with_lang(lang('Burnt Out Torch'))
-    
+
     for wattle in ('woven_wattle', 'unstained_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
             'all': 'tfc:block/wattle/%s' % wattle if wattle != 'wattle' else 'tfc:block/empty',
@@ -552,7 +559,7 @@ def generate(rm: ResourceManager):
     # Uses a custom block model
     rots = {'north': 270, 'east': 0, 'south': 90, 'west': 180}
     rm.blockstate_multipart(
-        'tfc:crucible', 
+        'tfc:crucible',
         {'model': 'tfc:block/crucible'},
         *[
             (({rot_name: True}, {'model': 'tfc:block/crucible_connection', 'y': rot_val}))
@@ -564,22 +571,22 @@ def generate(rm: ResourceManager):
     })
 
     rm.blockstate_multipart(
-        'channel', 
-        ({'model': 'tfc:block/channel_base'}), 
+        'channel',
+        ({'model': 'tfc:block/channel_base'}),
         (({'down': False}, {'model': 'tfc:block/channel_bottom'})),
         *[
             ({rot_name: True}, {'model': 'tfc:block/channel_connection', 'y': rot_val})
-            for rot_name, rot_val in rots.items() 
+            for rot_name, rot_val in rots.items()
         ],
         *[
             ({rot_name: False}, {'model': 'tfc:block/channel_stop', 'y': rot_val})
-            for rot_name, rot_val in rots.items() 
+            for rot_name, rot_val in rots.items()
         ]
     ).with_lang(lang('casting channel')).with_block_loot('tfc:channel')
 
     # Mold
     rm.blockstate_multipart(
-        'mold_table', 
+        'mold_table',
         ({'model': 'tfc:block/mold_table_base'}),
         *[
             ({rot_name: False}, {'model': 'tfc:block/mold_table_stop', 'y': rot_val})
@@ -931,13 +938,25 @@ def generate(rm: ResourceManager):
     block.with_lang(lang('Snow Pile'))
     rm.item_model('snow_pile', parent='minecraft:block/snow_height2', no_textures=True)
 
+    if variant == 'wood' or variant == 'stripped_wood':
+        block.with_block_loot((
+            stick_with_hammer,
+            {  # wood blocks will only drop themselves if non-natural (aka branch_direction=none)
+                'name': 'tfc:wood/%s/%s' % (variant, wood),
+                'conditions': loot_tables.block_state_property('tfc:wood/%s/%s[branch_direction=none]' % (variant, wood))
+            },
+            'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood)
+        ))
+
     block = rm.blockstate('ice_pile', 'minecraft:block/ice').with_lang(lang('ice pile'))
     block.with_block_loot(when_silk_touch('minecraft:ice'))
     rm.item_model('ice_pile', parent='minecraft:item/ice', no_textures=True)
 
     # Loot table for snow blocks and snow piles - override the vanilla one to return nothing (snowballs are useless and annoying)
-    rm.block_loot('snow_pile', when_silk_touch('minecraft:snow'))
-    rm.block_loot('minecraft:snow', when_silk_touch('minecraft:snow'))
+    rm.block_loot('snow_pile',
+                  when_silk_touch('minecraft:snow'))
+    rm.block_loot('minecraft:snow',
+                  when_silk_touch('minecraft:snow'))
     rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'))
 
     # Sea Ice
@@ -2668,6 +2687,9 @@ def door_blockstate(base: str) -> JsonObject:
 
 def when_silk_touch(item: str):
     return {'name': item, 'conditions': [silk_touch()]}
+
+def without_shovel(item: str):
+    return {'name': item, 'conditions': match_tag_1_21_plus(TAG_SHOVELS)}
 
 
 def when_sheared(item: str):

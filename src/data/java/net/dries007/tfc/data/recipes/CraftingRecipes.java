@@ -137,8 +137,7 @@ public interface CraftingRecipes extends Recipes
             "wooden_hoe",
             "wooden_pickaxe",
             "wooden_shovel",
-            "wooden_sword",
-            "snow_block"
+            "wooden_sword"
         );
         for (String material : List.of("diamond", "golden", "iron"))
             remove(

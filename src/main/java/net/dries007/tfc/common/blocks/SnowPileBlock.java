@@ -9,7 +9,9 @@ package net.dries007.tfc.common.blocks;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -34,6 +37,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
 {
     /**
      * Checks if a snow pile is valid at a given location. Does not return true if a snow pile is invalid but a single snow layer is.
+     *
      * @return {@code true} if a snow pile could exist at a given location, possibly absorbing the block and block above.
      */
     public static boolean canPlaceSnowPile(LevelAccessor level, BlockPos pos, BlockState state)
@@ -144,6 +148,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
             level.getBlockEntity(pos, TFCBlockEntities.PILE.get()).orElse(null); // Store the blockentity before it is removed
         super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
         removePileOrSnow(level, pos, state, snowPile);
+
         return true; // Cause drops and other stuff to occur
     }
 
