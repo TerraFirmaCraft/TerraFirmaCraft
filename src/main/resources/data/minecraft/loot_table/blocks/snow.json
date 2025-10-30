@@ -43,9 +43,12 @@
           "name": "minecraft:snowball",
           "conditions": [
             {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "item": "minecraft:air"
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:match_tool",
+                "predicate": {
+                  "items": "#c:tools/shovel"
+                }
               }
             }
           ]

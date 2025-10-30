@@ -11,7 +11,7 @@ from mcresources.type_definitions import ResourceIdentifier, Json, JsonObject
 from constants import *
 
 TAG_SHEARS = 'c:tools/shear'
-TAB_SHOVELS = 'c:tools/shovel'
+TAG_SHOVELS = 'c:tools/shovel'
 TAG_SHARP = 'tfc:tools/sharp'
 
 # Replaces outdated mcresources loot_tables.match_tag
@@ -40,6 +40,17 @@ def silk_touch() -> Json:
             }
 
         }
+    }
+
+def inverted_match_tag(tag: str) -> Json:
+    tag = "#" + tag
+    return {
+        'condition': 'minecraft:inverted',
+        'term': {
+            'condition': 'minecraft:match_tool',
+            'predicate': {'items': tag}
+        }
+
     }
 
 STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
@@ -954,10 +965,10 @@ def generate(rm: ResourceManager):
 
     # Loot table for snow blocks and snow piles - override the vanilla one to return nothing (snowballs are useless and annoying)
     rm.block_loot('snow_pile',
-                  when_silk_touch('minecraft:snow'))
+                  when_silk_touch('minecraft:snow'), without_shovel('minecraft:snowball'))
     rm.block_loot('minecraft:snow',
-                  when_silk_touch('minecraft:snow'))
-    rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'))
+                  when_silk_touch('minecraft:snow'), without_shovel('minecraft:snowball'))
+    rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'), without_shovel('minecraft:snow_block'))
 
     # Sea Ice
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
@@ -2689,7 +2700,7 @@ def when_silk_touch(item: str):
     return {'name': item, 'conditions': [silk_touch()]}
 
 def without_shovel(item: str):
-    return {'name': item, 'conditions': match_tag_1_21_plus(TAG_SHOVELS)}
+    return {'name': item, 'conditions': [inverted_match_tag(TAG_SHOVELS)]}
 
 
 def when_sheared(item: str):

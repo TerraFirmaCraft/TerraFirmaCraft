@@ -482,7 +482,6 @@ public class TFCTags
         public static final TagKey<Item> TOOLS_SAW = commonTag("tools/saw");
         public static final TagKey<Item> TOOLS_SCYTHE = commonTag("tools/scythe");
         public static final TagKey<Item> TOOLS_PROPICK = commonTag("tools/propick");
-        public static final TagKey<Item> TOOLS_SHOVEL = commonTag("tools/shovel");
         public static final TagKey<Item> TOOLS_KNIFE = commonTag("tools/knife");
         public static final TagKey<Item> TOOLS_CHISEL = commonTag("tools/chisel");
         public static final TagKey<Item> TOOLS_GLASSWORKING = commonTag("tools/glassworking");

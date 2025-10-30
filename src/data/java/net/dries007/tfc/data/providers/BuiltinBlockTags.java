@@ -298,7 +298,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.WHITE_KAOLIN_CLAY,
                 TFCBlocks.PINK_KAOLIN_CLAY,
                 TFCBlocks.RED_KAOLIN_CLAY,
-                TFCBlocks.SNOW_PILE,
+                //TFCBlocks.SNOW_PILE,
                 TFCBlocks.AGGREGATE,
                 TFCBlocks.FIRE_CLAY_BLOCK,
                 TFCBlocks.CHARCOAL_PILE,

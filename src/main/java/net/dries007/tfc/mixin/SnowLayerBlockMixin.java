@@ -9,6 +9,8 @@ package net.dries007.tfc.mixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -68,11 +71,12 @@ public abstract class SnowLayerBlockMixin extends Block
 
             // if we're shoveling, stack the snow up
             // we don't really care about searching too broadly, so we're just checking horizontally
+            // don't do this if the snow is going to drop something
 
-            if (!player.isCreative() && player.getItemInHand(InteractionHand.MAIN_HAND).is(TFCTags.Items.TOOLS_SHOVEL))
+            if (!player.isCreative() && player.getItemInHand(InteractionHand.MAIN_HAND).is(ItemTags.SHOVELS) && getDrops(state, (ServerLevel) level, pos, null, player, player.getItemInHand(InteractionHand.MAIN_HAND)).isEmpty())
             {
                 // we prefer to stack on top of other snow layers
-                if (rand > 0.25f)
+                if (rand > 0.1f)
                 {
                     // minheap
                     BlockPos moveToPos = pos.relative(Direction.NORTH);
@@ -96,7 +100,7 @@ public abstract class SnowLayerBlockMixin extends Block
                     {
                         level.setBlockAndUpdate(moveToPos, moveToState.setValue(LAYERS, moveToState.getValue(LAYERS) + 1));
                     }
-                    // if we can't find other snow layers, make a new one somewhere (but with reduced chances)
+                    // if we can't find other snow layers, make a new one somewhere (but with much reduced chances)
                     else if (rand > 0.6f)
                     {
                         Direction dir = Direction.NORTH;
@@ -128,10 +132,14 @@ public abstract class SnowLayerBlockMixin extends Block
 
             }
             /*
-            // if we're digging with our hand, give a snowball (should be changed to be a loot table thing probably)
-            else if (!player.isCreative() && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && rand > 0.5f)
+            // if we don't get anything from the loot table, we do the hard-coded drop (this lets datapacks still easily override)
+            else if (getDrops(state, (ServerLevel) level, pos, null, player, player.getItemInHand(InteractionHand.MAIN_HAND)).isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, Items.SNOWBALL.getDefaultInstance());
+                // if we're digging with our hand, give a snowball
+                else if (!player.isCreative() && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && rand > 0.25f)
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, Items.SNOWBALL.getDefaultInstance());
+                }
             }*/
         }
 
