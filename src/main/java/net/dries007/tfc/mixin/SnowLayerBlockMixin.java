@@ -131,16 +131,6 @@ public abstract class SnowLayerBlockMixin extends Block
                 }
 
             }
-            /*
-            // if we don't get anything from the loot table, we do the hard-coded drop (this lets datapacks still easily override)
-            else if (getDrops(state, (ServerLevel) level, pos, null, player, player.getItemInHand(InteractionHand.MAIN_HAND)).isEmpty())
-            {
-                // if we're digging with our hand, give a snowball
-                else if (!player.isCreative() && player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && rand > 0.25f)
-                {
-                    ItemHandlerHelper.giveItemToPlayer(player, Items.SNOWBALL.getDefaultInstance());
-                }
-            }*/
         }
 
         final int prevLayers = state.getValue(SnowLayerBlock.LAYERS);
