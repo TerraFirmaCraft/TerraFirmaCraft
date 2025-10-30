@@ -123,7 +123,6 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.SEA_ICE);
         out.accept(Blocks.PACKED_ICE);
         out.accept(Blocks.BLUE_ICE);
-        out.accept(Blocks.SNOW);
         out.accept(TFCBlocks.SNOW_BRICKS);
         out.accept(TFCBlocks.SNOW_BLOCK);
 
