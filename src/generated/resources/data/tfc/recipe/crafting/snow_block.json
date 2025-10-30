@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "S": {
-      "item": "tfc:snow_block"
+      "item": "minecraft:snowball"
     }
   },
   "pattern": [
@@ -13,6 +13,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "tfc:snow_bricks"
+    "id": "tfc:snow_block"
   }
 }

@@ -20,10 +20,13 @@ public class MeltingBlock extends Block
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        final ClimateModel model = Climate.get(level);
-        if (model.getTemperature(level, pos) > 0)
+        if (random.nextFloat() < 0.5f)
         {
-            level.destroyBlock(pos, false);
+            final ClimateModel model = Climate.get(level);
+            if (model.getTemperature(level, pos) > 0)
+            {
+                level.removeBlock(pos, false);
+            }
         }
     }
 }

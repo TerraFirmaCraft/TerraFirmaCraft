@@ -941,6 +941,8 @@ def generate(rm: ResourceManager):
 
     # Snow Bricks
     rm.blockstate('snow_bricks').with_block_model().with_block_loot('tfc:snow_bricks').with_item_model().with_lang(lang('snow bricks'))
+    block = rm.blockstate('snow_block', 'minecraft:block/snow_block').with_block_loot('4 minecraft:snowball',).with_lang(lang('snow block'))
+    rm.item_model('snow_block', parent='minecraft:block/snow_block')
 
     # Stone-less Minerals
     rm.blockstate('halite', use_default_model=False).with_block_model().with_block_loot('1-3 tfc:powder/salt').with_item_model().with_lang(lang('halite'))
@@ -971,7 +973,7 @@ def generate(rm: ResourceManager):
                   (when_silk_touch('minecraft:snow')))
     rm.block_loot('minecraft:snow',
                   (when_silk_touch('minecraft:snow')))
-    rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'))
+    rm.block_loot('minecraft:snow_block', ('4 minecraft:snowball', when_silk_touch('minecraft:snow_block')))
 
     # Sea Ice
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))

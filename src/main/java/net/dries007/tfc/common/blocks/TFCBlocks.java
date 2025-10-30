@@ -182,7 +182,8 @@ public final class TFCBlocks
     public static final Id<Block> KAOLIN_CLAY_GRASS = register("kaolin_clay_grass", () -> new ConnectedGrassBlock(Properties.of().mapColor(MapColor.GRASS).randomTicks().strength(5.0F).sound(SoundType.GRAVEL), RED_KAOLIN_CLAY, null, null));
 
     public static final Id<Block> HARDENED_CLAY = register("hardened_clay", () -> new Block(Properties.of().mapColor(MapColor.TERRACOTTA_ORANGE).strength(7.0F).sound(SoundType.PACKED_MUD).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops()));
-    public static final Id<Block> SNOW_BRICKS = register("snow_bricks", () -> new MeltingBlock(Properties.ofFullCopy(Blocks.SNOW_BLOCK)));
+    public static final Id<Block> SNOW_BRICKS = register("snow_bricks", () -> new MeltingBlock(Properties.ofFullCopy(Blocks.SNOW_BLOCK).randomTicks()));
+    public static final Id<Block> SNOW_BLOCK = register("snow_block", () -> new MeltingBlock(Properties.ofFullCopy(Blocks.SNOW_BLOCK).randomTicks()));
 
     // Solid Minerals
     public static final Id<Block> HALITE = register("halite", () -> new Block(Properties.of().mapColor(MapColor.SNOW).strength(6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));

@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/snow_block",
+  "textures": {
+    "layer0": "tfc:item/snow_block"
+  }
+}
