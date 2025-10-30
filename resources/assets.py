@@ -25,7 +25,7 @@ def match_tag_1_21_plus(tag: str) -> Json:
 def match_item(item: str) -> Json:
     return {
         'condition': 'minecraft:match_tool',
-        'predicate': {'item': item}
+        'predicate': {'items': [item]}
     }
 
 def silk_touch() -> Json:
@@ -939,6 +939,9 @@ def generate(rm: ResourceManager):
     # Dry clay
     rm.blockstate('hardened_clay', use_default_model=False).with_block_model().with_block_loot('tfc:hardened_clay').with_item_model().with_lang(lang('hardened clay'))
 
+    # Snow Bricks
+    rm.blockstate('snow_bricks').with_block_model().with_block_loot('tfc:snow_bricks').with_item_model().with_lang(lang('snow bricks'))
+
     # Stone-less Minerals
     rm.blockstate('halite', use_default_model=False).with_block_model().with_block_loot('1-3 tfc:powder/salt').with_item_model().with_lang(lang('halite'))
     rm.blockstate('lignite', use_default_model=False).with_block_model().with_block_loot('tfc:ore/lignite').with_item_model().with_lang(lang('lignite'))
@@ -963,12 +966,12 @@ def generate(rm: ResourceManager):
     block.with_block_loot(when_silk_touch('minecraft:ice'))
     rm.item_model('ice_pile', parent='minecraft:item/ice', no_textures=True)
 
-    # Loot table for snow blocks and snow piles - override the vanilla one to return nothing (snowballs are useless and annoying)
+    # Loot table for snow blocks and snow piles - only drop snowballs when broken with hands TODO not working
     rm.block_loot('snow_pile',
-                  when_silk_touch('minecraft:snow'), without_shovel('minecraft:snowball'))
+                  (when_silk_touch('minecraft:snow')))
     rm.block_loot('minecraft:snow',
-                  when_silk_touch('minecraft:snow'), without_shovel('minecraft:snowball'))
-    rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'), without_shovel('minecraft:snow_block'))
+                  (when_silk_touch('minecraft:snow')))
+    rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'))
 
     # Sea Ice
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
@@ -2698,9 +2701,6 @@ def door_blockstate(base: str) -> JsonObject:
 
 def when_silk_touch(item: str):
     return {'name': item, 'conditions': [silk_touch()]}
-
-def without_shovel(item: str):
-    return {'name': item, 'conditions': [inverted_match_tag(TAG_SHOVELS)]}
 
 
 def when_sheared(item: str):

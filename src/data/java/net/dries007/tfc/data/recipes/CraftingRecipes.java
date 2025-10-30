@@ -1256,6 +1256,10 @@ public interface CraftingRecipes extends Recipes
             .input('S', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.SHEET))
             .pattern(" G ", "RBR", " S ")
             .shaped(TFCBlocks.THERMOMETER);
+        recipe()
+            .input('S', Blocks.SNOW_BLOCK)
+            .pattern("SS ", "SS ", "   ")
+            .shaped(TFCBlocks.SNOW_BRICKS);
     }
 
     /**
