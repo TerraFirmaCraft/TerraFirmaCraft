@@ -56,6 +56,7 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Integer> snowMaxAccumulationOnUpdate;
     public final Supplier<Integer> ticksPerSnowAccumulation;
     public final Supplier<Integer> snowMeltMultiplier;
+    public final Supplier<Double> snowBlockMeltSpeed;
     // Blocks - Leaves
     public final Supplier<Double> leavesMovementModifier;
     // Blocks - Plants
@@ -336,6 +337,7 @@ public class ServerConfig extends BaseConfig
         snowMaxAccumulationOnUpdate = builder.comment("[Requires MC Restart] The maximum number of snow blocks that can be placed when entering an unloaded chunk. Lower values = matches nearby loaded chunks better, but more lag when entering these chunks.").define("snowMaxAccumulationOnUpdate", 64, 0, 256);
         ticksPerSnowAccumulation = builder.comment("[Requires MC Restart] The number of game ticks between attempts at snow accumulation. Lower = faster accumulation, but more lag. Default: 80 Vanilla: 16").define("ticksPerSnowAccumulation", 80, 1, Integer.MAX_VALUE);
         snowMeltMultiplier = builder.comment("[Requires MC Restart] How many times faster snow should melt than accumulate. Default: 3").define("snowMeltMultiplier", 3, 1, Integer.MAX_VALUE);
+        snowBlockMeltSpeed = builder.comment("Likelihood Snow Blocks and Snow Bricks will melt on random tick. Higher numbers make them melt faster. Default: 0.5").define("snowBlockMeltSpeed", 0.5, 0, 1);
 
         builder.swap("plants");
 

@@ -12,6 +12,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 
@@ -25,7 +26,7 @@ public class MeltingBlock extends Block
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
-        if (random.nextFloat() < 0.5f)
+        if (random.nextFloat() < TFCConfig.SERVER.snowBlockMeltSpeed.get())
         {
             final ClimateModel model = Climate.get(level);
             if (model.getTemperature(level, pos) > 0)
