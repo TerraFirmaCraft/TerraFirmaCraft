@@ -127,7 +127,7 @@ public class TFCTags
         public static final TagKey<Block> POWDERKEG_CAN_BREAK = tag("powderkeg_breaking_blocks");
         /** Blocks that can be replaced with snow piles */
         public static final TagKey<Block> CAN_BE_SNOW_PILED = tag("can_be_snow_piled");
-        /** Blocks that snow can survive on. */
+        /** Blocks that can be replaced with ice piles. */
         public static final TagKey<Block> CAN_BE_ICE_PILED = tag("can_be_ice_piled");
         /** Blocks that, when covered by a snow pile, will be replaced with humus */
         public static final TagKey<Block> CONVERTS_TO_HUMUS = tag("converts_to_humus");
