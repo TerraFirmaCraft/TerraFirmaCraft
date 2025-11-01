@@ -8,19 +8,15 @@ package net.dries007.tfc.common.items;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
@@ -55,26 +51,26 @@ public class ToolItem extends DiggerItem
     /**
      * Mining plants should consume some durability, mining snow should not
      */
-    public static boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
+    public static boolean isDurabilityModified(Level level, BlockPos pos, BlockState state)
     {
-        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CONSUMES_TOOL_DURABILITY) || !Helpers.isBlock(state.getBlock(), TFCTags.Blocks.DOES_NOT_CONSUME_TOOL_DURABILITY) || state.getDestroySpeed(level, pos) != 0.0F;
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CONSUMES_TOOL_DURABILITY) || Helpers.isBlock(state.getBlock(), TFCTags.Blocks.DOES_NOT_CONSUME_TOOL_DURABILITY);
+    }
+
+    public static boolean modifiedDurability(Level level, BlockPos pos, BlockState state)
+    {
+        if (Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CONSUMES_TOOL_DURABILITY))
+        {
+            return true;
+        }
+        if (Helpers.isBlock(state.getBlock(), TFCTags.Blocks.DOES_NOT_CONSUME_TOOL_DURABILITY))
+        {
+            return false;
+        }
+        return state.getDestroySpeed(level, pos) != 0.0F;
     }
 
     public ToolItem(Tier tier, TagKey<Block> mineableBlocks, Properties properties)
     {
         super(tier, mineableBlocks, properties);
     }
-
-    /*
-    @Override
-    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
-    {
-        if (willConsumeDurability(level, pos, state))
-        {
-            Helpers.damageItem(stack, entity, EquipmentSlot.MAINHAND);
-        }
-        return true;
-    }
-
-     */
 }
