@@ -63,7 +63,6 @@ STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'functions': [loot_tables.set_count(1, 2)]
 }, conditions=[loot_tables.inverted(loot_tables.any_of(match_tag_1_21_plus(TAG_SHEARS), silk_touch()))])
 
-
 def copy_block_entity(*components: str):
     return {
         'function': 'minecraft:copy_components',
@@ -968,12 +967,15 @@ def generate(rm: ResourceManager):
     block.with_block_loot(when_silk_touch('minecraft:ice'))
     rm.item_model('ice_pile', parent='minecraft:item/ice', no_textures=True)
 
-    # Loot table for snow blocks and snow piles - only drop snowballs when broken with hands TODO not working
+    # Loot table for snow blocks and snow piles - only drop snowballs when broken with hands
     rm.block_loot('snow_pile',
-                  (when_silk_touch('minecraft:snow')))
+                  (when_silk_touch('minecraft:snow'),
+                  when_not_shovel_or_silk_touch('minecraft:snowball')))
     rm.block_loot('minecraft:snow',
-                  (when_silk_touch('minecraft:snow')))
-    rm.block_loot('minecraft:snow_block', ('4 minecraft:snowball', when_silk_touch('minecraft:snow_block')))
+                  (when_silk_touch('minecraft:snow'),
+                   when_not_shovel_or_silk_touch('minecraft:snowball')))
+    rm.block_loot('minecraft:snow_block', ('4 minecraft:snowball', when_silk_touch('tfc:snow_block')))
+    rm.block_loot('tfc:snow_block', ('4 minecraft:snowball', when_silk_touch('tfc:snow_block')))
 
     # Sea Ice
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
@@ -2704,6 +2706,8 @@ def door_blockstate(base: str) -> JsonObject:
 def when_silk_touch(item: str):
     return {'name': item, 'conditions': [silk_touch()]}
 
+def when_not_shovel_or_silk_touch(item: str):
+    return {'name': item, 'conditions': [loot_tables.inverted(match_tag_1_21_plus('minecraft:shovels'))]}
 
 def when_sheared(item: str):
     return {'name': item, 'conditions': [loot_tables.any_of(
