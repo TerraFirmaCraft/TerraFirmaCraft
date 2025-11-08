@@ -123,6 +123,8 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.SEA_ICE);
         out.accept(Blocks.PACKED_ICE);
         out.accept(Blocks.BLUE_ICE);
+        out.accept(TFCBlocks.SNOW_BRICKS);
+        out.accept(TFCBlocks.SNOW_BLOCK);
 
         TFCBlocks.MAGMA_BLOCKS.values().forEach(out::accept);
 

@@ -11,6 +11,7 @@ from mcresources.type_definitions import ResourceIdentifier, Json, JsonObject
 from constants import *
 
 TAG_SHEARS = 'c:tools/shear'
+TAG_SHOVELS = 'c:tools/shovel'
 TAG_SHARP = 'tfc:tools/sharp'
 
 # Replaces outdated mcresources loot_tables.match_tag
@@ -19,6 +20,12 @@ def match_tag_1_21_plus(tag: str) -> Json:
     return {
         'condition': 'minecraft:match_tool',
         'predicate': {'items': tag}
+    }
+
+def match_item(item: str) -> Json:
+    return {
+        'condition': 'minecraft:match_tool',
+        'predicate': {'items': [item]}
     }
 
 def silk_touch() -> Json:
@@ -35,6 +42,17 @@ def silk_touch() -> Json:
         }
     }
 
+def inverted_match_tag(tag: str) -> Json:
+    tag = "#" + tag
+    return {
+        'condition': 'minecraft:inverted',
+        'term': {
+            'condition': 'minecraft:match_tool',
+            'predicate': {'items': tag}
+        }
+
+    }
+
 STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'name': 'minecraft:stick',
     'conditions': [match_tag_1_21_plus(TAG_SHARP), loot_tables.random_chance(0.2)],
@@ -44,7 +62,6 @@ STICKS_WHEN_NOT_SHEARED = loot_tables.alternatives({
     'conditions': [loot_tables.random_chance(0.05)],
     'functions': [loot_tables.set_count(1, 2)]
 }, conditions=[loot_tables.inverted(loot_tables.any_of(match_tag_1_21_plus(TAG_SHEARS), silk_touch()))])
-
 
 def copy_block_entity(*components: str):
     return {
@@ -413,7 +430,7 @@ def generate(rm: ResourceManager):
         {'name': 'tfc:torch', 'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_burnt_out'}}]},
     )).with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot({'name': 'minecraft:stick', 'conditions': [loot_tables.random_chance(0.5)]}).with_lang(lang('Burnt Out Torch'))
-    
+
     for wattle in ('woven_wattle', 'unstained_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
             'all': 'tfc:block/wattle/%s' % wattle if wattle != 'wattle' else 'tfc:block/empty',
@@ -552,7 +569,7 @@ def generate(rm: ResourceManager):
     # Uses a custom block model
     rots = {'north': 270, 'east': 0, 'south': 90, 'west': 180}
     rm.blockstate_multipart(
-        'tfc:crucible', 
+        'tfc:crucible',
         {'model': 'tfc:block/crucible'},
         *[
             (({rot_name: True}, {'model': 'tfc:block/crucible_connection', 'y': rot_val}))
@@ -564,22 +581,22 @@ def generate(rm: ResourceManager):
     })
 
     rm.blockstate_multipart(
-        'channel', 
-        ({'model': 'tfc:block/channel_base'}), 
+        'channel',
+        ({'model': 'tfc:block/channel_base'}),
         (({'down': False}, {'model': 'tfc:block/channel_bottom'})),
         *[
             ({rot_name: True}, {'model': 'tfc:block/channel_connection', 'y': rot_val})
-            for rot_name, rot_val in rots.items() 
+            for rot_name, rot_val in rots.items()
         ],
         *[
             ({rot_name: False}, {'model': 'tfc:block/channel_stop', 'y': rot_val})
-            for rot_name, rot_val in rots.items() 
+            for rot_name, rot_val in rots.items()
         ]
     ).with_lang(lang('casting channel')).with_block_loot('tfc:channel')
 
     # Mold
     rm.blockstate_multipart(
-        'mold_table', 
+        'mold_table',
         ({'model': 'tfc:block/mold_table_base'}),
         *[
             ({rot_name: False}, {'model': 'tfc:block/mold_table_stop', 'y': rot_val})
@@ -921,6 +938,11 @@ def generate(rm: ResourceManager):
     # Dry clay
     rm.blockstate('hardened_clay', use_default_model=False).with_block_model().with_block_loot('tfc:hardened_clay').with_item_model().with_lang(lang('hardened clay'))
 
+    # Snow Bricks
+    rm.blockstate('snow_bricks').with_block_model().with_block_loot('tfc:snow_bricks').with_item_model().with_lang(lang('snow bricks'))
+    block = rm.blockstate('snow_block', 'minecraft:block/snow_block').with_block_loot('4 minecraft:snowball',).with_lang(lang('snow block'))
+    rm.item_model('snow_block', parent='minecraft:block/snow_block')
+
     # Stone-less Minerals
     rm.blockstate('halite', use_default_model=False).with_block_model().with_block_loot('1-3 tfc:powder/salt').with_item_model().with_lang(lang('halite'))
     rm.blockstate('lignite', use_default_model=False).with_block_model().with_block_loot('tfc:ore/lignite').with_item_model().with_lang(lang('lignite'))
@@ -931,14 +953,29 @@ def generate(rm: ResourceManager):
     block.with_lang(lang('Snow Pile'))
     rm.item_model('snow_pile', parent='minecraft:block/snow_height2', no_textures=True)
 
+    if variant == 'wood' or variant == 'stripped_wood':
+        block.with_block_loot((
+            stick_with_hammer,
+            {  # wood blocks will only drop themselves if non-natural (aka branch_direction=none)
+                'name': 'tfc:wood/%s/%s' % (variant, wood),
+                'conditions': loot_tables.block_state_property('tfc:wood/%s/%s[branch_direction=none]' % (variant, wood))
+            },
+            'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood)
+        ))
+
     block = rm.blockstate('ice_pile', 'minecraft:block/ice').with_lang(lang('ice pile'))
     block.with_block_loot(when_silk_touch('minecraft:ice'))
     rm.item_model('ice_pile', parent='minecraft:item/ice', no_textures=True)
 
-    # Loot table for snow blocks and snow piles - override the vanilla one to return nothing (snowballs are useless and annoying)
-    rm.block_loot('snow_pile', when_silk_touch('minecraft:snow'))
-    rm.block_loot('minecraft:snow', when_silk_touch('minecraft:snow'))
-    rm.block_loot('minecraft:snow_block', when_silk_touch('minecraft:snow_block'))
+    # Loot table for snow blocks and snow piles - only drop snowballs when broken with hands
+    rm.block_loot('snow_pile',
+                  (when_silk_touch('minecraft:snow'),
+                  when_not_shovel_or_silk_touch('minecraft:snowball')))
+    rm.block_loot('minecraft:snow',
+                  (when_silk_touch('minecraft:snow'),
+                   when_not_shovel_or_silk_touch('minecraft:snowball')))
+    rm.block_loot('minecraft:snow_block', ('4 minecraft:snowball', when_silk_touch('tfc:snow_block')))
+    rm.block_loot('tfc:snow_block', ('4 minecraft:snowball', when_silk_touch('tfc:snow_block')))
 
     # Sea Ice
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
@@ -2669,6 +2706,8 @@ def door_blockstate(base: str) -> JsonObject:
 def when_silk_touch(item: str):
     return {'name': item, 'conditions': [silk_touch()]}
 
+def when_not_shovel_or_silk_touch(item: str):
+    return {'name': item, 'conditions': [loot_tables.inverted(match_tag_1_21_plus('minecraft:shovels'))]}
 
 def when_sheared(item: str):
     return {'name': item, 'conditions': [loot_tables.any_of(

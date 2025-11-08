@@ -7,23 +7,43 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "minecraft:snow",
-          "conditions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "condition": "minecraft:match_tool",
-              "predicate": {
-                "predicates": {
-                  "minecraft:enchantments": [
-                    {
-                      "enchantments": "minecraft:silk_touch",
-                      "levels": {
-                        "min": 1
-                      }
+              "type": "minecraft:item",
+              "name": "minecraft:snow",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "predicates": {
+                      "minecraft:enchantments": [
+                        {
+                          "enchantments": "minecraft:silk_touch",
+                          "levels": {
+                            "min": 1
+                          }
+                        }
+                      ]
                     }
-                  ]
+                  }
                 }
-              }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:snowball",
+              "conditions": [
+                {
+                  "condition": "minecraft:inverted",
+                  "term": {
+                    "condition": "minecraft:match_tool",
+                    "predicate": {
+                      "items": "#minecraft:shovels"
+                    }
+                  }
+                }
+              ]
             }
           ]
         }

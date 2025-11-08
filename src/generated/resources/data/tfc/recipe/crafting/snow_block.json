@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "item": "minecraft:snowball"
+    }
+  },
+  "pattern": [
+    "SS ",
+    "SS ",
+    "   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:snow_block"
+  }
+}

@@ -1,5 +1,6 @@
 {
   "values": [
+    "tfc:snow_block",
     "tfc:dirt/entisol",
     "tfc:dirt/aridisol",
     "tfc:dirt/oxisol",
@@ -255,6 +256,7 @@
     "tfc:pink_kaolin_clay",
     "tfc:red_kaolin_clay",
     "tfc:snow_pile",
+    "tfc:snow_bricks",
     "tfc:aggregate",
     "tfc:fire_clay_block",
     "tfc:charcoal_pile",

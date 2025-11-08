@@ -286,6 +286,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.CALENDAR_CLOCK)
             .add(TFCBlocks.THERMOMETER);
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
+            .add(TFCBlocks.SNOW_BLOCK)
             .add2(TFCBlocks.SOIL)
             .add(TFCBlocks.SAND)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL)
@@ -299,6 +300,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.PINK_KAOLIN_CLAY,
                 TFCBlocks.RED_KAOLIN_CLAY,
                 TFCBlocks.SNOW_PILE,
+                TFCBlocks.SNOW_BRICKS,
                 TFCBlocks.AGGREGATE,
                 TFCBlocks.FIRE_CLAY_BLOCK,
                 TFCBlocks.CHARCOAL_PILE,
@@ -327,7 +329,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.ORES, Ore.OPAL);
         // Needs Stone Tool is ~ Copper, which is every TFC pickaxe, so we don't bother here
         // "Incorrect For Tool" includes the "Needs For Tool", so we don't touch, since we don't add levels
-        tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(TFCBlocks.SEA_ICE, TFCBlocks.ICE_PILE);
+        tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(TFCBlocks.SEA_ICE, TFCBlocks.ICE_PILE).add(TFCBlocks.MAGMA_BLOCKS);
         tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(TFCBlocks.SOIL.get(SoilBlockType.MUD));
         tag(BlockTags.REPLACEABLE).addEveryTFC(e -> e.defaultBlockState().canBeReplaced());
 
@@ -418,6 +420,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.SOIL.get(SoilBlockType.COARSE_DIRT))
             .add(TFCBlocks.SOIL.get(SoilBlockType.DUFF))
             .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF))
+            .add(Blocks.SNOW_BLOCK)
+            .add(TFCBlocks.SNOW_BLOCK)
             .add(
                 TFCBlocks.WHITE_KAOLIN_CLAY,
                 TFCBlocks.PINK_KAOLIN_CLAY,
@@ -698,6 +702,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(CONSUMES_TOOL_DURABILITY).add(TFCBlocks.PLANTS.values()
             .stream()
             .filter(b -> b.get().defaultBlockState().getDestroySpeed(empty(), BlockPos.ZERO) == 0f));
+        tag(DOES_NOT_CONSUME_TOOL_DURABILITY)
+            .add(Blocks.SNOW)
+            .add(TFCBlocks.SNOW_PILE);
         tag(NATURAL_REGROWING_PLANTS).add(TFCBlocks.PLANTS);
         tag(ANIMAL_IGNORED_PLANTS).add(TFCBlocks.PLANTS.values()
             .stream()

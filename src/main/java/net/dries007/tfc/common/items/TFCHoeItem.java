@@ -39,7 +39,7 @@ public class TFCHoeItem extends DiggerItem
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
     {
-        if (!level.isClientSide && ToolItem.willConsumeDurability(level, pos, state)) // use TFC check
+        if (!level.isClientSide && ToolItem.isDurabilityModified(level, pos, state)) // use TFC check
         {
             Helpers.damageItem(stack, entity, EquipmentSlot.MAINHAND);
         }
