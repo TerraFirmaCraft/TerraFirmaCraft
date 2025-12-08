@@ -997,7 +997,7 @@
   "Alfisol": "Alfisol",
   "Alfisol is found in temperate broadleaf forests. It is a high quality soil, receiving 10% bonus nutrients.": "Alfisol is found in temperate broadleaf forests. It is a high quality soil, receiving 10% bonus nutrients.",
   "Mollisol": "Mollisol",
-  "Mollisol is found in cold grasslands, with a $(l:the_world/climate#rainfall)rainfall$() of at least 250mm. It is a very high quality soil, receiving 20% bonus nutrients.": "Mollisol is found in cold grasslands, with a $(l:the_world/climate#rainfall)rainfall$() of at least 250mm. It is a very high quality soil, receiving 20% bonus nutrients.",
+  "Mollisol is found in cold grasslands, with a $(l:the_world/climate#rainfall)rainfall$() of at least 250mm. It is a very high quality soil, receiving 20% bonus nutrients.": "Mollisol is found in cold grasslands with a $(l:the_world/climate#rainfall)rainfall$() of at least 250mm. It is a very high quality soil, receiving 20% bonus nutrients.",
   "Podzol": "Podzol",
   "Podzol is found in conifer forests. It is a poor quality soil, receiving 10% less nutrients.": "Podzol is found in conifer forests. It is a poor quality soil, receiving 10% less nutrients.",
   "Aridisol": "Aridisol",
