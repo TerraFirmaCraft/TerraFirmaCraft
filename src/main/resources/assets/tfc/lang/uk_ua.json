@@ -290,7 +290,7 @@
   "tfc.tooltip.welding": "§f — Можна зварювати",
   "tfc.tooltip.danger": "§f — Перегрів!!",
   "tfc.tooltip.anvil_plan": "Креслення",
-  "tfc.tooltip.anvil_weld": "Weld",
+  "tfc.tooltip.anvil_weld": "Зварити",
   "tfc.tooltip.anvil_tier_required": "Потребує %s ковадло",
   "tfc.tooltip.calendar_days_years": "%d, %04d",
   "tfc.tooltip.calendar_days_left_in_month": "У %s залишилося %s днів",
@@ -407,7 +407,6 @@
   "tfc.tooltip.not_hot_enough_to_work": "Неможливо обробити, предмет захолодний!",
   "tfc.tooltip.no_flux_to_weld": "У ковадлі відсутній флюс!",
   "tfc.tooltip.hammer_required_to_work": "Для роботи ковадла потрібен молот!",
-  "tfc.tooltip.hammer_required_to_weld": "A hammer is required to weld in the anvil!",
   "tfc.tooltip.anvil_has_been_worked": "Предмет оброблено",
   "tfc.tooltip.blast_furnace_ore": "Руда: %d / %d",
   "tfc.tooltip.blast_furnace_fuel": "Паливо: %d / %d",
@@ -9844,5 +9843,6 @@
   "tag.item.tfc.spruce_logs": "Spruce Logs",
   "tag.item.tfc.sycamore_logs": "Sycamore Logs",
   "tag.item.tfc.white_cedar_logs": "White Cedar Logs",
-  "tag.item.tfc.willow_logs": "Willow Logs"
+  "tag.item.tfc.willow_logs": "Willow Logs",
+  "fml.menu.mods.info.description.tfc": "TerraFirmaCraft — Наступне покоління.",
 }
