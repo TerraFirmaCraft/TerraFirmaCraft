@@ -102,6 +102,7 @@ public final class TFCBlockEntities
     public static final Id<CharcoalForgeBlockEntity> CHARCOAL_FORGE = register("charcoal_forge", CharcoalForgeBlockEntity::new, TFCBlocks.CHARCOAL_FORGE);
     public static final Id<QuernBlockEntity> QUERN = register("quern", QuernBlockEntity::new, TFCBlocks.QUERN);
     public static final Id<ScrapingBlockEntity> SCRAPING = register("scraping", ScrapingBlockEntity::new, TFCBlocks.SCRAPING);
+    public static final Id<KnappingBlockEntity> KNAPPING = register("knapping", KnappingBlockEntity::new, TFCBlocks.KNAPPING);
     public static final Id<CrucibleBlockEntity> CRUCIBLE = register("crucible", CrucibleBlockEntity::new, TFCBlocks.CRUCIBLE);
     public static final Id<BellowsBlockEntity> BELLOWS = register("bellows", BellowsBlockEntity::new, TFCBlocks.BELLOWS);
     public static final Id<ComposterBlockEntity> COMPOSTER = register("composter", ComposterBlockEntity::new, TFCBlocks.COMPOSTER);

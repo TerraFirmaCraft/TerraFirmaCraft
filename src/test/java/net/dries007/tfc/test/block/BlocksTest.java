@@ -100,6 +100,7 @@ public class BlocksTest implements TestSetup
                 TFCBlocks.PLACED_ITEM,
                 TFCBlocks.PIT_KILN,
                 TFCBlocks.SCRAPING,
+                TFCBlocks.KNAPPING,
                 TFCBlocks.CANDLE,
                 TFCBlocks.CANDLE_CAKE,
                 TFCBlocks.CAKE,

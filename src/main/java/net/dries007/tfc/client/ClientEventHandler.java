@@ -92,6 +92,7 @@ import net.dries007.tfc.client.model.IngotPileBlockModel;
 import net.dries007.tfc.client.model.MoldTableBlockModel;
 import net.dries007.tfc.client.model.MoldsModelLoader;
 import net.dries007.tfc.client.model.PlantBlockModel;
+import net.dries007.tfc.client.model.KnappingBlockModel;
 import net.dries007.tfc.client.model.ScrapingBlockModel;
 import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
@@ -825,6 +826,7 @@ public final class ClientEventHandler
         event.register(Helpers.identifier("ingot_pile"), IngotPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("double_ingot_pile"), DoubleIngotPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("scraping"), ScrapingBlockModel.INSTANCE);
+        event.register(Helpers.identifier("knapping"), KnappingBlockModel.INSTANCE);
         event.register(Helpers.identifier("plant"), PlantBlockModel.Loader.INSTANCE);
         event.register(Helpers.identifier("mold"), new MoldsModelLoader());
         event.register(Helpers.identifier("mold_table"), MoldTableBlockModel.Loader.INSTANCE);

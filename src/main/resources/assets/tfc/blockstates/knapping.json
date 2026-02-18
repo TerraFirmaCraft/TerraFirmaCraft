@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "tfc:block/knapping" },
+    "facing=south": { "model": "tfc:block/knapping" },
+    "facing=east":  { "model": "tfc:block/knapping" },
+    "facing=west":  { "model": "tfc:block/knapping" }
+  }
+}

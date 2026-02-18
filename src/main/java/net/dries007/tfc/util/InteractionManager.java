@@ -9,9 +9,13 @@ package net.dries007.tfc.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import net.dries007.tfc.common.blocks.rock.LooseRockBlock;
+import net.dries007.tfc.common.blocks.rock.Rock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -42,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.MoldTableBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.devices.KnappingBlock;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
@@ -269,6 +274,58 @@ public final class InteractionManager
                     }
                     return result;
                 }
+            }
+            return InteractionResult.PASS;
+        });
+
+        // World-space rock knapping: right-click a LooseRockBlock with a rock in hand
+        registerBlock(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), (stack, context) -> {
+            final Level level = context.getLevel();
+            final BlockPos pos = context.getClickedPos();
+            final Player player = context.getPlayer();
+            if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).getBlock() instanceof LooseRockBlock)
+            {
+                final BlockState rockState = level.getBlockState(pos);
+                final Block rockBlock = rockState.getBlock();
+
+                // Determine the texture to use based on the rock type
+                // Default to a fairly neutral rock incase we can't find the one we're looking for
+                ResourceLocation texture = Helpers.identifier("block/rock/raw/claystone");
+                for (Rock rock : Rock.VALUES)
+                {
+                    if (TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.LOOSE).get() == rockBlock)
+                    {
+                        texture = Helpers.identifier("block/rock/raw/" + rock.getSerializedName());
+                        break;
+                    }
+                }
+
+                // Replace the LooseRockBlock with the KnappingBlock, oriented to the player's facing
+                // so hit coordinates are normalised relative to that direction in KnappingBlock.useItemOn().
+                final BlockState knappingState = TFCBlocks.KNAPPING.get().defaultBlockState()
+                    .setValue(KnappingBlock.FACING, player.getDirection());
+                level.setBlockAndUpdate(pos, knappingState);
+
+                final ResourceLocation finalTexture = texture;
+                return level.getBlockEntity(pos, TFCBlockEntities.KNAPPING.get())
+                    .map(entity -> {
+                        // Store the rock being knapped (the LooseRockBlock's item form).
+                        // Use setStackInSlot() directly to bypass isItemValid() which returns false
+                        // for all items to prevent player insertion via GUI.
+                        final ItemStack rockItem = new ItemStack(rockBlock.asItem(), 1);
+                        entity.getInventory().setStackInSlot(0, rockItem);
+                        entity.setTexture(finalTexture);
+
+                        // Drop extra rocks if the pile had COUNT > 1
+                        final int count = rockState.getValue(LooseRockBlock.COUNT);
+                        for (int i = 1; i < count; i++)
+                        {
+                            Helpers.spawnItem(level, pos, new ItemStack(rockBlock.asItem()));
+                        }
+
+                        level.sendBlockUpdated(pos, knappingState, knappingState, Block.UPDATE_CLIENTS);
+                        return InteractionResult.sidedSuccess(level.isClientSide);
+                    }).orElse(InteractionResult.PASS);
             }
             return InteractionResult.PASS;
         });

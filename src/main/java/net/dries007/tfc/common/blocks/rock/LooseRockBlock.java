@@ -57,7 +57,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
     {
         if (stack.getItem() == this.asItem())
         {
-            if (hand == InteractionHand.MAIN_HAND && state.getBlock() == this)
+            if (player.isShiftKeyDown() && hand == InteractionHand.MAIN_HAND && state.getBlock() == this)
             {
                 int count = state.getValue(COUNT);
                 if (count < 3)

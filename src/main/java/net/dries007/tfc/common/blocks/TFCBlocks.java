@@ -101,6 +101,7 @@ import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.blocks.devices.PotBlock;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.blocks.devices.KnappingBlock;
 import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.StoveBlock;
 import net.dries007.tfc.common.blocks.devices.StovePotBlock;
@@ -443,6 +444,7 @@ public final class TFCBlocks
 
     public static final Id<Block> PLACED_ITEM = registerNoItem("placed_item", () -> new PlacedItemBlock(ExtendedProperties.of().instabreak().sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.PLACED_ITEM)));
     public static final Id<Block> SCRAPING = registerNoItem("scraping", () -> new ScrapingBlock(ExtendedProperties.of().strength(0.2F).sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.SCRAPING)));
+    public static final Id<Block> KNAPPING = registerNoItem("knapping", () -> new KnappingBlock(ExtendedProperties.of().strength(0.2F).sound(SoundType.STONE).noOcclusion().blockEntity(TFCBlockEntities.KNAPPING)));
     public static final Id<Block> PIT_KILN = registerNoItem("pit_kiln", () -> new PitKilnBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.WOOD).strength(0.6f).noOcclusion().blockEntity(TFCBlockEntities.PIT_KILN).serverTicks(PitKilnBlockEntity::serverTick)));
     public static final Id<Block> QUERN = register("quern", () -> new QuernBlock(ExtendedProperties.of().mapColor(MapColor.STONE).strength(0.5F, 2.0F).sound(SoundType.BASALT).noOcclusion().blockEntity(TFCBlockEntities.QUERN).ticks(QuernBlockEntity::serverTick, QuernBlockEntity::clientTick)));
     public static final Id<Block> CHARCOAL_PILE = registerNoItem("charcoal_pile", () -> new CharcoalPileBlock(Properties.of().mapColor(MapColor.COLOR_BLACK).strength(0.2F).sound(TFCSounds.CHARCOAL).pushReaction(PushReaction.DESTROY).isViewBlocking((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8).isSuffocating((state, level, pos) -> state.getValue(CharcoalPileBlock.LAYERS) >= 8)));
