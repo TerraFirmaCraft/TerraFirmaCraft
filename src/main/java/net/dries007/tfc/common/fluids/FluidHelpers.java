@@ -154,11 +154,11 @@ public final class FluidHelpers
     /**
      * Invoked from a block entity when an item is interacting with it. Assumes:
      * <ul>
-     *     <li>The block entity has a arbitrary sized, continuous valued fluid tank</li>
+     *     <li>The block entity has an arbitrary sized, continuous valued fluid tank</li>
      *     <li>The item has an arbitrary sized, <strong>possibly discrete</strong>, possibly continuous valued fluid tank.</li>
      * </ul>
      * <br>
-     * If the item is empty, it will attempt to fill the item from the fluid tank. If the item contains any fluid, it will attempt to fill the fluid block entity from the item.
+     * If the item is empty or the block is full, it will attempt to fill the item from the fluid tank. Otherwise, it will attempt to fill the fluid block entity from the item.
      *
      * @return {@code true} if a transfer occurred.
      */
@@ -181,7 +181,7 @@ public final class FluidHelpers
         }
 
         final FluidStack aggressiveDrained = itemHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-        if (aggressiveDrained.isEmpty())
+        if (aggressiveDrained.isEmpty() || blockHandler.fill(aggressiveDrained, IFluidHandler.FluidAction.SIMULATE) <= 0)
         {
             // Transfer block -> item.
             return transferBetweenItemAndOther(originalStack, itemHandler, blockHandler, itemHandler, Transfer.FILL, level, pos, after);
