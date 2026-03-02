@@ -45,7 +45,7 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
             ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
             ConfiguredFeature.CODEC.fieldOf("dead_tree").forGetter(c -> c.deadFeature),
             Codecs.optionalFieldOf(ConfiguredFeature.CODEC, "old_growth_tree").forGetter(c -> c.oldGrowthFeature),
-            Codecs.optionalFieldOf(ConfiguredFeature.CODEC, "krummholz").forGetter(c -> c.oldGrowthFeature),
+            Codecs.optionalFieldOf(ConfiguredFeature.CODEC, "krummholz").forGetter(c -> c.krummholz),
             Codecs.optionalFieldOf(Codec.INT, "old_growth_chance", 6).forGetter(c -> c.oldGrowthChance),
             Codecs.optionalFieldOf(Codec.INT, "spoiler_old_growth_chance", 200).forGetter(c -> c.spoilerOldGrowthChance),
             Codecs.optionalFieldOf(Codec.INT, "fallen_tree_chance", 14).forGetter(c -> c.fallenChance),
