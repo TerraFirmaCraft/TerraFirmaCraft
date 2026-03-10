@@ -42,7 +42,7 @@
   "Tetrahedrite Ores in Schist.": "片岩中的黝铜矿。",
   "Malachite is an ore of $(thing)Copper$() metal. It can be found primarily in $(thing)Marble$() or $(thing)Limestone$(), $(thing)Chalk$(), and $(thing)Dolomite$(). It can be found at most elevations, however deeper veins are often larger and richer.": "孔雀石是$(thing)铜$()的矿石。它主要出现在$(thing)大理岩$()或$(thing)石灰岩$()、$(thing)白垩岩$()和$(thing)白云岩$()中。它可以在大多数海拔找到，但更深的矿脉通常更大更富集。",
   "Malachite": "孔雀石",
-  "Malachite Ores in Marble.": "大理岩的孔雀石矿。",
+  "Malachite Ores in Marble.": "大理岩中的孔雀石矿。",
   "Cassiterite is an ore of $(thing)Tin$() metal. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks at high elevation, above y=80 in uplift regions or in dikes.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().": "锡石是$(thing)锡$()的矿石。它可以在高海拔的$(l:the_world/geology#igneous_intrusive)侵入岩$()中找到，在隆升区域或岩墙中 y=80 以上。$(br2)它也可以出现在$(thing)河流$()的沉积物中，这些沉积物可以用$(l:mechanics/panning)淘金盘$()淘洗。",
   "Cassiterite": "锡石",
   "Cassiterite Ores in Diorite.": "闪长岩中的锡石矿。",
