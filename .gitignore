@@ -42,6 +42,8 @@
 __pycache__/
 *.pyc
 *.pdn
+.DS_Store
+/.vscode/
 
 /run/
 /out/
