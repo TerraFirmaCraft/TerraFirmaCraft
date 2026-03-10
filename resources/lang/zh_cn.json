@@ -1024,7 +1024,7 @@
   "Compost Browns": "堆肥棕色物品",
   "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them.": "有些$(4)棕色$()物品对堆肥桶贡献较小，例如干芦苇、蕨类、藤蔓、以及落叶。要满足堆肥桶对棕色物品的需求，你需要 16 个这类物品。",
   "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them.": "有些$(4)棕色$()物品对堆肥桶贡献中等，例如草木灰和黄麻。要满足堆肥桶对棕色物品的需求，你需要 8 个这类物品。",
-  "Some $(4)brown$() items contribute a great amount to the composter, such as dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them.": "有些$(4)棕色$()物品对堆肥桶贡献很大，例如枯萎的灌木、松果、腐殖质以及浮木。要满足堆肥桶对棕色物品的需求，你需要 4 个这类物品。",
+  "Some $(4)brown$() items contribute a great amount to the composter, such as dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them.": "有些$(4)棕色$()物品对堆肥桶贡献很大，例如枯草、松果、腐殖质以及浮木。要满足堆肥桶对棕色物品的需求，你需要 4 个这类物品。",
   "Compost Poisons": "堆肥毒物",
   "Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it.": "有些物品会$(c)污染$()你的堆肥桶。比如$(c)肉$()和$(c)骨头$()。用腐败的堆肥施肥会立刻使农作物死亡。",
   "Flux": "助焊剂",
