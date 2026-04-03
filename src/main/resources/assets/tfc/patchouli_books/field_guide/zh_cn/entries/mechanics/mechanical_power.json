@@ -149,7 +149,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/weaving#power_loom)Weaving$() can be automated through the use of a $(l:mechanics/weaving#power_loom)Power Loom$(). Read that chapter for more information."
+      "text": "通过使用$(l:mechanics/weaving#power_loom)动力织布机$()，可以让织布过程实现自动化。有关$(l:mechanics/weaving#power_loom)动力织布机$()的详细信息，请参看这一章节。"
     }
   ],
   "read_by_default": true,

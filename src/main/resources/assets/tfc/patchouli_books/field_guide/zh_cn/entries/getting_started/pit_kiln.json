@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "坑窑是游戏早期用来$(l:mechanics/heating)加热$()物品的方法。例如，它可用于将粘土$(thing)烧制$()成陶瓷。坑窑在大约六个小时的时间内，可以将其内容物加热到 1400 °C，即$(bold)$(#FFDF00)$(t:Yellow White)黄白色$()。"
+      "text": "坑窑是游戏早期用来$(l:mechanics/heating)加热$()物品的方法。例如，它可用于将黏土$(thing)烧制$()成陶瓷。坑窑在大约六个小时的时间内，可以将其内容物加热到 1400 °C，即$(bold)$(#FFDF00)$(t:Yellow White)黄白色$()。"
     },
     {
       "type": "patchouli:text",

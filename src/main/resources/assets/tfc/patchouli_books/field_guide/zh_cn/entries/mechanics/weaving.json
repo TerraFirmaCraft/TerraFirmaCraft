@@ -11,7 +11,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
-      "text": "$(thing)纺锤头$()可以通过粘土塑形来制作。先将粘土如图捏成$(thing)未烧制的纺锤头$()$，然后在将其$(l:mechanics/heating)加热$()即可。将纺锤头与$(thing)木棍$()合成便能做出纺锤了"
+      "text": "$(thing)纺锤头$()可以通过黏土塑形来制作。先将黏土如图捏成$(thing)未烧制的纺锤头$()$，然后在将其$(l:mechanics/heating)加热$()即可。将纺锤头与$(thing)木棍$()合成便能做出纺锤了"
     },
     {
       "type": "patchouli:crafting",
@@ -65,11 +65,11 @@
       "type": "patchouli:crafting",
       "anchor": "power_loom",
       "recipe": "tfc:crafting/power_loom",
-      "text": "Weaving can be automated using $(l:mechanics/mechanical_power#quern)Mechanical Power$() with the use of a $(thing)Power Loom$()."
+      "text": "通过使用$(l:mechanics/weaving#power_loom)动力织布机$()，可以让织布过程实现自动化。"
     },
     {
       "type": "patchouli:text",
-      "text": "The Power Loom, like the regular Loom, can take input from hoppers on the side and extraction from hoppers on the bottom. On the right side of the loom, it can take power input from an $(thing)Axle$(). Fill the loom as normal, and it will slowly weave together the final product for you. Power looms cannot be operated manually."
+      "text": "动力织布机与普通织机类似，可以从侧面的漏斗接收原料，并从底部的漏斗提取成品。在织机的右侧，它可以接收来自$(thing)传动杆$()的动力。像普通织机一样放入原料后，它会慢慢为你织出最终产品。动力织布机无法手动操作。"
     }
   ],
   "read_by_default": true,

@@ -34,7 +34,7 @@
       "type": "tfc:knapping_recipe",
       "anchor": "blowpipe",
       "recipe": "tfc:knapping/ceramic/unfired_blowpipe",
-      "text": "最重要的工具是$(thing)吹管$()。它可以用粘土$(thing)塑形$()，然后烧制成$(thing)陶瓷吹管$()。"
+      "text": "最重要的工具是$(thing)吹管$()。它可以用黏土$(thing)塑形$()，然后烧制成$(thing)陶瓷吹管$()。"
     },
     {
       "type": "tfc:anvil_recipe",

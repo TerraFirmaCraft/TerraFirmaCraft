@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "其他合金不适合制作工具。它们是$(thing)黄铜$()、$(thing)玫瑰金$()和$(thing)标准银$()。$(br2)$(thing)黄铜$()是一种有用的合金，可用于各种装置，包括$(l:mechanics/mechanical_power)机械动力$()。$(br2)$(thing)玫瑰金$()和$(thing)标准银$()用于制作$(l:mechanics/steel#red_steel)红钢$()和$(l:mechanics/steel#blue_steel)蓝钢$()。",
+      "text": "其他合金不适合制作工具。它们是$(thing)黄铜$()、$(thing)玫瑰金$()和$(thing)纯银$()。$(br2)$(thing)黄铜$()是一种有用的合金，可用于各种装置，包括$(l:mechanics/mechanical_power)机械动力$()。$(br2)$(thing)玫瑰金$()和$(thing)纯银$()用于制作$(l:mechanics/steel#red_steel)红钢$()和$(l:mechanics/steel#blue_steel)蓝钢$()。",
       "title": "实用合金"
     },
     {
@@ -60,7 +60,7 @@
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/sterling_silver",
-      "title": "标准银",
+      "title": "纯银",
       "link_recipes": false,
       "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)铜$()：20 - 40 %$(li)$(thing)银$()：60 - 80 %$(br2)"
     }

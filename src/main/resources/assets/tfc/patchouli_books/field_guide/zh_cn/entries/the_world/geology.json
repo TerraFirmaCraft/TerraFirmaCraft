@@ -46,7 +46,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(thing)板岩$()和$(thing)千枚岩$()形成于$(thing)页岩$()、$(thing)粘土岩$()和$(thing)砾岩$()之下。$(li)$(thing)大理岩$()形成于$(thing)石灰岩$()、$(thing)白云岩$()和$(thing)白垩岩$()之下。$(li)$(thing)石英岩$()形成于$(thing)燧石岩$()之下。$(li)$(thing)片岩$()和$(thing)片麻岩$()形成于$(thing)板岩$()和$(thing)千枚岩$()之下，或火成侵入岩之中。",
+      "text": "$(li)$(thing)板岩$()和$(thing)千枚岩$()形成于$(thing)页岩$()、$(thing)黏土岩$()和$(thing)砾岩$()之下。$(li)$(thing)大理岩$()形成于$(thing)石灰岩$()、$(thing)白云岩$()和$(thing)白垩岩$()之下。$(li)$(thing)石英岩$()形成于$(thing)燧石岩$()之下。$(li)$(thing)片岩$()和$(thing)片麻岩$()形成于$(thing)板岩$()和$(thing)千枚岩$()之下，或火成侵入岩之中。",
       "title": "变质岩"
     },
     {
@@ -61,7 +61,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)沉积岩$()是由矿物或有机颗粒的堆积或沉积形成的。它们通常出现在大陆地区的顶部岩层中。包括：$(br)$(li)页岩$(li)粘土岩$(li)石灰岩$(li)砾岩$(li)白云岩$(li)燧石岩$(li)白垩岩",
+      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)沉积岩$()是由矿物或有机颗粒的堆积或沉积形成的。它们通常出现在大陆地区的顶部岩层中。包括：$(br)$(li)页岩$(li)黏土岩$(li)石灰岩$(li)砾岩$(li)白云岩$(li)燧石岩$(li)白垩岩",
       "title": "沉积岩"
     },
     {

@@ -46,7 +46,7 @@
       "item": "tfc:metal/ingot/weak_blue_steel",
       "title": "脆蓝钢",
       "link_recipes": false,
-      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)黑钢$()：50 - 55 % $(li)$(thing)钢$()：20 - 25 % $(li)$(thing)铋铜$()：10 - 15 % $(li)$(thing)标准银$()：10 - 15 % $(br2)"
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)黑钢$()：50 - 55 % $(li)$(thing)钢$()：20 - 25 % $(li)$(thing)铋铜$()：10 - 15 % $(li)$(thing)纯银$()：10 - 15 % $(br2)"
     },
     {
       "type": "tfc:welding_recipe",

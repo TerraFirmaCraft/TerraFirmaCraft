@@ -30,7 +30,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_pot",
-      "text": "陶锅必须先用粘土$(l:getting_started/pottery)塑形$()。"
+      "text": "陶锅必须先用黏土$(l:getting_started/pottery)塑形$()。"
     },
     {
       "type": "tfc:heat_recipe",

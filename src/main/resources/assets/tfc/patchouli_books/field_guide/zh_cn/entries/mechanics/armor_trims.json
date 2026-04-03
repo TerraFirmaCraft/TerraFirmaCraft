@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "盔甲纹饰由$(thing)纹饰材料$()和$(l:mechanics/sewing_table)锻造模板$()制成。在群峦传说中，所有宝石以及银、标准银、金、玫瑰金和铋都可以用作纹饰材料。盔甲纹饰纯粹是装饰性的。"
+      "text": "盔甲纹饰由$(thing)纹饰材料$()和$(l:mechanics/sewing_table)锻造模板$()制成。在群峦传说中，所有宝石以及银、纯银、金、玫瑰金和铋都可以用作纹饰材料。盔甲纹饰纯粹是装饰性的。"
     },
     {
       "type": "patchouli:crafting",

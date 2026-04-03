@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)碗$()是一种多功能工具，可用于制作$(l:mechanics/salad)沙拉$()、制作$(l:mechanics/pot)汤$()、$(l:mechanics/decay#salting)抹盐$()肉，或将$(thing)粉末$()添加到$(l:mechanics/glassworking_applications#coloring)玻璃$()中以改变玻璃成品的颜色。$(br2)碗可以用$(thing)陶瓷$()制作，通过用粘土塑形出碗然后烧制。"
+      "text": "$(thing)碗$()是一种多功能工具，可用于制作$(l:mechanics/salad)沙拉$()、制作$(l:mechanics/pot)汤$()、$(l:mechanics/decay#salting)抹盐$()肉，或将$(thing)粉末$()添加到$(l:mechanics/glassworking_applications#coloring)玻璃$()中以改变玻璃成品的颜色。$(br2)碗可以用$(thing)陶瓷$()制作，通过用黏土塑形出碗然后烧制。"
     },
     {
       "type": "tfc:knapping_recipe",

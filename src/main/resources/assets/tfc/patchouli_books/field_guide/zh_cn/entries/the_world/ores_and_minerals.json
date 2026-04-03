@@ -684,7 +684,7 @@
       "item": "tfc:kaolin_clay",
       "title": "高岭石",
       "link_recipes": false,
-      "text": "高岭石是一种柔软的$(thing)矿物$()，用于制作$(l:mechanics/fire_clay)耐火粘土$()。它可以在高原、古老山脉、丘陵和高地的海拔较高处生成，需要$(l:the_world/climate#temperature)温度$()至少 18°C，$(l:the_world/climate#rainfall)降雨量$()至少 300mm。$(thing)火球花$()生长在高岭土上。"
+      "text": "高岭石是一种柔软的$(thing)矿物$()，用于制作$(l:mechanics/fire_clay)耐火黏土$()。它可以在高原、古老山脉、丘陵和高地的海拔较高处生成，需要$(l:the_world/climate#temperature)温度$()至少 18°C，$(l:the_world/climate#rainfall)降雨量$()至少 300mm。$(thing)火球花$()生长在高岭土上。"
     },
     {
       "type": "tfc:multimultiblock",
@@ -766,7 +766,7 @@
       "item": "tfc:ore/graphite",
       "title": "石墨",
       "link_recipes": false,
-      "text": "石墨是一种$(thing)矿物$()，用于制作$(l:mechanics/fire_clay)耐火粘土$()。它可以在 y=60 以下的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中找到。"
+      "text": "石墨是一种$(thing)矿物$()，用于制作$(l:mechanics/fire_clay)耐火黏土$()。它可以在 y=60 以下的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -901,7 +901,7 @@
       "item": "tfc:ore/sylvite",
       "title": "钾石盐",
       "link_recipes": false,
-      "text": "钾石盐是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨，然后用作$(l:mechanics/fertilizers)肥料$()。它可以在近地表的$(thing)页岩$()、$(thing)粘土岩$()和$(thing)燧石岩$()中以非常巨大的扁平矿层形式找到。"
+      "text": "钾石盐是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨，然后用作$(l:mechanics/fertilizers)肥料$()。它可以在近地表的$(thing)页岩$()、$(thing)黏土岩$()和$(thing)燧石岩$()中以非常巨大的扁平矿层形式找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -928,7 +928,7 @@
       "item": "tfc:ore/borax",
       "title": "硼砂",
       "link_recipes": false,
-      "text": "硼砂是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨制成$(l:mechanics/flux)助焊剂$()。它可以在近地表的$(thing)粘土岩$()、$(thing)石灰岩$()和$(thing)页岩$()中以非常巨大的扁平矿层形式找到。"
+      "text": "硼砂是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨制成$(l:mechanics/flux)助焊剂$()。它可以在近地表的$(thing)黏土岩$()、$(thing)石灰岩$()和$(thing)页岩$()中以非常巨大的扁平矿层形式找到。"
     },
     {
       "type": "patchouli:multiblock",
