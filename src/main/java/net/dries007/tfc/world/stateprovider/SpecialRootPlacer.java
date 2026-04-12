@@ -13,17 +13,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.TreeFeature;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.feature.tree.RootConfig;
 
@@ -38,16 +36,19 @@ public record SpecialRootPlacer(float skewChance)
     public boolean placeRoots(WorldGenLevel level, RandomSource random, BlockPos.MutableBlockPos mutablePos, RootConfig config)
     {
         final List<BlockPos> positions = Lists.newArrayList();
-        final int oceanFloorY = level.getChunk(mutablePos).getHeight(Heightmap.Types.OCEAN_FLOOR_WG, mutablePos.getX(), mutablePos.getZ());
-        if (oceanFloorY < SEA_LEVEL_Y - 4)
+        if (level instanceof WorldGenRegion)
         {
-            return false;
+            final int oceanFloorY = level.getChunk(mutablePos).getHeight(Heightmap.Types.OCEAN_FLOOR_WG, mutablePos.getX(), mutablePos.getZ());
+            if (oceanFloorY < SEA_LEVEL_Y - 4) {
+                return false;
+            } else {
+                // We use a mutable pos so that mangrove roots can raise the height of the trunk base
+                // Do not modify the mutable pos beyond this point
+                mutablePos.setY(Math.max(oceanFloorY + random.nextInt(4), SEA_LEVEL_Y + 1));
+            }
         }
-        else
-        {
-            // We use a mutable pos so that mangrove roots can raise the height of the trunk base
-            // Do not modify the mutable pos beyond this point
-            mutablePos.setY(Math.max(oceanFloorY + random.nextInt(4), SEA_LEVEL_Y + 1));
+        else {
+            mutablePos.setY(mutablePos.getY() + random.nextInt(4));
         }
 
         positions.add(mutablePos.below());
