@@ -8,9 +8,12 @@ package net.dries007.tfc.common.blocks.devices;
 
 
 import java.util.Optional;
+
+import net.dries007.tfc.client.RenderHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -40,6 +44,7 @@ import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class PowderkegBlock extends SealableDeviceBlock
 {
@@ -171,6 +176,35 @@ public class PowderkegBlock extends SealableDeviceBlock
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
+        if (!state.getValue(SEALED))
+        {
+            @Nullable
+            PowderkegBlockEntity powderkeg = (PowderkegBlockEntity) level.getBlockEntity(pos);
+            if (powderkeg != null)
+            {
+                final PowderkegBlockEntity.PowderkegInventory inventory = powderkeg.getInventory();
+
+                int count = 0;
+                int maxCount = 0;
+
+                for (int i = 0; i < inventory.getSlots(); i++)
+                {
+                    ItemStack stack = inventory.getStackInSlot(i);
+
+                    count += stack.getCount();
+                    //separate in case of smaller fuel
+                    maxCount += stack.isEmpty() ? 64 : stack.getMaxStackSize();
+                }
+                if (count > 0)
+                {
+                    final double y = Mth.clampedMap(count, 0, maxCount, 2D, 14D);
+                    final VoxelShape gunpowder = box(2D, 2D, 2D, 14D, y, 14D);
+
+                    return Shapes.or(SHAPE_UNSEALED, gunpowder);
+                }
+            }
+
+        }
         return state.getValue(SEALED) ? SHAPE : SHAPE_UNSEALED;
     }
 
