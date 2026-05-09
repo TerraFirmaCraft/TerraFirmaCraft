@@ -1,21 +1,20 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Дикі тварини",
   "category": "tfc:the_world",
   "icon": "tfc:medium_raw_hide",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Світ TFC наповнений тваринами. Деякі тварини будуть тобі допомагати, а деякі є неймовірно небезпечними. Цей розділ про диких тварин. Щоб отримати інформацію про худобу - тварин, які можуть дати тобі корисні речі та їжу, переглянь сторінку $(l:mechanics/animal_husbandry)тваринництво$()."
+      "text": "Світ TFC наповнений тваринами. Деякі тварини будуть вам допомагати, а деякі є неймовірно небезпечними. Цей розділ про диких тварин. Щоб отримати інформацію про худобу - тварин, які можуть дати вам корисні речі та їжу, перегляньте сторінку про $(l:mechanics/animal_husbandry)тваринництво$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Тварин можна поділити на кілька категорій: $(l:the_world/wild_animals#predators)хижаки$(), $(l:the_world/wild_animals#prey)здобич$(), та $(l:the_world/wild_animals#aquatic)водяні$().$(br2)Наступні кілька сторінок детальніше опишуть кожну з цих категорій тварин."
+      "text": "Тварин можна поділити на кілька категорій: $(l:the_world/wild_animals#predators)хижаки$(), $(l:the_world/wild_animals#prey)здобич$() та $(l:the_world/wild_animals#aquatic)водяні$().$(br2)Наступні кілька сторінок детальніше опишуть кожну з цих категорій тварин."
     },
     {
       "type": "patchouli:text",
       "anchor": "predators",
-      "text": "$(thing)Хижаки$() - це тварини, які можуть атакувати гравця. Вони є або $(thing)нічними$(), що полюють вночі, або $(thing)денними$(), що полюють вдень. Хижаки можуть бути нейтральними або ворожими, залежно від того, чи давно вони вполювали здобич. У хижаків є домашня територія, яку вони будуть захищати. Якщо ти втечеш досить далеко від хижака, він припинить погоню і повернеться додому.",
+      "text": "$(thing)Хижаки$() - це тварини, які можуть атакувати гравця. Вони є або $(thing)нічними$(), що полюють вночі, або $(thing)денними$(), що полюють вдень. Хижаки можуть бути нейтральними або ворожими, залежно від того, чи давно вони вполювали здобич. У хижаків є домашня територія, яку вони будуть захищати. Якщо ви втечете досить далеко від хижака, він припинить погоню і повернеться додому.",
       "title": "Хижаки"
     },
     {
@@ -23,7 +22,7 @@
       "entity": "tfc:polar_bear",
       "scale": 0.55,
       "name": "Ведмідь білий",
-      "text": "Білий ведмідь живе у найхолодніших регіонах, $(l:the_world/climate#temperature)температурою$() нижче 10°C, при $(l:the_world/climate#rainfall)кількості опадів$() від 100мм."
+      "text": "Білий ведмідь живе в найхолодніших регіонах, $(l:the_world/climate#temperature)температурою$() нижче 10°C, при $(l:the_world/climate#rainfall)кількості опадів$() від 100мм."
     },
     {
       "type": "patchouli:entity",
@@ -37,7 +36,7 @@
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "Ведмідь чорний",
-      "text": "Чорний ведмідь живе у лісах із теплішим кліматом, $(l:the_world/climate#temperature)температурою$() від 5 до 20°C, та близько 250мм $(l:the_world/climate#rainfall)опадів$()."
+      "text": "Чорний ведмідь живе в лісах із теплішим кліматом, $(l:the_world/climate#temperature)температурою$() від 5 до 20°C, та близько 250мм $(l:the_world/climate#rainfall)опадів$()."
     },
     {
       "type": "patchouli:entity",
@@ -51,84 +50,84 @@
       "entity": "tfc:panther",
       "scale": 0.6,
       "name": "Пантера",
-      "text": "Пантера живе у помірному кліматі з $(l:the_world/climate#temperature)температурою$() від -10 до 21°C та кількістю $(l:the_world/climate#rainfall)опадів$() не менше 150мм."
+      "text": "Пантера живе в помірному кліматі з $(l:the_world/climate#temperature)температурою$() від -10 до 21°C та кількістю $(l:the_world/climate#rainfall)опадів$() не менше 150мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "Лев",
-      "text": "Лев оселився на рівнинах із середньою $(l:the_world/climate#temperature)температурою$() не менше 16°C, та кількістю  $(l:the_world/climate#rainfall)опадів$() від 50 до 300мм."
+      "text": "Лев живе на рівнинах із середньою $(l:the_world/climate#temperature)температурою$() не менше 16°C та кількістю $(l:the_world/climate#rainfall)опадів$() від 50 до 300мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tiger",
       "scale": 0.55,
-      "name": "Tiger",
-      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+      "name": "Тигр",
+      "text": "Тигр живе в лісах із середньою $(l:the_world/climate#temperature)температурою$() щонайменше 13°C і $(l:the_world/climate#rainfall)опадами$() понад 100мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "Шаблезубий тигр",
-      "text": "Шаблезубий тигр живе на рівнинах із середньою $(l:the_world/climate#temperature)температурою$() вище 0°C, та $(l:the_world/climate#rainfall)опадами$() більш за 250мм."
+      "text": "Шаблезубий тигр живе на рівнинах із середньою $(l:the_world/climate#temperature)температурою$() вище 0°C та$(l:the_world/climate#rainfall)опадами$() більш за 250мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "Вовки зустрічаються біомах з $(l:the_world/climate#temperature)температурою$() до 22°C, та кількістю $(l:the_world/climate#rainfall)опадів$() від 150 до 420мм. Полюють зграями. Як годувати вовка, то можна його приручити."
+      "text": "Вовки зустрічаються в біомах із $(l:the_world/climate#temperature)температурою$() до 22°C та кількістю $(l:the_world/climate#rainfall)опадів$() від 150 до 420мм. Полюють зграями. Як годувати вовка, то можна приборкати."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "Люті вовки з'являються у регіонах з $(l:the_world/climate#temperature)температурою$() нижче 0°C, та кількістю $(l:the_world/climate#rainfall)опадів$() від 150 до 420мм. Полюють зграями. Вони не піддаються прирученню."
+      "text": "Люті вовки з'являються в регіонах із $(l:the_world/climate#temperature)температурою$() нижче 0°C та $(l:the_world/climate#rainfall)опадами$() 150 - 420мм. Полюють зграями. Не піддаються приборканню."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:hyena",
       "scale": 0.7,
-      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+      "text": "Гієна живе за будь-якої $(l:the_world/climate#temperature)температури$() вище 15°C і $(l:the_world/climate#rainfall)опадами$() 80 - 380мм. Полюють зграями. Не піддаються приборканню."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crocodile",
       "scale": 0.7,
-      "name": "Crocodile",
-      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+      "name": "Крокодил",
+      "text": "Крокодил живе біля річок, озер і боліт за будь-якої $(l:the_world/climate#temperature)температури$() вище 15°C і за будь-якої $(l:the_world/climate#rainfall)опади$(). Вони ведуть нічний спосіб життя і найнебезпечніші у воді."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Оцелот полює на дрібних тварин. Мешкає в будь-яких лісах з  $(l:the_world/climate#temperature)температурою$() від 15 до 30°C, та $(l:the_world/climate#rainfall)опадами$() 300 - 500мм. Оцелота можна приручити, він стане прирученим $(l:mechanics/pets)котом або кішкою$(). Оцелоти їдять сиру рибу."
+      "text": "Оцелот полює на дрібних тварин. Мешкає в будь-яких лісах з $(l:the_world/climate#temperature)температурою$() від 15 до 30°C, та $(l:the_world/climate#rainfall)опадами$() 300 - 500мм. Оцелота можна приборкати, він стане приборканим $(l:mechanics/pets)котом або кішкою$(). Оцелоти їдять сиру рибу."
     },
     {
       "type": "patchouli:text",
       "anchor": "ramming_prey",
-      "text": "$(thing)Ramming$() animals occasionally attempt to charge nearby creatures, including the player. Their attacks are powerful, but can be dodged. They will ram more frequently if attacked.",
-      "title": "Ramming"
+      "text": "$(thing)Таранючі$() тварини час від часу намагатимуться атакувати сусідніх істот, включаючи гравця. Їх атаки cильні, але від них можна ухилитися. У разі нападу вони будуть таранити частіше.",
+      "title": "Таранючі тварини"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:boar",
       "scale": 0.7,
       "name": "Дикий кабан",
-      "text": "Для появи оленя достатньо $(l:the_world/climate#temperature)температури$() нижче 25°C, але вище -15°C, та $(l:the_world/climate#rainfall)опадів$() від 130 до 400мм."
+      "text": "Кабан живе будь-де з $(l:the_world/climate#temperature)температурою$() від -5°C до 25°C, та $(l:the_world/climate#rainfall)опадами$() від 130 до 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "Лосю треба $(l:the_world/climate#temperature)температура$() між -15°C та 10°C, з $(l:the_world/climate#rainfall)опадами$() від 150 до 300мм."
+      "text": "Лосю живе в лісах із $(l:the_world/climate#temperature)температурою$() між -15°C та 10°C, з $(l:the_world/climate#rainfall)опадами$() від 150 до 300мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wildebeest",
       "scale": 0.7,
-      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "Антилопа гну водиться на відкритих рівнинах за будь-якої $(l:the_world/climate#temperature)температури$() вище 13°C і $(l:the_world/climate#rainfall)опадами$() від 90 до 380мм."
     },
     {
       "type": "patchouli:text",
@@ -141,65 +140,65 @@
       "entity": "tfc:rabbit",
       "scale": 0.7,
       "name": "Кролик",
-      "text": "Кролик гризе моркву і капусту. Живе по всьому світі, змінюючи хутро залежно від клімату. Йому потрібно лиш 15мм $(l:the_world/climate#rainfall)опадів$()."
+      "text": "Кролик гризе моркву та капусту. Живе по всьому світі, змінюючи хутро залежно від клімату. Йому потрібно лиш 15мм $(l:the_world/climate#rainfall)опадів$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "Лисиця",
-      "text": "Лисиця їсть ягоди з кущів. Зустрічають у лісах з $(l:the_world/climate#temperature)температурою$() нижче 25°C, та кількістю $(l:the_world/climate#rainfall)опадів$() між 130 та 400мм."
+      "text": "Лисиця їсть ягоди з кущів. Зустрічається в лісах з $(l:the_world/climate#temperature)температурою$() нижче 25°C та $(l:the_world/climate#rainfall)опадами$() між 130 та 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "Для появи оленя достатньо $(l:the_world/climate#temperature)температури$() нижче 25°C, але вище -15°C, та $(l:the_world/climate#rainfall)опадів$() від 130 до 400мм."
+      "text": "Для появи оленя достатньо $(l:the_world/climate#temperature)температури$() нижче 25°C, але вище -15°C та $(l:the_world/climate#rainfall)опадів$() від 130 до 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:caribou",
-      "scale": 0.6,
-      "name": "Caribou",
-      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+      "scale": 0.55,
+      "name": "Північний олень",
+      "text": "Північний олень живе будь-де за будь-якої $(l:the_world/climate#temperature)температури$() нижче -9°C і $(l:the_world/climate#rainfall)опадів$() від 110 до 500мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "Газель живе на відкритих рівнинах за будь-якої $(l:the_world/climate#temperature)температури$() вище 12°C і $(l:the_world/climate#rainfall)опадів$() від 90 до 380мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bongo",
-      "scale": 0.9,
-      "name": "Bongo",
-      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
+      "scale": 0.7,
+      "name": "Бонго",
+      "text": "Бонго живе в лісах за будь-якої $(l:the_world/climate#temperature)температури$() вище 15°C і $(l:the_world/climate#rainfall)опадів$() від 230 до 500мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "Рябчики живуть при $(l:the_world/climate#temperature)температурі$() від -12°C до 13°C, при $(l:the_world/climate#rainfall)опадах$() від 150 до 400мм."
+      "text": "Рябчики живуть при $(l:the_world/climate#temperature)температурі$() від -12°C до 13°C при $(l:the_world/climate#rainfall)опадах$() від 150 до 400мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "Фазану потрібна $(l:the_world/climate#temperature)температура$() між -5°C та 17°C, з кількістю $(l:the_world/climate#rainfall)опадів$() від 100 до 300мм."
+      "text": "Фазан живе будь-де з $(l:the_world/climate#temperature)температурою$() між -5°C та 17°C з кількістю $(l:the_world/climate#rainfall)опадів$() від 100 до 300мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
-      "scale": 0.7,
-      "text": "Індичці треба $(l:the_world/climate#temperature)температура$() від 0°C до 17°C, та $(l:the_world/climate#rainfall)опади$() між 250 та 450мм."
+      "scale": 0.6,
+      "text": "Індичці живе будь-де з $(l:the_world/climate#temperature)температурою$() від 0°C до 17°C та $(l:the_world/climate#rainfall)опадами$() між 250 та 450мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
-      "scale": 0.8,
-      "name": "Peafowl",
-      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
+      "scale": 0.65,
+      "name": "Павич",
+      "text": "Павич живе в лісах за будь-якої $(l:the_world/climate#temperature)температури$() вище 14°C і $(l:the_world/climate#rainfall)опадів$() від 190 до 500 мм."
     },
     {
       "type": "patchouli:empty"
@@ -207,12 +206,12 @@
     {
       "type": "patchouli:text",
       "anchor": "aquatic",
-      "text": "$(thing)Водяні тварини$() - це широка категорія, яка охоплює низку різних видів поведінки. Вони можуть бути $(thing)мешканцями берега$(), $(thing)рибами$(), $(thing)молюсками$(), або ж $(thing)великими водяними істотами$().",
+      "text": "$(thing)Водяні тварини$() - це широка категорія, яка охоплює низку різних видів поведінки. Вони можуть бути $(thing)мешканцями берега$(), $(thing)рибами$(), $(thing)молюсками$() або ж $(thing)великими водяними істотами$().",
       "title": "Водяні тварини"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Берегові тварини$() живуть лише на морських берегах і проводять частину свого дня у воді, а частину гуляють по пляжу. Це цікаві істоти, які йдуть за гравцем, але їх неможливо приручити."
+      "text": "$(thing)Берегові тварини$() живуть лише на морських берегах і проводять частину свого дня у воді, а частину гуляють по пляжу. Це цікаві істоти, які йдуть за гравцем, але їх неможливо приборкати."
     },
     {
       "type": "patchouli:entity",
@@ -244,15 +243,15 @@
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
-      "name": "Риба фугу",
-      "text": "Риба фугу живе в будь-якому океані, де є принаймні  $(l:the_world/climate#temperature)температура$() вища за 10°C."
+      "name": "Скелезуб",
+      "text": "Скелезуб живе в будь-якому океані, де є принаймні $(l:the_world/climate#temperature)температура$() вища за 10°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
       "name": "Медуза",
-      "text": "Медузи живуть у теплих океанах,  $(l:the_world/climate#temperature)температурою$() не менш ніж 18°C."
+      "text": "Медузи живуть у теплих океанах, $(l:the_world/climate#temperature)температурою$() не менш ніж 18°C."
     },
     {
       "type": "patchouli:entity",
@@ -266,7 +265,7 @@
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "Лосось",
-      "text": "Лосось живе у річці або в озері з  $(l:the_world/climate#temperature)температурою$() вище -5°C."
+      "text": "Лосось живе в річці або в озері з $(l:the_world/climate#temperature)температурою$() вище -5°C."
     },
     {
       "type": "patchouli:entity",
@@ -278,8 +277,8 @@
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)Молюски$() - це невеликі тварини, які живуть на дні водойм. Їх не можна ловити, але вони скидають мушлі, які можна з’їсти або зробити з них $(l:mechanics/flux)флюс$(). Молюски можуть бути $(l:mechanics/fishing)наживкою$() для риб.",
-      "title": "Молюски"
+      "text": "$(thing)Ракоподібні$() - це невеликі тварини, які живуть на дні водойм. Їх не можна ловити, але вони скидають мушлі, які можна з'їсти або зробити з них $(l:mechanics/flux)флюс$(). Ракоподібні можуть бути $(l:mechanics/fishing)наживкою$() для риб.",
+      "title": "Ракоподібні"
     },
     {
       "type": "patchouli:entity",
@@ -293,25 +292,25 @@
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "Лобстер",
-      "text": "Лобстери живуть в будь-якому океані, з $(l:the_world/climate#temperature)температурою$() нижче 21°C."
+      "text": "Лобстери живуть у будь-якому океані, з $(l:the_world/climate#temperature)температурою$() нижче 21°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "Раки",
-      "text": "Рак живе у річці, або озері. Йому потрібна $(l:the_world/climate#temperature)температура$() більша за 5°C та кількість $(l:the_world/climate#rainfall)опадів$() не менше 125мм."
+      "text": "Рак живе в річці або озері. Йому потрібна $(l:the_world/climate#temperature)температура$() більша за 5°C та кількість $(l:the_world/climate#rainfall)опадів$() не менше 125мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
       "name": "Краб-підкова",
-      "text": "Підковоподібні краби мешкають в океанах з помірним кліматом, $(l:the_world/climate#temperature)температурою$() від 10 до 21°C та кількістю $(l:the_world/climate#rainfall)опадів$() менше 400мм."
+      "text": "Краби-підкови мешкають в океанах з помірним кліматом, $(l:the_world/climate#temperature)температурою$() від 10 до 21°C та кількістю $(l:the_world/climate#rainfall)опадів$() менше 400мм."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Великі водяні істоти$() - це великі тварини, які живуть у великих водоймах. Деякі з них полюють на рибу. З цих істот можна вполювати $(l:mechanics/lamps#tallow)сало$(), що перетворюється у паливо для ламп.",
+      "text": "$(thing)Великі водяні істоти$() - це великі тварини, які живуть у великих водоймах. Деякі з них полюють на рибу. З цих істот можна вполювати $(l:mechanics/lamps#tallow)сало$(), що перетворюється в паливо для ліхтарів.",
       "title": "Великі водяні істоти"
     },
     {
@@ -337,8 +336,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Кальмари можуть мешкати в будь-якому глибокому океані. З них полюють $(thing)чорнильні мішечки$(). Вони також випускають чорнило в гравця, коли той наближається занадто близько. Дехто каже, що кальмари в глибоких, незвіданих печерах мають дивні властивості.",
-      "title": "Кальмар"
+      "text": "Спрути можуть мешкати в будь-якому глибокому океані. З них випадають $(thing)чорнильні мішечки$(). Вони також випускають чорнило в гравця, коли той наближається занадто близько. Дехто каже, що спрути в глибоких, незвіданих печерах мають дивні властивості.",
+      "title": "Спрут"
     }
   ],
   "read_by_default": true,

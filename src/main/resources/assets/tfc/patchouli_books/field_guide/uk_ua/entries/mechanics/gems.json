@@ -1,30 +1,29 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Дорогоцінне каміння",
+  "name": "Коштовні каміння",
   "category": "tfc:mechanics",
   "icon": "tfc:gem/opal",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+      "text": "Коштовні каміння - це різновид мінералу, який з'являється в різних місцях, як-от $(thing)під річками$() і на $(l:the_world/geology)вулканах$(). Щоб отримати інформацію про точні умови, перегляньте $(l:the_world/ores_and_minerals)розділ про руди та мінерали$()."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$()."
+      "text": "Коштовне каміння можна перемолоти в пил за допомогою $(l:mechanics/quern)жорна$(). Пил коштовних каменів особливо корисний у $(l:mechanics/glassworking_applications#coloring)розфарбовуванні скла$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/panning)Промиванням$() решетом, або за допомогою $(l:mechanics/sluices)мийного жолобу$() можна отримати $(thing)мінерал дорогоцінного каміння$(), або ж самоцвіт. Самоцвіт, який можна отримати за допомогою мийного жолобу, прив’язаний до типу породи родовища, що обробляється."
+      "text": "$(l:mechanics/panning)Просіюванням$() решетом, або $(l:mechanics/sluices)промиванням$() на мийному жолобі можна отримати $(thing)неограноване кошт. каміння$() або ж самоцвіт. Самоцвіт, який можна отримати за допомогою мийного жолобу, прив'язаний до типу породи родовища, що оброблявся."
     },
     {
       "type": "patchouli:text",
-      "text": "Gems have higher $(thing)Hardness$() values than regular ore, requiring different strength tools to break them. This summarizes the minimum $(thing)Pickaxe$() tier required to break a gem ore block:$(br)$(li)Amethyst: Steel$(li)Diamond: Black Steel$(li)Emerald: Steel$(li)Lapis Lazuli: Bronze$(li)Opal: Bronze$(li)Pyrite: Copper$(li)Ruby: Black Steel$(li)Sapphire: Black Steel$(li)Topaz: Steel"
+      "text": "Коштовні каміння мають вищі значення $(thing)твердості$(), ніж звичайні руди, тому для їх видобування потрібні інструменти вищої міцності. Цей перелік вкаже необхідний рівень $(thing)кайла$(), для видобутку:$(br)$(li)Аметист: сталь$(li)Діамант: чорна сталь$(li)Смарагд: сталь$(li)Лазурит: олов'яна бронза$(li)Опал: олов'яна бронза$(li)Пірит: мідь$(li)Рубін: чорна сталь$(li)Сапфір: чорна сталь$(li)Топаз: сталь"
     },
     {
       "type": "patchouli:text",
-      "text": "To cut a gem, you must craft $(thing)Sandpaper$(). Sandpaper is made from Black Sand, Flux, Glue, any Gem Powder, and Paper. Crafting an uncut gem with sandpaper cuts the gem."
+      "text": "Щоб огранити коштовний камінь, ви повинні змайструвати $(thing)наждачний папір$(). Наждачний папір виготовляється з чорного піску, флюсу, клею, будь-якого пилу кошт. каміння та паперу. Поєднання неогранованого коштовного каменю з наждачним папером в майструванні ограновує коштовний камінь."
     },
     {
       "type": "patchouli:crafting",

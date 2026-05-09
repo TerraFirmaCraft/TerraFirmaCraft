@@ -1,95 +1,94 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Mechanical Power",
+  "name": "Механічна енергія",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/water_wheel/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Mechanical power is the art of making things rotate or move, by harnessing the elemental power of either wind or water.$(br2)Practically, many devices can be hooked up to mechanical power networks either to automate their movement, or provide power for other functionality"
+      "text": "Механічна енергія - це мистецтво змушувати об'єкти обертатися або рухатися завдяки стихійній силі вітру чи води.$(br2)На практиці багато приладів можна підключити до мереж механічної енергії, щоб автоматизувати їх рух або забезпечити енергією для інших функцій."
     },
     {
       "type": "patchouli:text",
-      "text": "In order to get started with harnessing mechanical power, you will first need a $(thing)Source$() of power.$(br2)$(l:mechanics/mechanical_power#windmill)Windmills$() are a way of harnessing the wind. They can be built nearly everywhere with enough space.$(br2)$(l:mechanics/mechanical_power#water_wheel)Water Wheels$() are a slightly stronger power source, as they harness the current found in $(thing)Rivers$()"
+      "text": "Щоб почати використовувати механічну енергію, вам спершу знадобиться $(thing)джерело$() енергії.$(br2)$(l:mechanics/mechanical_power#windmill)Вітряки$() - це спосіб використання сили вітру. Їх можна будувати майже будь-де, де є достатньо простору.$(br2)$(l:mechanics/mechanical_power#water_wheel)Водяні колеса$() є дещо потужнішим джерелом енергії, оскільки вони використовують силу течії $(thing)річок$()."
     },
     {
       "type": "patchouli:text",
       "anchor": "windmill",
-      "text": "$(thing)Windmills$() are a way of harnessing the power of the wind to rotate an $(l:mechanics/mechanical_power#axle)Axle$(). They are large, and require a completely unobstructed area of 13 x 13 x 1 to be placed. In order to create one, you will first need an $(thing)Axle$(), and then you will need one or more $(thing)Windmill Blades$()",
-      "title": "Windmills"
+      "text": "$(thing)Вітряки$() - це спосіб використання сили вітру для обертання $(l:mechanics/mechanical_power#axle)осі$(). Вони великі й вимагають повністю відкритої площі розміром 13 x 13 x 1 для встановлення. Щоб створити вітряк, вам спочатку знадобиться $(thing)вісь$(), а також одна або кілька $(thing)лопатей вітряка$()",
+      "title": "Вітряки"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/windmill_blade",
-      "text": "$(thing)Windmill Blades$() can be crafted from cloth. A single windmill can have up to five blades, and the more blades, the faster it will rotate."
+      "text": "$(thing)Лопаті вітряка$() можна змайструвати з тканини. Один вітряк може мати до п'яти лопатей, і чим більше лопатей, тим швидше він обертатиметься."
     },
     {
       "type": "patchouli:text",
-      "text": "In order to create a windmill, first place an $(l:mechanics/mechanical_power#axle)Axle$() in any horizontal orientation. Then, $(item)$(k:key.use)$() up to five $(thing)Windmill Blades$() on the axle to create the windmill. It will slowly start spinning.$(br2)The windmill may break if the axle is already connected to another source, or if there is not enough clear space."
+      "text": "Щоб створити вітряк, спершу встановіть $(l:mechanics/mechanical_power#axle)вісь$() у будь-якій горизонтальній орієнтації. Потім, натискаючи $(item)$(k:key.use)$(), прикріпіть до п'яти $(thing)лопатей вітряка$() до валу, щоб завершити конструкцію. Вітряк почне повільно обертатися.$(br2)Вітряк може зламатися, якщо вісь вже підключена до іншого джерела або якщо недостатньо вільного простору."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:windmill",
+      "scale": 6,
       "name": "",
-      "text": "",
+      "text": "Вісь у русі",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "water_wheel",
-      "text": "$(thing)Water Wheels$() are a way of harnessing the power of flowing water in $(3)Rivers$() in order to generate power. When placed optimally, they can rotate at some of the fastest possible speeds available.$(br2)A water wheel requires a 5 x 5 x 1 area of space to be placed. Note that the water wheel may break if there are any obstructions in the area around it,",
-      "title": "Water Wheels"
+      "text": "$(thing)Водяні колеса$() - це спосіб використання сили течії в $(3)річках$() для генерації енергії. При правильному розташуванні вони можуть обертатися з одними з найвищих можливих швидкостей.$(br2)Для встановлення водяного колеса потрібна площа розміром 5 x 5 x 1. Зауважте, що водяне колесо може зламатися, якщо в зоні навколо нього є перешкоди,",
+      "title": "Водяні колеса"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_water_wheel",
-      "title": " ",
-      "text": "or if the axle was already connected to another source.$(br2)Water wheels can be crafted simply from lumber."
+      "text": "або якщо вісь вже підключена до іншого джерела.$(br2)Водяні колеса можна легко змайструвати з деревини."
     },
     {
       "type": "patchouli:text",
-      "text": "In order to place a $(thing)Water Wheel$(), simply attach it on the end of any $(thing)Axle$(). The axle should be one or two blocks above a source of flowing water, i.e. a river.$(br2)Water below the height of the axle, when flowing, will cause the wheel to speed up. Any water elsewhere, or stationary water below the axle will impede the wheel's movement and cause it to slow down or stop."
+      "text": "Щоб встановити $(thing)водяне колесо$(), просто прикріпіть його до кінця будь-якої $(thing)осі$(). Вісь повинна бути на одному або двох блоках над джерелом течії, наприклад, річкою.$(br2)Течія під віссю сприятиме прискоренню обертання колеса. Вода в інших місцях або стояча вода під віссю уповільнюватимуть обертання колеса або взагалі зупинятимуть його."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:water_wheel",
       "name": "",
-      "text": "A $(thing)Water Wheel$()",
+      "text": "$(thing)Водяне колесо$()",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "anchor": "axle",
       "recipe": "tfc:crafting/wood/oak_axle",
-      "title": "Axles",
-      "text": "Axles are the bread and butter of a rotational network, and are the block that transfers rotational power from one location to the other. They can be connected up to five blocks long, but any longer and they will break!"
+      "title": "Осі",
+      "text": "Осі є хлібом з маслом обертальної мережі, і блоком, який передає обертальну енергію з одного місця в інше. Вони можуть бути з'єднані до п'яти блоків в довжину, але якщо довше, то вони зламаються!"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_encased_axle",
-      "title": "Encased Axles",
-      "text": "Axles can also be crafted $(thing)Encased$(). These can either be placed by themselves, or on top of existing axles.$(br2)However, in order to transfer power further, you will need a $(l:mechanics/mechanical_power#gearbox)Gear Box$()"
+      "title": "Осі в оболонці",
+      "text": "Осі також можна перемайструвати в $(thing)осі в оболонці$(). Їх можна встановлювати окремо або поверх уже існуючих осей.$(br2)Однак щоб передати енергію далі, вам знадобиться $(l:mechanics/mechanical_power#gearbox)кутовий редуктор$()"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "gearbox",
       "recipe": "tfc:crafting/wood/oak_gear_box",
-      "title": "Gear Box",
-      "text": "$(thing)Gear Boxes$() are a way of changing the $(thing)Direction$() of rotational power by using $(l:https://en.wikipedia.org/wiki/Gear)Gears$(). They are also useful in order to connect long chains of $(l:mechanics/mechanical_power#axle)Axles$() together without breaking."
+      "title": "Кутовий редуктор",
+      "text": "$(thing)Кутові редуктори$() - це спосіб змінювати $(thing)напрямок$() обертальної енергії за допомогою $(l:https://uk.wikipedia.org/wiki/Зубчасте_колесо)шестерень$(). Вони також корисні для з'єднання довгих ланцюгів $(l:mechanics/mechanical_power#axle)осей$() разом без ламання."
     },
     {
       "type": "patchouli:text",
-      "text": "In order to use a gearbox, its sides must be configured. $(item)$(k:key.use)$() while holding a $(thing)Hammer$() on any face of the gearbox to enable input/output through that face.$(br2)Note that due to their internal structure, gear boxes can only have faces enabled on two different axes of rotation at the same time."
+      "text": "Щоб використовувати кутовий редуктор, необхідно налаштувати його сторони. Тримаючи $(thing)молот$(), натисніть $(item)$(k:key.use)$() на будь-яку грань кутового редуктора, щоб увімкнути введення/виведення через цю грань.$(br2)Зауважте, що через свою внутрішню конструкцію кутові редуктори можуть одночасно мати активні грані лише на двох різних осях обертання."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_clutch",
-      "title": "Clutch",
-      "text": "A $(thing)Clutch$() is a way of controlling a rotational network via $(c)Redstone$(). It is an $(l:mechanics/mechanical_power#axle)Encased Axle$(), which disconnects when powered, allowing rotation to pass through only when unpowered."
+      "title": "Зчеплення",
+      "text": "$(thing)Зчеплення$() - це спосіб керування обертальною мережею за допомогою $(c)редстоуна$(). Це $(l:mechanics/mechanical_power#axle)вісь в оболонці$(), яка не передає оберти осі через себе, коли заживлена, дозволяючи обертанню проходити тільки за відсутності живлення."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example of a $(thing)Clutch$() in use.",
+      "text": "Приклад $(thing)зчеплення$() у використанні",
       "multiblocks": [
         "tfc:clutch_off",
         "tfc:clutch_on"
@@ -98,21 +97,21 @@
     {
       "type": "patchouli:text",
       "anchor": "quern",
-      "text": "One device that can be connected to the mechanical network is a $(l:mechanics/quern)Quern$(), simply by placing a vertical-facing axle above the Quern. While connected, the Quern cannot be turned manually, instead it will grind items automatically as the axle above rotates.$(br2)The Quern will grind faster if the axle above spins faster.",
-      "title": "Quern Automation"
+      "text": "Одним із приладів, які можна підключити до механічної мережі, є $(l:mechanics/quern)жорно$(). Для цього достатньо розмістити вісь, спрямовану вертикально, над жорном. Таке підключене жорно не можна обертати вручну, натомість воно автоматично перемелюватиме предмети під час обертання осі над ним.$(br2)Жорно буде працювати швидше, якщо вісь над ним обертатиметься з більшою швидкістю.",
+      "title": "Автоматизація жорна"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:rotating_quern",
       "name": "",
-      "text": "A $(thing)Quern$() connected to an $(l:mechanics/mechanical_power#axle)Axle$().",
+      "text": "$(thing)Жорно$(), під'єднане до $(l:mechanics/mechanical_power#axle)осі$()",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "trip_hammer",
-      "text": "Another mechanical device is the $(thing)Trip Hammer$(). The Trip Hammer automatically performs smithing on an $(l:mechanics/anvils)Anvil$(). The Trip Hammer needs a $(thing)Bladed Axle$() to work. The Bladed Axle works like a regular axle, but has a blade on it that is used to activate the hammer.",
-      "title": "Trip Hammer"
+      "text": "Ще одним механічним приладом є $(thing)важільний молот$(). Він автоматично виконує ковальську роботу на $(l:mechanics/anvils)ковадлі$(). Для роботи важільного молота потрібна $(thing)лопатева вісь$(). Лопатева вісь функціонує як звичайна вісь, але має лопать, яка використовується для активації молота.",
+      "title": "Важільний молот"
     },
     {
       "type": "patchouli:crafting",
@@ -135,17 +134,17 @@
         ],
         "mapping": {
           "X": "tfc:wood/bladed_axle/oak[axis=x]",
-          "Y": "tfc:trip_hammer[facing=north]",
+          "Y": "tfc:trip_hammer[facing=south]",
           "Z": "tfc:metal/anvil/copper[facing=west]"
         }
       },
       "name": "",
-      "text": "A setup for a trip hammer.",
+      "text": "Налаштування важільного молота",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Place a trip hammer below the axle, and $(item)$(k:key.use)$() to add a hammer to it. The hammer must be a metal hammer. Make sure the trip hammer is oriented such that the bladed axle will push the hammer handle down. The hammer will then hit an anvil placed in front of it. The trip hammer always records the $(thing)'Light Hit'$() action, and always moves the cursor closer towards the target, requiring no input from the player. If an ingot is not hot enough or the anvil is the incorrect tier, a deep metal banging sound will alert you. "
+      "text": "Розмістіть важільний молот під віссю та $(item)$(k:key.use)$() по ньому, щоб додати молот. Молот повинен бути металевим. Переконайтеся, що важільний молот направлений так, щоб лопатева вісь натискала на рукоятку молота. Після цього молот буде бити по ковадлу, розташованому перед ним. Важільний молот завжди виконує дію «$(thing)Слабко вдарити$()», і автоматично пересуває курсор ближче до цілі, не потребуючи втручання гравця. Якщо злиток недостатньо розігрітий або ковадло не відповідного рівня, звук гучного металевого удару дасть вам знати."
     }
   ],
   "read_by_default": true,

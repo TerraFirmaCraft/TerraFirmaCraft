@@ -1,17 +1,16 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Млин",
+  "name": "Жорно",
   "category": "tfc:mechanics",
   "icon": "tfc:quern",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Quern$() is a device for grinding items. It can make powders, $(l:mechanics/dye)dyes$(), and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().$(br2)The Quern can also be connected to a $(l:mechanics/mechanical_power#quern)Mechanical Power$() network."
+      "text": "$(thing)Жорно$() - це прилад для перемелення предметів. Він може виготовляти пил, $(l:mechanics/dye)барвники$() та деякі інші предмети. Його зібрано з $(thing)основи$() (нижнього жорна) та $(thing)каменю з ручкою$() (верхнього жорна).$(br2)Жорно також можна підключити до мережі $(l:mechanics/mechanical_power#quern)механічної енергії$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/quern",
-      "text": "Нижнє жорно виготовляється з трьох $(thing)полірованих блоків$() каміння, та трьох будь-яких інших $(thing)блоків каміння$(). Це є основою млина."
+      "text": "Нижнє жорно можна змайструвати з трьох $(thing)полірованих блоків$() каміння, та трьох будь-яких інших $(thing)блоків каміння$()."
     },
     {
       "type": "patchouli:crafting",
@@ -23,7 +22,8 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_empty.png"
       ],
-      "text": "Наведи курсор на верхню площу нижнього жорна, та $(item)$(k:key.use)$() для розміщення на ньому верхнього.",
+      "text": "Наведіть курсор на верх нижнього жорна, та $(item)$(k:key.use)$() для розміщення на ньому верхнього.",
+      "top_buffer": 1,
       "border": true
     },
     {
@@ -31,7 +31,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_add_item.png"
       ],
-      "text": "Використовуй $(item)$(k:key.use)$() на верхній частині (де отвір), аби додати предмети, що треба подрібнити.",
+      "text": "Тисніть $(item)$(k:key.use)$() по верхній частині (де отвір), аби додати предмети, що треба перемолоти.",
       "border": true
     },
     {
@@ -39,7 +39,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_handle.png"
       ],
-      "text": "Використовуй $(item)$(k:key.use)$() на ручці верхнього жорна, для процесу подрібнення.",
+      "text": "Тисніть $(item)$(k:key.use)$() по ручці верхнього жорна для процесу перемелення.",
       "border": true
     },
     {
@@ -47,33 +47,33 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_result.png"
       ],
-      "text": "Результат подріблення повинен з'явитись на основі млина. $(item)$(k:key.use)$() будь-де по нижньому жорну аби забрати готовий продукт.",
+      "text": "Результат перемелення повинен з'явитись на основі жорна. $(item)$(k:key.use)$() будь-де по нижньому жорну аби забрати готовий продукт.",
       "border": true
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/sulfur",
-      "text": "Млин використовується для виготовлення $(thing)порошків$() з руди, такі як $(thing)сірка$()."
+      "text": "Жорно використовується для перемелення руди в $(thing)пил$(), такої як $(thing)сірка$()."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/red_dye",
-      "text": "$(l:mechanics/dye)Dye$() can be obtained from various flowers."
+      "text": "$(l:mechanics/dye)Барвники$() можна отримати з різних квітів."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/emerald",
-      "text": "$(thing)Gems$() can also be ground into powder."
+      "text": "$(thing)Коштовні камені$() також можна перемолоти в пил."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/barley_grain",
-      "text": "$(thing)Борошно$() можна одержати з будь-якого зерна."
+      "text": "$(thing)Борошно$() можна отримати з будь-якого зерна."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/fluxstone",
-      "text": "$(l:mechanics/flux)Флюс$() також виготовляється на млині."
+      "text": "$(l:mechanics/flux)Флюс$() також отримується за допомогою жорна."
     }
   ],
   "read_by_default": true

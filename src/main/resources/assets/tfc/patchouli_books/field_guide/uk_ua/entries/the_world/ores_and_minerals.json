@@ -1,21 +1,20 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Руди та мінерали",
   "category": "tfc:the_world",
   "icon": "tfc:ore/normal_hematite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Руди та мінерали в TerraFirmaCraft, на відміну від ванільних, знаходяться у масивних, розсіяних, але рідкісних жилах, які потребують певного $(l:mechanics/prospecting)пошуку$(). Різні руди також з’являються в різних типах порід і на різних висотах, тобто пошук правильного типу порід на правильній висоті є ключовим для визначення місця розташування певної руди."
+      "text": "Руди та мінерали в TerraFirmaCraft, на відміну від ванільних, знаходяться в масивних, розсіяних, але рідкісних родовищах, які потребують певного $(l:mechanics/prospecting)пошуку$(). Різні руди також з'являються в різних типах порід і на різних висотах, тобто пошук правильного типу порід на правильній висоті є ключовим для визначення місця розташування певної руди."
     },
     {
       "type": "patchouli:text",
-      "text": "In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, what they look like, and where to find them."
+      "text": "Крім того, деякі руди мають різні види $(thing)концентрації$(). Рудні блоки можуть бути бідними, нормальними або багатими, і різні родовища матимуть різну концентрацію кожного типу блоку. Родовища, які $(thing)багатші$(), є більш вигідними.$(br2)Наступні кілька сторінок показують різні типи руд, як вони виглядають і де їх знайти."
     },
     {
       "type": "patchouli:text",
       "anchor": "native_copper",
-      "text": "Native Copper is an ore of $(thing)Copper$() metal. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks, at elevations above y=40.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
+      "text": "Самородна мідь - це руда, що відноситься до $(thing)міді$(). Її можна знайти в $(l:the_world/geology#igneous_extrusive)магматичних ефузивних$() породах на висоті понад y=40.$(br2)Родовища з нею також можна знайти в $(thing)річках$(), і потім $(l:mechanics/panning)просіяти$().",
       "title": "Самородна мідь"
     },
     {
@@ -66,12 +65,12 @@
     {
       "type": "patchouli:text",
       "anchor": "native_gold",
-      "text": "Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=70, but deeper veins are larger and richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
+      "text": "Самородне золото - це руда, що відноситься до $(thing)золота$(). Його можна знайти на висоті нижче за y=70, але глибші родовища більші та багатші. Його можна знайти в $(l:the_world/geology#igneous_extrusive)магматичних ефузивних$() та $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах.$(br2)Родовища з ним також можна знайти в $(thing)річках$(), і потім $(l:mechanics/panning)просіяти$().",
       "title": "Самородне золото"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Самородне золото у діориті",
+      "text": "Самородне золото в діориті",
       "multiblocks": [
         {
           "pattern": [
@@ -117,12 +116,12 @@
     {
       "type": "patchouli:text",
       "anchor": "native_silver",
-      "text": "Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite$() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
+      "text": "Самородне срібло - це руда, що відноситься до $(thing)срібла$(). Невеликі бідні родовища можна знайти в $(thing)граніті$() або $(thing)діориті$() в регіонах підняття, вище y=90. Більші та багатші родовища можна знайти в $(thing)граніті$(), $(thing)діориті$(), $(thing)аспідному сланці$() та $(thing)гнейсі$() глибоко під землею нижче y=20.$(br2)Родовища з ним також можна знайти в $(thing)річках$(), і потім $(l:mechanics/panning)просіяти$().",
       "title": "Самородне срібло"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Самородне срібло у граніті",
+      "text": "Самородне срібло в граніті",
       "multiblocks": [
         {
           "pattern": [
@@ -168,12 +167,12 @@
     {
       "type": "patchouli:text",
       "anchor": "tetrahedrite",
-      "text": "Тетраедрит містить метал $(thing)мідь$(). Його можна знайти на будь-якій глибині, але глибші родовища є багатішими. Міститься у $(l:the_world/geology#metamorphic)метаморфічних$() породах.",
+      "text": "Тетраедрит - це руда, що відноситься до $(thing)міді$(). Його можна знайти на будь-якій глибині, але глибші родовища є багатшими. Також його можна знайти в $(l:the_world/geology#metamorphic)метаморфічних$() породах.",
       "title": "Тетраедрит"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Тетраедрит у аспідному сланці",
+      "text": "Тетраедрит в аспідному сланці",
       "multiblocks": [
         {
           "pattern": [
@@ -219,7 +218,7 @@
     {
       "type": "patchouli:text",
       "anchor": "malachite",
-      "text": "Malachite is an ore of $(thing)Copper$() metal. It can be found primarily in $(thing)Marble$() or $(thing)Limestone$(), $(thing)Chalk$(), and $(thing)Dolomite$(). It can be found at most elevations, however deeper veins are often larger and richer.",
+      "text": "Малахіт - це руда, що відноситься до $(thing)міді$(). Його можна знайти в основному в $(thing)мармурі$() або $(thing)вапняку$(), $(thing)крейді$() та $(thing)доломіті$(). Його можна знайти на більшості висот, однак глибші родовища зазвичай більші та багатші.",
       "title": "Малахіт"
     },
     {
@@ -270,7 +269,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cassiterite",
-      "text": "Cassiterite is an ore of $(thing)Tin$() metal. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks at high elevation, above y=80 in uplift regions or in dikes.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:mechanics/panning)panned$().",
+      "text": "Каситерит - це руда, що відноситься до $(thing)олова$(). Його можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах на великій висоті, вище y=80 у регіонах підняття або в дайках.$(br2)Родовища з ним також можна знайти в $(thing)річках$(), і потім $(l:mechanics/panning)просіяти$().",
       "title": "Каситерит"
     },
     {
@@ -321,7 +320,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bismuthinite",
-      "text": "Bismuthinite is an ore of $(thing)Bismuth$() metal. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface, or larger and richer veins in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.",
+      "text": "Бісмутин - це руда, що відноситься до $(thing)бісмуту$(). Його можна знайти в $(l:the_world/geology#sedimentary)осадових$() породах біля поверхні, а більші та багатші родовища можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах глибоко під землею.",
       "title": "Бісмутин"
     },
     {
@@ -372,7 +371,7 @@
     {
       "type": "patchouli:text",
       "anchor": "garnierite",
-      "text": "Garnierite is an ore of $(thing)Nickel$() metal. It can be found at elevations below y=0. It can be found primarily in $(thing)Gabbro$() deep underground. Smaller, rarer veins can also be found in any $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock.",
+      "text": "Гарнієрит - це руда, що відноситься до $(thing)нікелю$(). Його можна знайти на висотах нижче y=0. Його можна знайти в основному в $(thing)габро$() глибоко під землею. Менші, рідкісніші родовища також можна знайти в будь-якій $(l:the_world/geology#igneous_intrusive)магматичній інтрузивній$() породі.",
       "title": "Гарнієрит"
     },
     {
@@ -423,12 +422,12 @@
     {
       "type": "patchouli:text",
       "anchor": "hematite",
-      "text": "Hematite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface.",
+      "text": "Гематит - це руда, що відноситься до $(thing)чавуну (заліза)$(). Його можна знайти у великих родовищах у будь-якій $(l:the_world/geology#igneous_extrusive)магматичній ефузивній$() породі біля поверхні.",
       "title": "Гематит"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Гематит у андезиті",
+      "text": "Гематит в андезиті",
       "multiblocks": [
         {
           "pattern": [
@@ -474,7 +473,7 @@
     {
       "type": "patchouli:text",
       "anchor": "magnetite",
-      "text": "Magnetite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.",
+      "text": "Магнетит - це руда, що відноситься до $(thing)чавуну (заліза)$(). Його можна знайти у великих родовищах у будь-якій $(l:the_world/geology#sedimentary)осадовій$() породі біля поверхні.",
       "title": "Магнетит"
     },
     {
@@ -525,7 +524,7 @@
     {
       "type": "patchouli:text",
       "anchor": "limonite",
-      "text": "Limonite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.",
+      "text": "Лімоніт - це руда, що відноситься до $(thing)чавуну (заліза)$(). Його можна знайти у великих родовищах у будь-якій $(l:the_world/geology#sedimentary)осадовій$() породі біля поверхні.",
       "title": "Лімоніт"
     },
     {
@@ -576,7 +575,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sphalerite",
-      "text": "Sphalerite is an ore of $(thing)Zinc$() metal. Small, poor veins can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface, and large richer veins can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.",
+      "text": "Сфалерит - це руда, що відноситься до $(thing)цинку$(). Маленькі бідні родовища можна знайти в $(l:the_world/geology#igneous_extrusive)магматичних ефузивних$() породах біля поверхні, а великі багатші родовища можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах глибоко під землею.",
       "title": "Сфалерит"
     },
     {
@@ -630,7 +629,7 @@
       "item": "tfc:ore/lignite",
       "title": "Буре вугілля",
       "link_recipes": false,
-      "text": "Lignite is a type of low-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "Буре вугілля - це різновид низькосортної $(thing)вугільної$() руди. Його можна знайти в дуже великих пласких відкладеннях біля поверхні в $(l:the_world/geology#sedimentary)осадових$() породах."
     },
     {
       "type": "patchouli:multiblock",
@@ -648,7 +647,7 @@
         }
       },
       "name": "",
-      "text": "Буре вугілля у доломіті",
+      "text": "Буре вугілля в доломіті",
       "enable_visualize": false
     },
     {
@@ -657,7 +656,7 @@
       "item": "tfc:ore/bituminous_coal",
       "title": "Кам'яне вугілля",
       "link_recipes": false,
-      "text": "Bituminous Coal is a type of mid-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "Кам'яне вугілля - це різновид середньосортної $(thing)вугільної$() руди. Його можна знайти в дуже великих пласких відкладеннях біля поверхні в $(l:the_world/geology#sedimentary)осадових$() породах."
     },
     {
       "type": "patchouli:multiblock",
@@ -675,20 +674,20 @@
         }
       },
       "name": "",
-      "text": "Кам'яне вугілля у кременистому сланці",
+      "text": "Кам'яне вугілля в кременистому сланці",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "kaolinite",
       "item": "tfc:kaolin_clay",
-      "title": "Каолініт",
+      "title": "Каолін",
       "link_recipes": false,
-      "text": "Kaolinite is a soft $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found spawning at high altitudes in Plateaus, Old Mountains, and Highlands, at a $(l:the_world/climate#temperature)temperature$() of at least 18°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm. The $(thing)Blood Lily$() flower grows on Kaolin clay."
+      "text": "Каолін - це м'який $(thing)мінерал$(), який використовується в створенні $(l:mechanics/fire_clay)вогнетривкої глини$(). Він може генеруватись у таких біомах як $(thing)плато$(), $(thing)старі гори$() та $(thing)височини$() при $(l:the_world/climate#temperature)середній температурі$() не менше 18°C та при $(l:the_world/climate#rainfall)опадах$() принаймні в 300мм. Квітка $(thing)кривавої лілії$() росте на каоліновій глині (або біля неї)."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Variants of kaolin clay.",
+      "text": "Варіації каолінової глини",
       "multiblocks": [
         {
           "pattern": [
@@ -766,7 +765,7 @@
       "item": "tfc:ore/graphite",
       "title": "Графіт",
       "link_recipes": false,
-      "text": "Graphite is a $(thing)Mineral$() which is used in the construction of $(l:mechanics/fire_clay)Fire Clay$(). It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$() rocks, in elevations below y=60 and above y=-30."
+      "text": "Графіт - це $(thing)мінерал$(), який використовується в створенні $(l:mechanics/fire_clay)вогнетривкої глини$(). Його можна знайти в $(thing)гнейсі$(), $(thing)мармурі$(), $(thing)кварциті$() та $(thing)аспідному сланці$() на висоті нижче y=60 та вище y=-30."
     },
     {
       "type": "patchouli:multiblock",
@@ -793,7 +792,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "Кіновар",
       "link_recipes": false,
-      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Gneiss$(), $(thing)Phyllite$(), and $(thing)Schist$()."
+      "text": "Кіновар - це $(thing)мінерал$(), який можна перемолоти в $(l:mechanics/quern)жорні$(), щоб отримати $(thing)редстоуновий пил$(). Його родовища можна знайти глибоко під землею, у $(thing)кварциті$(), $(thing)гнейсі$(), $(thing)філіті$() та $(thing)аспідному сланці$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -820,7 +819,7 @@
       "item": "tfc:ore/cryolite",
       "title": "Кріоліт",
       "link_recipes": false,
-      "text": "Cryolite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Granite$(), and $(thing)Diorite$()."
+      "text": "Кріоліт - це $(thing)мінерал$(), який можна перемолоти в $(l:mechanics/quern)жорні$(), щоб отримати $(thing)редстоуновий пил$(). Його родовища можна знайти глибоко під землею, у $(thing)граніті$() та $(thing)діориті$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -847,7 +846,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "Селітра",
       "link_recipes": false,
-      "text": "Saltpeter is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "Селітра - це $(thing)мінерал$(), який можна перемолоти в $(l:mechanics/quern)жорні$(), а потім використати для виготовлення $(thing)пороху$(). Її можна знайти в дуже великих пласких відкладеннях біля поверхні в $(l:the_world/geology#sedimentary)осадових$() породах."
     },
     {
       "type": "patchouli:multiblock",
@@ -865,7 +864,7 @@
         }
       },
       "name": "",
-      "text": "Селітра у сланці",
+      "text": "Селітра в сланці",
       "enable_visualize": false
     },
     {
@@ -874,7 +873,7 @@
       "item": "tfc:ore/sulfur",
       "title": "Сірка",
       "link_recipes": false,
-      "text": "Sulfur is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It is found near lava level deep underground, in sparse but large and plentiful veins, in any $(l:the_world/geology#metamorphic)Metamorphic$() or $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock."
+      "text": "Сірка - це $(thing)мінерал$(), який можна перемолоти в $(l:mechanics/quern)жорні$(), а потім використати для виготовлення $(thing)пороху$(). Її знаходять поблизу рівня лави глибоко під землею, у рідкісних, але великих і багатіших жилах, у будь-якій $(l:the_world/geology#metamorphic)метаморфічній$() або $(l:the_world/geology#igneous_intrusive)магматичній інтрузивній$() породі."
     },
     {
       "type": "patchouli:multiblock",
@@ -892,7 +891,7 @@
         }
       },
       "name": "",
-      "text": "Sulfur in Gabbro.",
+      "text": "Сірка в габро",
       "enable_visualize": false
     },
     {
@@ -901,7 +900,7 @@
       "item": "tfc:ore/sylvite",
       "title": "Сильвін",
       "link_recipes": false,
-      "text": "Sylvite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$(), and then used as a $(l:mechanics/fertilizers)Fertilizer$(). It can be found in very large flat deposits near the surface in $(thing)Shale$(), $(thing)Claystone$() and $(thing)Chert$()."
+      "text": "Сильвін - це $(thing)мінерал$(), який можна перемолоти в $(l:mechanics/quern)жорні$(), а потім використовувати як $(l:mechanics/fertilizers)добриво$(). Його можна знайти в дуже великих пласких відкладеннях біля поверхні в $(thing)глинистому сланці$(), $(thing)аргіліті$() та $(thing)кременистому сланці$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -928,7 +927,7 @@
       "item": "tfc:ore/borax",
       "title": "Бура",
       "link_recipes": false,
-      "text": "Borax is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to produce $(l:mechanics/flux)Flux$(). It can be found in very large flat deposits near the surface in $(thing)Claystone$(), $(thing)Limestone$(), and $(thing)Shale$()."
+      "text": "Бура - це $(thing)мінерал$(), який можна перемолоти в $(l:mechanics/quern)жорні$() для отримання $(l:mechanics/flux)флюсу$(). Її можна знайти в дуже великих пласких відкладеннях біля поверхні в $(thing)архіліті$(), $(thing)вапняку$() та $(thing)глинистому сланці$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -946,7 +945,7 @@
         }
       },
       "name": "",
-      "text": "Бура у глинистому сланці",
+      "text": "Бура в глинистому сланці",
       "enable_visualize": false
     },
     {
@@ -955,7 +954,7 @@
       "item": "tfc:ore/gypsum",
       "title": "Гіпс",
       "link_recipes": false,
-      "text": "Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#alabaster)Alabaster$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "Гіпс - це декоративний $(thing)мінерал$(), який можна використовувати для виготовлення $(l:mechanics/advanced_building_materials#alabaster)алебастру$(). Його можна знайти в дуже великих пласких відкладеннях біля поверхні в $(l:the_world/geology#sedimentary)осадових$() породах."
     },
     {
       "type": "patchouli:multiblock",
@@ -973,7 +972,7 @@
         }
       },
       "name": "",
-      "text": "Gypsum in Chalk.",
+      "text": "Гіпс у крейді",
       "enable_visualize": false
     },
     {
@@ -982,7 +981,7 @@
       "item": "tfc:ore/halite",
       "title": "Галіт",
       "link_recipes": false,
-      "text": "Halite is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:mechanics/decay#salting)Preservative$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "Галіт - це $(thing)мінерал$(), який можна перемолоти в $(l:mechanics/quern)жорні$() для отримання $(thing)солі$(), яка є важливою складовою $(l:mechanics/decay#salting)консервації$(). Його можна знайти в дуже великих пласких відкладеннях біля поверхні в $(l:the_world/geology#sedimentary)осадових$() породах."
     },
     {
       "type": "patchouli:multiblock",
@@ -1009,7 +1008,7 @@
       "item": "tfc:ore/emerald",
       "title": "Смарагд",
       "link_recipes": false,
-      "text": "Смарагд є декоративним $(l:mechanics/gems)дорогоцінним каменем$(). Виглядає досить гарно. Знайти б когось у цьому неймовірно самотньому світі, то міг би обмінятися з ним...$(br2)Він з’являється у тонких вертикальних рудних утвореннях, висота яких може досягати 60 блоків. Його можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах."
+      "text": "Смарагд є декоративним $(l:mechanics/gems)коштовним каменем$(). Виглядає досить гарно. Знайти б когось у цьому неймовірно самотньому світі, з ким би обмінятися ним...$(br)Він з'являється в тонких вертикальних рудних утвореннях, висота яких може досягати 60 блоків. Його можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах."
     },
     {
       "type": "patchouli:multiblock",
@@ -1036,7 +1035,7 @@
       "item": "tfc:ore/diamond",
       "title": "Кімберліт",
       "link_recipes": false,
-      "text": "Кімберліт є декоративним та коштовним $(l:mechanics/gems)дорогоцінним каменем$(). Виявляється в тонких вертикальних рудних утвореннях, що мають назву $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)кімберлітові трубки$(). Вони можуть досягати 60 блоків у висоту. Міститься виключно у $(thing)габро$()."
+      "text": "Кімберліт є декоративним $(l:mechanics/gems)коштовним каменем$(). Виявляється в тонких вертикальних рудних утвореннях, що мають назву $(l:https://uk.wikipedia.org/wiki/Кімберлітова_трубка)Кімберлітові трубки$(). Вони можуть досягати 60 блоків у висоту. Міститься виключно в $(thing)габро$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -1063,7 +1062,7 @@
       "item": "tfc:ore/lapis_lazuli",
       "title": "Лазурит",
       "link_recipes": false,
-      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/dye)Blue Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
+      "text": "Лазурит - це декоративний $(thing)мінерал$(), який можна використовувати для виготовлення $(l:mechanics/dye)синього барвника$(). Його можна знайти у великих, але рідкісних жилах у $(thing)вапняку$() та $(thing)мармурі$() на висоті між y=-20 та y=80."
     },
     {
       "type": "patchouli:multiblock",
@@ -1081,16 +1080,16 @@
         }
       },
       "name": "",
-      "text": "Lapis Lazuli in Marble.",
+      "text": "Лазурит у мармурі",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "amethyst",
       "item": "tfc:ore/amethyst",
-      "title": "Amethyst",
+      "title": "Аметист",
       "link_recipes": false,
-      "text": "Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40."
+      "text": "Аметист - це декоративний $(thing)мінерал$(), який можна використовувати для виготовлення $(l:mechanics/glassworking)скла$(). Його можна знайти в $(l:the_world/geology#sedimentary)осадових$() та $(l:the_world/geology#metamorphic)метаморфічних$() породах під річками вище y=40."
     },
     {
       "type": "patchouli:multiblock",
@@ -1108,16 +1107,16 @@
         }
       },
       "name": "",
-      "text": "Amethyst in Marble.",
+      "text": "Аметист у мармурі",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "opal",
       "item": "tfc:ore/opal",
-      "title": "Opal",
+      "title": "Опал",
       "link_recipes": false,
-      "text": "Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
+      "text": "Опал - це декоративний $(thing)мінерал$(). Його можна знайти в $(l:the_world/geology#sedimentary)осадових$() та $(l:the_world/geology#igneous_extrusive)магматичних ефузивних$() породах під річками вище y=40."
     },
     {
       "type": "patchouli:multiblock",
@@ -1135,7 +1134,7 @@
         }
       },
       "name": "",
-      "text": "Opal in Basalt.",
+      "text": "Опал у базальті",
       "enable_visualize": false
     }
   ],

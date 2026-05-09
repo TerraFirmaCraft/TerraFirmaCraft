@@ -1,17 +1,16 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Armor Trims",
+  "name": "Оздоблення броні",
   "category": "tfc:mechanics",
   "icon": "minecraft:rib_armor_trim_smithing_template",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Armor trims are produced with a $(thing)Trim Material$() and a $(l:mechanics/sewing_table)Smithing Template$(). In TFC, all gems, along with Sterling Silver, Gold, Rose Gold, and Bismuth, can be used as trim materials. Armor trims are purely cosmetic."
+      "text": "Оздоблення броні виготовляється з $(thing)оздоблювального матеріалу$() тa $(l:mechanics/sewing_table)ковальського шаблону$(). У TFC всі коштовні камені разом із стерлінговим сріблом, золотом, рожевим золотом і бісмутом можна використовувати як оздоблювальний матеріал. Оздоблення броні є чисто косметичним."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/smithing_table",
-      "text": "The smithing table can be used to apply armor trims to TFC armor."
+      "text": "Ковальський стіл можна використовувати для оздоблення TFC-броні."
     }
   ],
   "read_by_default": true

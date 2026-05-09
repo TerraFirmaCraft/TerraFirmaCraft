@@ -1,25 +1,24 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Геологія",
   "category": "tfc:the_world",
   "icon": "tfc:rock/raw/shale",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and separated by oceans. In these, you may find mountain ranges, rivers, and many other environments."
+      "text": "Світ TerraFirmaCraft поділений на великі континенти – багатокілометрові масиви суші, розділені океанами. У них ви можете знайти гірські хребти, річки та багато інших середовищ."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/biomes/regions.png"
       ],
-      "text": "A typical TFC world viewed at a large scale.",
+      "text": "Типовий світ TFC у великому масштабі",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "rocks",
-      "text": "Земна кора поділена на різні типи $(thing)гірських порід$(). Пласт гірської породи може мати понад кілометр у поперечнику, і зазвичай, під твоїми ногами завжди буде два-три різних шари породи. Оскільки різні руди містяться в різних типах гірських порід, визначення місцезнаходження певних типів порід може бути дуже важливим для пошуку таких ресурсів, як $(l:the_world/ores_and_minerals)руди$(), що часто з’являються лише в певних типах гірських порід.",
+      "text": "Земна кора поділена на різні типи $(thing)гірських порід$(). Пласт гірської породи може мати понад кілометр у поперечнику, і зазвичай, під вашими ногами завжди буде два-три різних шари породи. Оскільки різні руди містяться в різних типах гірських порід, визначення місцезнаходження певних типів порід може бути дуже важливим для пошуку таких ресурсів, як $(l:the_world/ores_and_minerals)руди$(), що часто з'являються лише в певних типах гірських порід.",
       "title": "Гірські породи"
     },
     {
@@ -27,59 +26,59 @@
       "images": [
         "tfc:textures/gui/book/biomes/rock_layers.png"
       ],
-      "text": "The cross-section of a TFC world.",
+      "text": "Вигляд світу TFC збоку (з перерізом)",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Ocean floors are composed of $(l:the_world/geology#igneous_extrusive)igneous extrusive$() rock - rocks that are formed by magma which cools quickly. Underneath igneous extrusive rock will likely be a $(l:the_world/geology)igneous intrusive$() rock of the same $(item)grade$().$(br2)For example, under $(thing)Basalt$() (a mafic, igneous extrusive rock), will likely be $(thing)Gabbro$() (a mafic, igneous intrusive rock).",
-      "title": "Ocean Floors"
+      "text": "Дно океану складається з $(l:the_world/geology#igneous_extrusive)магматичних ефузивних$() порід – порід, утворених магмою, яка швидко охолоджується. Під магматичною ефузивною породою, ймовірно, буде $(l:the_world/geology#igneous_intrusive)магматична інтрузивна$() порода того ж $(item)класу$().$(br2)Наприклад, під $(thing)базальтом$() (мафічною, магматичною ефузивною породою), ймовірно, буде $(thing)габро$() (мафічною, магматичною інтрузивною породою).",
+      "title": "Дно океану"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(l:https://en.wikipedia.org/wiki/Felsic)Felsic$() rocks are $(thing)Granite$() and $(thing)Rhyolite$().$(li)$(l:https://en.wikipedia.org/wiki/Intermediate_composition)Intermediate$() rocks are $(thing)Andesite$(), $(thing)Dacite$(), and $(thing)Diorite$().$(li)$(l:https://en.wikipedia.org/wiki/Mafic)Mafic$() rocks are $(thing)Basalt$() and $(thing)Gabbro$().",
-      "title": "Igneous Rock Grades"
+      "text": "$(li)$(l:https://uk.wikipedia.org/wiki/Фельзит)Фельзитові$() породи - це $(thing)граніт$() та $(thing)ріоліт$().$(li)$(l:https://uk.wikipedia.org/wiki/Магматичні_гірські_породи#:~:text=проміжні%20типи)Проміжні$() породи - це $(thing)андезит$(), $(thing)дацит$() та $(thing)діорит$().$(li)$(l:https://uk.wikipedia.org/wiki/Мафіти)Мафічні$() породи - це $(thing)базальт$() і $(thing)габро$().",
+      "title": "Класи магм-них порід"
     },
     {
       "type": "patchouli:text",
-      "text": "The top layer of rock on a continent will either be igneous extrusive, or $(l:the_world/geology#sedimentary)sedimentary$(). Underneath sedimentary rocks will likely be $(l:the_world/geology#metamorphic)metamorphosed$() forms of the rock above.$(br2)For example, $(thing)Marble$() (a metamorphic rock) will likely be found under $(thing)Limestone$() or $(thing)Chalk$(). High grade metamorphic rocks are found deep under other metamorphic or igneous rocks."
+      "text": "Верхній шар гірської породи на континенті буде або магматичним ефузивним, або $(l:the_world/geology#sedimentary)осадовим$(). Під осадовими породами, ймовірно, будуть $(l:the_world/geology#metamorphic)метаморфізовані$() форми гірських порід вище.$(br2)До прикладу, $(thing)мармур$() (метаморфічна порода), ймовірно, можна знайти під $(thing)вапняком$() або $(thing)крейдою$(). Високоякісні метаморфічні породи знаходяться глибоко під іншими метаморфічними або магматичними породами."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(thing)Slate$() forms under $(thing)Shale$(), $(thing)Claystone$(), and $(thing)Conglomerate$().$(li)$(thing)Marble$() forms under $(thing)Limestone$(), $(thing)Dolomite$(), and $(thing)Chalk$().$(li)$(thing)Quartzite$() forms under $(thing)Chert$().$(li)$(thing)Phyllite$() forms under $(thing)Slate$()$(li)$(thing)Schist$() and $(thing)Gneiss$() form under $(thing)Phyllite$(), or other igneous intrusive rocks.",
-      "title": "Metamorphic Rocks"
+      "text": "$(li)$(thing)Шиферний сланець$() утворюється під $(thing)глинистим сланцем$(), $(thing)аргілітом$() і $(thing)конгломератом$().$(li)$(thing)Мармур$() під $(thing)вапняком$(), $(thing)доломітом$() і $(thing)крейдою$().$(li)$(thing)Кварцит$() під $(thing)кременистим сланцем$().$(li)$(thing)Філіт$() під $(thing)шиферним сланцем$().$(li)$(thing)Аспідний сланець$() та $(thing)гнейс$() під $(thing)філітом$() або іншими магматичними інтрузивними породами.",
+      "title": "Метамор. гірські породи"
     },
     {
       "type": "patchouli:text",
-      "text": "Finally, in mountainous regions you might also see $(thing)uplift$(), where a metamorphic or igneous intrusive rock is found on the surface. Uplift rocks can be found above other continental sedimentary or higher-grade metamorphic rocks.$(br2)In addition, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)Dikes$() - small vertical slices of igneous intrusive rock - may appear scattered around the world,",
-      "title": "Uplift Regions"
+      "text": "Нарешті, у гірських регіонах ви також можете побачити $(thing)підняття$(), де на поверхні знаходиться метаморфічна або магматична інтрузивна порода. Підняті породи можна знайти над іншими континентальними осадовими або високоякісними метаморфічними породами.$(br2)Крім того, $(l:https://uk.wikipedia.org/wiki/Дайка)дайки$() - невеликі вертикальні шари магматичної інтрузивної гірської породи – можуть виявитися розкиданими",
+      "title": "Регіони підняття"
     },
     {
       "type": "patchouli:text",
-      "text": "protruding through the upper layers of rocks.$(br2)With all that in mind, the next few pages list the rocks of all four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine where the rock can spawn (see the previous pages), and also what ores may spawn in this rock."
+      "text": "по всьому світу, виступаючи крізь верхні шари гірських порід.$(br2)З огляду на все це, на наступних кількох сторінках наведено список порід усіх чотирьох категорій: $(thing)осадові$(), $(thing)метаморфічні$(), $(thing)магматичні ефузивні$() та $(thing)магматичні інтрузивні$(). Ці категорії визначають, де порода може породжуватися (див. попередні сторінки), а також які руди можуть породжуватися в цій породі."
     },
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They are typically found on the top layers of rock in continental areas. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
+      "text": "$(l:https://uk.wikipedia.org/wiki/Осадові_гірські_породи)Осадові$() породи утворюються шляхом накопичення або відкладення мінеральних або органічних частинок. Зазвичай вони знаходяться на верхніх шарах гірських порід у континентальних районах. Це:$(br)$(li)Глинистий сланець$(li)Аргіліт$(li)Вапняк$(li)Конгломерат$(li)Доломіт$(li)Кременистий сланець$(li)Крейда",
       "title": "Осадові"
     },
     {
       "type": "patchouli:text",
       "anchor": "metamorphic",
-      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found underneath corresponding sedimentary or igneous rock, or in uplift areas. They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
+      "text": "$(l:https://uk.wikipedia.org/wiki/Метаморфічні_гірські_породи)Метаморфічні$() породи утворюються в результаті процесу, який називається метаморфізмом. Їх можна знайти під відповідними осадовими або магматичними породами або в районах підняття. Це:$(br)$(li)Кварцит$(li)Шиферний сланець$(li)Філіт$(li)Аспідний сланець$(li)Гнейс$(li)Мармур",
       "title": "Метаморфічні"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth's surface. They can be found on the top layer of rock in continental areas, or on the floor of oceans. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
+      "text": "$(l:https://uk.wikipedia.org/wiki/Ефузивні_гірські_породи)Магматичні ефузивні$() породи утворюються внаслідок застигання магми на поверхні Землі. Їх можна знайти на верхньому шарі породи в континентальних районах або на дні океанів. Це:$(br)$(li)Ріоліт$(li)Базальт$(li)Андезит$(li)Дацит",
       "title": "Магматичні ефузивні"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found deep underground, or rarely in dikes or uplift areas. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
+      "text": "$(l:https://uk.wikipedia.org/wiki/Інтрузивні_гірські_породи)Магматичні інтрузивні$() породи утворюються з магми, що застигає під земною корою. Їх можна знайти глибоко під землею або рідко в дайках або підйомах. Це:$(br)$(li)Граніт$(li)Діорит$(li)Габро",
       "title": "Магматичні інтрузивні"
     }
   ],

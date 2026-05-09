@@ -1,51 +1,50 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Sewing Table",
+  "name": "Швацький стіл",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/sewing_table/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sewing Table$() is used to produce banner patterns and smithing templates. It requires $(l:mechanics/weaving#wool_cloth)Wool Cloth$(), $(l:mechanics/weaving#burlap_cloth)Burlap Cloth$(), String or Yarn, as well as a Needle."
+      "text": "$(thing)Швацький стіл$() використовується для створення візерунків для стягів та ковальських шаблонів. Для його роботи потрібні: $(l:mechanics/weaving#wool_cloth)вовняна тканина$(), $(l:mechanics/weaving#burlap_cloth)мішковина$(), нитки або пряжа, а також голка."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bone_needle",
-      "text": "A needle for sewing can be made from a bone."
+      "text": "Голку для шиття можна зробити з кістки."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_sewing_table",
-      "text": "The sewing table can be made from wood, leather, and a pair of shears."
+      "text": "Швацький стіл можна змайструвати з дерева, шкіри та ножиць."
     },
     {
       "type": "patchouli:text",
-      "text": "The sewing table's inventory is similar to that of a crafting table. If you ever make a mistake, you can simply exit the inventory, and your items will be returned to you. There is a recipe book available in the GUI. Selecting the book opens a menu where you can select a recipe. This places small indicators of what steps to perform on the working surface."
+      "text": "Інвентар швацького столу схожий на інвентар верстака. Якщо ви зробили помилку, просто вийдіть з інвентарю, і ваші предмети повернуться до вас. У графічному інтерфейсі (GUI) доступна книга рецептів. Вибравши книгу, ви відкриєте меню, де можна обрати рецепт. Це додасть невеликі індикатори, які показують, які дії виконувати на робочій поверхні."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/sewing_table.png"
       ],
-      "text": "The sewing screen.",
+      "text": "Екран швацького стола",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "The slots on the left are for the string and the needle. The two bottom slots can hold any combination of burlap and wool cloth. The slot on the right will show the result when it is ready to be taken. Taking the result from the result slot completes the craft, and uses the items."
+      "text": "Слоти зліва призначені для ниток і голки. У два нижні слоти можна покласти будь-яку комбінацію мішковини та вовняної тканини. У правому слоті відображається результат, коли він готовий до взяття. Підбирання результату з правого слоту завершує майстрування і використовує предмети."
     },
     {
       "type": "patchouli:text",
-      "text": "Each cloth item allows placing 8 squares of that material on the sewing surface. Similarly, each yarn item allows placing 16 stitches. When you have selected a recipe, just use the buttons on the top right of the screen to place squares and stitch them together as shown by the guide. Want to remove stitches? Use the red 'X' button to get rid of squares."
+      "text": "Кожен предмет із тканини дозволяє розмістити 8 квадратів цього матеріалу на швацькій поверхні. Подібно до цього, кожен предмет із пряжі дозволяє зробити 16 стібків. Коли ви обрали рецепт, просто використовуйте кнопки у верхньому правому куті екрану, щоб розмістити квадрати та зшити їх разом відповідно до інструкцій. Хочете прибрати стібки? Використовуйте червону кнопку 'X', щоб видалити квадрати."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/vanilla/loom",
-      "text": "The banner loom, for making things with banner patterns, can be crafted to do work with banner patterns."
+      "text": "Стяговий верстат для створення візерунків на стягах можна змайструвати, щоб працювати з візерунками на стягах."
     },
     {
       "type": "patchouli:text",
-      "text": "For information on the use of smithing templates, see the $(l:mechanics/armor_trims)Armor Trims$() chapter."
+      "text": "Детальну інформацію про використання ковальських шаблонів дивіться в розділі $(l:mechanics/armor_trims)оздоблення броні$()."
     }
   ],
   "read_by_default": true

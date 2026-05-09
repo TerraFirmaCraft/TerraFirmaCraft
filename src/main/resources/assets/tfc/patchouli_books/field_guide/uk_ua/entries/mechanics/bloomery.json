@@ -1,28 +1,27 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Сиродутне горно",
   "category": "tfc:mechanics",
   "icon": "tfc:bloomery",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Сиродутне горно$() - це пристрій, що дозволяє плавити $(thing)залізну руду$() у $(thing)крицю$(), при обробці якої можна отримати $(thing)ковке залізо$(). Залізна руда - це: $(l:the_world/ores_and_minerals#hematite)гематит$(), $(l:the_world/ores_and_minerals#limonite)лімоніт$(), та $(l:the_world/ores_and_minerals#magnetite)магнетіт$(). Ці руди плавляться у $(thing)крицю$(), а не в $(thing)ковке залізо$(). Усі предмети, що містять залізо, плавляться в чавун. Щоб перетворити їх на придатне ковке залізо, потрібне сиродутне горно. Будь-який залізний предмет можна плавити у горні, включно залізні інструменти та чавунні злитки!"
+      "text": "$(thing)Сиродутне горно$() - прилад, що дозволяє плавити $(thing)залізну руду$() в $(thing)крицю$(), при куванні якої можна отримати $(thing)коване залізо$(). Залізна руда - це: $(l:the_world/ores_and_minerals#hematite)гематит$(), $(l:the_world/ores_and_minerals#limonite)лімоніт$() та $(l:the_world/ores_and_minerals#magnetite)магнетит$(). Ці руди плавляться в $(thing)чавун$(), а не в $(thing)коване залізо$(). Усі предмети, що містять залізо, плавляться в чавун. Щоб перетворити їх на придатне коване залізо, потрібне сирод. горно. Будь-який залізний предмет можна плавити в горні, як-от залізні інструменти та чавунні злитки!"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bloomery",
-      "text": "Сиродутне горно виготовляється з восьми $(thing)подвійних бронзових листів$()."
+      "text": "Сиродутне горно виготовляється з восьми $(thing)бронзових подвійних листів$()."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:bloomery",
       "name": "Сиродутне горно",
-      "text": "Мінімальна конструкція сиродутного горна. Дверцята відчиняти та зачиняти $(item)$(k:key.use)$()",
+      "text": "Мінімальна конструкція сиродутного горна. Дверцята відчиняти та зачиняти на $(item)$(k:key.use)$()",
       "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery can contain up to a maximum of 48 $(thing)Inputs$(), with 16 items per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
+      "text": "Сиродутне горно може містити максимум 48 $(thing)предметів$(), з яких 16 припадають на шар димоходу. Щоб додати шари до димоходу, складіть ще два шари кам'яних блоків.$(br2)Щоб додати предмети до сиродутного горна, підніміться наверх та накидайте предмети всередину. Має утворитися вежа із сірої руди."
     },
     {
       "type": "patchouli:image",
@@ -34,7 +33,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery consumes $(thing)2 Charcoal$(), and $(thing)100 mB of Cast Iron$() to produce one $(thing)Bloom$(). After filling the bloomery with a combination of $(thing)Charcoal$() and $(thing)Ore$(), light the bloomery block, and wait 15 hours for the bloomery to smelt. When the bloomery shuts off, it leaves behind a $(thing)Bloom$() block. This contains $(thing)Raw Iron Blooms$() which can be obtained by mining the $(thing)Bloom$() repeatedly with a pickaxe."
+      "text": "Сиродутне горно споживає $(thing)2 деревного вугілля$() і $(thing)100 мВ чавуну$(), щоб створити одну $(thing)крицю$(). Після заповнення сиродутного горна комбінацією $(thing)деревного вугілля$() та $(thing)руди$(), запаліть блок криці та зачекайте 15 годин, допоки сиродутне горно потухне. Коли горно вимкнеться, воно залишає за собою блок $(thing)криці$(). Він містить $(thing)сиру залізну крицю$(), яку можна отримати, видобуваючи $(thing)крицю$() кілька разів кайлом."
     },
     {
       "type": "patchouli:multiblock",
@@ -52,22 +51,22 @@
         }
       },
       "name": "Блок криці",
-      "text": "A large $(thing)Bloom$().",
+      "text": "Велика $(thing)криця$()",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/refined_iron_bloom",
-      "text": "$(thing)Сира залізна криця$() повинна бути оброблена на $(l:mechanics/anvils)ковадлі$() для отримання $(thing)очищеного заліза$()."
+      "text": "$(thing)Сиру залізну крицю$() потрібно кувати на $(l:mechanics/anvils)ковадлі$() для отримання $(thing)очищеної залізної криці$()."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/wrought_iron_from_bloom",
-      "text": "$(thing)Очищене залізо$() знов на $(l:mechanics/anvils)ковадлі$() можна перетворити на $(thing)злиток ковкого заліза$()."
+      "text": "$(thing)Очищену залізну крицю$() знов на $(l:mechanics/anvils)ковадлі$() потрібно викувати в $(thing)злитки кованого заліза$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)Якщо сиродутне горно виявить, що містить більше предметів, ніж може впоратися, враховуючи розмір димаря, воно спробує виплюнути їх спереду.$()$(li)Щоб дістати свої предмети з холодного горна, не розбивай вежу з розплавлених блоків. Розбий дверцята.$()$(li)Руда плавиться лише в крицю, а не в ковке залізо. Над крицею ще треба попрацювати!$()",
+      "text": "$(li)Якщо сиродутне горно виявить, що містить більше предметів, ніж може впоратися, враховуючи розмір димаря, воно спробує виплюнути їх спереду.$()$(li)Щоб дістати свої предмети з холодного горна, не розбивайте вежу горна. Розбийте дверцята.$()$(li)Руда плавиться лише в крицю, а не в коване залізо. Над крицею ще треба попрацювати!$()",
       "title": "Нотатки коваля"
     }
   ],

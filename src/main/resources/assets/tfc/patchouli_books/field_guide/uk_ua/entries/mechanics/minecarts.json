@@ -1,12 +1,11 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Вагонетка",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/chest_minecart/kapok",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Вагонетка$() є засобом транспортування гравців, сутностей та великих блоків. Блоки та пристрої, що $(l:getting_started/size_and_weight#overburdening)перевантажують$() гравця, можна перевозити. $(l:mechanics/decay#large_vessels)Корчага$(), $(l:mechanics/barrels)діжка$(), $(l:mechanics/powderkegs)порохова бочка$(), $(l:mechanics/anvils)ковадло$(), та $(l:mechanics/crucible)тигель$() можна помістити до вагонетки, натиснувши $(item)$(k:key.use)$() із $(item)$(k:key.sneak)$(). Використовуй $(item)$(k:key.sneak)$() порожньою рукою аби забрати предмет. Для виготовлення вагонетки можна використовувати $(thing)залізо$() або $(thing)сталь$(), але рецепт зі сталі є ефективнішим."
+      "text": "$(thing)Вагонетка$() є засобом транспор- тування гравців, сутностей та великих блоків. Блоки та прилади, що $(l:getting_started/size_and_weight#overburdening)перевантажують$() гравця, можна перевозити. $(l:mechanics/decay#large_vessels)Корчагу$(), $(l:mechanics/barrels)діжку$(), $(l:mechanics/powderkegs)порохівницю$(), $(l:mechanics/anvils)ковадло$() та $(l:mechanics/crucible)тигель$() можна поміс- тити до вагонетки, натиснувши $(item)$(k:key.use)$() із $(item)$(k:key.sneak)$(). Натисніть $(item)$(k:key.sneak)$() порожньою рукою аби забрати предмет. Для виготовлення вагонетки можна використовувати $(thing)залізо$() або $(thing)сталь$(), але рецепт зі сталі є ефективнішим."
     },
     {
       "type": "patchouli:crafting",
@@ -34,7 +33,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/kapok_chest_minecart",
+      "recipe": "tfc:crafting/wood/oak_chest_minecart",
       "text": "$(thing)Вагонетки зі скринею$() працюють як і звичайні скрині TFC. Вони мають лише 18 слотів і не можуть містити дуже великі предмети, такі як колоди."
     }
   ],

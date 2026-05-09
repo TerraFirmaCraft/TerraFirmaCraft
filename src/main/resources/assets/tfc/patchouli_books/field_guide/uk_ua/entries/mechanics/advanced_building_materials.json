@@ -1,12 +1,11 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Передові матеріали",
   "category": "tfc:mechanics",
   "icon": "tfc:brick/rhyolite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "На додаток до примітивних $(l:getting_started/building_materials)будівельних матеріалів$() кам'яного віку, використання металевого інструменту дозволяє використовувати більш досконалі будівельні матеріали."
+      "text": "На додачу до примітивних $(l:getting_started/building_materials)будівельних матеріалів$() кам'яної доби, використання металевого інструменту дозволяє використовувати більш досконалі будівельні матеріали."
     },
     {
       "type": "patchouli:text",
@@ -16,7 +15,7 @@
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "Алебастр - будівельний матеріал, що виготовлено з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(). Його можна виготовити безпосередньо з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(), але ефективніше буде запечатати $(l:the_world/ores_and_minerals#gypsum)гіпс$() у діжці із 100 mB $(thing)вапняної води$() на один шматочок.",
+      "text": "Алебастр - будівельний матеріал, що виготовлено з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(). Його можна змайструвати безпосередньо з $(l:the_world/ores_and_minerals#gypsum)гіпсу$(), але ефективніше буде запечатати $(l:the_world/ores_and_minerals#gypsum)гіпс$() у діжці зі 100 мВ $(thing)вапняної води$() на один шматочок.",
       "title": "Алебастр"
     },
     {
@@ -27,7 +26,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "Алебастр можна $(l:mechanics/dye)пофарбувати$() в $(l:mechanics/barrels)діжці$() з барвником у будь-який колір. Необроблені алебастрові блоки також можна $(l:mechanics/chisel)виточити$() в $(thing)полірований алебастр$() за допомогою режиму $(thing)полірування$() або створити сходи, плити чи стіни.",
       "title": "Алебастрові прикраси"
     },
     {
@@ -39,7 +38,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)Кам'яні цеглини$() можна виготовити за допомогою $(l:mechanics/chisel)долота$() з деяких пухких камінців гірських порід. Щоб з'єднати ці цеглини у будівельний блок, треба використати  $(thing)будівельний розчин$().$(br2)Розчин можна отримати з $(thing)піску$(), що буде запечатаний у діжці з $(l:mechanics/barrels#limewater)вапняною водою$().",
+      "text": "$(thing)Кам'яні цеглини$() можна виготовити за допомогою $(l:mechanics/chisel)зубила$() з деяких камінців гірських порід. Щоб з'єднати ці цеглини в будівельний блок, треба використати $(thing)будівельний розчин$().$(br2)Розчин можна отримати з $(thing)піску$(), запечатавши його в діжці з $(l:mechanics/barrels#limewater)вапняною водою$().",
       "title": "Цегла та розчин"
     },
     {
@@ -49,7 +48,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Також можна виготовити інші декоративні кам’яні блоки, наприклад, $(thing)тріснута цегла$(), або $(thing)точений блок$(). $(thing)Мохове$() каміння можна створити у воді. Встанови кругляк, або цегляний блок поруч з моховим. Мох почне поширюватись на сусідні блоки під водою."
+      "text": "Також можна виготовити інші декоративні кам'яні блоки, наприклад $(thing)тріснута цегла$() або $(thing)точений камінь$(). $(thing)Мохове$() каміння можна створити у воді, встановивши кругляк або цегляний блок поруч із моховим. Мох почне поширюватись на ці сусідні блоки під водою."
     },
     {
       "type": "patchouli:crafting",

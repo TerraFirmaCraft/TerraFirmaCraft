@@ -1,28 +1,27 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Crankshafts",
+  "name": "Колінчасті вали",
   "category": "tfc:mechanics",
   "icon": "tfc:crankshaft",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Crankshaft$() is a way of turning $(l:mechanics/mechanical_power)Rotational Power$() into $(thing)Moving-back-and-forth Power$(). This can be useful in order to power devices such as the $(l:mechanics/bellows)Bellows$(), or $(l:mechanics/pumps)Water Pumps$().$(br2)The $(thing)Crankshaft$() consists of two parts: the base, and the shaft. The base must be connected to an $(l:mechanics/mechanical_power#axle)Axle$(), and devices can be connected to the end of the shaft."
+      "text": "$(thing)Колінчастий вал$() - це спосіб перетворення $(l:mechanics/mechanical_power)обертальної енергії$() в $(thing)енергію руху вперед і назад$(). Це може бути корисним для живлення таких приладів, як $(l:mechanics/bellows)міхи$() або $(l:mechanics/pumps)водяні насоси$().$(br2)$(thing)Колінчастий вал$() складається з двох частин: основи та вала. Основу потрібно під'єднати до $(l:mechanics/mechanical_power#axle)осі$(), а прилади можна підключити до кінця вала."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:crankshaft",
       "name": "",
-      "text": "A $(thing)Crankshaft$() being powered by an $(l:mechanics/mechanical_power#axle)Axle$()",
+      "text": "$(thing)Колінчастий вал$() приводиться в рух $(l:mechanics/mechanical_power#axle)віссю$()",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/crankshaft",
-      "text": "The base can be crafted from $(l:getting_started/primitive_alloys#brass)Brass$(). Once a base is placed, a shaft can be added to it by using a $(thing)Steel Rod$() on the base. If there is an empty space to the side of the crankshaft, the rod will be placed."
+      "text": "Основу можна змайструвати з $(l:getting_started/primitive_alloys#brass)латуні$(). Після розміщення основи до неї можна додати вал у вигляді $(thing)сталевого прута$(). Якщо збоку від колінчастого вала є порожній простір, буде розміщено прут."
     },
     {
       "type": "patchouli:text",
-      "text": "The crankshaft can be connected to a $(l:mechanics/bellows)Bellows$() by placing one adjacent to the shaft. This will then push automatically every time the shaft extends then contracts. When connected to a crankshaft it cannot be operated manually.$(br2)The crankshaft can also be connected to a $(l:mechanics/pumps)Pump$(), which can be used to transport fluids."
+      "text": "Колінчастий вал можна з'єднати з $(l:mechanics/bellows)міхами$(), розмістивши один поруч із валом. Це забезпечить автоматичне нагнітання повітря кожного разу, коли вал розширюється та скорочується. Коли міхи під'єднані до колінчастого вала, вони не можуть бути керовані вручну.$(br2)Колінчастий вал також можна з'єднати з $(l:mechanics/pumps)насосом$(), який може використовуватися для транспортування рідин."
     }
   ],
   "read_by_default": true

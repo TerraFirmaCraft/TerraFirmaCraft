@@ -1,19 +1,18 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Салати",
   "category": "tfc:mechanics",
   "icon": "tfc:textures/item/food/protein_salad.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$().$(br2)Salads are one of the simplest meals to make, and just require a $(l:mechanics/bowls)Bowl$(). First, hold the $(thing)Bowl$() and press $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). This will open the salad screen."
+      "text": "$(thing)Салати$() - це страва, яку готують у $(thing)мисці$() з до п'яти $(thing)фруктів$(), $(thing)овочів$() або $(thing)смаженого м'яса$().$(br2)Салати - одна з найпростіших страв, які можна приготувати, і для цього потрібна лише $(l:mechanics/bowls)миска$(). Спочатку візьміть $(thing)миску$() та натисніть $(item)$(k:key.use)$(), утримуючи $(item)$(k:key.sneak)$(). Це відкриє екран приготування салату."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:salads",
       "title": "",
       "link_recipes": false,
-      "text": "Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot."
+      "text": "У верхні слоти можна додати до п'яти інгредієнтів. $(thing)Миски$() можна розмістити в нижньому лівому слоті. Коли все буде готово, салат можна забрати з нижнього правого слоту."
     }
   ],
   "read_by_default": true,

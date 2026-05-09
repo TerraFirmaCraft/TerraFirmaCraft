@@ -1,12 +1,11 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Ліхтарі",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$() and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire."
+      "text": "Ліхтарі є довготривалим джерелом світла. Вони працюють на рідкому паливі. Ліхтарі зберігають вміст палива при руйнуванні. Натисніть з відром у руках, $(item)$(k:key.use)$() по ліхтарю, щоб додати в нього палива. Потім його можна запалити $(thing)запальничкою$() чи будь-чим, що може запалювати вогонь. $(thing)Оливкова олія$() та $(thing)топлений жир$() є паливом для ліхтаря. Постріл стрілою в запалений ліхтар може спричинити пожежу."
     },
     {
       "type": "patchouli:multiblock",
@@ -28,33 +27,33 @@
         }
       },
       "name": "Ліхтарі",
-      "text": "A lit lamp hanging from a chain.",
+      "text": "Висячий на ланцюжку запалений ліхтар",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
+      "recipe": "tfc:crafting/metal/lamp/copper",
+      "text": "Ліхтарі виковуються на $(l:mechanics/anvils)ковадлі$() та їх створення завершується об'єднанням зі $(l:mechanics/glassworking_applications#lamp_glass)склом для ліхтаря$()."
     },
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
       "recipe": "tfc:quern/olive",
-      "text": "Паливом звичайного ліхтаря є $(thing)оливкова олія$(). Першим кроком її виробництва є виготовлення оливкової пасти. Її можна отриамти млином."
+      "text": "Паливом звичайного ліхтаря є $(thing)оливкова олія$(). Першим кроком її виробництва є виготовлення оливкової пасти. Її можна отримати жорном."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/jute_net",
-      "text": "Також знадобиться джутовий фільтр."
+      "text": "Також знадобиться джутова сітка."
     },
     {
       "type": "patchouli:text",
-      "text": "Відвари $(thing)оливкову пасту$() з $(thing)водою$() у $(l:mechanics/pot)казані$(), та отримай $(thing)оливкову олійну воду$(). Запечатай цю воду у $(l:mechanics/barrels)діжці$() разом з $(thing)джутовим фільтром$() для отримання $(thing)оливкової олії$(). Оливкова олія горить 8 годин у грі на кожну одиницю палива."
+      "text": "Закип'ятіть $(thing)оливкову пасту$() з $(thing)водою$() в $(l:mechanics/pot)казані$(), та отримайте $(thing)оливкову олійну воду$(). Запечатайте цю воду в $(l:mechanics/barrels)діжці$() разом із $(thing)джутовою сіткою$() для отримання $(thing)оливкової олії$(). Оливкова олія горить 8 годин у грі на кожну одиницю палива."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "Також, у якості палива можна використовувати $(thing)сало$(). Треба відварити 5 шматків  $(thing)сала$(), у $(l:mechanics/pot)казані$() з водою. Сало горить менше, 2 години у грі на одиницю. З сала також можна виготовляти $(l:mechanics/lighting#candles)свічки$()."
+      "text": "Також у якості палива можна використовувати $(thing)топлений жир$(). Треба відварити 5 шматків $(thing)сала$() в $(l:mechanics/pot)казані$() з водою. Топлений жир горить менше, 2 години в грі на одиницю. З топленого жиру також можна виготовляти $(l:mechanics/lighting#candles)свічки$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -71,14 +70,14 @@
           "X": "tfc:metal/lamp/blue_steel[lit=true]"
         }
       },
-      "name": "Лавова лампа",
-      "text": "Лава буде світити вічно, але її можна утримувати лише у ліхтарі з $(l:mechanics/steel#blue_steel)синьої сталі$().",
+      "name": "Лавовий ліхтар",
+      "text": "Лава буде світити вічно, але її можна утримувати лише в ліхтарі із $(l:mechanics/steel#blue_steel)синьої сталі$().",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/black_steel_chain",
-      "text": "$(thing)Ланцюг$() - це чудовий пристрій, щоб повісити ліхтар. Ланцюг можна виготовити на $(l:mechanics/anvils)ковадлі$()."
+      "text": "$(thing)Ланцюг$() - це чудовий прилад, щоб повісити ліхтар. Ланцюг можна викувати на $(l:mechanics/anvils)ковадлі$()."
     }
   ],
   "read_by_default": true,

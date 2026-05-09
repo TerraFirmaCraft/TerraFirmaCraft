@@ -1,12 +1,11 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Виготовлення паперу",
   "category": "tfc:mechanics",
   "icon": "tfc:unrefined_paper",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Paper$() is either made from the processed stalk of the $(l:mechanics/crops#papyrus)Papyrus$() crop, or from $(l:mechanics/papermaking#parchment)Animal Hides$(). Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$()."
+      "text": "$(thing)Папір$() виготовляється або з обробленого стебла $(l:mechanics/crops#papyrus)папірусу$(), або зі $(l:mechanics/papermaking#parchment)шкур тварин$(). Папір корисний для письмових матеріалів, таких як $(thing)книги$() та $(thing)мапи$()."
     },
     {
       "type": "patchouli:crafting",
@@ -16,12 +15,12 @@
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/soaked_papyrus_strip",
-      "text": "Потім, смужки папірусу треба змочити у $(l:mechanics/barrels)діжці$() з $(thing)водою$()."
+      "text": "Потім, смужки папірусу треба змочити в $(l:mechanics/barrels)діжці$() з $(thing)водою$()."
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/unrefined_paper",
-      "text": "Далі, просочені смужки папірусу треба сплести разом на ткацькому верстаті та отримати $(thing)сирий папір$(). Його необхідно покласти на колоду та $(l:mechanics/leather_making#scraping)пошкребти$() для отримання $(thing)паперу$()."
+      "text": "Далі, змочені смужки папірусу треба сплести разом на ткацькому верстаті та отримати $(thing)сирий папір$(). Його необхідно покласти на колоду та $(l:mechanics/leather_making#scraping)пошкребти$() для отримання $(thing)паперу$()."
     },
     {
       "type": "patchouli:crafting",
@@ -36,17 +35,17 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/pine_lectern",
-      "recipe2": "tfc:crafting/wood/kapok_bookshelf"
+      "recipe2": "tfc:crafting/wood/oak_bookshelf"
     },
     {
       "type": "patchouli:text",
-      "text": "Flip to the next page for information on papermaking via the parchment process."
+      "text": "Перегорніть на наступну сторінку, щоб отримати інформацію про виготовлення паперу за допомогою процесу пергаментування."
     },
     {
       "type": "patchouli:text",
       "anchor": "parchment",
-      "text": "$(thing)Parchment Paper$() starts with a scraped hide. Review the $(l:mechanics/leather_making)leather making chapter$() to learn how to make it. Parchment requires treatment with a few different items. First, $(thing)Pumice$() is needed. Pumice is found on the ground near $(l:the_world/geology)Volcanoes$(), or from $(l:mechanics/sluices)Sluicing$() or $(l:mechanics/panning)Panning$() ore deposits with Andesite, Rhyolite, or Dacite in them.",
-      "title": "Parchment"
+      "text": "Виготовлення $(thing)пергаментного паперу$() починається з поскобленої шкури. Перегляньте $(l:mechanics/leather_making)розділ про обробку шкіри$(), щоб дізнатися, як її зробити. Пергамент вимагає обробки кількома різними предметами. По-перше, потрібна $(thing)пемза$(). Пемзу можна знайти на землі біля $(l:the_world/geology)вулканів$() або шляхом $(l:mechanics/sluices)промивання$() або $(l:mechanics/panning)просіювання$() родовищ руди в андезиті, ріоліті або дациті.",
+      "title": "Пергаментування"
     },
     {
       "type": "patchouli:multiblock",
@@ -63,19 +62,19 @@
           "X": "tfc:groundcover/pumice"
         }
       },
-      "name": "Pumice",
-      "text": "A Pumice rock placed on the ground.",
+      "name": "Пемза",
+      "text": "Камінь пемзи на землі",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/large_treated_hide",
-      "text": "Crafting pumice, a hammer, and scraped hide gives sections of $(thing)Treated Hide$()."
+      "text": "Використання в майструванні пемзи, молотка та поскобленої шкури дає частини $(thing)обробленої шкури$()."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/parchment",
-      "text": "Treated hide, $(l:mechanics/glassworking#lime)lime powder$(), flour, and a fresh egg will complete the treatment process and yield usable paper."
+      "text": "Оброблена шкура, $(l:mechanics/glassworking#lime)вапняний пил$(), борошно та свіже яйце завершать процес обробки та дадуть придатний для використання папір."
     }
   ],
   "read_by_default": true

@@ -1,20 +1,19 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "name": "Примітивні сплави",
   "category": "tfc:getting_started",
   "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Сплави$() - це спосіб змішування двох або більше металів разом для створення нового, більш міцного матеріалу. На початку гри - мідь є корисним металом для створення інструменту. Наступний рівень металу є одним із трьох типів $(thing)бронзи$(). Сплав складається зі складових  $(thing)металів$(), кожен з яких повинен задовольняти певний відсоток від загального цілого."
+      "text": "$(thing)Сплави$() - це спосіб змішування двох або більше металів разом для створення нового, більш міцного матеріалу. На початку гри - мідь є корисним металом для створення інструменту. Наступний рівень металу є одним із трьох типів $(thing)бронзи$(). Сплав складається зі складових $(thing)металів$(), кожен з яких повинен задовольняти певний відсоток від загальної кількості."
     },
     {
       "type": "patchouli:text",
-      "text": "Один метод, за допомогою якого сплави можуть бути виготовлені під час ранньої гри, полягає в використанні $(thing)горщика$(). Процес дуже схожий на $(l:getting_started/finding_ores#casting)лиття$(). Однак замість того, щоб використовувати лише один метал, помісти достатню кількість шматків руди всередину горщика в правильному співвідношенні, щоб утворити суміш відомого сплаву."
+      "text": "Один метод, за допомогою якого сплави можуть бути виготовлені під час ранньої гри, полягає у використанні $(thing)горщика$(). Процес дуже схожий на $(l:getting_started/finding_ores#casting)відливку$(). Однак замість того, щоб використовувати лише один метал, помістіть достатню кількість шматків руди всередину горщика в правильному співвідношенні, щоб утворити суміш відомого сплаву."
     },
     {
       "type": "patchouli:text",
-      "text": "Наприклад, щоб створити 1000 mB олов'яної $(thing)бронзи$() (дивись праворуч), тобі потрібно від 880 до 920 mB $(thing)міді$(), та від 80 до 120 mB $(thing)олова$().$(br)На наступних сторінках є рецепти трьох бронзових сплавів. З кожної бронзи можна виготовити інструменти, $(l:mechanics/armor)обладунки$(), та інші предмети. Вони дещо відрізняються, тому отримані інструменти матимуть різну довговічність, ефективність і шкоду від атаки."
+      "text": "Наприклад, щоб створити 1000 мВ олов'яної $(thing)бронзи$() (дивіться праворуч), вам потрібно від 880 до 920 мВ $(thing)міді$() та від 80 до 120 мВ $(thing)олова$().$(br)На наступних сторінках є рецепти трьох бронзових сплавів. З кожної бронзи можна виготовити інструменти, $(l:mechanics/armor)обладунки$() та інші предмети. Вони дещо відрізняються, тому отримані інструменти матимуть різну довговічність, ефективність і шкоду від атаки."
     },
     {
       "type": "patchouli:spotlight",
@@ -39,30 +38,30 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Other alloys are not suitable for creating tools. These are $(thing)Brass$(), $(thing)Rose Gold$(), and $(thing)Sterling Silver$().$(br2)$(thing)Brass$() is a useful alloy for all sorts of contraptions, including $(l:mechanics/mechanical_power)Mechanical Power$().$(br2)$(thing)Rose Gold$() and $(thing)Sterling Silver$() are used for crafting $(l:mechanics/steel#red_steel)Red Steel$() and $(l:mechanics/steel#blue_steel)Blue Steel$().",
-      "title": "Utility Alloys"
+      "text": "Є й такі сплави, які не підходять для створення інструментів. А саме: $(thing)латунь$(), $(thing)рожеве золото$() та $(thing)стерлінгове срібло$().$(br2)$(thing)Латунь$() є корисним сплавом для всіх видів пристосувань, включаючи $(l:mechanics/mechanical_power)механічну енергію$().$(br2)$(thing)Рожеве золото$() та $(thing)стерлінгове срібло$() використовуються для створення $(l:mechanics/steel#red_steel)червоної сталі$() та $(l:mechanics/steel#blue_steel)синьої сталі$().",
+      "title": "Корисні сплави"
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "brass",
       "item": "tfc:metal/ingot/brass",
-      "title": "Brass",
+      "title": "Латунь",
       "link_recipes": false,
-      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)88 - 92 % : $(thing)мідь$()$(li)8 - 12 % : $(thing)олово$()$(br2)"
+      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)88 - 92 % : $(thing)мідь$()$(li)8 - 12 % : $(thing)цинк$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/rose_gold",
-      "title": "Rose Gold",
+      "title": "Рожеве золото",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)15 - 30 % : $(thing)Copper$()$(li)70 - 85 % : $(thing)Gold$()$(br2)"
+      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)15 - 30 % : $(thing)мідь$()$(li)70 - 85 % : $(thing)золото$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/sterling_silver",
-      "title": "Sterling Silver",
+      "title": "Стерлінгове срібло",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)20 - 40 % : $(thing)Copper$()$(li)60 - 80 % : $(thing)Silver$()$(br2)"
+      "text": "$(br)$(bold)Вимоги:$()$(br)$(li)20 - 40 % : $(thing)мідь$()$(li)60 - 80 % : $(thing)срібло$()$(br2)"
     }
   ],
   "read_by_default": true,

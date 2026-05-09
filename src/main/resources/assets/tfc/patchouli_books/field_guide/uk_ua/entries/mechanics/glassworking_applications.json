@@ -1,21 +1,20 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Glass Products",
+  "name": "Скляні вироби",
   "category": "tfc:mechanics",
   "icon": "minecraft:glass",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:mechanics/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()"
+      "text": "Найпростішими скляними виробами є $(thing)скляні шиби$() та $(thing)блоки скла$(). Щоб змайструвати їх, ви повинні почати з $(l:mechanics/glassworking#blowpipe)духової трубки$() зі $(thing)скляною шихтою$(), а потім виконати $(thing)відливку$().$(br)$(li)$(bold)Відливка на стіл$() використовується для створення $(thing)скляних шиб$()$(li)$(bold)Відливка в резервуар$() використовується для створення $(thing)блоків скла$()"
     },
     {
       "type": "patchouli:text",
-      "text": "Glass can also be $(thing)dyed$() before it is poured to create colored glass. The color is dependent on the type of glass batch, and any powders that have been added.$(br2)Each type of $(thing)Glass Batch$() has a different natural color of glass that they will create. $(thing)Silica$() glass batches can be made into many colors, $(thing)Olivine$(), and $(thing)Volcanic$() glass can be made into relatively few colors."
+      "text": "Скло також можна $(thing)пофарбувати$() перед відливкою, щоб створити кольорове скло. Колір залежить від типу скляної шихти та будь-якого доданого пилу.$(br2)Кожен тип $(thing)скляної шихти$() має різний природний колір скла, який вони створять. $(thing)Силікатні$() скляні шихти можна пофарбувати в різні кольори, $(thing)олівінові$() та $(thing)вулканічні$() можна пофарбувати у відносно небагато кольорів."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:mechanics/glassworking#paddle)Paddle$() to flatten the glass.",
-      "title": "Table Pour"
+      "text": "$(thing)Скляні шиби$() виготовляються шляхом $(thing)відливки на стіл$(). Стіл для відливки створюється шляхом розміщення до 16-ти $(thing)обшитих латунню блоків$() на порожній території.$(br2) 1. Причепіть $(l:mechanics/glassworking)скляну шихту$() до $(thing)духової трубки$().$(br) 2. Нагрійте трубку до стану $(4)$(bold)червоніє$().$(br) 3. $(item)$(k:key.use)$() $(thing)духовою трубкою$() по поверхні стола.$(br) 4. Нарешті, $(item)$(k:key.use)$() $(l:mechanics/glassworking#paddle)лопаткою$(), щоб розгладити скло.",
+      "title": "Відливка на стіл"
     },
     {
       "type": "patchouli:image",
@@ -24,13 +23,13 @@
         "tfc:textures/gui/book/tutorial/glass_panes_2.png",
         "tfc:textures/gui/book/tutorial/glass_panes_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "Коли скло охолоне, його можна підібрати, зламавши його $(l:mechanics/glassworking#saw)пилкою з коштовностей$().",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:mechanics/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.",
-      "title": "Basin Pour"
+      "text": "$(thing)Блоки скла$() виготовляються шляхом $(thing)відливки в резервуар$(). Резервуар створюється шляхом оточення блоку повітря $(thing)обшитими латунню блоками$() з усіх сторін, окрім верхньої.$(br2) 1. Причепіть $(l:mechanics/glassworking)скляну шихту$() до $(thing)духової трубки$().$(br) 2. Нагрійте трубку до стану $(4)$(bold)червоніє$().$(br) 3. $(item)$(k:key.use)$() $(thing)духовою трубкою$() по поверхні стола.",
+      "title": "Відливка в резервуар"
     },
     {
       "type": "patchouli:image",
@@ -39,27 +38,35 @@
         "tfc:textures/gui/book/tutorial/glass_block_2.png",
         "tfc:textures/gui/book/tutorial/glass_block_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:mechanics/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "Коли скло охолоне, його можна підібрати, зламавши його $(l:mechanics/glassworking#saw)пилкою з коштовностей$().",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "coloring",
-      "text": "Glass has a natural color based on the type of $(l:mechanics/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:mechanics/bowls)Bowl$().$(br2)To use, place the $(l:mechanics/bowls)Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the bowl to add the powder to the batch.",
-      "title": "Coloring Glass"
+      "text": "Скло має природний колір залежно від типу використовуваної $(l:mechanics/glassworking)скляної шихти$(). Інші кольори можна зробити за допомогою $(l:mechanics/bowls)миски$().$(br2)Для використання розмістіть $(l:mechanics/bowls)миску$() на землю, тоді $(item)$(k:key.use)$() з тим чи іншим $(thing)пилом$(). Перед $(thing)відливкою$() використайте $(thing)духову трубку$() по мисці для додавання пилу до шихти.",
+      "title": "Фарбування скла"
     },
     {
       "type": "patchouli:text",
-      "text": "$(br2)The next pages show the different combinations of glass types and powder materials to create each color."
+      "text": "$(br2)Наступні сторінки показують різноманітні комбінації типів скла та пилових матеріалів для створення кожного кольору."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)$(7)White$(): Silica or Hematitic Glass + $(thing)Soda Ash$()$(li)$(bold)$(0)Black$(): Any Glass + $(thing)Graphite$()$(li)$(bold)$(8)Gray$(): Any + $(thing)Graphite$() + $(thing)Soda Ash$()$(li)$(bold)$(7)Light Gray$(): Any + $(thing)Graphite$() + 2x $(thing)Soda Ash$()$(li)$(bold)$(5)Purple$(): Any + $(thing)Iron$() + $(thing)Copper$()$(li)$(bold)$(#964b00)Brown$(): Any + $(thing)Nickel$()$(li)$(bold)$(3)Cyan$(): Non-Volcanic Glass + $(thing)Copper$() + $(thing)Sapphire$()$(li)$(bold)$(2)Green$(): Silica or Hematitic Glass + $(thing)Iron$()",
-      "title": "Dye Colors"
+      "text": "$(li)$(bold)$(7)Білий$(): силікатне або гематитове скло + $(thing)кальцинована сода$()$(li)$(bold)$(0)Чорний$(): будь-яке скло + $(thing)графіт$()$(li)$(bold)$(8)Сірий$(): будь-яке + $(thing)графіт$() + $(thing)кальц. сода$()$(li)$(bold)$(7)Світло-сірий$(): будь-яке + $(thing)графіт$() + 2x $(thing)кальц. сода$()$(li)$(bold)$(5)Фіолетовий$(): будь-яке + $(thing)залізо$() + $(thing)мідь$()$(li)$(bold)$(#964b00)Коричневий$(): будь-яке + $(thing)нікель$()",
+      "title": "Кольори фарби"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)$(a)Lime$(): Silica or Hematitic Glass + $(thing)Iron$() + $(thing)Soda Ash$()$(li)$(bold)$(b)Light Blue$(): Silica Glass + $(thing)Lapis Lazuli$()$(li)$(bold)$(1)Blue$(): Silica Glass + $(thing)Copper$()$(li)$(bold)$(4)Red$(): Silica or Hematitic Glass + $(thing)Tin$()$(li)$(bold)$(6)Yellow$(): Silica or Hematitic Glass + $(thing)Silver$()$(li)$(bold)$(#ef8e38)Orange$(): Silica Glass + $(thing)Pyrite$()$(li)$(bold)$(5)Magenta$(): Silica or Hematitic Glass + $(thing)Ruby$()$(li)$(bold)$(d)Pink$(): Silica Glass + $(thing)Gold$()$(li)$(bold)$(0)Tinted$(): Non-Silica Glass + $(thing)Amethyst$()"
+      "text": "$(li)$(bold)$(3)Бірюзовий$(): невулканічне скло + $(thing)мідь$() + $(thing)сапфір$()$(li)$(bold)$(2)Зелений$(): силікатне або гематитове скло + $(thing)залізо$()$(li)$(bold)$(a)Лаймовий$(): силікатне або гематитове скло + $(thing)залізо$() + $(thing)кальц. сода$()$(li)$(bold)$(b)Блакитний$(): силікатне скло + $(thing)лазурит$()$(li)$(bold)$(1)Синій$(): силікатне скло + $(thing)мідь$()$(li)$(bold)$(4)Червоний$(): силікатне або гематитове скло + $(thing)олово$()$(li)$(bold)$(6)Жовтий$(): силікатне або гематитове скло + $(thing)срібло$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(#ef8e38)Помаранчевий$(): силікатне скло + $(thing)пірит$()$(li)$(bold)$(5)Пурпурний$(): силікатне або гематитове скло + $(thing)рубін$()$(li)$(bold)$(d)Рожевий$(): силікатне скло + $(thing)золото$()$(li)$(bold)$(0)Тоноване$(): несилікатне скло + $(thing)аметист$()"
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
     },
     {
       "type": "tfc:table_small",
@@ -68,10 +75,10 @@
           "text": ""
         },
         {
-          "text": "C"
+          "text": "Ч"
         },
         {
-          "text": "T"
+          "text": "Т"
         },
         {
           "fill": "0xff42f2"
@@ -122,7 +129,7 @@
           "fill": "0x000000"
         },
         {
-          "text": "Silica"
+          "text": "Силікатне"
         },
         {
           "fill": "0x3d42a8"
@@ -179,7 +186,7 @@
           "fill": "0x3eb340"
         },
         {
-          "text": "Hematitic"
+          "text": "Гематитове"
         },
         {
           "fill": "0xb33e3e"
@@ -236,7 +243,7 @@
           "fill": "0x3eb340"
         },
         {
-          "text": "Olivine"
+          "text": "Олівінове"
         },
         {
           "fill": "0xb33e3e"
@@ -293,7 +300,7 @@
           "fill": "0x3eb340"
         },
         {
-          "text": "Volcanic"
+          "text": "Вулканічне"
         },
         {
           "fill": "0xb33e3e"
@@ -350,24 +357,24 @@
           "fill": "0x3eb340"
         }
       ],
-      "text": "The availability of glass colors. 'C' is clear, 'T' is tinted. Colors can only be crafted with certain glass batches.",
-      "title": "Glass Color Availability",
+      "text": "Можливі варіації фарбування скла. 'Ч' - це чисте, 'Т' - тоноване. Кольори можна змайструвати лише з певних скляних шихт.",
+      "title": "Варіації кольору скла",
       "legend": [
         {
-          "text": "Can be Crafted",
+          "text": "Можна змайструвати",
           "color": "0x3eb340"
         },
         {
-          "text": "Cannot be Crafted",
+          "text": "Не можна змайструвати",
           "color": "0xb33e3e"
         },
         {
-          "text": "Default Color",
+          "text": "Колір за замовчув.",
           "color": "0x3d42a8"
         }
       ],
       "columns": 18,
-      "first_column_width": 35,
+      "first_column_width": 45,
       "column_width": 10,
       "row_height": 10,
       "left_buffer": 5,
@@ -382,24 +389,24 @@
       "type": "tfc:glassworking_recipe",
       "anchor": "lamp_glass",
       "recipe": "tfc:glassworking/lamp_glass",
-      "text": "$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$()."
+      "text": "$(thing)Скло ліхтаря$() є необхідним компонентом для майстрування $(l:mechanics/lamps)ліхтарів$()."
     },
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "jar",
       "recipe": "tfc:glassworking/jar",
-      "text": "$(l:mechanics/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass."
+      "text": "$(l:mechanics/jarring)Банки$() також виготовляються з дмуханого скла, але тільки силікатного або гематитового."
     },
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "glass_bottle",
       "recipe": "tfc:glassworking/silica_bottle",
-      "text": "$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it."
+      "text": "$(thing)Скляні пляшки$() також можна виготовити. Якість скляної пляшки залежить від типу скла, використаного для її виготовлення."
     },
     {
       "type": "tfc:glassworking_recipe",
       "recipe": "tfc:glassworking/lens",
-      "text": "The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors."
+      "text": "$(thing)Лінзи$() використовуються для майстрування підзорної труби, компасу та детектора денного світла."
     }
   ],
   "read_by_default": true,
