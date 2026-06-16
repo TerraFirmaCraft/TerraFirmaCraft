@@ -117,7 +117,10 @@ public class ShelfBlock extends PlacedItemBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        final BlockState state = defaultBlockState().setValue(FACING, context.getClickedFace().getOpposite());
+        final Direction facing = context.getClickedFace().getOpposite();
+        if (facing.getAxis().isVertical())
+            return null;
+        final BlockState state = defaultBlockState().setValue(FACING, facing);
         return canSurvive(state, context.getLevel(), context.getClickedPos())
             ? PlacedItemBlock.updateStateValues(context.getLevel(), context.getClickedPos().below(), state)
             : null;
