@@ -716,6 +716,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 .addTag(commonTagOf(Registries.ITEM, "dusts/" + gemName));
         }
 
+        //Glass Bottles
+
+        tag(commonTagOf(Registries.ITEM, "glass_bottle")).add(
+            TFCItems.HEMATITIC_GLASS_BOTTLE, TFCItems.OLIVINE_GLASS_BOTTLE, TFCItems.SILICA_GLASS_BOTTLE, TFCItems.VOLCANIC_GLASS_BOTTLE
+        );
+
         //Glues
 
         tag(commonTagOf(Registries.ITEM, "glue"))
@@ -1617,7 +1623,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
     private void metalTag(Metal metal, Metal.ItemType type, TagKey<Item> baseTag)
     {
-        final TagKey<Item> commonTag = commonTagOf(metal, type);
+        final TagKey<Item> commonTag = type == type.SHEET ? commonTagOf(Registries.ITEM, "plate/" + metal.getSerializedName()) : type == type.DOUBLE_SHEET ? commonTagOf(Registries.ITEM, "double_plate/" + metal.getSerializedName()) : commonTagOf(metal, type);
         tag(commonTag).add(TFCItems.METAL_ITEMS.get(metal).get(type));
         tag(baseTag).addTag(commonTag);
     }
