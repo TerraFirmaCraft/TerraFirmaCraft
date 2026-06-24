@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:groundcover/guano",
+    "tfc:compost",
+    "tfc:food/shellfish",
+    "tfc:powder/saltpeter",
+    "tfc:powder/wood_ash",
+    "tfc:powder/sylvite",
+    "tfc:pure_nitrogen",
+    "tfc:pure_phosphorus",
+    "tfc:pure_potassium"
+  ]
+}

@@ -464,14 +464,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         );
 
         tag(FOODS)
-            .addTags(DAIRY, commonTagOf(Registries.ITEM, "jam"), SALADS, SANDWICHES);
+            .addTags(DAIRY, commonTagOf(Registries.ITEM, "foods/jam"), SALADS, SANDWICHES);
 
         for(Food food : Food.values())
         {
             if (RAW_MEATS_FOODS.contains(food))
             {
                 tag(commonTagOf(Registries.ITEM, "foods/raw_" + food.getSerializedName())).add(food);
-                tag(commonTagOf(Registries.ITEM, "c:foods")).addTag(commonTagOf(Registries.ITEM, "foods/raw_" + food.getSerializedName()));
+                tag(commonTagOf(Registries.ITEM, "foods")).addTag(commonTagOf(Registries.ITEM, "foods/raw_" + food.getSerializedName()));
                 tag(commonTagOf(Registries.ITEM, "raw_" + food.getSerializedName())).add(food);
             }
             else
@@ -610,7 +610,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         {
             final Food jam = entry.getKey();
             final String jamName = jam == Food.PUMPKIN_CHUNKS ? "pumpkin_jam" : jam.getSerializedName();
-            tag(commonTagOf(Registries.ITEM, "foods/" + entry.getKey().getSerializedName()))
+            tag(commonTagOf(Registries.ITEM, "foods/" + jamName))
                 .add(entry.getValue().key());
             tag(commonTagOf(Registries.ITEM, entry.getKey().getSerializedName()))
                 .add(entry.getValue().key());
@@ -838,6 +838,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.CROP_SEEDS.get(Crop.MAIZE).key());
         tag(Tags.Items.SEEDS)
             .addTag(commonTagOf(Registries.ITEM, "seeds/corn"));
+        tag(commonTagOf(Registries.ITEM, "seeds/beetroot"))
+            .add(TFCItems.CROP_SEEDS.get(Crop.BEET).key());
+        tag(Tags.Items.SEEDS)
+            .addTag(commonTagOf(Registries.ITEM, "seeds/beetroot"));
 
 
         //Tools

@@ -1,5 +1,9 @@
 {
   "values": [
+    "#c:sands/silica",
+    "#c:sands/olivine",
+    "#c:sands/hematitic",
+    "#c:sands/volcanic",
     "tfc:sand/brown",
     "tfc:sand/white",
     "tfc:sand/black",
