@@ -10,6 +10,15 @@
     "tfc:bucket/largemouth_bass",
     "tfc:bucket/rainbow_trout",
     "tfc:bucket/salmon",
-    "tfc:bucket/smallmouth_bass"
+    "tfc:bucket/smallmouth_bass",
+    "tfc:bucket/northern_pike",
+    "tfc:bucket/burbot",
+    "tfc:bucket/arctic_char",
+    "tfc:bucket/muksun",
+    "tfc:bucket/tilapia",
+    "tfc:bucket/spotted_gudgeon",
+    "tfc:bucket/peacock_bass",
+    "tfc:bucket/pacu",
+    "tfc:bucket/red_piranha"
   ]
 }

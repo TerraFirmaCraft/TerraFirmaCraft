@@ -507,7 +507,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Food.RABBIT, Food.RAINBOW_TROUT, Food.SALMON,
             Food.SHELLFISH, Food.SMALLMOUTH_BASS,
             Food.TROPICAL_FISH, Food.TURKEY,
-            Food.TURTLE, Food.VENISON, Food.WOLF
+            Food.TURTLE, Food.VENISON, Food.WOLF, Food.ARCTIC_CHAR,
+            Food.BURBOT, Food.MUKSUN, Food.NORTHERN_PIKE, Food.PACU,
+            Food.PEACOCK_BASS, Food.RED_PIRANHA, Food.SPOTTED_GUDGEON,
+            Food.TILAPIA
         );
 
         tag(FOODS).addTags(
@@ -612,12 +615,18 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(COOKED_FISH).add(
             Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH,
             Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS,
-            Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS
+            Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS, Food.COOKED_ARCTIC_CHAR,
+            Food.COOKED_BURBOT, Food.COOKED_MUKSUN, Food.COOKED_NORTHERN_PIKE, Food.COOKED_PACU, Food.COOKED_PEACOCK_BASS, Food.COOKED_RED_PIRANHA,
+            Food.COOKED_SPOTTED_GUDGEON, Food.COOKED_TILAPIA
         );
+
         tag(RAW_FISH).add(
             Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH,
             Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS,
-            Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS
+            Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS,
+            Food.ARCTIC_CHAR, Food.BURBOT, Food.MUKSUN, Food.NORTHERN_PIKE, Food.PACU,
+            Food.PEACOCK_BASS, Food.RED_PIRANHA, Food.SPOTTED_GUDGEON,
+            Food.TILAPIA
         );
 
         tag(COOKED_MEATS).add(
