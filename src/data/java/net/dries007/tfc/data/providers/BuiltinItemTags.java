@@ -10,7 +10,6 @@ import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -44,6 +43,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -51,8 +51,6 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.glass.GlassOperation;
-import net.dries007.tfc.common.entities.TFCEntities;
-import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
@@ -60,6 +58,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.world.Seed;
 
 import static net.dries007.tfc.common.TFCTags.Items.*;
 
@@ -108,6 +107,25 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         tag(ItemTags.ARROWS).add(TFCItems.GLOW_ARROW.key());
         tag(ItemTags.BOATS).add(TFCItems.BOATS);
+
+        // Vanilla Armor Tags
+        tag(ItemTags.HEAD_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.HELMET);
+        tag(ItemTags.CHEST_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHESTPLATE);
+        tag(ItemTags.LEG_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.GREAVES);
+        tag(ItemTags.FOOT_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.BOOTS);
+
+        // Vanilla Tool Tags
+        tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD);
+        tag(ItemTags.AXES)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
+        tag(ItemTags.HOES)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HOE)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE);
+        tag(ItemTags.PICKAXES).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
+        tag(ItemTags.SHOVELS)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
 
         // ===== Common Tags ===== //
 
@@ -242,7 +260,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ORE_POWDERS.get(Ore.SALTPETER).key());
         tag(commonTagOf(Registries.ITEM, "dusts/charcoal"))
             .add(TFCItems.POWDERS.get(Powder.CHARCOAL).key());
-        tag(commonTagOf(Registries.ITEM, "dusts/coke"))
+        tag(commonTagOf(Registries.ITEM, "dusts/coal_coke"))
             .add(TFCItems.POWDERS.get(Powder.COKE).key());
         tag(commonTagOf(Registries.ITEM, "dusts/kaolinite"))
             .add(TFCItems.POWDERS.get(Powder.KAOLINITE).key());
@@ -286,8 +304,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.ORE_POWDERS.get(Ore.SYLVITE).key(),
             TFCItems.PURE_NITROGEN.key(),
             TFCItems.PURE_PHOSPHORUS.key(),
-            TFCItems.PURE_POTASSIUM.key(),
-            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().asItem().builtInRegistryHolder().key()
+            TFCItems.PURE_POTASSIUM.key()
         );
 
         //Fiber
@@ -411,6 +428,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             }
         }
 
+        //Minecart
+
+        tag(MINECARTS)
+            .add(Items.MINECART)
+            .add(TFCItems.CHEST_MINECARTS);
 
         //Misc
 
@@ -514,9 +536,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         tag(Tags.Items.SEEDS).add(TFCItems.CROP_SEEDS);
 
+        for (Crop crop : Crop.values())
+        {
+            tag(commonTagOf(Registries.ITEM, "seeds/" + crop.getSerializedName()))
+                .add(TFCItems.CROP_SEEDS.get(crop).key());
+        }
+
         //Tools
 
-        // Common `#c:tools`
         tag(Tags.Items.TOOLS).addTags(
             TOOLS_HAMMER,
             TOOLS_SAW,
@@ -527,7 +554,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TOOLS_GLASSWORKING,
             TOOLS_BLOWPIPE);
 
-        // Common `#c:tools/???`
         tag(Tags.Items.TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
         tag(Tags.Items.TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
         tag(Tags.Items.TOOLS_SPEAR)
@@ -541,9 +567,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(Tags.Items.MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
         tag(Tags.Items.RANGED_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
         tag(Tags.Items.MELEE_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD).add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
-        // N.B.
-        // melee_weapons, ranged_weapons, and mining_tool are all poorly defined, their use case is not clear,
-        // and they don't contain other tool tags (???) so it's unclear what the point of them is.
 
         tag(TOOLS_HAMMER)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER)
@@ -772,9 +795,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(TWIGS).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
 
         copy(TFCTags.Blocks.LAMPS, LAMPS);
-        tag(MINECARTS)
-            .add(Items.MINECART)
-            .add(TFCItems.CHEST_MINECARTS);
+
         tag(ORE_PIECES)
             .add(TFCItems.ORES)
             .addAll(TFCItems.GRADED_ORES);
@@ -841,25 +862,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCBlocks.PLANTS.get(Plant.BARNACLES).get());
         tag(METAL_PLATED_BLOCKS)
             .add(TFCBlocks.METALS, Metal.BlockType.BLOCK);
-
-        // Vanilla Armor Tags
-        tag(ItemTags.HEAD_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.HELMET);
-        tag(ItemTags.CHEST_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHESTPLATE);
-        tag(ItemTags.LEG_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.GREAVES);
-        tag(ItemTags.FOOT_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.BOOTS);
-
-        // Vanilla Tool Tags
-        tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD);
-        tag(ItemTags.AXES)
-            .add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
-        tag(ItemTags.HOES)
-            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HOE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE);
-        tag(ItemTags.PICKAXES).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
-        tag(ItemTags.SHOVELS)
-            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
 
 
         tag(TOOLS_SHARP).addTags(
