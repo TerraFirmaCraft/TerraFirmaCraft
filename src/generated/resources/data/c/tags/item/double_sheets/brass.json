@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/double_sheet/brass",
-    "tfc:metal/double_sheet/brass",
-    "#c:double_sheets/brass"
+    "#c:double_plates/brass"
   ]
 }

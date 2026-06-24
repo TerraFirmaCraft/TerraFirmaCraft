@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/sheet/blue_steel",
-    "tfc:metal/sheet/blue_steel",
-    "#c:sheets/blue_steel"
+    "#c:plates/blue_steel"
   ]
 }

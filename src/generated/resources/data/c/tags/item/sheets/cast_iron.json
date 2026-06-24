@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/sheet/cast_iron",
-    "tfc:metal/sheet/cast_iron",
-    "#c:sheets/cast_iron"
+    "#c:plates/cast_iron"
   ]
 }

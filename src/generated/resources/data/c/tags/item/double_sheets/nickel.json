@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/double_sheet/nickel",
-    "tfc:metal/double_sheet/nickel",
-    "#c:double_sheets/nickel"
+    "#c:double_plates/nickel"
   ]
 }

@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/sheet/black_bronze",
-    "tfc:metal/sheet/black_bronze",
-    "#c:sheets/black_bronze"
+    "#c:plates/black_bronze"
   ]
 }

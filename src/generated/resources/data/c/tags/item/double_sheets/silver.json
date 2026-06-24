@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/double_sheet/silver",
-    "tfc:metal/double_sheet/silver",
-    "#c:double_sheets/silver"
+    "#c:double_plates/silver"
   ]
 }

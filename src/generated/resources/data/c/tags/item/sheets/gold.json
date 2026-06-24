@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/sheet/gold",
-    "tfc:metal/sheet/gold",
-    "#c:sheets/gold"
+    "#c:plates/gold"
   ]
 }

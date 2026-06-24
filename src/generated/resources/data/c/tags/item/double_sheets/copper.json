@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/double_sheet/copper",
-    "tfc:metal/double_sheet/copper",
-    "#c:double_sheets/copper"
+    "#c:double_plates/copper"
   ]
 }

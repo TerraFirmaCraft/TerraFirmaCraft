@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/sheet/bismuth",
-    "tfc:metal/sheet/bismuth",
-    "#c:sheets/bismuth"
+    "#c:plates/bismuth"
   ]
 }

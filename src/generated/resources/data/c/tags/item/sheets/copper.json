@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/sheet/copper",
-    "tfc:metal/sheet/copper",
-    "#c:sheets/copper"
+    "#c:plates/copper"
   ]
 }

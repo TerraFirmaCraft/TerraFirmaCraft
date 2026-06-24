@@ -1,7 +1,5 @@
 {
   "values": [
-    "tfc:metal/double_sheet/red_steel",
-    "tfc:metal/double_sheet/red_steel",
-    "#c:double_sheets/red_steel"
+    "#c:double_plates/red_steel"
   ]
 }
