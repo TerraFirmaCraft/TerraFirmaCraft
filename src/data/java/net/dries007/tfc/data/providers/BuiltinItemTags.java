@@ -25,6 +25,7 @@ import net.minecraft.data.tags.VanillaItemTagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
@@ -135,6 +136,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         tag(Tags.Items.FERTILIZERS)
             .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().asItem().builtInRegistryHolder().key());
+
+        //Rods
+
+        tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
 
         //Sands
 
@@ -863,9 +868,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             }
         }
 
-        //Rods
-
-        tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
 
         //Seeds
 
