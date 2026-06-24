@@ -103,12 +103,29 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         this.tagsToCopy.putAll(Helpers.uncheck(() -> TAGS_TO_COPY.get(vanillaItemTags.apply(provider))));
         this.tagsToCopy.putAll(Helpers.uncheck(() -> TAGS_TO_COPY.get(neoItemTags.apply(provider))));
 
+        // ===== Minecraft Tags ===== //
+
+        tag(ItemTags.ARROWS).add(TFCItems.GLOW_ARROW.key());
+        tag(ItemTags.BOATS).add(TFCItems.BOATS);
+
         // ===== Common Tags ===== //
 
         //-----Block Item Tags------//
 
         tag(Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
         tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
+
+        tag(Tags.Items.FERTILIZERS)
+            .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().asItem().builtInRegistryHolder().key());
+
+        //Sands
+
+        tag(Tags.Items.SANDS).addTags(
+            SILICA_SAND,
+            OLIVINE_SAND,
+            HEMATITIC_SAND,
+            VOLCANIC_SAND
+        );
 
         tag(SILICA_SAND).add(
             TFCBlocks.SAND.get(SandBlockType.WHITE));
@@ -132,32 +149,73 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         //-----Item Tags-----//
 
-        tag(Tags.Items.STRINGS).add(TFCItems.WOOL_YARN);
-        tag(Tags.Items.SEEDS).add(TFCItems.CROP_SEEDS);
-        tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
-        tag(Tags.Items.BUCKETS_EMPTY).add(
-            TFCItems.WOODEN_BUCKET,
-            TFCItems.RED_STEEL_BUCKET,
-            TFCItems.BLUE_STEEL_BUCKET);
+        //Arrows
 
-        for (Map.Entry<Ore, TFCItems.ItemId> gemEntry : TFCItems.GEMS.entrySet())
-        {
-            if(gemEntry.getKey() == Ore.LAPIS_LAZULI)
-            {
-                tag(commonTagOf(Registries.ITEM, "gems/lapis"))
-                    .add(gemEntry.getValue().key());
-                tag(commonTagOf(Registries.ITEM, "dusts/lapis"))
-                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
-            }
-            else
-            {
-                String gemName = gemEntry.getKey().name();
-                tag(commonTagOf(Registries.ITEM, "gems/" + gemName))
-                    .add(gemEntry.getValue().key());
-                tag(commonTagOf(Registries.ITEM, "dusts/" + gemName))
-                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
-            }
-        }
+        tag(commonTagOf(Registries.ITEM, "arrows"))
+            .add(TFCItems.GLOW_ARROW.key());
+
+        //Bricks
+
+        tag(Tags.Items.BRICKS).addTags(
+             commonTagOf(Registries.ITEM, "bricks/mud"),
+             commonTagOf(Registries.ITEM, "bricks/plaster"),
+             commonTagOf(Registries.ITEM, "bricks/fire"),
+             commonTagOf(Registries.ITEM, "bricks/stone")
+        );
+
+        tag(commonTagOf(Registries.ITEM, "bricks/mud")).add(
+            TFCItems.ENTISOL_MUD_BRICK, TFCItems.ALFISOL_MUD_BRICK,
+            TFCItems.PODZOL_MUD_BRICK, TFCItems.ANDISOL_MUD_BRICK,
+            TFCItems.FLUVISOL_MUD_BRICK, TFCItems.ARIDISOL_MUD_BRICK,
+            TFCItems.OXISOL_MUD_BRICK, TFCItems.MOLLISOL_MUD_BRICK);
+        tag(commonTagOf(Registries.ITEM, "bricks/plaster"))
+            .add(TFCItems.ALABASTER_BRICK.key());
+        tag(commonTagOf(Registries.ITEM, "bricks/fire"))
+            .add(TFCItems.FIRE_BRICK.key());
+        tag(commonTagOf(Registries.ITEM, "bricks/stone"))
+            .add(TFCItems.BRICKS);
+
+        //Cloths
+
+        tag(commonTagOf(Registries.ITEM, "cloths")).addTags(
+            commonTagOf(Registries.ITEM, "cloths/burlap"),
+            commonTagOf(Registries.ITEM, "cloths/silk"),
+            commonTagOf(Registries.ITEM, "cloths/wool")
+        );
+
+        tag(commonTagOf(Registries.ITEM, "cloths/burlap"))
+            .add(TFCItems.BURLAP_CLOTH.key());
+        tag(commonTagOf(Registries.ITEM, "cloths/silk"))
+            .add(TFCItems.SILK_CLOTH.key());
+        tag(commonTagOf(Registries.ITEM, "cloths/wool"))
+            .add(TFCItems.WOOL_CLOTH.key());
+
+        //Crops
+
+        tag(Tags.Items.CROPS)
+
+        tag(commonTagOf(Registries.ITEM, "crops/alfalfa"))
+            .add(TFCItems.ALFALFA.key());
+        tag(commonTagOf(Registries.ITEM, "crops/barley"))
+            .add(TFCItems.FOOD.get(Food.BARLEY).key());
+        tag(commonTagOf(Registries.ITEM, "crops/canola"))
+            .add(TFCItems.CANOLA.key());
+        tag(commonTagOf(Registries.ITEM, "crops/cassava"))
+            .add(TFCItems.FOOD.get(Food.CASSAVA).key());
+        tag(commonTagOf(Registries.ITEM, "crops/jute"))
+            .add(TFCItems.JUTE.key());
+        tag(commonTagOf(Registries.ITEM, "crops/maize"))
+            .add(TFCItems.FOOD.get(Food.MAIZE).key());
+        tag(commonTagOf(Registries.ITEM, "crops/oat"))
+            .add(TFCItems.FOOD.get(Food.OAT).key());
+        tag(commonTagOf(Registries.ITEM, "crops/papyrus"))
+            .add(TFCItems.PAPYRUS.key());
+        tag(commonTagOf(Registries.ITEM, "crops/rice"))
+            .add(TFCItems.FOOD.get(Food.RICE).key());
+        tag(commonTagOf(Registries.ITEM, "crops/rye"))
+            .add(TFCItems.FOOD.get(Food.RYE).key());
+        tag(commonTagOf(Registries.ITEM, "crops/soybean"))
+            .add(TFCItems.FOOD.get(Food.SOYBEAN).key());
 
         //Dusts
 
@@ -177,6 +235,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.POWDERS.get(Powder.SALT).key());
         tag(commonTagOf(Registries.ITEM, "dusts/flux"))
             .add(TFCItems.POWDERS.get(Powder.FLUX).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/ash"))
+            .add(TFCItems.POWDERS.get(Powder.WOOD_ASH).key());
         tag(commonTagOf(Registries.ITEM, "dusts/wood_ash"))
             .add(TFCItems.POWDERS.get(Powder.WOOD_ASH).key());
         tag(commonTagOf(Registries.ITEM, "dusts/soda_ash"))
@@ -186,6 +246,42 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "dusts/lime"))
             .add(TFCItems.POWDERS.get(Powder.LIME).key());
 
+        //Dyed
+
+        tag(Tags.Items.DYED_BLACK)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.BLACK).key());
+        tag(Tags.Items.DYED_BLUE)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.BLUE).key());
+        tag(Tags.Items.DYED_BROWN)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.BROWN).key());
+        tag(Tags.Items.DYED_CYAN)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.CYAN).key());
+        tag(Tags.Items.DYED_GRAY)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.GRAY).key());
+        tag(Tags.Items.DYED_GREEN)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.GREEN).key());
+        tag(Tags.Items.DYED_LIGHT_BLUE)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.LIGHT_BLUE).key());
+        tag(Tags.Items.DYED_LIGHT_GRAY)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.LIGHT_GRAY).key());
+        tag(Tags.Items.DYED_LIME)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.LIME).key());
+        tag(Tags.Items.DYED_MAGENTA)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.MAGENTA).key());
+        tag(Tags.Items.DYED_ORANGE)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.ORANGE).key());
+        tag(Tags.Items.DYED_PINK)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.PINK).key());
+        tag(Tags.Items.DYED_PURPLE)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.PURPLE).key());
+        tag(Tags.Items.DYED_RED)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.RED).key());
+        tag(Tags.Items.DYED_WHITE)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.WHITE).key());
+        tag(Tags.Items.DYED_YELLOW)
+            .add(TFCItems.WINDMILL_BLADES.get(DyeColor.YELLOW).key());
+
+        //Fertilizers
 
         tag(Tags.Items.FERTILIZERS).add(
             TFCItems.COMPOST.key(),
@@ -193,95 +289,21 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.ORE_POWDERS.get(Ore.SALTPETER).key(),
             TFCItems.POWDERS.get(Powder.WOOD_ASH).key(),
             TFCItems.ORE_POWDERS.get(Ore.SYLVITE).key(),
+            TFCItems.PURE_NITROGEN.key(),
+            TFCItems.PURE_PHOSPHORUS.key(),
+            TFCItems.PURE_POTASSIUM.key(),
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().asItem().builtInRegistryHolder().key());
 
-        tag(Tags.Items.MUSIC_DISCS)
-            .add(TFCItems.BLANK_DISC.key());
+        //Fiber
 
-        //Raw Materials
+        tag(commonTagOf(Registries.ITEM, "fibers"))
+            .addTag(commonTagOf(Registries.ITEM, "fibers/jute"));
 
-        tag(Tags.Items.RAW_MATERIALS).addTags(
-                commonTagOf(Registries.ITEM, "raw_materials/saltpeter"),
-                commonTagOf(Registries.ITEM, "raw_materials/charcoal"),
-                commonTagOf(Registries.ITEM, "raw_materials/coke"),
-                commonTagOf(Registries.ITEM, "raw_materials/kaolinite"),
-                commonTagOf(Registries.ITEM, "raw_materials/graphite"),
-                commonTagOf(Registries.ITEM, "raw_materials/sylvite"),
-                commonTagOf(Registries.ITEM, "raw_materials/salt"),
-                commonTagOf(Registries.ITEM, "raw_materials/flux"),
-                commonTagOf(Registries.ITEM, "raw_materials/wood_ash"),
-                commonTagOf(Registries.ITEM, "raw_materials/soda_ash"),
-                commonTagOf(Registries.ITEM, "raw_materials/sulfur"),
-                commonTagOf(Registries.ITEM, "raw_materials/lime")
-        );
+        tag(commonTagOf(Registries.ITEM, "fibers/jute"))
+            .add(TFCItems.JUTE_FIBER.key());
 
-        for (var entry : TFCItems.GRADED_ORES.entrySet())
-        {
-            Ore ore = entry.getKey();
-            var gradedOres = entry.getValue();
-            Metal metal = ore.metal();
-            for (var grade : Ore.Grade.values())
-            {
-                tag(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/" + grade.name()))
-                    .add(gradedOres.get(grade).key());
-                tag(Tags.Items.RAW_MATERIALS).addTags(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/" + grade.name()));
-            }
-        }
 
-        tag(commonTagOf(Registries.ITEM, "raw_materials/amethyst"))
-            .add(TFCItems.ORES.get(Ore.AMETHYST).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/diamond"))
-            .add(TFCItems.ORES.get(Ore.DIAMOND).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/emerald"))
-            .add(TFCItems.ORES.get(Ore.EMERALD).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/lapis"))
-            .add(TFCItems.ORES.get(Ore.LAPIS_LAZULI).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/opal"))
-            .add(TFCItems.ORES.get(Ore.OPAL).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/ruby"))
-            .add(TFCItems.ORES.get(Ore.RUBY).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/sapphire"))
-            .add(TFCItems.ORES.get(Ore.SAPPHIRE).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/topaz"))
-            .add(TFCItems.ORES.get(Ore.TOPAZ).key());
-
-        tag(commonTagOf(Registries.ITEM, "raw_materials/redstone"))
-            .add(TFCItems.ORES.get(Ore.CINNABAR).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/redstone"))
-            .add(TFCItems.ORES.get(Ore.CRYOLITE).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/flux"))
-            .add(TFCItems.ORES.get(Ore.BORAX).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/graphite"))
-            .add(TFCItems.ORES.get(Ore.GRAPHITE).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/plaster"))
-            .add(TFCItems.ORES.get(Ore.GYPSUM).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/saltpeter"))
-            .add(TFCItems.ORES.get(Ore.SALTPETER).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/sulfur"))
-            .add(TFCItems.ORES.get(Ore.SULFUR).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/sylvite"))
-            .add(TFCItems.ORES.get(Ore.SYLVITE).key());
-        tag(commonTagOf(Registries.ITEM, "raw_materials/salt"))
-            .add(TFCItems.ORES.get(Ore.HALITE).key());
-
-        //Misc
-
-        tag(commonTagOf(Registries.ITEM, "gears/brass"))
-            .add(TFCItems.BRASS_MECHANISMS); //????
-
-        tag(Tags.Items.BUCKETS_ENTITY_WATER).add(
-            TFCItems.JELLYFISH_BUCKET.key(),
-            TFCItems.TROPICAL_FISH_BUCKET.key(),
-            TFCItems.PUFFERFISH_BUCKET.key(),
-            TFCItems.COD_BUCKET.key()
-        );
-        for(Fish fish : Fish.values()){
-            tag(Tags.Items.BUCKETS_ENTITY_WATER).add(TFCItems.FRESHWATER_FISH_BUCKETS.get(fish).key());
-        }
-
-        tag(Tags.Items.BRICKS)
-
-        //Foods
+        //Food
 
         tag(FOODS)
             .addTags(commonTagOf(Registries.ITEM, "jam"));
@@ -340,6 +362,151 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.JAM.get(Food.SNOWBERRY).key(), TFCItems.JAM.get(Food.STRAWBERRY).key(), TFCItems.JAM.get(Food.WINTERGREEN_BERRY).key()
         );
 
+        //Gems
+
+        for (Map.Entry<Ore, TFCItems.ItemId> gemEntry : TFCItems.GEMS.entrySet())
+        {
+            if(gemEntry.getKey() == Ore.LAPIS_LAZULI)
+            {
+                tag(commonTagOf(Registries.ITEM, "gems/lapis"))
+                    .add(gemEntry.getValue().key());
+                tag(commonTagOf(Registries.ITEM, "dusts/lapis"))
+                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
+            }
+            else
+            {
+                String gemName = gemEntry.getKey().name();
+                tag(commonTagOf(Registries.ITEM, "gems/" + gemName))
+                    .add(gemEntry.getValue().key());
+                tag(commonTagOf(Registries.ITEM, "dusts/" + gemName))
+                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
+            }
+        }
+
+        //Lumber
+
+        tag(commonTagOf(Registries.ITEM, "lumbers"))
+            .add(TFCItems.LUMBER);
+
+        //Metal Items
+
+        for (Metal metal : Metal.values())
+        {
+            metalTag(metal, Metal.ItemType.INGOT, Tags.Items.INGOTS);
+            if (metal.defaultParts())
+            {
+                metalTag(metal, Metal.ItemType.DOUBLE_INGOT, DOUBLE_INGOTS);
+                metalTag(metal, Metal.ItemType.SHEET, PLATES); // changed to plates to match other mods usage
+                metalTag(metal, Metal.ItemType.DOUBLE_SHEET, DOUBLE_PLATES);  //Changed to Double plates to match other mods usage
+                metalTag(metal, Metal.ItemType.ROD, Tags.Items.RODS);
+                metalTag(metal, Metal.ItemType.ROD, commonTagOf(Registries.ITEM, "rods/all_metal"));
+                //Incorrect tag usage, storage blocks are for blocks that convert back and forth between block and items
+            }
+        }
+
+
+        //Misc
+
+        tag(commonTagOf(Registries.ITEM, "gears/brass"))
+            .add(TFCItems.BRASS_MECHANISMS); //????
+
+        tag(Tags.Items.BUCKETS).add(
+            TFCItems.WOODEN_BUCKET,
+            TFCItems.RED_STEEL_BUCKET,
+            TFCItems.BLUE_STEEL_BUCKET);
+
+        tag(Tags.Items.BUCKETS_ENTITY_WATER).add(
+            TFCItems.JELLYFISH_BUCKET.key(),
+            TFCItems.TROPICAL_FISH_BUCKET.key(),
+            TFCItems.PUFFERFISH_BUCKET.key(),
+            TFCItems.COD_BUCKET.key()
+        );
+        tag(Tags.Items.BUCKETS_ENTITY_WATER)
+            .add(TFCItems.FRESHWATER_FISH_BUCKETS);
+
+        tag(Tags.Items.STRINGS).add(TFCItems.WOOL_YARN);
+
+        tag(Tags.Items.MUSIC_DISCS)
+            .add(TFCItems.BLANK_DISC.key());
+
+        tag(commonTagOf(Registries.ITEM, "straw"))
+            .add(TFCItems.STRAW.key());
+
+        //Raw Materials
+
+        tag(Tags.Items.RAW_MATERIALS).addTags(
+            commonTagOf(Registries.ITEM, "raw_materials/saltpeter"),
+            commonTagOf(Registries.ITEM, "raw_materials/charcoal"),
+            commonTagOf(Registries.ITEM, "raw_materials/coke"),
+            commonTagOf(Registries.ITEM, "raw_materials/kaolinite"),
+            commonTagOf(Registries.ITEM, "raw_materials/graphite"),
+            commonTagOf(Registries.ITEM, "raw_materials/sylvite"),
+            commonTagOf(Registries.ITEM, "raw_materials/salt"),
+            commonTagOf(Registries.ITEM, "raw_materials/flux"),
+            commonTagOf(Registries.ITEM, "raw_materials/wood_ash"),
+            commonTagOf(Registries.ITEM, "raw_materials/soda_ash"),
+            commonTagOf(Registries.ITEM, "raw_materials/sulfur"),
+            commonTagOf(Registries.ITEM, "raw_materials/lime")
+        );
+
+        for (var entry : TFCItems.GRADED_ORES.entrySet())
+        {
+            Ore ore = entry.getKey();
+            var gradedOres = entry.getValue();
+            Metal metal = ore.metal();
+            for (var grade : Ore.Grade.values())
+            {
+                String tagName = "raw_materials/" + metal.name() + "/" + grade.name();
+                tag(commonTagOf(Registries.ITEM, tagName))
+                    .add(gradedOres.get(grade).key());
+                tag(Tags.Items.RAW_MATERIALS).addTags(commonTagOf(Registries.ITEM, tagName));
+            }
+        }
+
+        tag(commonTagOf(Registries.ITEM, "raw_materials/amethyst"))
+            .add(TFCItems.ORES.get(Ore.AMETHYST).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/diamond"))
+            .add(TFCItems.ORES.get(Ore.DIAMOND).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/emerald"))
+            .add(TFCItems.ORES.get(Ore.EMERALD).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/lapis"))
+            .add(TFCItems.ORES.get(Ore.LAPIS_LAZULI).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/opal"))
+            .add(TFCItems.ORES.get(Ore.OPAL).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/ruby"))
+            .add(TFCItems.ORES.get(Ore.RUBY).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/sapphire"))
+            .add(TFCItems.ORES.get(Ore.SAPPHIRE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/topaz"))
+            .add(TFCItems.ORES.get(Ore.TOPAZ).key());
+
+        tag(commonTagOf(Registries.ITEM, "raw_materials/redstone"))
+            .add(TFCItems.ORES.get(Ore.CINNABAR).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/redstone"))
+            .add(TFCItems.ORES.get(Ore.CRYOLITE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/flux"))
+            .add(TFCItems.ORES.get(Ore.BORAX).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/graphite"))
+            .add(TFCItems.ORES.get(Ore.GRAPHITE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/plaster"))
+            .add(TFCItems.ORES.get(Ore.GYPSUM).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/saltpeter"))
+            .add(TFCItems.ORES.get(Ore.SALTPETER).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/sulfur"))
+            .add(TFCItems.ORES.get(Ore.SULFUR).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/sylvite"))
+            .add(TFCItems.ORES.get(Ore.SYLVITE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/salt"))
+            .add(TFCItems.ORES.get(Ore.HALITE).key());
+
+        //Rods
+
+        tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
+
+        //Seeds
+
+        tag(Tags.Items.SEEDS).add(TFCItems.CROP_SEEDS);
+
         //Tools
 
         // Common `#c:tools`
@@ -389,48 +556,63 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.SPINDLE.key());
 
         //Tool Heads
-        tag(commonTagOf(Registries.ITEM, "tool_heads"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads")).addTags(
+            commonTagOf(Registries.ITEM, "tool_heads/pickaxe"),
+            commonTagOf(Registries.ITEM, "tool_heads/axe"),
+            commonTagOf(Registries.ITEM, "tool_heads/sword"),
+            commonTagOf(Registries.ITEM, "tool_heads/shovel"),
+            commonTagOf(Registries.ITEM, "tool_heads/hoe"),
+            commonTagOf(Registries.ITEM, "tool_heads/hammer"),
+            commonTagOf(Registries.ITEM, "tool_heads/scythe"),
+            commonTagOf(Registries.ITEM, "tool_heads/propick"),
+            commonTagOf(Registries.ITEM, "tool_heads/saw"),
+            commonTagOf(Registries.ITEM, "tool_heads/mace"),
+            commonTagOf(Registries.ITEM, "tool_heads/javelin"),
+            commonTagOf(Registries.ITEM, "tool_heads/knife"),
+            commonTagOf(Registries.ITEM, "tool_heads/chisel"),
+            commonTagOf(Registries.ITEM, "tool_heads/spindle"),
+            commonTagOf(Registries.ITEM, "tool_heads/fishing_hook")
+            );
 
         tag(commonTagOf(Registries.ITEM, "tool_heads/pickaxe"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/axe"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE_HEAD)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/sword"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD_BLADE);
         tag(commonTagOf(Registries.ITEM, "tool_heads/shovel"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL_HEAD)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/hoe"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HOE_HEAD)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/hammer"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER_HEAD)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/scythe"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SCYTHE_BLADE);
         tag(commonTagOf(Registries.ITEM, "tool_heads/propick"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.PROPICK_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/saw"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW_BLADE);
         tag(commonTagOf(Registries.ITEM, "tool_heads/mace"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/javelin"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN_HEAD)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/knife"))
-
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.KNIFE_BLADE)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE_HEAD);
         tag(commonTagOf(Registries.ITEM, "tool_heads/chisel"))
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL_HEAD);
+        tag(commonTagOf(Registries.ITEM, "tool_heads/spindle"))
+            .add(TFCItems.SPINDLE_HEAD.key());
+        tag(commonTagOf(Registries.ITEM, "tool_heads/fishing_hook"))
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.FISH_HOOK);
 
         // ===== TFC Tags ===== //
-
-        for (Metal metal : Metal.values())
-        {
-            metalTag(metal, Metal.ItemType.INGOT, Tags.Items.INGOTS);
-            if (metal.defaultParts())
-            {
-                metalTag(metal, Metal.ItemType.DOUBLE_INGOT, DOUBLE_INGOTS);
-                metalTag(metal, Metal.ItemType.SHEET, PLATES);
-                metalTag(metal, Metal.ItemType.DOUBLE_SHEET, DOUBLE_PLATES);
-                metalTag(metal, Metal.ItemType.ROD, Tags.Items.RODS);
-                //Incorrect tag usage, storage blocks are for blocks that convert back and forth between block and items
-            }
-        }
 
         tag(DOUBLE_SHEETS_ANY_BRONZE).addTags(
             commonTagOf(Metal.BRONZE, Metal.ItemType.DOUBLE_SHEET),
@@ -581,7 +763,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(LOOMS).add(TFCBlocks.WOODS, Wood.BlockType.LOOM);
         tag(BARRELS).add(TFCBlocks.WOODS, Wood.BlockType.BARREL);
         tag(TWIGS).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
-        tag(ItemTags.BOATS).add(TFCItems.BOATS);
+
         copy(TFCTags.Blocks.LAMPS, LAMPS);
         tag(MINECARTS)
             .add(Items.MINECART)
@@ -888,7 +1070,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.HEMATITIC_GLASS_BOTTLE,
             TFCItems.OLIVINE_GLASS_BOTTLE,
             TFCItems.VOLCANIC_GLASS_BOTTLE);
-        tag(GLASS_POTASH).add(TFCItems.POWDERS.get(Powder.SODA_ASH), TFCItems.ORE_POWDERS.get(Ore.SALTPETER));
+        tag(GLASS_POTASH)
+            .add(TFCItems.POWDERS.get(Powder.SODA_ASH), TFCItems.ORE_POWDERS.get(Ore.SALTPETER))
+            .addTags(commonTagOf(Registries.ITEM, "soda_ash"), commonTagOf(Registries.ITEM, "saltpeter"), commonTagOf(Registries.ITEM, "potash"));
 
         tag(HIGH_QUALITY_CLOTH).add(TFCItems.SILK_CLOTH, TFCItems.WOOL_CLOTH);
         tag(GEM_POWDERS).addOnly(TFCItems.ORE_POWDERS, Ore::isGem);
