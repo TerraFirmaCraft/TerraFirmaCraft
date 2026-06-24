@@ -29,7 +29,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -51,7 +50,6 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.component.food.Nutrient;
 import net.dries007.tfc.common.component.glass.GlassOperation;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
@@ -60,7 +58,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import net.dries007.tfc.world.Seed;
 
 import static net.dries007.tfc.common.TFCTags.Items.*;
 
@@ -174,10 +171,20 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         //-----Item Tags-----//
 
+        //Armors
+
+        tag(commonTagOf(Registries.ITEM, "armors/horse"))
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HORSE_ARMOR);
+
         //Arrows
 
         tag(commonTagOf(Registries.ITEM, "arrows"))
             .add(TFCItems.GLOW_ARROW.key());
+
+        //Boats
+
+        tag(commonTagOf(Registries.ITEM, "boats"))
+            .add(TFCItems.BOATS);
 
         //Bricks
 
@@ -230,7 +237,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                     commonTagOf(Registries.ITEM, "crops/elderberry"), commonTagOf(Registries.ITEM, "crops/garlic"), commonTagOf(Registries.ITEM, "crops/gooseberry"),
                     commonTagOf(Registries.ITEM, "crops/green_apple"), commonTagOf(Registries.ITEM, "crops/green_bean"), commonTagOf(Registries.ITEM, "crops/green_bell_pepper"),
                     commonTagOf(Registries.ITEM, "crops/jute"), commonTagOf(Registries.ITEM, "crops/lemon"), commonTagOf(Registries.ITEM, "crops/lentil"),
-                    commonTagOf(Registries.ITEM, "crops/maize"), commonTagOf(Registries.ITEM, "crops/oat"), commonTagOf(Registries.ITEM, "crops/olive"),
+                    commonTagOf(Registries.ITEM, "crops/maize"), commonTagOf(Registries.ITEM, "crops/corn"), commonTagOf(Registries.ITEM, "crops/oat"), commonTagOf(Registries.ITEM, "crops/olive"),
                     commonTagOf(Registries.ITEM, "crops/onion"), commonTagOf(Registries.ITEM, "crops/orange"), commonTagOf(Registries.ITEM, "crops/peach"),
                     commonTagOf(Registries.ITEM, "crops/peanut"), commonTagOf(Registries.ITEM, "crops/plum"), commonTagOf(Registries.ITEM, "crops/potato"),
                     commonTagOf(Registries.ITEM, "crops/papyrus"), commonTagOf(Registries.ITEM, "crops/radish"), commonTagOf(Registries.ITEM, "crops/raspberry"),
@@ -298,6 +305,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "crops/lentil"))
             .add(Food.LENTIL);
         tag(commonTagOf(Registries.ITEM, "crops/maize"))
+            .add(Food.MAIZE);
+        tag(commonTagOf(Registries.ITEM, "crops/corn"))
             .add(Food.MAIZE);
         tag(commonTagOf(Registries.ITEM, "crops/oat"))
             .add(Food.OAT);
@@ -442,61 +451,79 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         //c:foods for all food items that can be eaten, if you right-click and the eating animation plays it goes here. For individual items they should follow the format c:foods/<food_name> (e.g. c:foods/blueberry) and the tag should only contain the food item itself, no seeds or other items related to the food. For groups of items that share a common name but are different variants of the same item (e.g. blueberry, blackberry, etc.) they should be tagged with a common tag c:foods/berry, c:foods/fruit or c:foods/vegtable. An item might have multiple group tags.
 
         final EnumSet<Food> RAW_MEATS_FOODS = EnumSet.of(
-            Food.BEEF, Food.PORK, Food.CHICKEN, Food.QUAIL, Food.MUTTON,
-            Food.BEAR, Food.HORSE_MEAT, Food.PHEASANT, Food.GROUSE, Food.TURKEY,
-            Food.PEAFOWL, Food.VENISON, Food.BISON, Food.WOLF, Food.RABBIT,
-            Food.FOX, Food.HYENA, Food.DUCK, Food.CHEVON, Food.GRAN_FELINE,
-            Food.TURTLE, Food.CAMELIDAE, Food.FROG_LEGS, Food.COD, Food.TROPICAL_FISH,
-            Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT,
-            Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS
-        );
-
-        final EnumSet<Food> RAW_FISH_FOODS = EnumSet.of(
-            Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH,
-            Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS,
-            Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS
-        );
-
-        final EnumSet<Food> COOKED_MEATS_FOODS = EnumSet.of(
-            Food.COOKED_BEEF, Food.COOKED_PORK, Food.COOKED_CHICKEN, Food.COOKED_QUAIL,
-            Food.COOKED_MUTTON, Food.COOKED_BEAR, Food.COOKED_HORSE_MEAT, Food.COOKED_PHEASANT,
-            Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_GROUSE, Food.COOKED_VENISON,
-            Food.COOKED_BISON, Food.COOKED_WOLF, Food.COOKED_RABBIT, Food.COOKED_FOX, Food.COOKED_HYENA,
-            Food.COOKED_DUCK, Food.COOKED_CHEVON, Food.COOKED_CAMELIDAE, Food.COOKED_FROG_LEGS,
-            Food.COOKED_GRAN_FELINE, Food.COOKED_TURTLE
-        );
-
-        final EnumSet<Food> COOOKED_FISH_FOODS = EnumSet.of(
-            Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH,
-            Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS,
-            Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS
+            Food.BEEF, Food.BEAR, Food.BISON, Food.BLUEGILL, Food.BLUEGILL,
+            Food.CALAMARI, Food.CALAMARI, Food.CAMELIDAE, Food.CHEVON, Food.CHICKEN,
+            Food.COD, Food.COD, Food.CRAPPIE, Food.CRAPPIE, Food.DUCK,
+            Food.FOX, Food.FROG_LEGS, Food.GRAN_FELINE, Food.GROUSE, Food.HORSE_MEAT,
+            Food.HYENA, Food.LAKE_TROUT, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.LARGEMOUTH_BASS,
+            Food.MUTTON, Food.PEAFOWL, Food.PHEASANT, Food.PORK, Food.QUAIL,
+            Food.RABBIT, Food.RAINBOW_TROUT, Food.RAINBOW_TROUT, Food.SALMON,
+            Food.SALMON, Food.SHELLFISH, Food.SHELLFISH, Food.SMALLMOUTH_BASS,
+            Food.SMALLMOUTH_BASS, Food.TROPICAL_FISH, Food.TROPICAL_FISH, Food.TURKEY,
+            Food.TURTLE, Food.VENISON, Food.WOLF
         );
 
         tag(FOODS)
-            .addTags(DAIRY, commonTagOf(Registries.ITEM, "jam"), SALADS, SANDWICHES)
-            .add(TFCItems.FOOD);
+            .addTags(DAIRY, commonTagOf(Registries.ITEM, "jam"), SALADS, SANDWICHES);
 
         for(Food food : Food.values())
         {
-            if (RAW_MEATS_FOODS.contains(food) || RAW_FISH_FOODS.contains(food))
+            if (RAW_MEATS_FOODS.contains(food))
             {
                 tag(commonTagOf(Registries.ITEM, "foods/raw_" + food.getSerializedName())).add(food);
                 tag(commonTagOf(Registries.ITEM, "c:foods")).addTag(commonTagOf(Registries.ITEM, "foods/raw_" + food.getSerializedName()));
                 tag(commonTagOf(Registries.ITEM, "raw_" + food.getSerializedName())).add(food);
             }
-            else if(food.equals(Food.MELON_SLICE))
-            {
-                tag(commonTagOf(Registries.ITEM, "foods/melon")).add(food);
-                tag(commonTagOf(Registries.ITEM, "c:foods")).addTag(commonTagOf(Registries.ITEM, "foods/melon"));
-                tag(commonTagOf(Registries.ITEM, "melon")).add(food);
-            }
             else
             {
                 tag(commonTagOf(Registries.ITEM, "foods/" + food.getSerializedName())).add(food);
-                tag(commonTagOf(Registries.ITEM, "c:foods")).addTag(commonTagOf(Registries.ITEM, "foods/" + food.getSerializedName()));
+                tag(commonTagOf(Registries.ITEM, "foods")).addTag(commonTagOf(Registries.ITEM, "foods/" + food.getSerializedName()));
                 tag(commonTagOf(Registries.ITEM, food.getSerializedName())).add(food); //Added for compatibility with mods that don't use the c:foods/<food_name> format and just put their food items in a tag with the same name as the item. This is not ideal, but it seems to be a common practice by some authors, so I added it for compatibility reasons.
             }
         }
+
+        tag(commonTagOf(Registries.ITEM, "foods")).addTags(
+            commonTagOf(Registries.ITEM, "foods/apple"),
+            commonTagOf(Registries.ITEM, "foods/bell_pepper"),
+            commonTagOf(Registries.ITEM, "foods/taro")
+            );
+
+        tag(commonTagOf(Registries.ITEM, "foods/apple")).add(
+            Food.GREEN_APPLE, Food.RED_APPLE
+        );
+        tag(commonTagOf(Registries.ITEM, "apple")).add(
+            Food.GREEN_APPLE, Food.RED_APPLE
+        );
+        tag(commonTagOf(Registries.ITEM, "foods/bell_pepper")).add(
+            Food.GREEN_BELL_PEPPER, Food.RED_BELL_PEPPER, Food.YELLOW_BELL_PEPPER
+        );
+        tag(commonTagOf(Registries.ITEM, "bell_pepper")).add(
+            Food.GREEN_BELL_PEPPER, Food.RED_BELL_PEPPER, Food.YELLOW_BELL_PEPPER
+        );
+        tag(commonTagOf(Registries.ITEM, "foods/beetroot"))
+            .add(Food.BEET);
+        tag(commonTagOf(Registries.ITEM, "beetroot"))
+            .add(Food.BEET);
+        tag(commonTagOf(Registries.ITEM, "foods/corn"))
+            .add(Food.MAIZE);
+        tag(commonTagOf(Registries.ITEM, "corn"))
+            .add(Food.MAIZE);
+        tag(commonTagOf(Registries.ITEM, "foods/melon"))
+            .add(Food.MELON_SLICE);
+        tag(commonTagOf(Registries.ITEM, "melon"))
+            .add(Food.MELON_SLICE);
+        tag(commonTagOf(Registries.ITEM, "foods/pumpkin"))
+            .add(Food.PUMPKIN_CHUNKS);
+        tag(commonTagOf(Registries.ITEM, "pumpkin"))
+            .add(Food.PUMPKIN_CHUNKS);
+        tag(commonTagOf(Registries.ITEM, "foods/taro"))
+            .add(Food.TARO_ROOT);
+        tag(commonTagOf(Registries.ITEM, "foods/seaweed"))
+            .add(Food.FRESH_SEAWEED);
+        tag(commonTagOf(Registries.ITEM, "seaweed"))
+            .add(Food.FRESH_SEAWEED);
+        tag(commonTagOf(Registries.ITEM, "taro"))
+            .add(Food.TARO_ROOT);
 
         tag(BREAD)
             .add(Food.BARLEY_BREAD, Food.MAIZE_BREAD, Food.OAT_BREAD, Food.RYE_BREAD, Food.RICE_BREAD, Food.WHEAT_BREAD)
@@ -576,21 +603,23 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Food.OAT_BREAD_JAM_SANDWICH, Food.OAT_BREAD_SANDWICH, Food.RYE_BREAD_JAM_SANDWICH, Food.RYE_BREAD_SANDWICH,
             Food.RICE_BREAD_JAM_SANDWICH, Food.RICE_BREAD_SANDWICH, Food.WHEAT_BREAD_JAM_SANDWICH, Food.WHEAT_BREAD_SANDWICH);
 
-        tag(commonTagOf(Registries.ITEM, "foods/jam")).add(TFCItems.JAM);
+        tag(commonTagOf(Registries.ITEM, "foods/jam"))
+            .addTag(JAM);
 
-        for(Food food : TFCItems.JAM.keySet()){
-            tag(commonTagOf(Registries.ITEM, "foods/" + food.getSerializedName())).add(food);
-            tag(commonTagOf(Registries.ITEM, food.getSerializedName())).add(food);
+        for (Map.Entry<Food, TFCItems.ItemId> entry : TFCItems.JAM.entrySet())
+        {
+            final Food jam = entry.getKey();
+            final String jamName = jam == Food.PUMPKIN_CHUNKS ? "pumpkin_jam" : jam.getSerializedName();
+            tag(commonTagOf(Registries.ITEM, "foods/" + entry.getKey().getSerializedName()))
+                .add(entry.getValue().key());
+            tag(commonTagOf(Registries.ITEM, entry.getKey().getSerializedName()))
+                .add(entry.getValue().key());
         }
-
-            //Extra comapt with mods that use bad tags and tagging
 
         tag(commonTagOf(Registries.ITEM, "salads"))
             .add(TFCItems.SALADS);
         tag(commonTagOf(Registries.ITEM, "soups"))
             .add(TFCItems.SOUPS);
-        tag(commonTagOf(Registries.ITEM, "seaweed"))
-            .add(Food.FRESH_SEAWEED);
 
         //Flours
 
@@ -628,6 +657,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 .add(TFCItems.ORE_POWDERS.get(ore).key());
         }
 
+        //Glues
+
+        tag(commonTagOf(Registries.ITEM, "glue"))
+            .add(TFCItems.GLUE.key());
+
         //Grains
 
         tag(commonTagOf(Registries.ITEM, "grains")).addTags(
@@ -655,7 +689,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         //Lumber
 
         tag(commonTagOf(Registries.ITEM, "lumbers"))
-            .add(TFCItems.LUMBER);
+            .addTag(LUMBER);
 
         //Metal Items
 
@@ -705,6 +739,18 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         tag(commonTagOf(Registries.ITEM, "straw"))
             .add(TFCItems.STRAW.key());
+
+        //Molds
+
+        tag(commonTagOf(Registries.ITEM, "molds")).addTags(
+                commonTagOf(Registries.ITEM, "molds/fired"),
+                commonTagOf(Registries.ITEM, "molds/unfired")
+            );
+
+        tag(commonTagOf(Registries.ITEM, "molds/fired"))
+            .addTag(FIRED_MOLDS);
+        tag(commonTagOf(Registries.ITEM, "molds/unfired"))
+            .addTag(UNFIRED_MOLDS);
 
         //Raw Materials
 
@@ -785,7 +831,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         {
             tag(commonTagOf(Registries.ITEM, "seeds/" + crop.getSerializedName()))
                 .add(TFCItems.CROP_SEEDS.get(crop).key());
+            tag(Tags.Items.SEEDS)
+                .addTag(commonTagOf(Registries.ITEM, "seeds/" + crop.getSerializedName()));
         }
+        tag(commonTagOf(Registries.ITEM, "seeds/corn"))
+            .add(TFCItems.CROP_SEEDS.get(Crop.MAIZE).key());
+        tag(Tags.Items.SEEDS)
+            .addTag(commonTagOf(Registries.ITEM, "seeds/corn"));
+
 
         //Tools
 
