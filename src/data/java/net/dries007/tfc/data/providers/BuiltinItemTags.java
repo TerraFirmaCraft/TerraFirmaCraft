@@ -193,10 +193,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         //Bricks
 
         tag(Tags.Items.BRICKS).addTags(
-             commonTagOf(Registries.ITEM, "bricks/mud"),
-             commonTagOf(Registries.ITEM, "bricks/plaster"),
-             commonTagOf(Registries.ITEM, "bricks/fire"),
-             commonTagOf(Registries.ITEM, "bricks/stone")
+            commonTagOf(Registries.ITEM, "bricks/mud"),
+            commonTagOf(Registries.ITEM, "bricks/plaster"),
+            commonTagOf(Registries.ITEM, "bricks/fire"),
+            commonTagOf(Registries.ITEM, "bricks/stone")
         );
 
         tag(commonTagOf(Registries.ITEM, "bricks/mud")).add(
@@ -235,28 +235,28 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         //Crops
 
         tag(Tags.Items.CROPS)
-             .addTags(
-                    commonTagOf(Registries.ITEM, "crops/alfalfa"),
-                    commonTagOf(Registries.ITEM, "crops/apple"), commonTagOf(Registries.ITEM, "crops/banana"), commonTagOf(Registries.ITEM, "crops/barley"),
-                    commonTagOf(Registries.ITEM, "crops/beetroot"), commonTagOf(Registries.ITEM, "crops/beet"), commonTagOf(Registries.ITEM, "crops/corn"),
-                    commonTagOf(Registries.ITEM, "crops/bell_pepper"), commonTagOf(Registries.ITEM, "crops/blackberry"), commonTagOf(Registries.ITEM, "crops/blueberry"),
-                    commonTagOf(Registries.ITEM, "crops/bunchberry"), commonTagOf(Registries.ITEM, "crops/cabbage"), commonTagOf(Registries.ITEM, "crops/carrot"),
-                    commonTagOf(Registries.ITEM, "crops/cassava"), commonTagOf(Registries.ITEM, "crops/cattail_root"), commonTagOf(Registries.ITEM, "crops/cherry"),
-                    commonTagOf(Registries.ITEM, "crops/cloudberry"), commonTagOf(Registries.ITEM, "crops/cranberry"), commonTagOf(Registries.ITEM, "crops/canola"),
-                    commonTagOf(Registries.ITEM, "crops/elderberry"), commonTagOf(Registries.ITEM, "crops/garlic"), commonTagOf(Registries.ITEM, "crops/gooseberry"),
-                    commonTagOf(Registries.ITEM, "crops/green_apple"), commonTagOf(Registries.ITEM, "crops/green_bean"), commonTagOf(Registries.ITEM, "crops/green_bell_pepper"),
-                    commonTagOf(Registries.ITEM, "crops/jute"), commonTagOf(Registries.ITEM, "crops/lemon"), commonTagOf(Registries.ITEM, "crops/lentil"),
-                    commonTagOf(Registries.ITEM, "crops/maize"), commonTagOf(Registries.ITEM, "crops/corn"), commonTagOf(Registries.ITEM, "crops/oat"),
-                    commonTagOf(Registries.ITEM, "crops/olive"), commonTagOf(Registries.ITEM, "crops/onion"), commonTagOf(Registries.ITEM, "crops/orange"),
-                    commonTagOf(Registries.ITEM, "crops/peach"), commonTagOf(Registries.ITEM, "crops/peanut"), commonTagOf(Registries.ITEM, "crops/plum"),
-                    commonTagOf(Registries.ITEM, "crops/potato"), commonTagOf(Registries.ITEM, "crops/papyrus"), commonTagOf(Registries.ITEM, "crops/radish"),
-                    commonTagOf(Registries.ITEM, "crops/raspberry"), commonTagOf(Registries.ITEM, "crops/red_bell_pepper"), commonTagOf(Registries.ITEM, "crops/rice"),
-                    commonTagOf(Registries.ITEM, "crops/rye"), commonTagOf(Registries.ITEM, "crops/seaweed"), commonTagOf(Registries.ITEM, "crops/snowberry"),
-                    commonTagOf(Registries.ITEM, "crops/soybean"), commonTagOf(Registries.ITEM, "crops/squash"), commonTagOf(Registries.ITEM, "crops/strawberry"),
-                    commonTagOf(Registries.ITEM, "crops/sugarcane"), commonTagOf(Registries.ITEM, "crops/taro"), commonTagOf(Registries.ITEM, "crops/taro_root"),
-                    commonTagOf(Registries.ITEM, "crops/tomato"), commonTagOf(Registries.ITEM, "crops/wheat"), commonTagOf(Registries.ITEM, "crops/wintergreen_berry"),
-                    commonTagOf(Registries.ITEM, "crops/yellow_bell_pepper")
-             );
+            .addTags(
+                commonTagOf(Registries.ITEM, "crops/alfalfa"),
+                commonTagOf(Registries.ITEM, "crops/apple"), commonTagOf(Registries.ITEM, "crops/banana"), commonTagOf(Registries.ITEM, "crops/barley"),
+                commonTagOf(Registries.ITEM, "crops/beetroot"), commonTagOf(Registries.ITEM, "crops/beet"), commonTagOf(Registries.ITEM, "crops/corn"),
+                commonTagOf(Registries.ITEM, "crops/bell_pepper"), commonTagOf(Registries.ITEM, "crops/blackberry"), commonTagOf(Registries.ITEM, "crops/blueberry"),
+                commonTagOf(Registries.ITEM, "crops/bunchberry"), commonTagOf(Registries.ITEM, "crops/cabbage"), commonTagOf(Registries.ITEM, "crops/carrot"),
+                commonTagOf(Registries.ITEM, "crops/cassava"), commonTagOf(Registries.ITEM, "crops/cattail_root"), commonTagOf(Registries.ITEM, "crops/cherry"),
+                commonTagOf(Registries.ITEM, "crops/cloudberry"), commonTagOf(Registries.ITEM, "crops/cranberry"), commonTagOf(Registries.ITEM, "crops/canola"),
+                commonTagOf(Registries.ITEM, "crops/elderberry"), commonTagOf(Registries.ITEM, "crops/garlic"), commonTagOf(Registries.ITEM, "crops/gooseberry"),
+                commonTagOf(Registries.ITEM, "crops/green_apple"), commonTagOf(Registries.ITEM, "crops/green_bean"), commonTagOf(Registries.ITEM, "crops/green_bell_pepper"),
+                commonTagOf(Registries.ITEM, "crops/jute"), commonTagOf(Registries.ITEM, "crops/lemon"), commonTagOf(Registries.ITEM, "crops/lentil"),
+                commonTagOf(Registries.ITEM, "crops/maize"), commonTagOf(Registries.ITEM, "crops/corn"), commonTagOf(Registries.ITEM, "crops/oat"),
+                commonTagOf(Registries.ITEM, "crops/olive"), commonTagOf(Registries.ITEM, "crops/onion"), commonTagOf(Registries.ITEM, "crops/orange"),
+                commonTagOf(Registries.ITEM, "crops/peach"), commonTagOf(Registries.ITEM, "crops/peanut"), commonTagOf(Registries.ITEM, "crops/plum"),
+                commonTagOf(Registries.ITEM, "crops/potato"), commonTagOf(Registries.ITEM, "crops/papyrus"), commonTagOf(Registries.ITEM, "crops/radish"),
+                commonTagOf(Registries.ITEM, "crops/raspberry"), commonTagOf(Registries.ITEM, "crops/red_bell_pepper"), commonTagOf(Registries.ITEM, "crops/rice"),
+                commonTagOf(Registries.ITEM, "crops/rye"), commonTagOf(Registries.ITEM, "crops/seaweed"), commonTagOf(Registries.ITEM, "crops/snowberry"),
+                commonTagOf(Registries.ITEM, "crops/soybean"), commonTagOf(Registries.ITEM, "crops/squash"), commonTagOf(Registries.ITEM, "crops/strawberry"),
+                commonTagOf(Registries.ITEM, "crops/sugarcane"), commonTagOf(Registries.ITEM, "crops/taro"), commonTagOf(Registries.ITEM, "crops/taro_root"),
+                commonTagOf(Registries.ITEM, "crops/tomato"), commonTagOf(Registries.ITEM, "crops/wheat"), commonTagOf(Registries.ITEM, "crops/wintergreen_berry"),
+                commonTagOf(Registries.ITEM, "crops/yellow_bell_pepper")
+            );
 
         tag(commonTagOf(Registries.ITEM, "crops/alfalfa"))
             .add(TFCItems.ALFALFA.key());
@@ -493,7 +493,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             commonTagOf(Registries.ITEM, "foods/jam")
         );
 
-        for(Food food : Food.values())
+        for (Food food : Food.values())
         {
             if (RAW_MEATS_FOODS.contains(food))
             {
@@ -518,7 +518,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             commonTagOf(Registries.ITEM, "foods/melon"),
             commonTagOf(Registries.ITEM, "foods/pumpkin"),
             commonTagOf(Registries.ITEM, "foods/seaweed")
-            );
+        );
 
         tag(commonTagOf(Registries.ITEM, "foods/apple")).add(
             Food.GREEN_APPLE, Food.RED_APPLE
@@ -795,9 +795,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         //Molds
 
         tag(commonTagOf(Registries.ITEM, "molds")).addTags(
-                commonTagOf(Registries.ITEM, "molds/fired"),
-                commonTagOf(Registries.ITEM, "molds/unfired")
-            );
+            commonTagOf(Registries.ITEM, "molds/fired"),
+            commonTagOf(Registries.ITEM, "molds/unfired")
+        );
 
         tag(commonTagOf(Registries.ITEM, "molds/fired"))
             .addTag(FIRED_MOLDS);
@@ -954,7 +954,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             commonTagOf(Registries.ITEM, "tool_heads/chisel"),
             commonTagOf(Registries.ITEM, "tool_heads/spindle"),
             commonTagOf(Registries.ITEM, "tool_heads/fishing_hook")
-            );
+        );
 
         tag(commonTagOf(Registries.ITEM, "tool_heads/pickaxe"))
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE_HEAD);
@@ -1082,10 +1082,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(Food.COD, Food.SALMON, Food.TROPICAL_FISH, Food.BLUEGILL);
         tag(HOLDS_SMALL_FISHING_BAIT)
             .addTag(HOLDS_LARGE_FISHING_BAIT).add(
-            TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD),
-            TFCItems.METAL_ITEMS.get(Metal.BRONZE).get(Metal.ItemType.FISHING_ROD),
-            TFCItems.METAL_ITEMS.get(Metal.BLACK_BRONZE).get(Metal.ItemType.FISHING_ROD),
-            TFCItems.METAL_ITEMS.get(Metal.BISMUTH_BRONZE).get(Metal.ItemType.FISHING_ROD));
+                TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD),
+                TFCItems.METAL_ITEMS.get(Metal.BRONZE).get(Metal.ItemType.FISHING_ROD),
+                TFCItems.METAL_ITEMS.get(Metal.BLACK_BRONZE).get(Metal.ItemType.FISHING_ROD),
+                TFCItems.METAL_ITEMS.get(Metal.BISMUTH_BRONZE).get(Metal.ItemType.FISHING_ROD));
         tag(HOLDS_LARGE_FISHING_BAIT)
             .add(
                 TFCItems.METAL_ITEMS.get(Metal.WROUGHT_IRON).get(Metal.ItemType.FISHING_ROD),
