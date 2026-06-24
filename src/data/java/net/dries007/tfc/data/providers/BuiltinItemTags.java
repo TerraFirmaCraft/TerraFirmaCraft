@@ -10,7 +10,9 @@ import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -410,6 +412,22 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         //Dusts
 
+        tag(Tags.Items.DUSTS).addTags(
+            commonTagOf(Registries.ITEM, "dusts/saltpeter"),
+            commonTagOf(Registries.ITEM, "dusts/charcoal"),
+            commonTagOf(Registries.ITEM, "dusts/coal_coke"),
+            commonTagOf(Registries.ITEM, "dusts/kaolinite"),
+            commonTagOf(Registries.ITEM, "dusts/graphite"),
+            commonTagOf(Registries.ITEM, "dusts/sylvite"),
+            commonTagOf(Registries.ITEM, "dusts/salt"),
+            commonTagOf(Registries.ITEM, "dusts/flux"),
+            commonTagOf(Registries.ITEM, "dusts/ash"),
+            commonTagOf(Registries.ITEM, "dusts/wood_ash"),
+            commonTagOf(Registries.ITEM, "dusts/soda_ash"),
+            commonTagOf(Registries.ITEM, "dusts/sulfur"),
+            commonTagOf(Registries.ITEM, "dusts/lime")
+        );
+
         tag(commonTagOf(Registries.ITEM, "dusts/saltpeter"))
             .add(TFCItems.ORE_POWDERS.get(Ore.SALTPETER).key());
         tag(commonTagOf(Registries.ITEM, "dusts/charcoal"))
@@ -446,6 +464,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 .add(TFCItems.UNFIRED_GLAZED_LARGE_VESSELS.get(color))
                 .add(TFCItems.UNFIRED_GLAZED_VESSELS.get(color))
                 .add(TFCItems.WINDMILL_BLADES.get(color));
+            tag(Tags.Items.DYED)
+                .addTag(commonTagOf(Registries.ITEM, "dyed/" + color.getSerializedName()));
         }
 
         //Fertilizers
@@ -469,9 +489,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "fibers/jute"))
             .add(TFCItems.JUTE_FIBER.key());
 
-        //Foods -- Mods are all over the place with food tags and there seems to be no general consensus on how they should be tagged so I add what I saw were the most common tags used. How I believe they should be used is as follow
-        //c:foods for all food items that can be eaten, if you right-click and the eating animation plays it goes here. For individual items they should follow the format c:foods/<food_name> (e.g. c:foods/blueberry) and the tag should only contain the food item itself, no seeds or other items related to the food. Items should not be added into c:foods directly, should be added to a sub tag and that tag added to c:foods.
-        //For groups of items that share a common name but are different variants of the same item (e.g. blueberry, blackberry, etc.) they should be tagged with a common tag c:foods/berry, c:foods/fruit or c:foods/vegtable. An item might have multiple group tags.
+        //Foods -- Mods are all over the place with food tags, and there seems to be no general consensus on how they should be tagged, so I add what I saw were the most common tags used. How I believe they should be used is as follow
+        //c:foods for all food items that can be eaten, if you right-click and the eating animation plays, it goes here. For individual items they should follow the format c:foods/<food_name> (e.g. c:foods/blueberry), and the tag should only contain the food item itself, no seeds or other items related to the food. Items should not be added into c:foods directly, should be added to a subtag and that tag added to c:foods.
+        //For groups of items that share a common name but are different variants of the same item (e.g., blueberry, blackberry, etc.) they should be tagged with a common tag c:foods/berry, c:foods/fruit or c:foods/vegtable. An item might have multiple group tags.
 
         final EnumSet<Food> RAW_MEATS_FOODS = EnumSet.of(
             Food.BEEF, Food.BEAR, Food.BISON, Food.BLUEGILL,
@@ -661,7 +681,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             final Food jam = entry.getKey();
             final String jamName = jam == Food.PUMPKIN_CHUNKS ? "pumpkin_jam"
                 : jam == Food.MELON_SLICE ? "melon_jam"
-                : jam.getSerializedName();
+                : jam.getSerializedName() + "_jam";
             tag(commonTagOf(Registries.ITEM, "foods/" + jamName))
                 .add(entry.getValue().key());
             tag(FOODS)
@@ -766,12 +786,16 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 metalTag(metal, Metal.ItemType.SHEET, PLATES); // changed to plates to match other mods usage
                 metalTag(metal, Metal.ItemType.DOUBLE_SHEET, DOUBLE_PLATES);  //Changed to Double plates to match other mods usage
                 metalTag(metal, Metal.ItemType.ROD, Tags.Items.RODS);
-                metalTag(metal, Metal.ItemType.ROD, commonTagOf(Registries.ITEM, "rods/all_metal"));
+                tag(commonTagOf(Registries.ITEM, "rods/all_metal"))
+                    .addTag(commonTagOf(Registries.ITEM, "rods/" + metal.getSerializedName()));
                 metalTag(metal, Metal.ItemType.SHEET, commonTagOf(Registries.ITEM, "sheets/" + metal.name().toLowerCase())); //For compatibility with old sheets tag
-                metalTag(metal, Metal.ItemType.DOUBLE_SHEET, commonTagOf(Registries.ITEM, "double_sheets/" + metal.name().toLowerCase())); //For compatibility with old double_sheets tag
+                metalTag(metal, Metal.ItemType.DOUBLE_SHEET, commonTagOf(Registries.ITEM, "double_sheets/" + metal.name().toLowerCase())); //For compatibility with the old double_sheets tag
                 //Incorrect tag usage, storage blocks are for blocks that convert back and forth between block and items
             }
         }
+
+        tag(Tags.Items.RODS)
+            .addTag(commonTagOf(Registries.ITEM, "rods/all_metal"));
 
         //Minecart
 
@@ -818,6 +842,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             commonTagOf(Registries.ITEM, "raw_materials/emerald"),
             commonTagOf(Registries.ITEM, "raw_materials/lapis"),
             commonTagOf(Registries.ITEM, "raw_materials/opal"),
+            commonTagOf(Registries.ITEM, "raw_materials/pyrite"),
             commonTagOf(Registries.ITEM, "raw_materials/sapphire"),
             commonTagOf(Registries.ITEM, "raw_materials/ruby"),
             commonTagOf(Registries.ITEM, "raw_materials/topaz"),
@@ -835,6 +860,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ORES.get(Ore.LAPIS_LAZULI).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/opal"))
             .add(TFCItems.ORES.get(Ore.OPAL).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/pyrite"))
+            .add(TFCItems.ORES.get((Ore.PYRITE)).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/ruby"))
             .add(TFCItems.ORES.get(Ore.RUBY).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/sapphire"))
@@ -865,9 +892,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Ore ore = entry.getKey();
             var gradedOres = entry.getValue();
             Metal metal = ore.metal();
+            final String metalName = metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
             for (var grade : Ore.Grade.values())
             {
-                String tagName = "raw_materials/" + metal.name() + "/" + grade.name();
+                String tagName = "raw_materials/" + metalName + "/" + grade.name().toLowerCase();
                 tag(commonTagOf(Registries.ITEM, tagName))
                     .add(gradedOres.get(grade).key());
                 tag(Tags.Items.RAW_MATERIALS).addTags(commonTagOf(Registries.ITEM, tagName));
@@ -1498,10 +1526,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 TFCBlocks.CRUCIBLE,
                 TFCBlocks.POWDERKEG
             );
-        tag(TRIP_HAMMERS).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER); // N.B. Technical tag, don't include sub-tags
+        tag(TRIP_HAMMERS).add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER); // N.B. Technical tag, don't include subtags
         tag(WELDING_FLUX).add(TFCItems.POWDERS.get(Powder.FLUX));
         tag(THATCH_BED_HIDES).add(TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.LARGE));
-        tag(BOWL_POWDERS) // N.B. Technical tag, don't include sub-tags
+        tag(BOWL_POWDERS) // N.B. Technical tag, don't include subtags
             .add(TFCItems.POWDERS)
             .add(TFCItems.ORE_POWDERS)
             .add(
@@ -1621,12 +1649,21 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         });
     }
 
+    private final Set<TagKey<Item>> initializedMetalPartTags = new HashSet<>();
+
     private void metalTag(Metal metal, Metal.ItemType type, TagKey<Item> baseTag)
     {
-        final TagKey<Item> commonTag = type == Metal.ItemType.SHEET ? commonTagOf(Registries.ITEM, "plates/" + metal.getSerializedName())
-            : type == Metal.ItemType.DOUBLE_SHEET ? commonTagOf(Registries.ITEM, "double_plates/" + metal.getSerializedName())
+        final TagKey<Item> commonTag = type == Metal.ItemType.SHEET
+            ? commonTagOf(Registries.ITEM, "plates/" + metal.getSerializedName())
+            : type == Metal.ItemType.DOUBLE_SHEET
+            ? commonTagOf(Registries.ITEM, "double_plates/" + metal.getSerializedName())
             : commonTagOf(metal, type);
-        tag(commonTag).add(TFCItems.METAL_ITEMS.get(metal).get(type));
+
+        if (initializedMetalPartTags.add(commonTag))
+        {
+            tag(commonTag).add(TFCItems.METAL_ITEMS.get(metal).get(type));
+        }
+
         tag(baseTag).addTag(commonTag);
     }
 
@@ -1644,20 +1681,18 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
     protected CompletableFuture<HolderLookup.Provider> createContentsProvider()
     {
         return super.createContentsProvider().thenCombine(blockTags, (lookup, tagLookup) -> {
-            tagsToCopy.forEach((blockTag, itemTag) -> {
-                tagLookup.apply(blockTag)
-                    .map(TagBuilder::build)
-                    .filter(e -> !e.isEmpty())
-                    .ifPresentOrElse(content -> {
-                        // N.B. Only copy the tag if the original is non-empty. We do this since we copy all vanilla tags by default,
-                        // and we only really want to include the ones that we are adding to
-                        final TagBuilder builder = getOrCreateRawBuilder(itemTag);
-                        content.forEach(builder::add);
-                    }, () -> {
-                        // Throw an error if we try and copy a TFC tag that didn't exist
-                        if (blockTag.location().getNamespace().equals("tfc")) throw new IllegalArgumentException("Copying empty or missing tag " + blockTag.location());
-                    });
-            });
+            tagsToCopy.forEach((blockTag, itemTag) -> tagLookup.apply(blockTag)
+                .map(TagBuilder::build)
+                .filter(e -> !e.isEmpty())
+                .ifPresentOrElse(content -> {
+                    // N.B. Only copy the tag if the original is non-empty. We do this since we copy all vanilla tags by default,
+                    // and we only really want to include the ones that we are adding to
+                    final TagBuilder builder = getOrCreateRawBuilder(itemTag);
+                    content.forEach(builder::add);
+                }, () -> {
+                    // Throw an error if we try and copy a TFC tag that didn't exist
+                    if (blockTag.location().getNamespace().equals("tfc")) throw new IllegalArgumentException("Copying empty or missing tag " + blockTag.location());
+                }));
             return lookup;
         });
     }
