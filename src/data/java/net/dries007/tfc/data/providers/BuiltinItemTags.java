@@ -50,6 +50,8 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.component.glass.GlassOperation;
+import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
@@ -103,20 +105,295 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         // ===== Common Tags ===== //
 
+        //-----Block Item Tags------//
+
         tag(Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
         tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
+
+        tag(SILICA_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.WHITE));
+        tag(OLIVINE_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.GREEN),
+            TFCBlocks.SAND.get(SandBlockType.BROWN));
+        tag(HEMATITIC_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.YELLOW),
+            TFCBlocks.SAND.get(SandBlockType.RED),
+            TFCBlocks.SAND.get(SandBlockType.PINK));
+        tag(VOLCANIC_SAND).add(
+            TFCBlocks.SAND.get(SandBlockType.BLACK));
+
+        for (var entry : TFCBlocks.SMALL_ORES.entrySet())
+        {
+            Ore ore = entry.getKey();
+            Metal metal = ore.metal();
+            tag(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/small"))
+                .add(entry.getValue().asItem().builtInRegistryHolder().key());
+        }
+
+        //-----Item Tags-----//
+
         tag(Tags.Items.STRINGS).add(TFCItems.WOOL_YARN);
         tag(Tags.Items.SEEDS).add(TFCItems.CROP_SEEDS);
         tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
-        tag(Tags.Items.BUCKETS).add(
+        tag(Tags.Items.BUCKETS_EMPTY).add(
             TFCItems.WOODEN_BUCKET,
             TFCItems.RED_STEEL_BUCKET,
             TFCItems.BLUE_STEEL_BUCKET);
 
-        tag(Tags.Items.GEMS_AMETHYST).add(TFCItems.GEMS.get(Ore.AMETHYST));
-        tag(Tags.Items.GEMS_DIAMOND).add(TFCItems.GEMS.get(Ore.DIAMOND));
-        tag(Tags.Items.GEMS_EMERALD).add(TFCItems.GEMS.get(Ore.EMERALD));
-        tag(Tags.Items.GEMS_LAPIS).add(TFCItems.GEMS.get(Ore.LAPIS_LAZULI));
+        for (Map.Entry<Ore, TFCItems.ItemId> gemEntry : TFCItems.GEMS.entrySet())
+        {
+            if(gemEntry.getKey() == Ore.LAPIS_LAZULI)
+            {
+                tag(commonTagOf(Registries.ITEM, "gems/lapis"))
+                    .add(gemEntry.getValue().key());
+                tag(commonTagOf(Registries.ITEM, "dusts/lapis"))
+                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
+            }
+            else
+            {
+                String gemName = gemEntry.getKey().name();
+                tag(commonTagOf(Registries.ITEM, "gems/" + gemName))
+                    .add(gemEntry.getValue().key());
+                tag(commonTagOf(Registries.ITEM, "dusts/" + gemName))
+                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
+            }
+        }
+
+        //Dusts
+
+        tag(commonTagOf(Registries.ITEM, "dusts/saltpeter"))
+            .add(TFCItems.ORE_POWDERS.get(Ore.SALTPETER).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/charcoal"))
+            .add(TFCItems.POWDERS.get(Powder.CHARCOAL).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/coke"))
+            .add(TFCItems.POWDERS.get(Powder.COKE).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/kaolinite"))
+            .add(TFCItems.POWDERS.get(Powder.KAOLINITE).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/graphite"))
+            .add(TFCItems.ORE_POWDERS.get(Ore.GRAPHITE).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/sylvite"))
+            .add(TFCItems.ORE_POWDERS.get(Ore.SYLVITE).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/salt"))
+            .add(TFCItems.POWDERS.get(Powder.SALT).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/flux"))
+            .add(TFCItems.POWDERS.get(Powder.FLUX).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/wood_ash"))
+            .add(TFCItems.POWDERS.get(Powder.WOOD_ASH).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/soda_ash"))
+            .add(TFCItems.POWDERS.get(Powder.SODA_ASH).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/sulfur"))
+            .add(TFCItems.ORE_POWDERS.get(Ore.SULFUR).key());
+        tag(commonTagOf(Registries.ITEM, "dusts/lime"))
+            .add(TFCItems.POWDERS.get(Powder.LIME).key());
+
+        tag(Tags.Items.FERTILIZERS).add(
+            TFCItems.COMPOST.key(),
+            TFCItems.FOOD.get(Food.SHELLFISH).key(),
+            TFCItems.ORE_POWDERS.get(Ore.SALTPETER).key(),
+            TFCItems.POWDERS.get(Powder.WOOD_ASH).key(),
+            TFCItems.ORE_POWDERS.get(Ore.SYLVITE).key(),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().asItem().builtInRegistryHolder().key());
+
+        tag(Tags.Items.MUSIC_DISCS)
+            .add(TFCItems.BLANK_DISC.key());
+
+        //Raw Materials
+
+        for (var entry : TFCItems.GRADED_ORES.entrySet())
+        {
+            Ore ore = entry.getKey();
+            var gradedOres = entry.getValue();
+            Metal metal = ore.metal();
+            for (var grade : Ore.Grade.values())
+            {
+                tag(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/" + grade.name()))
+                    .add(gradedOres.get(grade).key());
+            }
+        }
+
+        tag(commonTagOf(Registries.ITEM, "raw_materials/amethyst"))
+            .add(TFCItems.ORES.get(Ore.AMETHYST).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/diamond"))
+            .add(TFCItems.ORES.get(Ore.DIAMOND).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/emerald"))
+            .add(TFCItems.ORES.get(Ore.EMERALD).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/lapis"))
+            .add(TFCItems.ORES.get(Ore.LAPIS_LAZULI).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/opal"))
+            .add(TFCItems.ORES.get(Ore.OPAL).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/ruby"))
+            .add(TFCItems.ORES.get(Ore.RUBY).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/sapphire"))
+            .add(TFCItems.ORES.get(Ore.SAPPHIRE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/topaz"))
+            .add(TFCItems.ORES.get(Ore.TOPAZ).key());
+
+        tag(commonTagOf(Registries.ITEM, "raw_materials/redstone"))
+            .add(TFCItems.ORES.get(Ore.CINNABAR).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/redstone"))
+            .add(TFCItems.ORES.get(Ore.CRYOLITE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/flux"))
+            .add(TFCItems.ORES.get(Ore.BORAX).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/graphite"))
+            .add(TFCItems.ORES.get(Ore.GRAPHITE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/saltpeter"))
+            .add(TFCItems.ORES.get(Ore.SALTPETER).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/sulfur"))
+            .add(TFCItems.ORES.get(Ore.SULFUR).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/sylvite"))
+            .add(TFCItems.ORES.get(Ore.SYLVITE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/salt"))
+            .add(TFCItems.ORES.get(Ore.HALITE).key());
+
+        //Misc
+
+        tag(commonTagOf(Registries.ITEM, "gears/brass"))
+            .add(TFCItems.BRASS_MECHANISMS); //????
+
+        tag(Tags.Items.BUCKETS_ENTITY_WATER).add(
+            TFCItems.JELLYFISH_BUCKET.key(),
+            TFCItems.TROPICAL_FISH_BUCKET.key(),
+            TFCItems.PUFFERFISH_BUCKET.key(),
+            TFCItems.COD_BUCKET.key()
+        );
+        for(Fish fish : Fish.values()){
+            tag(Tags.Items.BUCKETS_ENTITY_WATER).add(TFCItems.FRESHWATER_FISH_BUCKETS.get(fish).key());
+        }
+
+        tag(Tags.Items.BRICKS)
+
+        //Foods
+
+        tag(FRUITS).add(
+            Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY,
+            Food.GOOSEBERRY, Food.RASPBERRY, Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY, Food.BANANA,
+            Food.CHERRY, Food.GREEN_APPLE, Food.LEMON, Food.OLIVE, Food.ORANGE, Food.PEACH, Food.PLUM, Food.RED_APPLE, Food.MELON_SLICE);
+        tag(VEGETABLES).add(
+            Food.BEET, Food.CABBAGE, Food.CARROT, Food.GARLIC, Food.GREEN_BEAN, Food.GREEN_BELL_PEPPER,
+            Food.ONION, Food.POTATO, Food.BAKED_POTATO, Food.RED_BELL_PEPPER, Food.SOYBEAN, Food.SUGARCANE,
+            Food.SQUASH, Food.TOMATO, Food.YELLOW_BELL_PEPPER, Food.CASSAVA, Food.COOKED_CASSAVA, Food.LENTIL,
+            Food.COOKED_LENTIL, Food.PEANUT, Food.RADISH, Food.PUMPKIN_CHUNKS);
+        tag(RAW_MEATS).add(
+            Food.BEEF, Food.PORK, Food.CHICKEN, Food.QUAIL, Food.MUTTON, Food.BEAR, Food.HORSE_MEAT, Food.PHEASANT, Food.GROUSE, Food.TURKEY, Food.PEAFOWL, Food.VENISON, Food.BISON, Food.WOLF, Food.RABBIT, Food.FOX, Food.HYENA, Food.DUCK, Food.CHEVON, Food.GRAN_FELINE, Food.TURTLE, Food.CAMELIDAE, Food.FROG_LEGS, Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
+        tag(COOKED_MEATS).add(
+            Food.COOKED_BEEF, Food.COOKED_PORK, Food.COOKED_CHICKEN, Food.COOKED_QUAIL, Food.COOKED_MUTTON, Food.COOKED_BEAR, Food.COOKED_HORSE_MEAT, Food.COOKED_PHEASANT, Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_GROUSE, Food.COOKED_VENISON, Food.COOKED_BISON, Food.COOKED_WOLF, Food.COOKED_RABBIT, Food.COOKED_FOX, Food.COOKED_HYENA, Food.COOKED_DUCK, Food.COOKED_CHEVON, Food.COOKED_CAMELIDAE, Food.COOKED_FROG_LEGS, Food.COOKED_GRAN_FELINE, Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
+        tag(MEATS)
+            .addTag(RAW_MEATS).addTag(COOKED_MEATS);
+        tag(RAW_FISH).add(
+            Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
+        tag(COOKED_FISH).add(
+            Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
+        tag(FISH)
+            .addTags(RAW_FISH, COOKED_FISH);
+        tag(FLOUR).add(
+            Food.BARLEY_FLOUR, Food.MAIZE_FLOUR, Food.OAT_FLOUR, Food.RYE_FLOUR, Food.RICE_FLOUR, Food.WHEAT_FLOUR);
+        tag(DOUGH).add(
+            Food.BARLEY_DOUGH, Food.MAIZE_DOUGH, Food.OAT_DOUGH, Food.RYE_DOUGH, Food.RICE_DOUGH, Food.WHEAT_DOUGH);
+        tag(GRAINS).add(
+            Food.BARLEY_GRAIN, Food.MAIZE_GRAIN, Food.OAT_GRAIN, Food.RYE_GRAIN, Food.RICE_GRAIN, Food.WHEAT_GRAIN);
+        tag(BREAD)
+            .add(Food.BARLEY_BREAD, Food.MAIZE_BREAD, Food.OAT_BREAD, Food.RYE_BREAD, Food.RICE_BREAD, Food.WHEAT_BREAD)
+            .add(Items.BREAD);
+        tag(DAIRY).add(Food.CHEESE);
+        tag(SALADS).add(TFCItems.SALADS);
+        tag(SOUPS).add(TFCItems.SOUPS);
+
+        tag(SANDWICHES).add(
+            Food.BARLEY_BREAD_JAM_SANDWICH, Food.BARLEY_BREAD_SANDWICH, Food.MAIZE_BREAD_JAM_SANDWICH, Food.MAIZE_BREAD_SANDWICH,
+            Food.OAT_BREAD_JAM_SANDWICH, Food.OAT_BREAD_SANDWICH, Food.RYE_BREAD_JAM_SANDWICH, Food.RYE_BREAD_SANDWICH,
+            Food.RICE_BREAD_JAM_SANDWICH, Food.RICE_BREAD_SANDWICH, Food.WHEAT_BREAD_SANDWICH, Food.WHEAT_BREAD);
+
+        tag(Tags.Items.FOODS_BERRY).add(
+            Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY,
+            Food.CRANBERRY, Food.ELDERBERRY, Food.GOOSEBERRY, Food.RASPBERRY,
+            Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY);
+
+        tag(commonTagOf(Registries.ITEM, "foods/jam")).add(
+            TFCItems.JAM.get(Food.BANANA).key(), TFCItems.JAM.get(Food.BLACKBERRY).key(), TFCItems.JAM.get(Food.BLUEBERRY).key(),
+            TFCItems.JAM.get(Food.BUNCHBERRY).key(), TFCItems.JAM.get(Food.CHERRY).key(), TFCItems.JAM.get(Food.CLOUDBERRY).key(),
+            TFCItems.JAM.get(Food.CRANBERRY).key(), TFCItems.JAM.get(Food.ELDERBERRY).key(), TFCItems.JAM.get(Food.GOOSEBERRY).key(),
+            TFCItems.JAM.get(Food.GREEN_APPLE).key(), TFCItems.JAM.get(Food.LEMON).key(), TFCItems.JAM.get(Food.OLIVE).key(),
+            TFCItems.JAM.get(Food.ORANGE).key(), TFCItems.JAM.get(Food.PEACH).key(), TFCItems.JAM.get(Food.PLUM).key(),
+            TFCItems.JAM.get(Food.MELON_SLICE).key(), TFCItems.JAM.get(Food.RASPBERRY).key(), TFCItems.JAM.get(Food.RED_APPLE).key(),
+            TFCItems.JAM.get(Food.SNOWBERRY).key(), TFCItems.JAM.get(Food.STRAWBERRY).key(), TFCItems.JAM.get(Food.WINTERGREEN_BERRY).key()
+        );
+
+        //Tools
+
+        // Common `#c:tools`
+        tag(Tags.Items.TOOLS).addTags(
+            TOOLS_HAMMER,
+            TOOLS_SAW,
+            TOOLS_SCYTHE,
+            TOOLS_PROPICK,
+            TOOLS_KNIFE,
+            TOOLS_CHISEL,
+            TOOLS_GLASSWORKING,
+            TOOLS_BLOWPIPE);
+
+        // Common `#c:tools/???`
+        tag(Tags.Items.TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
+        tag(Tags.Items.TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
+        tag(Tags.Items.TOOLS_SPEAR)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
+        tag(Tags.Items.TOOLS_SHEAR).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHEARS);
+        tag(Tags.Items.TOOLS_IGNITER)
+            .add(TFCItems.FIRESTARTER)
+            .add(TFCItems.FLINT_AND_PYRITE);
+        tag(Tags.Items.TOOLS_MACE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE);
+        tag(Tags.Items.MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
+        tag(Tags.Items.RANGED_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
+        tag(Tags.Items.MELEE_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD).add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
+        // N.B.
+        // melee_weapons, ranged_weapons, and mining_tool are all poorly defined, their use case is not clear,
+        // and they don't contain other tool tags (???) so it's unclear what the point of them is.
+
+        tag(TOOLS_HAMMER)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER);
+        tag(TOOLS_SAW).add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
+        tag(TOOLS_SCYTHE).add(TFCItems.METAL_ITEMS, Metal.ItemType.SCYTHE);
+        tag(TOOLS_PROPICK).add(TFCItems.METAL_ITEMS, Metal.ItemType.PROPICK);
+        tag(TOOLS_KNIFE)
+            .add(TFCItems.METAL_ITEMS, Metal.ItemType.KNIFE)
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE);
+        tag(TOOLS_CHISEL).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL);
+        tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
+        tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
+        tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/sandpaper")))
+            .add(TFCItems.SANDPAPER.key());
+        tag(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/spindle")))
+            .add(TFCItems.SPINDLE.key());
+
+        //Tool Heads
+        tag(commonTagOf(Registries.ITEM, "tool_heads"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/pickaxe"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/axe"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/sword"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/shovel"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/hoe"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/hammer"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/scythe"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/propick"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/saw"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/mace"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/javelin"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/knife"))
+
+        tag(commonTagOf(Registries.ITEM, "tool_heads/chisel"))
 
         // ===== TFC Tags ===== //
 
@@ -126,10 +403,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             if (metal.defaultParts())
             {
                 metalTag(metal, Metal.ItemType.DOUBLE_INGOT, DOUBLE_INGOTS);
-                metalTag(metal, Metal.ItemType.SHEET, SHEETS);
-                metalTag(metal, Metal.ItemType.DOUBLE_SHEET, DOUBLE_SHEETS);
+                metalTag(metal, Metal.ItemType.SHEET, PLATES);
+                metalTag(metal, Metal.ItemType.DOUBLE_SHEET, DOUBLE_PLATES);
                 metalTag(metal, Metal.ItemType.ROD, Tags.Items.RODS);
-                copy(storageBlockTagOf(Registries.BLOCK, metal), storageBlockTagOf(Registries.ITEM, metal));
+                //Incorrect tag usage, storage blocks are for blocks that convert back and forth between block and items
             }
         }
 
@@ -138,26 +415,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             commonTagOf(Metal.BISMUTH_BRONZE, Metal.ItemType.DOUBLE_SHEET),
             commonTagOf(Metal.BLACK_BRONZE, Metal.ItemType.DOUBLE_SHEET));
 
-        tag(FRUITS).add(Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY, Food.GOOSEBERRY, Food.RASPBERRY, Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY, Food.BANANA, Food.CHERRY, Food.GREEN_APPLE, Food.LEMON, Food.OLIVE, Food.ORANGE, Food.PEACH, Food.PLUM, Food.RED_APPLE, Food.MELON_SLICE);
-        tag(VEGETABLES).add(Food.BEET, Food.CABBAGE, Food.CARROT, Food.GARLIC, Food.GREEN_BEAN, Food.GREEN_BELL_PEPPER, Food.ONION, Food.POTATO, Food.BAKED_POTATO, Food.RED_BELL_PEPPER, Food.SOYBEAN, Food.SUGARCANE, Food.SQUASH, Food.TOMATO, Food.YELLOW_BELL_PEPPER, Food.CASSAVA, Food.COOKED_CASSAVA, Food.LENTIL, Food.COOKED_LENTIL, Food.PEANUT, Food.RADISH, Food.PUMPKIN_CHUNKS);
-        tag(RAW_MEATS).add(Food.BEEF, Food.PORK, Food.CHICKEN, Food.QUAIL, Food.MUTTON, Food.BEAR, Food.HORSE_MEAT, Food.PHEASANT, Food.GROUSE, Food.TURKEY, Food.PEAFOWL, Food.VENISON, Food.BISON, Food.WOLF, Food.RABBIT, Food.FOX, Food.HYENA, Food.DUCK, Food.CHEVON, Food.GRAN_FELINE, Food.TURTLE, Food.CAMELIDAE, Food.FROG_LEGS, Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
-        tag(COOKED_MEATS).add(Food.COOKED_BEEF, Food.COOKED_PORK, Food.COOKED_CHICKEN, Food.COOKED_QUAIL, Food.COOKED_MUTTON, Food.COOKED_BEAR, Food.COOKED_HORSE_MEAT, Food.COOKED_PHEASANT, Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_GROUSE, Food.COOKED_VENISON, Food.COOKED_BISON, Food.COOKED_WOLF, Food.COOKED_RABBIT, Food.COOKED_FOX, Food.COOKED_HYENA, Food.COOKED_DUCK, Food.COOKED_CHEVON, Food.COOKED_CAMELIDAE, Food.COOKED_FROG_LEGS, Food.COOKED_GRAN_FELINE, Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
-        tag(MEATS).addTag(RAW_MEATS).addTag(COOKED_MEATS);
-        tag(RAW_FISH).add(Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
-        tag(COOKED_FISH).add(Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
-        tag(FISH).addTags(RAW_FISH, COOKED_FISH);
-        tag(FLOUR).add(Food.BARLEY_FLOUR, Food.MAIZE_FLOUR, Food.OAT_FLOUR, Food.RYE_FLOUR, Food.RICE_FLOUR, Food.WHEAT_FLOUR);
-        tag(DOUGH).add(Food.BARLEY_DOUGH, Food.MAIZE_DOUGH, Food.OAT_DOUGH, Food.RYE_DOUGH, Food.RICE_DOUGH, Food.WHEAT_DOUGH);
-        tag(GRAINS).add(Food.BARLEY_GRAIN, Food.MAIZE_GRAIN, Food.OAT_GRAIN, Food.RYE_GRAIN, Food.RICE_GRAIN, Food.WHEAT_GRAIN);
-        tag(BREAD)
-            .add(Food.BARLEY_BREAD, Food.MAIZE_BREAD, Food.OAT_BREAD, Food.RYE_BREAD, Food.RICE_BREAD, Food.WHEAT_BREAD)
-            .add(Items.BREAD);
-        tag(DAIRY).add(Food.CHEESE);
-        tag(SALADS).add(TFCItems.SALADS);
-        tag(SOUPS).add(TFCItems.SOUPS);
-        tag(SANDWICHES).add(Food.BARLEY_BREAD_JAM_SANDWICH, Food.BARLEY_BREAD_SANDWICH, Food.MAIZE_BREAD_JAM_SANDWICH, Food.MAIZE_BREAD_SANDWICH,
-            Food.OAT_BREAD_JAM_SANDWICH, Food.OAT_BREAD_SANDWICH, Food.RYE_BREAD_JAM_SANDWICH, Food.RYE_BREAD_SANDWICH,
-            Food.RICE_BREAD_JAM_SANDWICH, Food.RICE_BREAD_SANDWICH, Food.WHEAT_BREAD_SANDWICH, Food.WHEAT_BREAD);
         tag(JAM).add(TFCItems.JAM);
         tag(FOODS).addTag(JAM).add(TFCItems.FOOD).addTag(SOUPS).addTag(SALADS).addTag(SANDWICHES);
         tag(PRESERVES).add(TFCItems.UNSEALED_FRUIT_PRESERVES);
@@ -393,35 +650,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
 
-        // Common `#c:tools/???`
-        tag(Tags.Items.TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
-        tag(Tags.Items.TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
-        tag(Tags.Items.TOOLS_SPEAR)
-            .add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
-        tag(Tags.Items.TOOLS_SHEAR).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHEARS);
-        tag(Tags.Items.TOOLS_IGNITER).add(TFCItems.FIRESTARTER);
-        tag(Tags.Items.TOOLS_MACE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE);
-        tag(Tags.Items.MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
-        tag(Tags.Items.RANGED_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
-        tag(Tags.Items.MELEE_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD).add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
-        // N.B.
-        // melee_weapons, ranged_weapons, and mining_tool are all poorly defined, their use case is not clear,
-        // and they don't contain other tool tags (???) so it's unclear what the point of them is.
 
-        // TFC Added `#c:tools/`
-        tag(TOOLS_HAMMER)
-            .add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER);
-        tag(TOOLS_SAW).add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
-        tag(TOOLS_SCYTHE).add(TFCItems.METAL_ITEMS, Metal.ItemType.SCYTHE);
-        tag(TOOLS_PROPICK).add(TFCItems.METAL_ITEMS, Metal.ItemType.PROPICK);
-        tag(TOOLS_KNIFE)
-            .add(TFCItems.METAL_ITEMS, Metal.ItemType.KNIFE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE);
-        tag(TOOLS_CHISEL).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL);
-        tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
-        tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
         tag(TOOLS_SHARP).addTags(
             ItemTags.HOES,
             TOOLS_KNIFE,
@@ -603,17 +832,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.OXISOL_MUD_BRICK)
             .add(TFCItems.MOLLISOL_MUD_BRICK);
 
-        // Common `#c:tools`
-        tag(Tags.Items.TOOLS).addTags(
-            TOOLS_HAMMER,
-            TOOLS_SAW,
-            TOOLS_SCYTHE,
-            TOOLS_PROPICK,
-            TOOLS_KNIFE,
-            TOOLS_CHISEL,
-            TOOLS_GLASSWORKING,
-            TOOLS_BLOWPIPE);
-
         // Tool Damage Types
         tag(DEALS_SLASHING_DAMAGE).addTags(
             ItemTags.SWORDS,
@@ -650,21 +868,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.VOLCANIC_GLASS_BOTTLE);
         tag(GLASS_POTASH).add(TFCItems.POWDERS.get(Powder.SODA_ASH), TFCItems.ORE_POWDERS.get(Ore.SALTPETER));
 
-        tag(SILICA_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.WHITE));
-        tag(OLIVINE_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.GREEN),
-            TFCBlocks.SAND.get(SandBlockType.BROWN));
-        tag(HEMATITIC_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.YELLOW),
-            TFCBlocks.SAND.get(SandBlockType.RED),
-            TFCBlocks.SAND.get(SandBlockType.PINK));
-        tag(VOLCANIC_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.BLACK));
-
         tag(HIGH_QUALITY_CLOTH).add(TFCItems.SILK_CLOTH, TFCItems.WOOL_CLOTH);
         tag(GEM_POWDERS).addOnly(TFCItems.ORE_POWDERS, Ore::isGem);
-        tag(SULFUR_POWDER).add(TFCItems.ORE_POWDERS.get(Ore.SULFUR).asItem());
         tag(BOOKS).add(
             Items.BOOK,
             Items.ENCHANTED_BOOK,
