@@ -186,6 +186,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "dusts/lime"))
             .add(TFCItems.POWDERS.get(Powder.LIME).key());
 
+
         tag(Tags.Items.FERTILIZERS).add(
             TFCItems.COMPOST.key(),
             TFCItems.FOOD.get(Food.SHELLFISH).key(),
@@ -199,6 +200,21 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         //Raw Materials
 
+        tag(Tags.Items.RAW_MATERIALS).addTags(
+                commonTagOf(Registries.ITEM, "raw_materials/saltpeter"),
+                commonTagOf(Registries.ITEM, "raw_materials/charcoal"),
+                commonTagOf(Registries.ITEM, "raw_materials/coke"),
+                commonTagOf(Registries.ITEM, "raw_materials/kaolinite"),
+                commonTagOf(Registries.ITEM, "raw_materials/graphite"),
+                commonTagOf(Registries.ITEM, "raw_materials/sylvite"),
+                commonTagOf(Registries.ITEM, "raw_materials/salt"),
+                commonTagOf(Registries.ITEM, "raw_materials/flux"),
+                commonTagOf(Registries.ITEM, "raw_materials/wood_ash"),
+                commonTagOf(Registries.ITEM, "raw_materials/soda_ash"),
+                commonTagOf(Registries.ITEM, "raw_materials/sulfur"),
+                commonTagOf(Registries.ITEM, "raw_materials/lime")
+        );
+
         for (var entry : TFCItems.GRADED_ORES.entrySet())
         {
             Ore ore = entry.getKey();
@@ -208,6 +224,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             {
                 tag(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/" + grade.name()))
                     .add(gradedOres.get(grade).key());
+                tag(Tags.Items.RAW_MATERIALS).addTags(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/" + grade.name()));
             }
         }
 
@@ -236,6 +253,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ORES.get(Ore.BORAX).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/graphite"))
             .add(TFCItems.ORES.get(Ore.GRAPHITE).key());
+        tag(commonTagOf(Registries.ITEM, "raw_materials/plaster"))
+            .add(TFCItems.ORES.get(Ore.GYPSUM).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/saltpeter"))
             .add(TFCItems.ORES.get(Ore.SALTPETER).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/sulfur"))
@@ -263,6 +282,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(Tags.Items.BRICKS)
 
         //Foods
+
+        tag(FOODS)
+            .addTags(commonTagOf(Registries.ITEM, "jam"));
 
         tag(FRUITS).add(
             Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY,
