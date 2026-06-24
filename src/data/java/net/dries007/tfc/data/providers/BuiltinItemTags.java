@@ -25,7 +25,6 @@ import net.minecraft.data.tags.VanillaItemTagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
@@ -135,7 +134,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
 
         tag(Tags.Items.FERTILIZERS)
-            .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO).get().asItem().builtInRegistryHolder().key());
+            .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO));
 
         //Rods
 
@@ -171,7 +170,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Ore ore = entry.getKey();
             Metal metal = ore.metal();
             tag(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/small"))
-                .add(entry.getValue().asItem().builtInRegistryHolder().key());
+                .add(TFCBlocks.SMALL_ORES.get(ore));
         }
 
         //-----Item Tags-----//
@@ -472,18 +471,18 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         //Foods -- Mods are all over the place with food tags and there seems to be no general consensus on how they should be tagged so I add what I saw were the most common tags used. How I believe they should be used is as follow
         //c:foods for all food items that can be eaten, if you right-click and the eating animation plays it goes here. For individual items they should follow the format c:foods/<food_name> (e.g. c:foods/blueberry) and the tag should only contain the food item itself, no seeds or other items related to the food. Items should not be added into c:foods directly, should be added to a sub tag and that tag added to c:foods.
-        // For groups of items that share a common name but are different variants of the same item (e.g. blueberry, blackberry, etc.) they should be tagged with a common tag c:foods/berry, c:foods/fruit or c:foods/vegtable. An item might have multiple group tags.
+        //For groups of items that share a common name but are different variants of the same item (e.g. blueberry, blackberry, etc.) they should be tagged with a common tag c:foods/berry, c:foods/fruit or c:foods/vegtable. An item might have multiple group tags.
 
         final EnumSet<Food> RAW_MEATS_FOODS = EnumSet.of(
-            Food.BEEF, Food.BEAR, Food.BISON, Food.BLUEGILL, Food.BLUEGILL,
-            Food.CALAMARI, Food.CALAMARI, Food.CAMELIDAE, Food.CHEVON, Food.CHICKEN,
-            Food.COD, Food.COD, Food.CRAPPIE, Food.CRAPPIE, Food.DUCK,
+            Food.BEEF, Food.BEAR, Food.BISON, Food.BLUEGILL,
+            Food.CALAMARI, Food.CAMELIDAE, Food.CHEVON, Food.CHICKEN,
+            Food.COD, Food.CRAPPIE, Food.DUCK,
             Food.FOX, Food.FROG_LEGS, Food.GRAN_FELINE, Food.GROUSE, Food.HORSE_MEAT,
-            Food.HYENA, Food.LAKE_TROUT, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.LARGEMOUTH_BASS,
+            Food.HYENA, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS,
             Food.MUTTON, Food.PEAFOWL, Food.PHEASANT, Food.PORK, Food.QUAIL,
-            Food.RABBIT, Food.RAINBOW_TROUT, Food.RAINBOW_TROUT, Food.SALMON,
-            Food.SALMON, Food.SHELLFISH, Food.SHELLFISH, Food.SMALLMOUTH_BASS,
-            Food.SMALLMOUTH_BASS, Food.TROPICAL_FISH, Food.TROPICAL_FISH, Food.TURKEY,
+            Food.RABBIT, Food.RAINBOW_TROUT, Food.SALMON,
+            Food.SHELLFISH, Food.SMALLMOUTH_BASS,
+            Food.TROPICAL_FISH, Food.TURKEY,
             Food.TURTLE, Food.VENISON, Food.WOLF
         );
 
@@ -819,8 +818,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             commonTagOf(Registries.ITEM, "raw_materials/emerald"),
             commonTagOf(Registries.ITEM, "raw_materials/lapis"),
             commonTagOf(Registries.ITEM, "raw_materials/opal"),
+            commonTagOf(Registries.ITEM, "raw_materials/sapphire"),
             commonTagOf(Registries.ITEM, "raw_materials/ruby"),
-            commonTagOf(Registries.ITEM, "raw_Materials/topaz"),
+            commonTagOf(Registries.ITEM, "raw_materials/topaz"),
             commonTagOf(Registries.ITEM, "raw_materials/redstone"),
             commonTagOf(Registries.ITEM, "raw_materials/plaster")
         );
@@ -1423,7 +1423,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(GLASS_BATCHES_NOT_T1).add(TFCItems.HEMATITIC_GLASS_BATCH, TFCItems.OLIVINE_GLASS_BATCH, TFCItems.VOLCANIC_GLASS_BATCH);
         tag(GLASS_BLOWPIPES).add(TFCItems.BLOWPIPE_WITH_GLASS, TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS);
         tag(BLOWPIPES).addTags(TOOLS_BLOWPIPE, GLASS_BLOWPIPES);
-        tag(GLASS_POWDERS).add(GlassOperation.POWDERS.get().keySet().stream().sorted(Comparator.comparing(item -> Item.getId(item)))); // Sorted to make generation deterministic
+        tag(GLASS_POWDERS).add(GlassOperation.POWDERS.get().keySet().stream().sorted(Comparator.comparing(Item::getId))); // Sorted to make generation deterministic
         tag(GLASS_BOTTLES).add(
             TFCItems.SILICA_GLASS_BOTTLE,
             TFCItems.HEMATITIC_GLASS_BOTTLE,
@@ -1623,7 +1623,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
     private void metalTag(Metal metal, Metal.ItemType type, TagKey<Item> baseTag)
     {
-        final TagKey<Item> commonTag = type == type.SHEET ? commonTagOf(Registries.ITEM, "plate/" + metal.getSerializedName()) : type == type.DOUBLE_SHEET ? commonTagOf(Registries.ITEM, "double_plate/" + metal.getSerializedName()) : commonTagOf(metal, type);
+        final TagKey<Item> commonTag = type == Metal.ItemType.SHEET ? commonTagOf(Registries.ITEM, "plates/" + metal.getSerializedName())
+            : type == Metal.ItemType.DOUBLE_SHEET ? commonTagOf(Registries.ITEM, "double_plates/" + metal.getSerializedName())
+            : commonTagOf(metal, type);
         tag(commonTag).add(TFCItems.METAL_ITEMS.get(metal).get(type));
         tag(baseTag).addTag(commonTag);
     }
