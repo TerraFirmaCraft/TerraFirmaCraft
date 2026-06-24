@@ -171,8 +171,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         {
             Ore ore = entry.getKey();
             Metal metal = ore.metal();
-            tag(commonTagOf(Registries.ITEM, "raw_materials/" + metal.name() + "/small"))
+            final String metalName = metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
+            final String tagName = "raw_materials/" +metalName + "/small";
+            tag(commonTagOf(Registries.ITEM, tagName))
                 .add(TFCBlocks.SMALL_ORES.get(ore));
+            tag(Tags.Items.RAW_MATERIALS)
+                .addTag(commonTagOf(Registries.ITEM, tagName));
         }
 
         //-----Item Tags-----//
@@ -686,7 +690,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 .add(entry.getValue().key());
             tag(FOODS)
                 .addTag(commonTagOf(Registries.ITEM, "foods/" + jamName));
-            tag(commonTagOf(Registries.ITEM, entry.getKey().getSerializedName()))
+            tag(commonTagOf(Registries.ITEM, jamName))
                 .add(entry.getValue().key());
         }
 
@@ -788,8 +792,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 metalTag(metal, Metal.ItemType.ROD, Tags.Items.RODS);
                 tag(commonTagOf(Registries.ITEM, "rods/all_metal"))
                     .addTag(commonTagOf(Registries.ITEM, "rods/" + metal.getSerializedName()));
-                metalTag(metal, Metal.ItemType.SHEET, commonTagOf(Registries.ITEM, "sheets/" + metal.name().toLowerCase())); //For compatibility with old sheets tag
-                metalTag(metal, Metal.ItemType.DOUBLE_SHEET, commonTagOf(Registries.ITEM, "double_sheets/" + metal.name().toLowerCase())); //For compatibility with the old double_sheets tag
+                tag(commonTagOf(Registries.ITEM, "sheets/" + metal.getSerializedName())) //For compatibility with old sheets tag
+                    .add(TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHEET));
+                tag(commonTagOf(Registries.ITEM, "sheets"))
+                    .addTag(commonTagOf(Registries.ITEM, "double_sheets/" + metal.getSerializedName()));
+                tag(commonTagOf(Registries.ITEM, "double_sheets/" + metal.getSerializedName()))  //For compatibility with the old double_sheets tag
+                    .add(TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.DOUBLE_SHEET));
+                tag(commonTagOf(Registries.ITEM, "double_sheets"))
+                    .addTag(commonTagOf(Registries.ITEM, "double_sheets/" + metal.getSerializedName()));
                 //Incorrect tag usage, storage blocks are for blocks that convert back and forth between block and items
             }
         }
@@ -1661,7 +1671,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         if (initializedMetalPartTags.add(commonTag))
         {
-            tag(commonTag).add(TFCItems.METAL_ITEMS.get(metal).get(type));
+            tag(commonTag).add(TFCItems.METAL_ITEMS.get(metal).get(type).key());
         }
 
         tag(baseTag).addTag(commonTag);

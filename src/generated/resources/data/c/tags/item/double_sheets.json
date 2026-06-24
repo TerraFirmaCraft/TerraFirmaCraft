@@ -1,0 +1,23 @@
+{
+  "values": [
+    "#c:double_sheets/bismuth",
+    "#c:double_sheets/bismuth_bronze",
+    "#c:double_sheets/black_bronze",
+    "#c:double_sheets/bronze",
+    "#c:double_sheets/brass",
+    "#c:double_sheets/copper",
+    "#c:double_sheets/gold",
+    "#c:double_sheets/nickel",
+    "#c:double_sheets/rose_gold",
+    "#c:double_sheets/silver",
+    "#c:double_sheets/tin",
+    "#c:double_sheets/zinc",
+    "#c:double_sheets/sterling_silver",
+    "#c:double_sheets/wrought_iron",
+    "#c:double_sheets/cast_iron",
+    "#c:double_sheets/steel",
+    "#c:double_sheets/black_steel",
+    "#c:double_sheets/blue_steel",
+    "#c:double_sheets/red_steel"
+  ]
+}

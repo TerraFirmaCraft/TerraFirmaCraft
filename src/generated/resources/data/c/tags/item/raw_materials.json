@@ -1,5 +1,17 @@
 {
   "values": [
+    "#c:raw_materials/copper/small",
+    "#c:raw_materials/gold/small",
+    "#c:raw_materials/iron/small",
+    "#c:raw_materials/silver/small",
+    "#c:raw_materials/tin/small",
+    "#c:raw_materials/bismuth/small",
+    "#c:raw_materials/nickel/small",
+    "#c:raw_materials/copper/small",
+    "#c:raw_materials/iron/small",
+    "#c:raw_materials/iron/small",
+    "#c:raw_materials/zinc/small",
+    "#c:raw_materials/copper/small",
     "#c:raw_materials/saltpeter",
     "#c:raw_materials/graphite",
     "#c:raw_materials/sylvite",
