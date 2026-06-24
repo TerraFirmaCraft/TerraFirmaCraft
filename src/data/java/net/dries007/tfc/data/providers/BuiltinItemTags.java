@@ -921,6 +921,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             }
         }
 
+        //Ropes
+
+        tag(Tags.Items.ROPES).add(TFCItems.ROPE);
 
         //Seeds
 
