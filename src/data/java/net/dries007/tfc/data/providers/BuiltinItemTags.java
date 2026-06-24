@@ -325,6 +325,29 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(Food.BARLEY_BREAD, Food.MAIZE_BREAD, Food.OAT_BREAD, Food.RYE_BREAD, Food.RICE_BREAD, Food.WHEAT_BREAD)
             .add(Items.BREAD);
 
+        tag(COOKED_FISH).add(
+            Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH,
+            Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS,
+            Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS
+        );
+        tag(COOKED_MEATS).add(
+            Food.COOKED_BEEF, Food.COOKED_PORK, Food.COOKED_CHICKEN, Food.COOKED_QUAIL,
+            Food.COOKED_MUTTON, Food.COOKED_BEAR, Food.COOKED_HORSE_MEAT, Food.COOKED_PHEASANT,
+            Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_GROUSE, Food.COOKED_VENISON,
+            Food.COOKED_BISON, Food.COOKED_WOLF, Food.COOKED_RABBIT, Food.COOKED_FOX, Food.COOKED_HYENA,
+            Food.COOKED_DUCK, Food.COOKED_CHEVON, Food.COOKED_CAMELIDAE, Food.COOKED_FROG_LEGS,
+            Food.COOKED_GRAN_FELINE, Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH,
+            Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE,
+            Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON,
+            Food.COOKED_SMALLMOUTH_BASS
+        );
+        tag(commonTagOf(Registries.ITEM, "foods/cooked_poultry")).add(
+            Food.COOKED_CHICKEN, Food.COOKED_QUAIL, Food.COOKED_PHEASANT, Food.COOKED_GROUSE, Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_DUCK
+        );
+
+        tag(FISH)
+            .addTags(RAW_FISH, COOKED_FISH);
+
         tag(FRUITS).add(
             Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY,
             Food.GOOSEBERRY, Food.RASPBERRY, Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY, Food.BANANA,
@@ -336,6 +359,13 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Food.SQUASH, Food.TOMATO, Food.YELLOW_BELL_PEPPER, Food.CASSAVA, Food.COOKED_CASSAVA, Food.LENTIL,
             Food.COOKED_LENTIL, Food.PEANUT, Food.RADISH, Food.PUMPKIN_CHUNKS
         );
+
+
+        tag(MEATS)
+            .addTag(RAW_MEATS).addTag(COOKED_MEATS);
+
+        tag(RAW_FISH).add(
+            Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
         tag(RAW_MEATS).add(
             Food.BEEF, Food.PORK, Food.CHICKEN, Food.QUAIL, Food.MUTTON,
             Food.BEAR, Food.HORSE_MEAT, Food.PHEASANT, Food.GROUSE, Food.TURKEY,
@@ -345,16 +375,14 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT,
             Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS
         );
-        tag(COOKED_MEATS).add(
-            Food.COOKED_BEEF, Food.COOKED_PORK, Food.COOKED_CHICKEN, Food.COOKED_QUAIL, Food.COOKED_MUTTON, Food.COOKED_BEAR, Food.COOKED_HORSE_MEAT, Food.COOKED_PHEASANT, Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_GROUSE, Food.COOKED_VENISON, Food.COOKED_BISON, Food.COOKED_WOLF, Food.COOKED_RABBIT, Food.COOKED_FOX, Food.COOKED_HYENA, Food.COOKED_DUCK, Food.COOKED_CHEVON, Food.COOKED_CAMELIDAE, Food.COOKED_FROG_LEGS, Food.COOKED_GRAN_FELINE, Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
-        tag(MEATS)
-            .addTag(RAW_MEATS).addTag(COOKED_MEATS);
-        tag(RAW_FISH).add(
-            Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
+        tag(commonTagOf(Registries.ITEM, "foods/raw_poultry")).add(
+            Food.CHICKEN, Food.QUAIL, Food.PHEASANT, Food.GROUSE, Food.TURKEY, Food.PEAFOWL, Food.DUCK
+        );
+
+
         tag(COOKED_FISH).add(
             Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
-        tag(FISH)
-            .addTags(RAW_FISH, COOKED_FISH);
+
         tag(FLOUR).add(
             Food.BARLEY_FLOUR, Food.MAIZE_FLOUR, Food.OAT_FLOUR, Food.RYE_FLOUR, Food.RICE_FLOUR, Food.WHEAT_FLOUR);
         tag(DOUGH).add(
@@ -385,6 +413,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.JAM.get(Food.MELON_SLICE).key(), TFCItems.JAM.get(Food.RASPBERRY).key(), TFCItems.JAM.get(Food.RED_APPLE).key(),
             TFCItems.JAM.get(Food.SNOWBERRY).key(), TFCItems.JAM.get(Food.STRAWBERRY).key(), TFCItems.JAM.get(Food.WINTERGREEN_BERRY).key()
         );
+
+        tag(commonTagOf(Registries.ITEM, "cranberry")).add(Food.CRANBERRY);
 
         //Gems
 
@@ -505,7 +535,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "raw_materials/redstone"))
             .add(TFCItems.ORES.get(Ore.CRYOLITE).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/flux"))
-            .add(TFCItems.ORES.get(Ore.BORAX).key());
+            .addTag(FLUXSTONE);
         tag(commonTagOf(Registries.ITEM, "raw_materials/graphite"))
             .add(TFCItems.ORES.get(Ore.GRAPHITE).key());
         tag(commonTagOf(Registries.ITEM, "raw_materials/plaster"))
