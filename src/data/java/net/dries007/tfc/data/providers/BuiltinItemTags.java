@@ -390,21 +390,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         for (Map.Entry<Ore, TFCItems.ItemId> gemEntry : TFCItems.GEMS.entrySet())
         {
-            if(gemEntry.getKey() == Ore.LAPIS_LAZULI)
-            {
-                tag(commonTagOf(Registries.ITEM, "gems/lapis"))
-                    .add(gemEntry.getValue().key());
-                tag(commonTagOf(Registries.ITEM, "dusts/lapis"))
-                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
-            }
-            else
-            {
-                String gemName = gemEntry.getKey().name();
-                tag(commonTagOf(Registries.ITEM, "gems/" + gemName))
-                    .add(gemEntry.getValue().key());
-                tag(commonTagOf(Registries.ITEM, "dusts/" + gemName))
-                    .add(TFCItems.ORE_POWDERS.get(gemEntry.getKey()).key());
-            }
+            final Ore ore = gemEntry.getKey();
+            final String gemName = ore == Ore.LAPIS_LAZULI ? "lapis" : ore.name().toLowerCase();
+            tag(commonTagOf(Registries.ITEM, "gems/" + gemName))
+                .add(gemEntry.getValue().key());
+            tag(commonTagOf(Registries.ITEM, "dusts/" + gemName))
+                .add(TFCItems.ORE_POWDERS.get(ore).key());
         }
 
         //Lumber
