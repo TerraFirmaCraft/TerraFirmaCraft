@@ -3,6 +3,9 @@
     "minecraft:bone",
     "minecraft:bone_meal",
     "minecraft:bone_block",
-    "#c:foods/meat"
+    "#c:foods/raw_meat",
+    "#c:foods/raw_fish",
+    "#c:foods/cooked_fish",
+    "#c:foods/cooked_meat"
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:metal/fish_hook/bismuth_bronze",
+    "tfc:metal/fish_hook/black_bronze",
+    "tfc:metal/fish_hook/bronze",
+    "tfc:metal/fish_hook/copper",
+    "tfc:metal/fish_hook/wrought_iron",
+    "tfc:metal/fish_hook/steel",
+    "tfc:metal/fish_hook/black_steel",
+    "tfc:metal/fish_hook/blue_steel",
+    "tfc:metal/fish_hook/red_steel"
+  ]
+}

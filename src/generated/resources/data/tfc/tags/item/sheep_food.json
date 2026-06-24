@@ -1,5 +1,6 @@
 {
   "values": [
-    "#c:foods/grain"
+    "#c:foods/grain",
+    "#c:grains"
   ]
 }

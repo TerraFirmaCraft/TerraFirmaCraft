@@ -1,0 +1,11 @@
+{
+  "values": [
+    "tfc:food/cooked_chicken",
+    "tfc:food/cooked_quail",
+    "tfc:food/cooked_pheasant",
+    "tfc:food/cooked_grouse",
+    "tfc:food/cooked_turkey",
+    "tfc:food/cooked_peafowl",
+    "tfc:food/cooked_duck"
+  ]
+}

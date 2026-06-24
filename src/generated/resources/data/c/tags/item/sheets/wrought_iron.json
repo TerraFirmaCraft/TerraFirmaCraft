@@ -1,5 +1,7 @@
 {
   "values": [
-    "tfc:metal/sheet/wrought_iron"
+    "tfc:metal/sheet/wrought_iron",
+    "tfc:metal/sheet/wrought_iron",
+    "#c:sheets/wrought_iron"
   ]
 }

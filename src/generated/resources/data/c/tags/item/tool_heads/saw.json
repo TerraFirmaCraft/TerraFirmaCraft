@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:metal/saw_blade/bismuth_bronze",
+    "tfc:metal/saw_blade/black_bronze",
+    "tfc:metal/saw_blade/bronze",
+    "tfc:metal/saw_blade/copper",
+    "tfc:metal/saw_blade/wrought_iron",
+    "tfc:metal/saw_blade/steel",
+    "tfc:metal/saw_blade/black_steel",
+    "tfc:metal/saw_blade/blue_steel",
+    "tfc:metal/saw_blade/red_steel"
+  ]
+}

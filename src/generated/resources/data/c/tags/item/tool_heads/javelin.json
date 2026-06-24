@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:metal/javelin_head/bismuth_bronze",
+    "tfc:metal/javelin_head/black_bronze",
+    "tfc:metal/javelin_head/bronze",
+    "tfc:metal/javelin_head/copper",
+    "tfc:metal/javelin_head/wrought_iron",
+    "tfc:metal/javelin_head/steel",
+    "tfc:metal/javelin_head/black_steel",
+    "tfc:metal/javelin_head/blue_steel",
+    "tfc:metal/javelin_head/red_steel",
+    "tfc:stone/javelin_head/igneous_extrusive",
+    "tfc:stone/javelin_head/igneous_intrusive",
+    "tfc:stone/javelin_head/metamorphic",
+    "tfc:stone/javelin_head/sedimentary"
+  ]
+}

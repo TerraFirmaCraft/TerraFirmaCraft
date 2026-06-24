@@ -1,5 +1,8 @@
 {
   "values": [
-    "#c:foods/meat"
+    "#c:foods/raw_meat",
+    "#c:foods/cooked_meat",
+    "#c:foods/raw_fish",
+    "#c:foods/raw_meat"
   ]
 }

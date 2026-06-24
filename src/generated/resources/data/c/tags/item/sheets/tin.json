@@ -1,5 +1,7 @@
 {
   "values": [
-    "tfc:metal/sheet/tin"
+    "tfc:metal/sheet/tin",
+    "tfc:metal/sheet/tin",
+    "#c:sheets/tin"
   ]
 }

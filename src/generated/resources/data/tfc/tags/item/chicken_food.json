@@ -4,6 +4,7 @@
     "#c:foods/fruit",
     "#c:foods/vegetable",
     "#c:seeds",
-    "#c:foods/bread"
+    "#c:foods/bread",
+    "#c:grains"
   ]
 }

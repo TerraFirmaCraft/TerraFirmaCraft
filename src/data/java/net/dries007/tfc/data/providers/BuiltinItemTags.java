@@ -223,7 +223,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "cloths/wool"))
             .add(TFCItems.WOOL_CLOTH.key());
 
-        //Crops TODO: Check
+        //Coal
+
+        tag(commonTagOf(Registries.ITEM, "coal"))
+            .add(TFCItems.ORES.get(Ore.LIGNITE).key(), TFCItems.ORES.get(Ore.BITUMINOUS_COAL).key());
+
+        //Crops
 
         tag(Tags.Items.CROPS)
              .addTags(
@@ -306,8 +311,6 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "crops/lentil"))
             .add(Food.LENTIL);
         tag(commonTagOf(Registries.ITEM, "crops/maize"))
-            .add(Food.MAIZE);
-        tag(commonTagOf(Registries.ITEM, "crops/corn"))
             .add(Food.MAIZE);
         tag(commonTagOf(Registries.ITEM, "crops/oat"))
             .add(Food.OAT);
@@ -462,10 +465,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(commonTagOf(Registries.ITEM, "fibers/jute"))
             .add(TFCItems.JUTE_FIBER.key());
 
-        //TODO: Check
         //Foods -- Mods are all over the place with food tags and there seems to be no general consensus on how they should be tagged so I add what I saw were the most common tags used. How I believe they should be used is as follow
-        //c:crops for food type items that cannot be eaten without processing (e.g. sugarcane, kelp, pumpkin etc.) tagging should follow the format of c:crops/<crop_name> (e.g. c:crops/sugarcane) and the tag should only contain the crop item itself, no seeds or other items related to the crop. All sub tags are added to the main c:crops tag.
-        //c:foods for all food items that can be eaten, if you right-click and the eating animation plays it goes here. For individual items they should follow the format c:foods/<food_name> (e.g. c:foods/blueberry) and the tag should only contain the food item itself, no seeds or other items related to the food. For groups of items that share a common name but are different variants of the same item (e.g. blueberry, blackberry, etc.) they should be tagged with a common tag c:foods/berry, c:foods/fruit or c:foods/vegtable. An item might have multiple group tags.
+        //c:foods for all food items that can be eaten, if you right-click and the eating animation plays it goes here. For individual items they should follow the format c:foods/<food_name> (e.g. c:foods/blueberry) and the tag should only contain the food item itself, no seeds or other items related to the food. Items should not be added into c:foods directly, should be added to a sub tag and that tag added to c:foods.
+        // For groups of items that share a common name but are different variants of the same item (e.g. blueberry, blackberry, etc.) they should be tagged with a common tag c:foods/berry, c:foods/fruit or c:foods/vegtable. An item might have multiple group tags.
 
         final EnumSet<Food> RAW_MEATS_FOODS = EnumSet.of(
             Food.BEEF, Food.BEAR, Food.BISON, Food.BLUEGILL, Food.BLUEGILL,
@@ -620,7 +622,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(Tags.Items.FOODS_BERRY).add(
             Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY,
             Food.CRANBERRY, Food.ELDERBERRY, Food.GOOSEBERRY, Food.RASPBERRY,
-            Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY);
+            Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY
+        );
         tag(FRUITS).add(
             Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY,
             Food.GOOSEBERRY, Food.RASPBERRY, Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY, Food.BANANA,
@@ -1420,7 +1423,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             TFCItems.VOLCANIC_GLASS_BOTTLE);
         tag(GLASS_POTASH)
             .add(TFCItems.POWDERS.get(Powder.SODA_ASH), TFCItems.ORE_POWDERS.get(Ore.SALTPETER))
-            .addTags(commonTagOf(Registries.ITEM, "soda_ash"), commonTagOf(Registries.ITEM, "saltpeter"), commonTagOf(Registries.ITEM, "potash"));
+            .addTags(commonTagOf(Registries.ITEM, "dusts/soda_ash"), commonTagOf(Registries.ITEM, "dusts/saltpeter"))
+            .addOptionalTag(commonTagOf(Registries.ITEM, "dusts/potash"));
 
         tag(HIGH_QUALITY_CLOTH).add(TFCItems.SILK_CLOTH, TFCItems.WOOL_CLOTH);
         tag(GEM_POWDERS).addOnly(TFCItems.ORE_POWDERS, Ore::isGem);

@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:metal/hammer_head/bismuth_bronze",
+    "tfc:metal/hammer_head/black_bronze",
+    "tfc:metal/hammer_head/bronze",
+    "tfc:metal/hammer_head/copper",
+    "tfc:metal/hammer_head/wrought_iron",
+    "tfc:metal/hammer_head/steel",
+    "tfc:metal/hammer_head/black_steel",
+    "tfc:metal/hammer_head/blue_steel",
+    "tfc:metal/hammer_head/red_steel",
+    "tfc:stone/hammer_head/igneous_extrusive",
+    "tfc:stone/hammer_head/igneous_intrusive",
+    "tfc:stone/hammer_head/metamorphic",
+    "tfc:stone/hammer_head/sedimentary"
+  ]
+}

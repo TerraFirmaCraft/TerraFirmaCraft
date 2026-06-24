@@ -10,7 +10,7 @@
     "tfc:food/rye_bread_sandwich",
     "tfc:food/rice_bread_jam_sandwich",
     "tfc:food/rice_bread_sandwich",
-    "tfc:food/wheat_bread_sandwich",
-    "tfc:food/wheat_bread"
+    "tfc:food/wheat_bread_jam_sandwich",
+    "tfc:food/wheat_bread_sandwich"
   ]
 }

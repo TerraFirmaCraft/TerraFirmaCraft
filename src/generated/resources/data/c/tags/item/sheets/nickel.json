@@ -1,5 +1,7 @@
 {
   "values": [
-    "tfc:metal/sheet/nickel"
+    "tfc:metal/sheet/nickel",
+    "tfc:metal/sheet/nickel",
+    "#c:sheets/nickel"
   ]
 }

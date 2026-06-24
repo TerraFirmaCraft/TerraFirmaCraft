@@ -1,0 +1,11 @@
+{
+  "values": [
+    "tfc:food/chicken",
+    "tfc:food/quail",
+    "tfc:food/pheasant",
+    "tfc:food/grouse",
+    "tfc:food/turkey",
+    "tfc:food/peafowl",
+    "tfc:food/duck"
+  ]
+}

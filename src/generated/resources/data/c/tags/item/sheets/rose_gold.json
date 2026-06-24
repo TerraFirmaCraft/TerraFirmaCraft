@@ -1,5 +1,7 @@
 {
   "values": [
-    "tfc:metal/sheet/rose_gold"
+    "tfc:metal/sheet/rose_gold",
+    "tfc:metal/sheet/rose_gold",
+    "#c:sheets/rose_gold"
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:metal/mace_head/bismuth_bronze",
+    "tfc:metal/mace_head/black_bronze",
+    "tfc:metal/mace_head/bronze",
+    "tfc:metal/mace_head/copper",
+    "tfc:metal/mace_head/wrought_iron",
+    "tfc:metal/mace_head/steel",
+    "tfc:metal/mace_head/black_steel",
+    "tfc:metal/mace_head/blue_steel",
+    "tfc:metal/mace_head/red_steel"
+  ]
+}

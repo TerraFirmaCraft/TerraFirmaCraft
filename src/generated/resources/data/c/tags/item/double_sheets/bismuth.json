@@ -1,5 +1,7 @@
 {
   "values": [
-    "tfc:metal/double_sheet/bismuth"
+    "tfc:metal/double_sheet/bismuth",
+    "tfc:metal/double_sheet/bismuth",
+    "#c:double_sheets/bismuth"
   ]
 }
