@@ -172,7 +172,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             Ore ore = entry.getKey();
             Metal metal = ore.metal();
             final String metalName = metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
-            final String tagName = "raw_materials/" +metalName + "/small";
+            final String tagName = "raw_materials/" + metalName + "/small";
             tag(commonTagOf(Registries.ITEM, tagName))
                 .add(TFCBlocks.SMALL_ORES.get(ore));
             tag(Tags.Items.RAW_MATERIALS)

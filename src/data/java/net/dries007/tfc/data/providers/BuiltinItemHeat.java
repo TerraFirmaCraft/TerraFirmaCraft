@@ -155,7 +155,7 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         addAndMelt(TFCBlocks.STEEL_PIPE, Metal.STEEL, 25);
         addAndMelt(TFCBlocks.ANEMOMETER, Metal.BRASS, 200);
         addAndMelt(TFCBlocks.CRANKSHAFT, Metal.BRASS, 250);
-        addAndMelt(TFCBlocks.CALENDAR_CLOCK, Metal.BRASS,500);
+        addAndMelt(TFCBlocks.CALENDAR_CLOCK, Metal.BRASS, 500);
         addAndMelt(TFCBlocks.THERMOMETER, Metal.BRASS, 200);
         addAndMelt(TFCItems.BLOWPIPE, Metal.BRASS, 50);
         addAndMelt(Items.COPPER_DOOR, Metal.COPPER, 200);
