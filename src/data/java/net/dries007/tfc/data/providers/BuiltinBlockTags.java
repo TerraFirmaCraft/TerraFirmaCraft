@@ -385,22 +385,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Bricks
 
-        for (DyeColor color : DyeColor.values())
-        {
-            tag(commonTagOf(Registries.BLOCK, "bricks/plaster"))
-                .add(TFCBlocks.ALABASTER_BRICKS.get(color).key(),
-                    TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).slab().key(), TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).stair().key(), TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).wall().key()
-                );
+        tag(commonTagOf(Registries.BLOCK, "bricks/plaster"))
+            .add(TFCBlocks.ALABASTER_BRICKS)
+            .addAll(TFCBlocks.ALABASTER_BRICK_DECORATIONS);
 
-        }
-
-        for (SoilBlockType.Variant soil : SoilBlockType.Variant.values())
-        {
-            tag(commonTagOf(Registries.BLOCK, "bricks/mud")).add(
-                TFCBlocks.SOIL.get(SoilBlockType.MUD_BRICKS).get(soil).key(),
-                TFCBlocks.MUD_BRICK_DECORATIONS.get(soil).slab().key(), TFCBlocks.MUD_BRICK_DECORATIONS.get(soil).stair().key(), TFCBlocks.MUD_BRICK_DECORATIONS.get(soil).wall().key()
-            );
-        }
+        tag(commonTagOf(Registries.BLOCK, "bricks/mud"))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.MUD_BRICKS))
+            .addAll(TFCBlocks.MUD_BRICK_DECORATIONS);
 
         TFCBlocks.ROCK_BLOCKS.forEach((rock, blockMap) -> {
             tag(commonTagOf(Registries.BLOCK, "bricks/" + rock.getSerializedName())).add(
