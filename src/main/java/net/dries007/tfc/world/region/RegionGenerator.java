@@ -335,8 +335,8 @@ public final class RegionGenerator
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
         ANNOTATE_KARST_SURFACE(KarstSurfaceRocks.INSTANCE),
-        ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
+        ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
         ;
 
         private static final Task[] VALUES = values();
