@@ -1,3 +1,6 @@
+### Changes
+- Made pipe veins, including dikes, not so perfectly circular. Also made them taper off at very high elevations
+
 ### Fixes
-- Made alfisol generate more consistently in deciduous forests
-- Trees with elevation climate restrictions now generate soil discs properly (mainly applies to addons such as ArborFirmaCraft)
+- Made borders between podzol and alfisol somewhat less square
+- Made lakes generate again

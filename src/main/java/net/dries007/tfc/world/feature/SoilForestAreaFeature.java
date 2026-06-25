@@ -63,40 +63,71 @@ public class SoilForestAreaFeature extends Feature<SoilForestAreaConfig>
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         boolean placed = false;
-        for (int dx = 0; dx <= 15; dx++)
+        for (int dx = -3; dx <= 18; dx++)
         {
-            final double varDX = polynomialHelper(dx * (1.0 / 15));
+            final int dxc = Math.clamp(dx, 0, 15);
+            final double varDX = polynomialHelper(dxc * (1.0 / 15));
             final double termDX = deltaX * varDX;
-            for (int dz = 0; dz <= 15; dz++)
+            for (int dz = -3; dz <= 18; dz++)
             {
+                final int dzc = Math.clamp(dz, 0, 15);
+
                 // Evaluate polynomial
-                final double varDZ = polynomialHelper(dz * (1.0 / 15));
+                final double varDZ = polynomialHelper(dzc * (1.0 / 15));
                 final double forestDensity = density00 + termDX + deltaZ * varDZ + deltaXZ * varDX * varDZ;
 
                 final int x = pos00.getX() + dx;
                 final int z = pos00.getZ() + dz;
                 final double blobNoise = noise.noise(x * config.spread(), z * config.spread()) * config.noiseScale();
-                final double soilDensity = Mth.clampedMap(forestDensity + blobNoise, config.minForest() - 0.25, config.maxForest() + 0.25, 0, 1);
+                double soilDensity = Mth.clampedMap(forestDensity + blobNoise, config.minForest() - 0.25, config.maxForest() + 0.25, 0, 1);
 
-                if ((config.inverted() && soilDensity <= 0.5) || (!config.inverted() && soilDensity >= 0.5))
+                // Flip so that below this point, positive values are where soil gets placed
+                if (config.inverted())
                 {
-                    final int surfaceY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
-                    for (int y = surfaceY - config.getHeight(); y <= surfaceY; ++y)
-                    {
-                        mutablePos.set(x, y, z);
+                    soilDensity = 1 - soilDensity;
+                }
 
-                        final BlockState stateAt = level.getBlockState(mutablePos);
-                        final BlockState stateReplacement = config.getState(stateAt);
-                        if (stateReplacement != null)
-                        {
-                            level.setBlock(mutablePos, stateReplacement, 2);
-                            placed = true;
-                        }
+                // If outside the chunk, we place some soil based on the density at the edge of the chunk
+                if (dxc != dx || dzc != dz)
+                {
+                    final double edgeBlobNoise = (0.5 - Math.abs(noise.noise(x, z)));
+                    if (dxc != dx)
+                    {
+                        soilDensity = Mth.clampedMap(Math.abs(dxc - dx), 0, 4, soilDensity, edgeBlobNoise);
                     }
+                    if (dzc != dz)
+                    {
+                        soilDensity = Mth.clampedMap(Math.abs(dzc - dz), 0, 4, soilDensity, edgeBlobNoise);
+                    }
+                }
+
+                if (soilDensity >= 0.5)
+                {
+                    placed |= placeColumn(chunk, config, level, x, z, mutablePos);
                 }
             }
         }
 
+        return placed;
+    }
+
+    public boolean placeColumn(ChunkAccess chunk, SoilForestAreaConfig config, WorldGenLevel level, int x, int z, BlockPos.MutableBlockPos mutablePos)
+    {
+        final int surfaceY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
+        boolean placed = false;
+        mutablePos.set(x, 0, z);
+        for (int y = surfaceY - config.getHeight(); y <= surfaceY; ++y)
+        {
+            mutablePos.setY(y);
+
+            final BlockState stateAt = level.getBlockState(mutablePos);
+            final BlockState stateReplacement = config.getState(stateAt);
+            if (stateReplacement != null)
+            {
+                level.setBlock(mutablePos, stateReplacement, 2);
+                placed = true;
+            }
+        }
         return placed;
     }
 
