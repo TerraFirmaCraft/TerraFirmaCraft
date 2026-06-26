@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:rock/bricks/quartzite",
+    "tfc:rock/mossy_bricks/quartzite",
+    "tfc:rock/cracked_bricks/quartzite",
+    "tfc:rock/chiseled/quartzite",
+    "tfc:rock/bricks/quartzite_slab",
+    "tfc:rock/bricks/quartzite_stairs",
+    "tfc:rock/bricks/quartzite_wall",
+    "tfc:rock/mossy_bricks/quartzite_slab",
+    "tfc:rock/mossy_bricks/quartzite_stairs",
+    "tfc:rock/mossy_bricks/quartzite_wall",
+    "tfc:rock/cracked_bricks/quartzite_slab",
+    "tfc:rock/cracked_bricks/quartzite_stairs",
+    "tfc:rock/cracked_bricks/quartzite_wall"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "tfc:rock/hardened/granite",
+    "tfc:rock/loose/granite",
+    "tfc:rock/mossy_loose/granite",
+    "tfc:rock/raw/granite",
+    "tfc:rock/spike/granite"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "values": [
+    "tfc:metal/grate/bronze",
+    "tfc:metal/exposed_grate/bronze",
+    "tfc:metal/oxidized_grate/bronze",
+    "tfc:metal/weathered_grate/bronze"
+  ]
+}

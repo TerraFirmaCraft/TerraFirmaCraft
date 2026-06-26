@@ -1,11 +1,14 @@
 {
   "values": [
-    "tfc:sand/brown",
-    "tfc:sand/white",
-    "tfc:sand/black",
-    "tfc:sand/red",
-    "tfc:sand/yellow",
-    "tfc:sand/green",
-    "tfc:sand/pink"
+    "#c:sands/volcanic",
+    "#c:sands/hematitic",
+    "#c:sands/olivine",
+    "#c:sands/silica",
+    "#c:sands/black",
+    "#c:sands/red",
+    "#c:sands/pink",
+    "#c:sands/yellow",
+    "#c:sands/brown",
+    "#c:sands/green"
   ]
 }

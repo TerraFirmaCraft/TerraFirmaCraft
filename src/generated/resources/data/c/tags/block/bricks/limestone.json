@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:rock/bricks/limestone",
+    "tfc:rock/mossy_bricks/limestone",
+    "tfc:rock/cracked_bricks/limestone",
+    "tfc:rock/chiseled/limestone",
+    "tfc:rock/bricks/limestone_slab",
+    "tfc:rock/bricks/limestone_stairs",
+    "tfc:rock/bricks/limestone_wall",
+    "tfc:rock/mossy_bricks/limestone_slab",
+    "tfc:rock/mossy_bricks/limestone_stairs",
+    "tfc:rock/mossy_bricks/limestone_wall",
+    "tfc:rock/cracked_bricks/limestone_slab",
+    "tfc:rock/cracked_bricks/limestone_stairs",
+    "tfc:rock/cracked_bricks/limestone_wall"
+  ]
+}

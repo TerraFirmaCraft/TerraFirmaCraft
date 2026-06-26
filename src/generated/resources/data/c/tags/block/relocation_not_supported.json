@@ -1,0 +1,14 @@
+{
+  "values": [
+    "tfc:burning_log_pile",
+    "tfc:charcoal_pile",
+    "tfc:ingot_pile",
+    "tfc:double_ingot_pile",
+    "tfc:log_pile",
+    "tfc:placed_item",
+    "tfc:pit_kiln",
+    "tfc:hot_poured_glass",
+    "tfc:glass_basin",
+    "tfc:scraping"
+  ]
+}

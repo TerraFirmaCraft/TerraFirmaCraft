@@ -1,6 +1,30 @@
 {
   "values": [
+    "#c:stones/granite",
+    "#c:stones/diorite",
+    "#c:stones/gabbro",
+    "#c:stones/shale",
+    "#c:stones/claystone",
+    "#c:stones/limestone",
+    "#c:stones/conglomerate",
+    "#c:stones/dolomite",
+    "#c:stones/chert",
+    "#c:stones/chalk",
+    "#c:stones/tuff",
+    "#c:stones/rhyolite",
+    "#c:stones/basalt",
+    "#c:stones/andesite",
+    "#c:stones/dacite",
+    "#c:stones/quartzite",
+    "#c:stones/slate",
+    "#c:stones/phyllite",
+    "#c:stones/schist",
+    "#c:stones/gneiss",
+    "#c:stones/marble",
+    "#c:stones/hardened",
+    "#c:stones/loose",
     "#c:stones/raw",
-    "#c:stones/hardened"
+    "#c:stones/spike",
+    "#c:stones/mossy"
   ]
 }

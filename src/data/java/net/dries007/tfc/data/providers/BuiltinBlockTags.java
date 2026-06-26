@@ -351,14 +351,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Anvils
 
-        for (Metal metal : Metal.values())
-        {
+        TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.allParts())
             {
                 tag(commonTagOf(Registries.BLOCK, "anvils/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.ANVIL));
                 tag(commonTagOf(Registries.BLOCK, "anvils")).addTag(commonTagOf(Registries.BLOCK, "anvils/" + metal.getSerializedName()));
             }
-        }
+        });
 
         tag(commonTagOf(Registries.BLOCK, "anvils/stone")).add(TFCBlocks.ROCK_ANVILS);
         tag(commonTagOf(Registries.BLOCK, "anvils")).addTag(commonTagOf(Registries.BLOCK, "anvils/stone"));
@@ -369,14 +368,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Bars
 
-        for (Metal metal : Metal.values())
-        {
+        TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.allParts())
             {
                 tag(commonTagOf(Registries.BLOCK, "bars/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.BARS));
                 tag(commonTagOf(Registries.BLOCK, "bars")).addTag(commonTagOf(Registries.BLOCK, "bars/" + metal.getSerializedName()));
             }
-        }
+        });
 
         //Bookshelves
 
@@ -396,12 +394,42 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         TFCBlocks.ROCK_BLOCKS.forEach((rock, blockMap) -> {
             tag(commonTagOf(Registries.BLOCK, "bricks/" + rock.getSerializedName())).add(
                 TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.BRICKS),
+                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_BRICKS),
+                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.CRACKED_BRICKS),
+                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.CHISELED),
                 TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.BRICKS).slab(),
                 TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.BRICKS).stair(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.BRICKS).wall()
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.BRICKS).wall(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_BRICKS).slab(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_BRICKS).stair(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_BRICKS).wall(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.CRACKED_BRICKS).slab(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.CRACKED_BRICKS).stair(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.CRACKED_BRICKS).wall()
             );
             tag(commonTagOf(Registries.BLOCK, "bricks")).addTag(commonTagOf(Registries.BLOCK, "bricks/" + rock.getSerializedName()));
         });
+
+        tag(commonTagOf(Registries.BLOCK, "bricks/chiseled"))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.CHISELED);
+
+        tag(commonTagOf(Registries.BLOCK, "bricks/cracked"))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.CRACKED_BRICKS)
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.CRACKED_BRICKS)
+                .values().stream().map(DecorationBlockHolder::slab))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.CRACKED_BRICKS)
+                .values().stream().map(DecorationBlockHolder::stair))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.CRACKED_BRICKS)
+                .values().stream().map(DecorationBlockHolder::wall));
+
+        tag(commonTagOf(Registries.BLOCK, "bricks/mossy"))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_BRICKS)
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_BRICKS)
+                .values().stream().map(DecorationBlockHolder::slab))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_BRICKS)
+                .values().stream().map(DecorationBlockHolder::stair))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_BRICKS)
+                .values().stream().map(DecorationBlockHolder::wall));
 
         tag(commonTagOf(Registries.BLOCK, "bricks/mud")).add(TFCBlocks.SMOOTH_MUD_BRICKS);
 
@@ -414,7 +442,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(commonTagOf(Registries.BLOCK, "bricks")).addTags(
             commonTagOf(Registries.BLOCK, "bricks/plaster"),
             commonTagOf(Registries.BLOCK, "bricks/fire"),
-            commonTagOf(Registries.BLOCK, "bricks/mud")
+            commonTagOf(Registries.BLOCK, "bricks/mud"),
+            commonTagOf(Registries.BLOCK, "bricks/mossy"),
+            commonTagOf(Registries.BLOCK, "bricks/cracked"),
+            commonTagOf(Registries.BLOCK, "bricks/chiseled")
         );
 
         //Buttons
@@ -428,29 +459,25 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Candles
 
-        for (DyeColor color : DyeColor.values())
-        {
-            tag(commonTagOf(Registries.BLOCK, "candles/" + color.getSerializedName())).add(
-                TFCBlocks.DYED_CANDLE_CAKES.get(color).key(), TFCBlocks.DYED_CANDLE.get(color).key()
-            );
+        TFCBlocks.DYED_CANDLE.forEach((color, candle) -> {
+            final var candleCake = TFCBlocks.DYED_CANDLE_CAKES.get(color);
+
+            tag(commonTagOf(Registries.BLOCK, "candles/" + color.getSerializedName())).add(candleCake.key(), candle.key());
             tag(commonTagOf(Registries.BLOCK, "candles")).addTag(commonTagOf(Registries.BLOCK, "candles/" + color.getSerializedName()));
-            tag(commonTagOf(Registries.BLOCK, "dyed/" + color.getSerializedName())).add(
-                TFCBlocks.DYED_CANDLE_CAKES.get(color).key(), TFCBlocks.DYED_CANDLE.get(color).key()
-            );
-        }
+            tag(commonTagOf(Registries.BLOCK, "dyed/" + color.getSerializedName())).add(candleCake.key(), candle.key());
+        });
 
         tag(commonTagOf(Registries.BLOCK, "candles")).add(TFCBlocks.CANDLE);
 
         //Chains
 
-        for (Metal metal : Metal.values())
-        {
+        TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.allParts())
             {
                 tag(commonTagOf(Registries.BLOCK, "chains/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.CHAIN));
                 tag(Tags.Blocks.CHAINS).addTag(commonTagOf(Registries.BLOCK, "chains/" + metal.getSerializedName()));
             }
-        }
+        });
 
         //Chests
 
@@ -461,14 +488,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Clays
 
-        for (SoilBlockType.Variant soil : SoilBlockType.Variant.values())
-        {
-            tag(commonTagOf(Registries.BLOCK, "clays/normal")).add(
-                TFCBlocks.SOIL.get(SoilBlockType.CLAY).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).get(soil)
-            );
-        }
+        tag(commonTagOf(Registries.BLOCK, "clays/normal"))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF))
+            .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS));
         tag(commonTagOf(Registries.BLOCK, "clays/kaolin")).add(
             TFCBlocks.PINK_KAOLIN_CLAY,
             TFCBlocks.RED_KAOLIN_CLAY,
@@ -487,15 +510,28 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Cobblestones
 
-        for (Rock rock : Rock.values())
-        {
+        TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) -> {
             tag(commonTagOf(Registries.BLOCK, "cobblestones/" + rock.getSerializedName())).add(
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.COBBLE).get(),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).get()
+                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.COBBLE),
+                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_COBBLE),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.COBBLE).slab(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.COBBLE).stair(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.COBBLE).wall(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).slab(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).stair(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).wall()
             );
-            tag(Tags.Blocks.COBBLESTONES_MOSSY).add(TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).get());
             tag(commonTagOf(Registries.BLOCK, "cobblestones")).addTag(commonTagOf(Registries.BLOCK, "cobblestones/" + rock.getSerializedName()));
-        }
+        });
+
+        tag(commonTagOf(Registries.BLOCK, "cobblestone/mossy"))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE)
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_COBBLE)
+                .values().stream().map(DecorationBlockHolder::slab))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_COBBLE)
+                .values().stream().map(DecorationBlockHolder::stair))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_COBBLE)
+                .values().stream().map(DecorationBlockHolder::wall));
 
         //Corals
         //c:corals, c:corals/dead, c:corals/living, c:corals/block, c:corals/fan, c:coral/plant
@@ -541,16 +577,14 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             commonTagOf(Registries.BLOCK, "corals/dead")
         );
 
-
         //Crops
 
-        for (Crop crop : Crop.values())
-        {
+        TFCBlocks.CROPS.forEach((crop, cropBlock) -> {
             tag(commonTagOf(Registries.BLOCK, "crops/" + crop.getSerializedName()))
-                .add(TFCBlocks.CROPS.get(crop).key(), TFCBlocks.DEAD_CROPS.get(crop).key(), TFCBlocks.WILD_CROPS.get(crop).key());
+                .add(cropBlock.key(), TFCBlocks.DEAD_CROPS.get(crop).key(), TFCBlocks.WILD_CROPS.get(crop).key());
             tag(commonTagOf(Registries.BLOCK, "crops"))
                 .addTag(commonTagOf(Registries.BLOCK, "crops/" + crop.getSerializedName()));
-        }
+        });
         tag(commonTagOf(Registries.BLOCK, "crops/corn"))
             .add(TFCBlocks.CROPS.get(Crop.MAIZE).key(), TFCBlocks.DEAD_CROPS.get(Crop.MAIZE).key(), TFCBlocks.WILD_CROPS.get(Crop.MAIZE).key());
         tag(commonTagOf(Registries.BLOCK, "crops"))
@@ -573,25 +607,63 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             commonTagOf(Registries.BLOCK, "doors/iron")
         );
 
-
         //Dyed
         //c:dyed, c:dyed/COLOR
 
-        for (DyeColor color : DyeColor.values())
-        {
+        TFCBlocks.RAW_ALABASTER.forEach((color, rawAlabaster) -> {
+            final DecorationBlockHolder brickDecorations = TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color);
+            final DecorationBlockHolder polishedDecorations = TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color);
+
             tag(commonTagOf(Registries.BLOCK, "dyed/" + color.getSerializedName())).add(
-                TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).slab().key(), TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).stair().key(),
-                TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color).wall().key(), TFCBlocks.POLISHED_ALABASTER.get(color).key(),
-                TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color).slab().key(), TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color).stair().key(),
-                TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color).wall().key(), TFCBlocks.RAW_ALABASTER.get(color).key(),
-                TFCBlocks.GLAZED_LARGE_VESSELS.get(color).key(), TFCBlocks.DYED_CANDLE_CAKES.get(color).key()
+                brickDecorations.slab().key(), brickDecorations.stair().key(), brickDecorations.wall().key(),
+                TFCBlocks.POLISHED_ALABASTER.get(color).key(),
+                polishedDecorations.slab().key(), polishedDecorations.stair().key(), polishedDecorations.wall().key(),
+                rawAlabaster.key(),
+                TFCBlocks.GLAZED_LARGE_VESSELS.get(color).key(), TFCBlocks.DYED_CANDLE_CAKES.get(color).key(),
+                TFCBlocks.STAINED_WATTLE.get(color).key()
             );
-        }
+        });
 
         //Fences
         tag(Tags.Blocks.FENCES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.FENCE);
         tag(Tags.Blocks.FENCE_GATES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
         tag(Tags.Blocks.FENCES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.LOG_FENCE);
+
+        //Flowers
+
+        tag(commonTagOf(Registries.BLOCK, "flowers/tall")).add(
+            TFCBlocks.PLANTS.get(Plant.AZALEA), TFCBlocks.PLANTS.get(Plant.BEAR_GRASS), TFCBlocks.PLANTS.get(Plant.CANNA),
+            TFCBlocks.PLANTS.get(Plant.FOXGLOVE), TFCBlocks.PLANTS.get(Plant.LILAC), TFCBlocks.PLANTS.get(Plant.MOUNTAIN_HULLWORT),
+            TFCBlocks.PLANTS.get(Plant.PALASH), TFCBlocks.PLANTS.get(Plant.ROSE), TFCBlocks.PLANTS.get(Plant.SAPPHIRE_TOWER),
+            TFCBlocks.PLANTS.get(Plant.SEA_LAVENDER), TFCBlocks.PLANTS.get(Plant.STRELITZIA), TFCBlocks.PLANTS.get(Plant.SUNFLOWER),
+            TFCBlocks.PLANTS.get(Plant.WATER_CANNA)
+        );
+
+        tag(commonTagOf(Registries.BLOCK, "flowers/small")).add(
+            TFCBlocks.PLANTS.get(Plant.ALLIUM), TFCBlocks.PLANTS.get(Plant.ANTHURIUM), TFCBlocks.PLANTS.get(Plant.BLACK_ORCHID),
+            TFCBlocks.PLANTS.get(Plant.BLOOD_LILY), TFCBlocks.PLANTS.get(Plant.BLUE_GINGER), TFCBlocks.PLANTS.get(Plant.BLUE_ORCHID),
+            TFCBlocks.PLANTS.get(Plant.BUTTERCUP), TFCBlocks.PLANTS.get(Plant.BUTTERFLY_MILKWEED), TFCBlocks.PLANTS.get(Plant.CALENDULA),
+            TFCBlocks.PLANTS.get(Plant.CORNFLOWER), TFCBlocks.PLANTS.get(Plant.DANDELION), TFCBlocks.PLANTS.get(Plant.DESERT_FLAME),
+            TFCBlocks.PLANTS.get(Plant.EDELWEISS), TFCBlocks.PLANTS.get(Plant.FIELD_HORSETAIL), TFCBlocks.PLANTS.get(Plant.GOLDENROD),
+            TFCBlocks.PLANTS.get(Plant.GRAPE_HYACINTH), TFCBlocks.PLANTS.get(Plant.GUZMANIA), TFCBlocks.PLANTS.get(Plant.HEATHER),
+            TFCBlocks.PLANTS.get(Plant.HELICONIA), TFCBlocks.PLANTS.get(Plant.HOUSTONIA), TFCBlocks.PLANTS.get(Plant.KANGAROO_PAW),
+            TFCBlocks.PLANTS.get(Plant.LABRADOR_TEA), TFCBlocks.PLANTS.get(Plant.LILY_OF_THE_VALLEY), TFCBlocks.PLANTS.get(Plant.MAIDEN_PINK),
+            TFCBlocks.PLANTS.get(Plant.MEADS_MILKWEED), TFCBlocks.PLANTS.get(Plant.MORNING_GLORY), TFCBlocks.PLANTS.get(Plant.NASTURTIUM),
+            TFCBlocks.PLANTS.get(Plant.OXEYE_DAISY), TFCBlocks.PLANTS.get(Plant.PENWORTEL), TFCBlocks.PLANTS.get(Plant.PEROVSKIA),
+            TFCBlocks.PLANTS.get(Plant.POPPY), TFCBlocks.PLANTS.get(Plant.PRIMROSE), TFCBlocks.PLANTS.get(Plant.PULSATILLA),
+            TFCBlocks.PLANTS.get(Plant.PURPLE_WATER_LILY), TFCBlocks.PLANTS.get(Plant.QANTU), TFCBlocks.PLANTS.get(Plant.RAMIREZELLA),
+            TFCBlocks.PLANTS.get(Plant.RAMUNDA), TFCBlocks.PLANTS.get(Plant.SACRED_DATURA), TFCBlocks.PLANTS.get(Plant.SILVER_SPURFLOWER),
+            TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_PINK), TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_RED), TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_WHITE),
+            TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_YELLOW), TFCBlocks.PLANTS.get(Plant.TANK_BROMELIAD), TFCBlocks.PLANTS.get(Plant.TRILLIUM),
+            TFCBlocks.PLANTS.get(Plant.TROPICAL_MILKWEED), TFCBlocks.PLANTS.get(Plant.TULIP_ORANGE), TFCBlocks.PLANTS.get(Plant.TULIP_PINK),
+            TFCBlocks.PLANTS.get(Plant.TULIP_RED), TFCBlocks.PLANTS.get(Plant.TULIP_WHITE), TFCBlocks.PLANTS.get(Plant.WHITE_WATER_LILY),
+            TFCBlocks.PLANTS.get(Plant.YELLOW_SAXIFRAGE), TFCBlocks.PLANTS.get(Plant.YELLOW_WATER_LILY), TFCBlocks.PLANTS.get(Plant.YUCCA)
+        );
+
+        tag(commonTagOf(Registries.BLOCK, "flowers")).addTags(
+            commonTagOf(Registries.BLOCK, "flowers/tall"),
+            commonTagOf(Registries.BLOCK, "flowers/small")
+        );
 
         //Foods
 
@@ -603,13 +675,45 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             commonTagOf(Registries.BLOCK, "foods/edible_when_placed")
         );
 
+        //Grates
+
+        TFCBlocks.METALS.forEach((metal, blocks) -> {
+            if (metal.allParts())
+            {
+                tag(commonTagOf(Registries.BLOCK, "grates/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.GRATE));
+                tag(commonTagOf(Registries.BLOCK, "grates")).addTag(commonTagOf(Registries.BLOCK, "grates/" + metal.getSerializedName()));
+            }
+            if(metal.allParts() && metal.weatheredParts())
+            {
+                tag(commonTagOf(Registries.BLOCK, "grates/" + metal.getSerializedName()))
+                    .add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.EXPOSED_GRATE))
+                    .add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.OXIDIZED_GRATE))
+                    .add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.WEATHERED_GRATE));
+            }
+        });
+
+        tag(commonTagOf(Registries.BLOCK, "grates/normal")).add(TFCBlocks.METALS, Metal.BlockType.GRATE);
+        tag(commonTagOf(Registries.BLOCK, "grates/exposed")).add(TFCBlocks.METALS, Metal.BlockType.EXPOSED_GRATE);
+        tag(commonTagOf(Registries.BLOCK, "grates/oxidized")).add(TFCBlocks.METALS, Metal.BlockType.OXIDIZED_GRATE);
+        tag(commonTagOf(Registries.BLOCK, "grates/weathered")).add(TFCBlocks.METALS, Metal.BlockType.WEATHERED_GRATE);
+
+        tag(commonTagOf(Registries.BLOCK, "grates")).addTags(
+            commonTagOf(Registries.BLOCK, "grates/normal"),
+            commonTagOf(Registries.BLOCK, "grates/exposed"),
+            commonTagOf(Registries.BLOCK, "grates/oxidized"),
+            commonTagOf(Registries.BLOCK, "grates/weathered")
+            );
+
         //Gravels
 
-        for (Rock rock : Rock.values())
-        {
+        TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) -> {
             tag(commonTagOf(Registries.BLOCK, "gravels/" + rock.getSerializedName())).add(TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.GRAVEL));
             tag(commonTagOf(Registries.BLOCK, "gravels")).addTag(commonTagOf(Registries.BLOCK, "gravels/" + rock.getSerializedName()));
-        }
+        });
+
+        //Icicle
+
+        tag(commonTagOf(Registries.BLOCK, "icicle")).add(TFCBlocks.ICICLE);
 
         //Item Piles
         //c:item_piles, c:item_piles/TYPE
@@ -623,6 +727,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             commonTagOf(Registries.BLOCK, "item_piles/double_ingot"),
             commonTagOf(Registries.BLOCK, "item_piles/ingot")
         );
+
+        //Magma
+
+        tag(commonTagOf(Registries.BLOCK, "magma")).add(TFCBlocks.MAGMA_BLOCKS);
 
         // Ores
         // We don't include "ore_bearing_ground/???" tags, because they are specific to stone (or known vanilla stones) only
@@ -691,21 +799,36 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //No Block
 
-        tag(commonTagOf(Registries.BLOCK, "ores/salt")).add(TFCBlocks.HALITE);
-        tag(Tags.Blocks.ORE_RATES_DENSE).add(TFCBlocks.HALITE);
+        tag(commonTagOf(Registries.BLOCK, "ores/salt")).add(
+            TFCBlocks.HALITE,
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.SALT_LICK)
+        );
         tag(commonTagOf(Registries.BLOCK, "ores/coal")).add(
             TFCBlocks.LIGNITE,
             TFCBlocks.BITUMINOUS_COAL
         );
+        tag(commonTagOf(Registries.BLOCK, "ores/flint")).add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.FLINT));
         tag(Tags.Blocks.ORE_RATES_SINGULAR).add(
             TFCBlocks.LIGNITE,
-            TFCBlocks.BITUMINOUS_COAL
+            TFCBlocks.BITUMINOUS_COAL,
+            TFCBlocks.HALITE
         );
+
 
         tag(commonTagOf(Registries.BLOCK, "ores")).addTags(
             commonTagOf(Registries.BLOCK, "ores/salt"),
             commonTagOf(Registries.BLOCK, "ores/coal")
         );
+
+        //Lamps
+
+        TFCBlocks.METALS.forEach((metal, blocks) -> {
+            if(metal.allParts())
+            {
+                tag(commonTagOf(Registries.BLOCK, "lamps/" + metal.getSerializedName())).add(blocks.get(Metal.BlockType.LAMP));
+                tag(commonTagOf(Registries.BLOCK, "lamps")).addTag(commonTagOf(Registries.BLOCK, "lamps/" + metal.getSerializedName()));
+            }
+        });
 
         //Leaves
         //c:leaves
@@ -715,28 +838,71 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         //Logs
         //c:logs, c:logs/WOOD
 
-        for (Wood wood : Wood.VALUES)
-        {
+        TFCBlocks.WOODS.forEach((wood, blocks) -> {
             tag(commonTagOf(Registries.BLOCK, "logs/" + wood.getSerializedName())).add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.LOG));
             tag(commonTagOf(Registries.BLOCK, "logs")).addTags(commonTagOf(Registries.BLOCK, "logs/" + wood.getSerializedName()));
-        }
+        });
+
+        //Peat
+
+        tag(commonTagOf(Registries.BLOCK, "peat")).add(TFCBlocks.PEAT, TFCBlocks.PEAT_GRASS);
 
         //Planks
         //c:planks, c:planks/WOOD
 
-        for (Wood wood : Wood.values())
-        {
+        TFCBlocks.WOODS.forEach((wood, blocks) -> {
             tag(commonTagOf(Registries.BLOCK, "planks/" + wood.getSerializedName())).add(
-                TFCBlocks.WOODS.get(wood).get(Wood.BlockType.PLANKS),
-                TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SLAB),
-                TFCBlocks.WOODS.get(wood).get(Wood.BlockType.STAIRS)
+                blocks.get(Wood.BlockType.PLANKS),
+                blocks.get(Wood.BlockType.SLAB),
+                blocks.get(Wood.BlockType.STAIRS)
             );
-            tag(commonTagOf(Registries.BLOCK, "planks")).addTag(commonTagOf(Registries.BLOCK, "planks" + wood.getSerializedName()));
-        }
+            tag(commonTagOf(Registries.BLOCK, "planks")).addTag(commonTagOf(Registries.BLOCK, "planks/" + wood.getSerializedName()));
+        });
 
         //Plants
         //c:plants, c:plants/tall, c:plants/small, c:plants/water, c:plants/salt_water, c:plants/ground, c:plants/wall
 
+        tag(commonTagOf(Registries.BLOCK, "plants/tall")).add(
+            TFCBlocks.PLANTS.get(Plant.AZALEA), TFCBlocks.PLANTS.get(Plant.BEAR_GRASS), TFCBlocks.PLANTS.get(Plant.CANNA),
+            TFCBlocks.PLANTS.get(Plant.FOXGLOVE), TFCBlocks.PLANTS.get(Plant.LILAC), TFCBlocks.PLANTS.get(Plant.MOUNTAIN_HULLWORT),
+            TFCBlocks.PLANTS.get(Plant.PALASH), TFCBlocks.PLANTS.get(Plant.ROSE), TFCBlocks.PLANTS.get(Plant.SAPPHIRE_TOWER),
+            TFCBlocks.PLANTS.get(Plant.SEA_LAVENDER), TFCBlocks.PLANTS.get(Plant.STRELITZIA), TFCBlocks.PLANTS.get(Plant.SUNFLOWER),
+            TFCBlocks.PLANTS.get(Plant.WATER_CANNA)
+        );
+
+        tag(commonTagOf(Registries.BLOCK, "plants/small")).add(
+            TFCBlocks.PLANTS.get(Plant.ALLIUM), TFCBlocks.PLANTS.get(Plant.ANTHURIUM), TFCBlocks.PLANTS.get(Plant.BLACK_ORCHID),
+            TFCBlocks.PLANTS.get(Plant.BLOOD_LILY), TFCBlocks.PLANTS.get(Plant.BLUE_GINGER), TFCBlocks.PLANTS.get(Plant.BLUE_ORCHID),
+            TFCBlocks.PLANTS.get(Plant.BUTTERCUP), TFCBlocks.PLANTS.get(Plant.BUTTERFLY_MILKWEED), TFCBlocks.PLANTS.get(Plant.CALENDULA),
+            TFCBlocks.PLANTS.get(Plant.CORNFLOWER), TFCBlocks.PLANTS.get(Plant.DANDELION), TFCBlocks.PLANTS.get(Plant.DESERT_FLAME),
+            TFCBlocks.PLANTS.get(Plant.EDELWEISS), TFCBlocks.PLANTS.get(Plant.FIELD_HORSETAIL), TFCBlocks.PLANTS.get(Plant.GOLDENROD),
+            TFCBlocks.PLANTS.get(Plant.GRAPE_HYACINTH), TFCBlocks.PLANTS.get(Plant.GUZMANIA), TFCBlocks.PLANTS.get(Plant.HEATHER),
+            TFCBlocks.PLANTS.get(Plant.HELICONIA), TFCBlocks.PLANTS.get(Plant.HOUSTONIA), TFCBlocks.PLANTS.get(Plant.KANGAROO_PAW),
+            TFCBlocks.PLANTS.get(Plant.LABRADOR_TEA), TFCBlocks.PLANTS.get(Plant.LILY_OF_THE_VALLEY), TFCBlocks.PLANTS.get(Plant.MAIDEN_PINK),
+            TFCBlocks.PLANTS.get(Plant.MEADS_MILKWEED), TFCBlocks.PLANTS.get(Plant.MORNING_GLORY), TFCBlocks.PLANTS.get(Plant.NASTURTIUM),
+            TFCBlocks.PLANTS.get(Plant.OXEYE_DAISY), TFCBlocks.PLANTS.get(Plant.PENWORTEL), TFCBlocks.PLANTS.get(Plant.PEROVSKIA),
+            TFCBlocks.PLANTS.get(Plant.POPPY), TFCBlocks.PLANTS.get(Plant.PRIMROSE), TFCBlocks.PLANTS.get(Plant.PULSATILLA),
+            TFCBlocks.PLANTS.get(Plant.PURPLE_WATER_LILY), TFCBlocks.PLANTS.get(Plant.QANTU), TFCBlocks.PLANTS.get(Plant.RAMIREZELLA),
+            TFCBlocks.PLANTS.get(Plant.RAMUNDA), TFCBlocks.PLANTS.get(Plant.SACRED_DATURA), TFCBlocks.PLANTS.get(Plant.SILVER_SPURFLOWER),
+            TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_PINK), TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_RED), TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_WHITE),
+            TFCBlocks.PLANTS.get(Plant.SNAPDRAGON_YELLOW), TFCBlocks.PLANTS.get(Plant.TANK_BROMELIAD), TFCBlocks.PLANTS.get(Plant.TRILLIUM),
+            TFCBlocks.PLANTS.get(Plant.TROPICAL_MILKWEED), TFCBlocks.PLANTS.get(Plant.TULIP_ORANGE), TFCBlocks.PLANTS.get(Plant.TULIP_PINK),
+            TFCBlocks.PLANTS.get(Plant.TULIP_RED), TFCBlocks.PLANTS.get(Plant.TULIP_WHITE), TFCBlocks.PLANTS.get(Plant.WHITE_WATER_LILY),
+            TFCBlocks.PLANTS.get(Plant.YELLOW_SAXIFRAGE), TFCBlocks.PLANTS.get(Plant.YELLOW_WATER_LILY), TFCBlocks.PLANTS.get(Plant.YUCCA)
+        );
+
+        tag(commonTagOf(Registries.BLOCK, "plants/water")).add(
+            TFCBlocks.PLANTS.get(Plant.ARROWHEAD)
+        );
+
+        tag(commonTagOf(Registries.BLOCK, "plants")).addTags(
+            commonTagOf(Registries.BLOCK, "plants/tall"),
+            commonTagOf(Registries.BLOCK, "plants/small"),
+            commonTagOf(Registries.BLOCK, "plants/water"),
+            commonTagOf(Registries.BLOCK, "plants/salt_water"),
+            commonTagOf(Registries.BLOCK, "plants/hanging"),
+            commonTagOf(Registries.BLOCK, "plants/ground")
+        );
 
         //Player Workstations
         //c:player_workstations, c:player_workstations/WORK_STATION
@@ -810,7 +976,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.WOODS, Wood.BlockType.CLUTCH)
             .add(TFCBlocks.WOODS, Wood.BlockType.BLADED_AXLE)
             .add(TFCBlocks.WOODS, Wood.BlockType.GEAR_BOX);
-        tag(commonTagOf(Registries.BLOCK, "power/capability/tfc_mech")).add(
+        tag(commonTagOf(Registries.BLOCK, "power/function/consumer")).add(
             TFCBlocks.TRIP_HAMMER, TFCBlocks.CRANKSHAFT,
             TFCBlocks.QUERN, TFCBlocks.POWER_LOOM
         );
@@ -1069,10 +1235,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         //Soils -- Could also be Dirts
         //c:soils, c:soils/VARIANT
 
-        for (SoilBlockType.Variant soil : SoilBlockType.Variant.values())
-        {
+        TFCBlocks.SOIL.get(SoilBlockType.CLAY).forEach((soil, clay) -> {
             tag(commonTagOf(Registries.BLOCK, "soils/" + soil.name())).add(
-                TFCBlocks.SOIL.get(SoilBlockType.CLAY).get(soil),
+                clay,
                 TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF).get(soil),
                 TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).get(soil),
                 TFCBlocks.SOIL.get(SoilBlockType.COARSE_DIRT).get(soil),
@@ -1087,7 +1252,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT).get(soil)
             );
             tag(commonTagOf(Registries.BLOCK, "soils")).addTag(commonTagOf(Registries.BLOCK, "soils/" + soil.name()));
-        }
+        });
 
         //Stones
         //c:stones, c:stones/ROCK, c:stones/mossy, c:stones/spike, c:stones/raw, c:stones/hardened, c:stones/loose
@@ -1099,13 +1264,23 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.LOOSE),
                 TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_LOOSE),
                 TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.SPIKE)
+                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.SPIKE),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.RAW).slab(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.RAW).stair(),
+                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.RAW).wall()
             );
             tag(Tags.Blocks.STONES).addTags(commonTagOf(Registries.BLOCK, "stones/" + rock.getSerializedName()));
         }
 
         tag(STONES_SPIKE).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SPIKE);
-        tag(STONES_RAW).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW);
+        tag(STONES_RAW)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW)
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.RAW)
+                .values().stream().map(DecorationBlockHolder::slab))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.RAW)
+                .values().stream().map(DecorationBlockHolder::slab))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.RAW)
+                .values().stream().map(DecorationBlockHolder::slab));
         tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
         tag(STONES_LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE)
@@ -1175,6 +1350,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         //Storage blocks are blocks that take 4 or 9 items and compress them into a block and can be then converted back into the 4/9 items
 
         tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).remove(Blocks.HAY_BLOCK); // We repurpose this as storing straw
+        tag(Tags.Blocks.STORAGE_BLOCKS_SLIME).remove(Blocks.SLIME_BLOCK);
+
+        tag(commonTagOf(Registries.BLOCK, "storage_blocks/glue")).add(Blocks.SLIME_BLOCK);
+        tag(commonTagOf(Registries.BLOCK, "storage_blocks/thatch")).add(Blocks.HAY_BLOCK);
 
         //Stripped Logs
         //c:stripped_logs, c:stripped_logs/WOOD
@@ -1219,6 +1398,11 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Walls
 
+        //Wattle
+
+        tag(commonTagOf(Registries.BLOCK, "wattle"))
+            .add(TFCBlocks.STAINED_WATTLE)
+            .add(TFCBlocks.WATTLE, TFCBlocks.UNSTAINED_WATTLE);
 
         //Woods
         //c:woods, c:woods/WOOD

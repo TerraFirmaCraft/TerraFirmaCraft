@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:clay/alfisol",
+    "tfc:clay_duff/alfisol",
+    "tfc:clay_grass/alfisol",
+    "tfc:coarse_dirt/alfisol",
+    "tfc:dirt/alfisol",
+    "tfc:drying_bricks/alfisol",
+    "tfc:duff/alfisol",
+    "tfc:farmland/alfisol",
+    "tfc:grass/alfisol",
+    "tfc:grass_path/alfisol",
+    "tfc:mud/alfisol",
+    "tfc:muddy_roots/alfisol",
+    "tfc:rooted_dirt/alfisol"
+  ]
+}

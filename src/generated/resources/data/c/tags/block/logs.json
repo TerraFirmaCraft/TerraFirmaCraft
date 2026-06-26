@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#c:logs/acacia",
+    "#c:logs/ash",
+    "#c:logs/aspen",
+    "#c:logs/birch",
+    "#c:logs/blackwood",
+    "#c:logs/chestnut",
+    "#c:logs/douglas_fir",
+    "#c:logs/hickory",
+    "#c:logs/kapok",
+    "#c:logs/mangrove",
+    "#c:logs/maple",
+    "#c:logs/oak",
+    "#c:logs/palm",
+    "#c:logs/pine",
+    "#c:logs/rosewood",
+    "#c:logs/sequoia",
+    "#c:logs/spruce",
+    "#c:logs/sycamore",
+    "#c:logs/white_cedar",
+    "#c:logs/willow"
+  ]
+}

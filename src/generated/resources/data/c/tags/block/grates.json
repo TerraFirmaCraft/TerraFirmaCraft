@@ -1,0 +1,17 @@
+{
+  "values": [
+    "#c:grates/bismuth_bronze",
+    "#c:grates/black_bronze",
+    "#c:grates/bronze",
+    "#c:grates/copper",
+    "#c:grates/wrought_iron",
+    "#c:grates/steel",
+    "#c:grates/black_steel",
+    "#c:grates/blue_steel",
+    "#c:grates/red_steel",
+    "#c:grates/normal",
+    "#c:grates/exposed",
+    "#c:grates/oxidized",
+    "#c:grates/weathered"
+  ]
+}

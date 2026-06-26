@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:clay/oxisol",
+    "tfc:clay_duff/oxisol",
+    "tfc:clay_grass/oxisol",
+    "tfc:coarse_dirt/oxisol",
+    "tfc:dirt/oxisol",
+    "tfc:drying_bricks/oxisol",
+    "tfc:duff/oxisol",
+    "tfc:farmland/oxisol",
+    "tfc:grass/oxisol",
+    "tfc:grass_path/oxisol",
+    "tfc:mud/oxisol",
+    "tfc:muddy_roots/oxisol",
+    "tfc:rooted_dirt/oxisol"
+  ]
+}

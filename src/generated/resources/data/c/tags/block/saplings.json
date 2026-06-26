@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#c:saplings/acacia",
+    "#c:saplings/ash",
+    "#c:saplings/aspen",
+    "#c:saplings/birch",
+    "#c:saplings/blackwood",
+    "#c:saplings/chestnut",
+    "#c:saplings/douglas_fir",
+    "#c:saplings/hickory",
+    "#c:saplings/kapok",
+    "#c:saplings/mangrove",
+    "#c:saplings/maple",
+    "#c:saplings/oak",
+    "#c:saplings/palm",
+    "#c:saplings/pine",
+    "#c:saplings/rosewood",
+    "#c:saplings/sequoia",
+    "#c:saplings/spruce",
+    "#c:saplings/sycamore",
+    "#c:saplings/white_cedar",
+    "#c:saplings/willow"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "values": [
+    "#c:cobblestones/granite",
+    "#c:cobblestones/diorite",
+    "#c:cobblestones/gabbro",
+    "#c:cobblestones/shale",
+    "#c:cobblestones/claystone",
+    "#c:cobblestones/limestone",
+    "#c:cobblestones/conglomerate",
+    "#c:cobblestones/dolomite",
+    "#c:cobblestones/chert",
+    "#c:cobblestones/chalk",
+    "#c:cobblestones/tuff",
+    "#c:cobblestones/rhyolite",
+    "#c:cobblestones/basalt",
+    "#c:cobblestones/andesite",
+    "#c:cobblestones/dacite",
+    "#c:cobblestones/quartzite",
+    "#c:cobblestones/slate",
+    "#c:cobblestones/phyllite",
+    "#c:cobblestones/schist",
+    "#c:cobblestones/gneiss",
+    "#c:cobblestones/marble"
+  ]
+}

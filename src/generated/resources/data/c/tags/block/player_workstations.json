@@ -1,0 +1,22 @@
+{
+  "values": [
+    "#c:player_workstations/anvil",
+    "#c:player_workstations/blast_furnace",
+    "#c:player_workstations/bloomery",
+    "#c:player_workstations/composter",
+    "#c:player_workstations/charcoal_forge",
+    "#c:player_workstations/crucible",
+    "#c:player_workstations/firebox",
+    "#c:player_workstations/firepit",
+    "#c:player_workstations/grill",
+    "#c:player_workstations/mold_table",
+    "#c:player_workstations/nest_box",
+    "#c:player_workstations/quern",
+    "#c:player_workstations/lectern",
+    "#c:player_workstations/loom",
+    "#c:player_workstations/scraping",
+    "#c:player_workstations/scribing_table",
+    "#c:player_workstations/sewing_table",
+    "#c:player_workstations/stove"
+  ]
+}

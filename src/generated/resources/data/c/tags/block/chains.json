@@ -1,13 +1,13 @@
 {
   "values": [
-    "tfc:metal/chain/bismuth_bronze",
-    "tfc:metal/chain/black_bronze",
-    "tfc:metal/chain/bronze",
-    "tfc:metal/chain/copper",
-    "tfc:metal/chain/wrought_iron",
-    "tfc:metal/chain/steel",
-    "tfc:metal/chain/black_steel",
-    "tfc:metal/chain/blue_steel",
-    "tfc:metal/chain/red_steel"
+    "#c:chains/bismuth_bronze",
+    "#c:chains/black_bronze",
+    "#c:chains/bronze",
+    "#c:chains/copper",
+    "#c:chains/wrought_iron",
+    "#c:chains/steel",
+    "#c:chains/black_steel",
+    "#c:chains/blue_steel",
+    "#c:chains/red_steel"
   ]
 }

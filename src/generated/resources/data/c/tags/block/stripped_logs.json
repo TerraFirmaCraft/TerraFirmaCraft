@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#c:stripped_logs/acacia",
+    "#c:stripped_logs/ash",
+    "#c:stripped_logs/aspen",
+    "#c:stripped_logs/birch",
+    "#c:stripped_logs/blackwood",
+    "#c:stripped_logs/chestnut",
+    "#c:stripped_logs/douglas_fir",
+    "#c:stripped_logs/hickory",
+    "#c:stripped_logs/kapok",
+    "#c:stripped_logs/mangrove",
+    "#c:stripped_logs/maple",
+    "#c:stripped_logs/oak",
+    "#c:stripped_logs/palm",
+    "#c:stripped_logs/pine",
+    "#c:stripped_logs/rosewood",
+    "#c:stripped_logs/sequoia",
+    "#c:stripped_logs/spruce",
+    "#c:stripped_logs/sycamore",
+    "#c:stripped_logs/white_cedar",
+    "#c:stripped_logs/willow"
+  ]
+}

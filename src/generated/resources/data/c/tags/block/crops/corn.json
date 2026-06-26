@@ -1,0 +1,7 @@
+{
+  "values": [
+    "tfc:crop/maize",
+    "tfc:dead_crop/maize",
+    "tfc:wild_crop/maize"
+  ]
+}

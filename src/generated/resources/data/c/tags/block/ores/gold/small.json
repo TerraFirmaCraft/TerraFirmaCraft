@@ -1,0 +1,26 @@
+{
+  "values": [
+    "tfc:deposit/native_gold/granite",
+    "tfc:deposit/native_gold/diorite",
+    "tfc:deposit/native_gold/gabbro",
+    "tfc:deposit/native_gold/shale",
+    "tfc:deposit/native_gold/claystone",
+    "tfc:deposit/native_gold/limestone",
+    "tfc:deposit/native_gold/conglomerate",
+    "tfc:deposit/native_gold/dolomite",
+    "tfc:deposit/native_gold/chert",
+    "tfc:deposit/native_gold/chalk",
+    "tfc:deposit/native_gold/tuff",
+    "tfc:deposit/native_gold/rhyolite",
+    "tfc:deposit/native_gold/basalt",
+    "tfc:deposit/native_gold/andesite",
+    "tfc:deposit/native_gold/dacite",
+    "tfc:deposit/native_gold/quartzite",
+    "tfc:deposit/native_gold/slate",
+    "tfc:deposit/native_gold/phyllite",
+    "tfc:deposit/native_gold/schist",
+    "tfc:deposit/native_gold/gneiss",
+    "tfc:deposit/native_gold/marble",
+    "tfc:ore/small_native_gold"
+  ]
+}

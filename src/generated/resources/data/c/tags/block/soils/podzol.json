@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:clay/podzol",
+    "tfc:clay_duff/podzol",
+    "tfc:clay_grass/podzol",
+    "tfc:coarse_dirt/podzol",
+    "tfc:dirt/podzol",
+    "tfc:drying_bricks/podzol",
+    "tfc:duff/podzol",
+    "tfc:farmland/podzol",
+    "tfc:grass/podzol",
+    "tfc:grass_path/podzol",
+    "tfc:mud/podzol",
+    "tfc:muddy_roots/podzol",
+    "tfc:rooted_dirt/podzol"
+  ]
+}

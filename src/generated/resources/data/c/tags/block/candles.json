@@ -1,0 +1,21 @@
+{
+  "values": [
+    "#c:candles/white",
+    "#c:candles/orange",
+    "#c:candles/magenta",
+    "#c:candles/light_blue",
+    "#c:candles/yellow",
+    "#c:candles/lime",
+    "#c:candles/pink",
+    "#c:candles/gray",
+    "#c:candles/light_gray",
+    "#c:candles/cyan",
+    "#c:candles/purple",
+    "#c:candles/blue",
+    "#c:candles/brown",
+    "#c:candles/green",
+    "#c:candles/red",
+    "#c:candles/black",
+    "tfc:candle"
+  ]
+}
