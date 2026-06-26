@@ -16,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.river.River;
 
+import static net.dries007.tfc.world.layer.TFCLayers.RIVER_VALLEY;
+
 public enum AddRiversAndLakes implements RegionTask
 {
     INSTANCE;
@@ -179,6 +181,12 @@ public enum AddRiversAndLakes implements RegionTask
         {
             point.setRiver();
             point.rainfall += 0.09f * (500f - point.rainfall); // Small, localized rainfall increase around river valleys of ~45mm max
+
+            // Don't want rivers cutting wide valleys through collisional mountains, rift valleys, or ice sheets
+            if (point.distanceToEdge > 4 && point.temperature > -16f + 0.006f * point.rainfall)
+            {
+                point.biome = RIVER_VALLEY;
+            }
         }
     }
 

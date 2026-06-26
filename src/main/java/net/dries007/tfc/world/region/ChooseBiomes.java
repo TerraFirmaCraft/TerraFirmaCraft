@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.world.region;
 
-import net.minecraft.world.level.ChunkPos;
-
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.layer.framework.Area;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
@@ -75,11 +72,6 @@ public enum ChooseBiomes implements RegionTask
                 {
                     point.biome = RIFT_VALLEY;
                 }
-            }
-            // Don't want rivers cutting wide valleys through collisional mountains, rift valleys, or ice sheets
-            else if (point.river() && point.distanceToEdge > 4 && point.temperature > -16f + 0.006f * point.rainfall)
-            {
-                point.biome = RIVER_VALLEY;
             }
             else if (point.mountain())
             {
