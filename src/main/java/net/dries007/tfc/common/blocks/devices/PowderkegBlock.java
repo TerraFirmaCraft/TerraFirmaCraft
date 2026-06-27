@@ -174,35 +174,6 @@ public class PowderkegBlock extends SealableDeviceBlock
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        if (!state.getValue(SEALED))
-        {
-            @Nullable
-            PowderkegBlockEntity powderkeg = (PowderkegBlockEntity) level.getBlockEntity(pos);
-            if (powderkeg != null)
-            {
-                final PowderkegBlockEntity.PowderkegInventory inventory = powderkeg.getInventory();
-
-                int count = 0;
-                int maxCount = 0;
-
-                for (int i = 0; i < inventory.getSlots(); i++)
-                {
-                    ItemStack stack = inventory.getStackInSlot(i);
-
-                    count += stack.getCount();
-                    //separate in case of smaller fuel
-                    maxCount += stack.isEmpty() ? 64 : stack.getMaxStackSize();
-                }
-                if (count > 0)
-                {
-                    final double y = Mth.clampedMap(count, 0, maxCount, 2D, 14D);
-                    final VoxelShape gunpowder = box(2D, 2D, 2D, 14D, y, 14D);
-
-                    return Shapes.or(SHAPE_UNSEALED, gunpowder);
-                }
-            }
-
-        }
         return state.getValue(SEALED) ? SHAPE : SHAPE_UNSEALED;
     }
 
