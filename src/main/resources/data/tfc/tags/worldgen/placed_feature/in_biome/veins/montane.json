@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:vein/montane_native_copper",
+    "tfc:vein/montane_malachite",
+    "tfc:vein/montane_tetrahedrite",
+    "tfc:vein/montane_native_silver",
+    "tfc:vein/montane_cassiterite",
+    "tfc:vein/montane_bismuthinite",
+    "tfc:vein/montane_sphalerite",
+    "tfc:vein/montane_hematite",
+    "tfc:vein/montane_magnetite",
+    "tfc:vein/montane_limonite",
+    "tfc:vein/montane_cinnabar"
+  ]
+}

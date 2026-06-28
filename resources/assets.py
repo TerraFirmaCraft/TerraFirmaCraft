@@ -200,6 +200,11 @@ def generate(rm: ResourceManager):
 
             block.with_lang(lang('%s %s', *rock_lang(block_type, rock)))
 
+        rm.blockstate(('rock', 'rope_anchor', rock), variants={
+            **four_rotations('tfc:block/rock/rope_anchor/%s' % rock, (90, None, 180, 270)),
+        }).with_lang(lang('%s rope anchor', rock)).with_block_loot('tfc:rock/loose/%s' % rock)
+        rm.block_model(('rock', 'rope_anchor', rock), parent='tfc:block/horizontal_rope_anchored', textures={'texture': 'tfc:block/rock/raw/%s' % rock})
+
         # Decorations
         for block_type in ROCK_DECORATIONS:
             type_name = block_type.replace('bricks', 'brick')
@@ -454,6 +459,20 @@ def generate(rm: ResourceManager):
         {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle/unstained[left=true]')]},
         {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle/unstained[right=true]')]}
     )
+
+    rm.blockstate('rope', variants={
+        **four_rotations('tfc:block/horizontal_rope', (90, None, 180, 270), prefix='ascending=false,'),
+        **four_rotations('tfc:block/slope_rope', (90, None, 180, 270), prefix='ascending=true,'),
+    }).with_lang(lang('rope')).with_block_loot('tfc:rope')
+
+    rm.blockstate('hanging_rope', variants=four_rotations('tfc:block/vertical_rope_side', (90, None, 180, 270))).with_lang(lang('rope')).with_block_loot('tfc:rope')
+
+    rm.blockstate('steel_rope_anchor', variants={
+        **four_rotations('tfc:block/steel_rope_anchor', (None, None, None, None), prefix='has_rope=false,'),
+        **four_rotations('tfc:block/steel_rope_anchor_rope', (90, None, 180, 270), prefix='has_rope=true,'),
+    }).with_lang(lang('steel rope anchor')).with_item_model().with_block_loot('tfc:steel_rope_anchor')
+    rm.block_model('steel_rope_anchor', parent='tfc:block/rope_anchor', textures={'texture': 'tfc:block/metal/smooth/steel'})
+    rm.block_model('steel_rope_anchor_rope', parent='tfc:block/horizontal_rope_anchored', textures={'texture': 'tfc:block/metal/smooth/steel'})
 
     for color in COLORS:
         wattle = 'tfc:wattle/%s' % color
@@ -1826,10 +1845,10 @@ def generate(rm: ResourceManager):
         rm.item_model('wood/twig/%s' % wood, 'tfc:item/wood/twig_%s' % wood, parent='item/handheld_rod')
         block.with_block_loot('tfc:wood/twig/%s' % wood)
 
-        block = rm.blockstate(('wood', 'fallen_leaves', wood), variants=dict((('layers=%d' % i), {'model': 'tfc:block/wood/fallen_leaves/%s_height%d' % (wood, i * 2) if i != 8 else 'tfc:block/wood/leaves/%s' % wood}) for i in range(1, 1 + 8))).with_lang(lang('fallen %s leaves', wood))
-        tex = {'all': 'tfc:block/wood/leaves/%s' % wood}
+        block = rm.blockstate(('wood', 'fallen_leaves', wood), variants=dict((('layers=%d' % i), {'model': 'tfc:block/wood/fallen_leaves/%s_height%d' % (wood, i * 2) if i != 8 else 'tfc:block/wood/leaves/dense_leaves/%s' % wood}) for i in range(1, 1 + 8))).with_lang(lang('fallen %s leaves', wood))
+        tex = {'all': 'tfc:block/wood/leaves/dense_leaves/%s' % wood}
         if wood in ('mangrove', 'willow'):
-            tex['top'] = 'tfc:block/wood/leaves/%s_top' % wood
+            tex['top'] = 'tfc:block/wood/leaves/dense_leaves/%s_top' % wood
         for i in range(1, 8):
             rm.block_model(('wood', 'fallen_leaves', '%s_height%s' % (wood, i * 2)), tex, parent='tfc:block/groundcover/fallen_leaves_height%s' % (i * 2))
         rm.item_model(('wood', 'fallen_leaves', wood), 'tfc:item/groundcover/fallen_leaves')
@@ -1839,10 +1858,10 @@ def generate(rm: ResourceManager):
         if wood in ('pine', 'spruce', 'white_cedar', 'douglas_fir', 'aspen'):
             name = 'plant/%s_krummholz' % wood
             for i in range(1, 10):
-                rm.block_model('plant/krummholz/%s_%s' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_%s' % i)
+                rm.block_model('plant/krummholz/%s_%s' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/dense_leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_%s' % i)
                 rm.block_model('plant/krummholz/%s_%s_snowy' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s_frozen' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_%s' % i)
             for i in range(1, 4):
-                rm.block_model('plant/krummholz/%s_%s_tip' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_tip_%s' % i)
+                rm.block_model('plant/krummholz/%s_%s_tip' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/dense_leaves/%s' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_tip_%s' % i)
                 rm.block_model('plant/krummholz/%s_%s_tip_snowy' % (wood, i), {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s_frozen' % wood, 'particle': 'tfc:block/wood/log/%s' % wood}, parent='tfc:block/plant/krummholz_tip_%s' % i)
             block = rm.blockstate_multipart(name,
                 ({'tip': True, 'snowy': False}, [{'model': 'tfc:block/plant/krummholz/%s_%s_tip' % (wood, i), 'y': y} for i in range(1, 4) for y in (None, 90)]),
@@ -1858,18 +1877,104 @@ def generate(rm: ResourceManager):
             ))
             rm.item_model('plant/%s_krummholz' % wood, parent='tfc:block/plant/krummholz/%s_1_tip' % wood, no_textures=True)
             block = rm.blockstate('plant/potted/%s_krummholz' % wood, model='tfc:block/plant/flowerpot/%s_krummholz' % wood)
-            rm.block_model('plant/flowerpot/%s_krummholz' % wood, {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/%s' % wood}, parent='tfc:block/plant/flowerpot/template_potted_krummholz')
+            rm.block_model('plant/flowerpot/%s_krummholz' % wood, {'0': 'tfc:block/wood/log/%s' % wood, '1': 'tfc:block/wood/leaves/dense_leaves/%s' % wood}, parent='tfc:block/plant/flowerpot/template_potted_krummholz')
             block.with_lang(lang('potted %s krummholz', wood)).with_block_loot('tfc:plant/%s_krummholz' % wood, 'minecraft:flower_pot')
 
         # Leaves
-        block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s' % wood).with_lang(lang('%s leaves', wood))
+
+        # Used for block model
+        block = rm.blockstate(('wood', 'leaves', wood), model='tfc:block/wood/leaves/%s_dynamic' % wood).with_lang(lang('%s leaves', wood))
         if wood == 'palm' or wood == 'willow' or wood == 'mangrove':
             block.with_block_model({
-                'side': 'tfc:block/wood/leaves/%s' % wood,
-                'end': 'tfc:block/wood/leaves/%s_top' % wood
+                'side': 'tfc:block/wood/leaves/dense_leaves/%s' % wood,
+                'end': 'tfc:block/wood/leaves/dense_leaves/%s_top' % wood
             }, parent='tfc:block/tinted_column')
         else:
-            block.with_block_model('tfc:block/wood/leaves/%s' % wood, parent='block/leaves')
+            block.with_block_model('tfc:block/wood/leaves/dense_leaves/%s' % wood, parent='block/leaves')
+
+        # Dynamic blockstates
+        rm.custom_block_model('wood/leaves/%s_dynamic' % wood, 'tfc:leaves', {
+            'dense_leaves': {'parent': 'tfc:block/wood/leaves/dense_leaves/%s' % wood},
+            'sparse_leaves': {'parent': 'tfc:block/wood/leaves/sparse_leaves/%s' % wood},
+            'bare': {'parent': 'tfc:block/wood/leaves/bare/%s' % wood},
+            'blooming': {'parent': 'tfc:block/wood/leaves/blooming/%s' % wood}
+        })
+
+        # Dense leaves
+        if wood == 'palm' or wood == 'willow' or wood == 'mangrove':
+            rm.block_model('wood/leaves/dense_leaves/%s' % wood, {
+                'side': 'tfc:block/wood/leaves/dense_leaves/%s' % wood,
+                'end': 'tfc:block/wood/leaves/dense_leaves/%s_top' % wood
+            }, parent='tfc:block/tinted_column')
+        else:
+            rm.block_model('wood/leaves/dense_leaves/%s' % wood, 'tfc:block/wood/leaves/dense_leaves/%s' % wood, parent='block/leaves')
+
+        # Sparse leaves
+        if wood == 'palm' or wood == 'willow' or wood == 'mangrove':
+            rm.block_model('wood/leaves/sparse_leaves/%s' % wood, {
+                'side': 'tfc:block/wood/leaves/sparse_leaves/%s' % wood,
+                'end': 'tfc:block/wood/leaves/sparse_leaves/%s_top' % wood,
+                'cross': 'tfc:block/wood/leaves/bare/%s' % wood
+            }, parent='tfc:block/sparse_leaves_column')
+        else:
+            rm.block_model('wood/leaves/sparse_leaves/%s' % wood, textures={
+                'leaves': 'tfc:block/wood/leaves/sparse_leaves/%s' % wood,
+                'cross': 'tfc:block/wood/leaves/bare/%s' % wood
+            }, parent='tfc:block/sparse_leaves')
+
+        # Bare - No tint, cross model
+        if wood == 'palm':
+            rm.block_model('wood/leaves/bare/%s' % wood, {'all': 'tfc:block/wood/leaves/bare/%s' % wood}, parent='block/cube_all')
+        else:
+            rm.block_model('wood/leaves/bare/%s' % wood, {'cross': 'tfc:block/wood/leaves/bare/%s' % wood}, parent='block/cross')
+
+        # Blooming -
+        if WOODS[wood].flower_model == 'bare':
+            # No tint, no leaves, branches below
+            rm.block_model('wood/leaves/blooming/%s' % wood, textures={
+                'leaves': 'tfc:block/wood/leaves/blooming/%s' % wood,
+                'cross': 'tfc:block/wood/leaves/bare/%s' % wood
+            }, parent='tfc:block/blooming_branches')
+        elif WOODS[wood].flower_model == 'sparse':
+            # Tinted sparse leaves, flowers over
+            if wood == 'palm' or wood == 'willow' or wood == 'mangrove':
+                rm.block_model('wood/leaves/blooming/%s' % wood, textures={
+                    'side': 'tfc:block/wood/leaves/sparse_leaves/%s' % wood,
+                    'end': 'tfc:block/wood/leaves/sparse_leaves/%s_top' % wood,
+                    'overlay': 'tfc:block/wood/leaves/blooming/%s' % wood
+                }, parent='tfc:block/blooming_leaves_column')
+            else:
+                rm.block_model('wood/leaves/blooming/%s' % wood, textures={
+                    'leaves': 'tfc:block/wood/leaves/sparse_leaves/%s' % wood,
+                    'overlay': 'tfc:block/wood/leaves/blooming/%s' % wood
+                }, parent='tfc:block/blooming_leaves')
+        elif WOODS[wood].flower_model == 'leaves':
+            # Tinted leaves, flowers over
+            if wood == 'palm' or wood == 'willow' or wood == 'mangrove':
+                rm.block_model('wood/leaves/blooming/%s' % wood, textures={
+                    'side': 'tfc:block/wood/leaves/dense_leaves/%s' % wood,
+                    'end': 'tfc:block/wood/leaves/dense_leaves/%s_top' % wood,
+                    'overlay': 'tfc:block/wood/leaves/blooming/%s' % wood
+                }, parent='tfc:block/blooming_leaves_column')
+            else:
+                rm.block_model('wood/leaves/blooming/%s' % wood, textures={
+                    'leaves': 'tfc:block/wood/leaves/dense_leaves/%s' % wood,
+                    'overlay': 'tfc:block/wood/leaves/blooming/%s' % wood
+                }, parent='tfc:block/blooming_leaves')
+        elif WOODS[wood].flower_model == 'cones':
+            # Tinted leaves, flowers as cross under
+            if wood == 'palm' or wood == 'willow' or wood == 'mangrove':
+                rm.block_model('wood/leaves/blooming/%s' % wood, {
+                    'side': 'tfc:block/wood/leaves/dense_leaves/%s' % wood,
+                    'end': 'tfc:block/wood/leaves/dense_leaves/%s_top' % wood,
+                    'cross': 'tfc:block/wood/leaves/blooming/%s' % wood
+                }, parent='tfc:block/sparse_leaves_column')
+            else:
+                rm.block_model('wood/leaves/blooming/%s' % wood, textures={
+                    'leaves': 'tfc:block/wood/leaves/dense_leaves/%s' % wood,
+                    'cross': 'tfc:block/wood/leaves/blooming/%s' % wood
+                }, parent='tfc:block/sparse_leaves')
+        
         block.with_item_model()
 
         block.with_block_loot(

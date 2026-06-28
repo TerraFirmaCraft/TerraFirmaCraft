@@ -628,6 +628,14 @@ public class FastNoiseLite
     public static final int PrimeY = 1136930381;
     public static final int PrimeZ = 1720413743;
 
+    public static int Hash(int seed, int xPrimed)
+    {
+        int hash = seed ^ xPrimed;
+
+        hash *= 0x27d4eb2d;
+        return hash;
+    }
+
     public static int Hash(int seed, int xPrimed, int yPrimed)
     {
         int hash = seed ^ xPrimed ^ yPrimed;

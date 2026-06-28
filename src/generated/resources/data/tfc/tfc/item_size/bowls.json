@@ -1,0 +1,12 @@
+{
+  "ingredient": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "tfc:ceramic/bowl"
+    }
+  ],
+  "size": "small",
+  "weight": "light"
+}

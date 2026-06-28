@@ -65,6 +65,150 @@
           }
         ]
       }
+    },
+    "oceanic_volcanic_arc": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:oceanic_volcanic_arc"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "volcanic_island": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:volcanic_island"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "volcanic_mountain_islands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:volcanic_mountain_islands"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "ice_sheet_volcanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:ice_sheet_volcanic_mountains"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "glaciated_volcanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:glaciated_volcanic_mountains"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "glacially_carved_volcanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:glacially_carved_volcanic_mountains"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "ice_sheet_volcanic_oceanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:ice_sheet_volcanic_oceanic_mountains"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "glaciated_volcanic_oceanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:glaciated_volcanic_oceanic_mountains"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "glacially_carved_volcanic_oceanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "tfc:glacially_carved_volcanic_oceanic_mountains"
+              }
+            }
+          }
+        ]
+      }
     }
   },
   "display": {
@@ -88,7 +232,16 @@
       "volcanic_mountains",
       "volcanic_oceanic_mountains",
       "volcanic_mountain_lake",
-      "volcanic_oceanic_mountain_lake"
+      "volcanic_oceanic_mountain_lake",
+      "oceanic_volcanic_arc",
+      "volcanic_island",
+      "volcanic_mountain_islands",
+      "ice_sheet_volcanic_mountains",
+      "glaciated_volcanic_mountains",
+      "glacially_carved_volcanic_mountains",
+      "ice_sheet_volcanic_oceanic_mountains",
+      "glaciated_volcanic_oceanic_mountains",
+      "glacially_carved_volcanic_oceanic_mountains"
     ]
   ]
 }

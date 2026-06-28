@@ -21,12 +21,20 @@
     },
     {
       "type": "minecraft:noise_based_count",
-      "noise_to_count_ratio": 160,
+      "noise_to_count_ratio": 110,
       "noise_factor": 80.0,
       "noise_offset": 0.3
     },
     {
-      "type": "minecraft:in_square"
+      "type": "minecraft:random_offset",
+      "xz_spread": {
+        "type": "minecraft:clamped_normal",
+        "min_inclusive": -8,
+        "max_inclusive": 15,
+        "mean": 3,
+        "deviation": 4
+      },
+      "y_spread": 0
     },
     {
       "type": "minecraft:heightmap",

@@ -42,8 +42,9 @@ public final class BiomeExtension
     private final boolean hasCinderCones;
     private final boolean hasTuffCones;
     private final boolean hasTuyas;
-    private final int centeredFeatureRarity;
-    private final int centeredFeatureRockHeight;
+    private final boolean hasStratovolcanoes;
+    private final boolean hasAtolls;
+    private final float centeredFeatureFrequency;
     private final int centeredFeatureBaseHeight;
     private final int centeredFeatureScaleHeight;
     private final boolean centeredFeatureIce;
@@ -57,7 +58,7 @@ public final class BiomeExtension
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
     @Nullable private Biome prevBiome;
 
-    BiomeExtension(ResourceKey<Biome> key, @Nullable Function<Seed, BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, ShoreBlendType shoreBlendType, boolean salty, boolean hasCinderCones, boolean hasTuffCones, boolean hasTuyas, int centeredFeatureRarity, int centeredFeatureRockHeight, int centeredFeatureBaseHeight, int centeredFeatureScaleHeight, boolean centeredFeatureIce, boolean spawnable, boolean rivers, boolean shore, int shoreBaseHeight, boolean sandyRiverShores)
+    BiomeExtension(ResourceKey<Biome> key, @Nullable Function<Seed, BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, AquiferLookahead aquiferSurfaceHeight, BiomeBlendType biomeBlendType, RiverBlendType riverBlendType, ShoreBlendType shoreBlendType, boolean salty, boolean hasCinderCones, boolean hasTuffCones, boolean hasTuyas, boolean hasAtolls, boolean hasStratovolcanoes, float centeredFeatureFrequency, int centeredFeatureBaseHeight, int centeredFeatureScaleHeight, boolean centeredFeatureIce, boolean spawnable, boolean rivers, boolean shore, int shoreBaseHeight, boolean sandyRiverShores)
     {
         this.key = key;
         this.noiseFactory = noiseFactory;
@@ -70,8 +71,9 @@ public final class BiomeExtension
         this.hasCinderCones = hasCinderCones;
         this.hasTuffCones = hasTuffCones;
         this.hasTuyas = hasTuyas;
-        this.centeredFeatureRarity = centeredFeatureRarity;
-        this.centeredFeatureRockHeight = centeredFeatureRockHeight;
+        this.hasAtolls = hasAtolls;
+        this.hasStratovolcanoes = hasStratovolcanoes;
+        this.centeredFeatureFrequency = centeredFeatureFrequency;
         this.centeredFeatureBaseHeight = centeredFeatureBaseHeight;
         this.centeredFeatureScaleHeight = centeredFeatureScaleHeight;
         this.centeredFeatureIce = centeredFeatureIce;
@@ -127,6 +129,16 @@ public final class BiomeExtension
         return hasTuyas;
     }
 
+    public boolean hasAtolls()
+    {
+        return hasAtolls;
+    }
+
+    public boolean hasStratovolcanoes()
+    {
+        return hasStratovolcanoes;
+    }
+
     public boolean isSpawnable()
     {
         return spawnable;
@@ -147,9 +159,9 @@ public final class BiomeExtension
         return shoreBaseHeight;
     }
 
-    public int getCenteredFeatureRarity()
+    public float getCenteredFeatureFrequency()
     {
-        return centeredFeatureRarity;
+        return centeredFeatureFrequency;
     }
 
     public int getCenteredFeatureScaleHeight()
@@ -165,11 +177,6 @@ public final class BiomeExtension
     public boolean getCenteredFeatureIce()
     {
         return centeredFeatureIce;
-    }
-
-    public int getCenteredFeatureRockHeight()
-    {
-        return centeredFeatureRockHeight;
     }
 
     public double getAquiferSurfaceHeight(BiomeNoiseSampler sampler, int x, int z)

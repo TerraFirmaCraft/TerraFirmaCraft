@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:atoll_guano_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:atoll",
+      "min_easing": 0.5,
+      "max_easing": 0.8
+    }
+  ]
+}

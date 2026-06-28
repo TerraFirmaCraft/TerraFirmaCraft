@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:forest",
+    "tfc:rare_bamboo",
+    "tfc:bamboo",
+    "tfc:rare_bamboo_golden",
+    "tfc:bamboo_golden",
+    "tfc:cave_vegetation",
+    "tfc:glacial_spring",
+    "#tfc:feature/stratovolcanoes",
+    "#tfc:feature/volcanic",
+    "#tfc:feature/surface_flood_fill_lakes"
+  ]
+}

@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.events.StartFireEvent;
+import net.dries007.tfc.compat.vivecraft.VivecraftIntegration;
 
 public class FirestarterItem extends Item
 {
@@ -82,6 +83,10 @@ public class FirestarterItem extends Item
     @Override
     public UseAnim getUseAnimation(ItemStack stack)
     {
+        if (VivecraftIntegration.isVREnabled())
+        {
+            return UseAnim.NONE;
+        }
         return UseAnim.BOW;
     }
 

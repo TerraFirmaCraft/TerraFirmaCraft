@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:soil_disc",
+  "type": "tfc:soil_forest_area",
   "config": {
-    "min_radius": 7,
-    "max_radius": 14,
+    "min_forest": 2,
+    "max_forest": 3,
     "height": 7,
     "states": [
       {

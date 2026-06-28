@@ -4,6 +4,7 @@
   "values": [
     "#tfc:feature/boulders",
     "#tfc:feature/tuyas",
+    "#tfc:feature/volcanic",
     "#tfc:feature/surface_flood_fill_lakes"
   ]
 }

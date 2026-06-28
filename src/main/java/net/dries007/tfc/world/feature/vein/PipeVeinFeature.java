@@ -14,9 +14,14 @@ import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.Seed;
+import net.dries007.tfc.world.noise.Noise3D;
+import net.dries007.tfc.world.noise.OpenSimplex3D;
 
 public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature.Vein>
 {
+    public static final Noise3D radiusEdgeNoise = new OpenSimplex3D(15189385L).octaves(2).scaled(0, -9);
+
     public PipeVeinFeature(Codec<PipeVeinConfig> codec)
     {
         super(codec);
@@ -25,16 +30,30 @@ public class PipeVeinFeature extends VeinFeature<PipeVeinConfig, PipeVeinFeature
     @Override
     protected float getChanceToGenerate(int x, int y, int z, Vein vein, PipeVeinConfig config)
     {
+        final double edgeNoise = radiusEdgeNoise.noise(0.25 * x, 0.05 * y, 0.25 * z);
+
         final double yScaled = (double) y / config.height();
         x += vein.skew * vein.skewX * yScaled;
         z += vein.skew * vein.skewZ * yScaled;
 
         final double yFactor = (double) vein.sign * yScaled + 0.5D;
-        final double trueRadius = config.radius() * (1 - yFactor) + (config.radius() - vein.slant) * yFactor;
-        if (Math.abs(y) < config.height() && (x * x) + (z * z) < trueRadius * trueRadius)
+
+        final int absY = Math.abs(y);
+        if (absY < config.height())
         {
-            return config.config().density();
+            double trueRadius = config.radius() * (1 - yFactor) + (config.radius() - vein.slant) * yFactor + edgeNoise;
+            final int taperStart = (config.height() - 3 * config.radius());
+            if (absY > taperStart)
+            {
+                trueRadius = Mth.map(absY, taperStart, config.height(), trueRadius, -config.radius());
+            }
+
+            if ((x * x) + (z * z) < trueRadius * trueRadius)
+            {
+                return config.config().density();
+            }
         }
+
         return 0;
     }
 

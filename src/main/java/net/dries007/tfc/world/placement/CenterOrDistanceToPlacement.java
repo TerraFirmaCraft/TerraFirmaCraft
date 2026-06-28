@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.placement;
 
-import java.util.function.BiFunction;
+import com.mojang.datafixers.util.Function3;
 import java.util.stream.Stream;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -32,23 +32,26 @@ import net.dries007.tfc.world.volcano.CenteredFeatureNoiseSampler;
  */
 public abstract class CenterOrDistanceToPlacement<T extends CenteredFeatureNoiseSampler> extends PlacementModifier
 {
-    public static <E extends CenterOrDistanceToPlacement<?>> MapCodec<E> codec(BiFunction<Boolean, Float, E> factory)
+    public static <E extends CenterOrDistanceToPlacement<?>> MapCodec<E> codec(Function3<Boolean, Float, Float, E> factory)
     {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.BOOL.optionalFieldOf("center", false).forGetter(c -> c.center),
-            Codecs.UNIT_FLOAT.optionalFieldOf("distance", 0f).forGetter(c -> c.distance)
+            Codecs.UNIT_FLOAT.optionalFieldOf("min_easing", 0f).forGetter(c -> c.minEasing),
+            Codecs.UNIT_FLOAT.optionalFieldOf("max_easing", 1f).forGetter(c -> c.maxEasing)
         ).apply(instance, factory));
     }
 
     final boolean center;
-    final float distance;
+    final float minEasing;
+    final float maxEasing;
 
     private final ThreadLocal<LocalContext<T>> localContext;
 
-    public CenterOrDistanceToPlacement(boolean center, float distance)
+    public CenterOrDistanceToPlacement(boolean center, float distance, float maxEasing)
     {
         this.center = center;
-        this.distance = distance;
+        this.minEasing = distance;
+        this.maxEasing = maxEasing;
         this.localContext = ThreadLocal.withInitial(() -> null);
     }
 
@@ -82,7 +85,7 @@ public abstract class CenterOrDistanceToPlacement<T extends CenteredFeatureNoise
                     return Stream.of(centerPos);
                 }
             }
-            else if (local.context.calculateEasing(pos, extension) > this.distance)
+            else if (local.context.calculateEasing(pos, extension) > this.minEasing && local.context.calculateEasing(pos, extension) < this.maxEasing)
             {
                 return Stream.of(pos);
             }

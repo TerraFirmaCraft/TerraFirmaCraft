@@ -9,6 +9,7 @@ package net.dries007.tfc.mixin;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,7 +52,10 @@ public abstract class EntityMixin
     @Inject(method = "checkInsideBlocks", at = @At("HEAD"))
     private void checkInsideBlocksForCustomSlowEffects(CallbackInfo ci)
     {
-        Helpers.slowEntityInsideBlocks((Entity) (Object) this);
+        if ((Object) this instanceof LivingEntity living)
+        {
+            Helpers.slowEntityInsideBlocks(living);
+        }
     }
 
 

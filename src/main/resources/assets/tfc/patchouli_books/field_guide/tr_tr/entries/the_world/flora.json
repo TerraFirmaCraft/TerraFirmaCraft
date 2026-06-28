@@ -9,6 +9,10 @@
       "text": "TerraFirmaCraft'ta çok, çok, $(italic)çok$() sayıda farklı bitki türü bulunur.$(br2)Farklı bitkiler farklı $(l:the_world/climate)İklimler$()de ortaya çıkar ve görünümleri mevcut mevsime göre değişebilir; çiçek açma ve uyku dönemlerinden geçebilir veya yerel sıcaklık değiştikçe renk değiştirebilirler. Renkli çiçekler genellikle $(l:mechanics/dye)Boya$() elde etmek için bir $(l:mechanics/quern)El Değirmeni$()nde ezilebilir."
     },
     {
+      "type": "patchouli:text",
+      "text": "Flowers can be $(thing)propagated$() by $(item)$(k:key.use)$() them with shears. This drops a $(thing)Flower Cutting$(). Crafting a Flower Cutting with Compost will give you two of the original flower back, thus duplicating it."
+    },
+    {
       "type": "patchouli:multiblock",
       "multiblock": {
         "pattern": [

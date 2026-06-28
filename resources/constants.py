@@ -39,6 +39,7 @@ class Vein(NamedTuple):
     grade: tuple[int, int, int]  # (poor, normal, rich) weights
     rocks: tuple[str, ...]  # Rock, or rock categories
     rivers_only: bool
+    montane: bool
     height: int
     radius: int
     deposits: bool
@@ -60,6 +61,7 @@ class Vein(NamedTuple):
         density: float,
         rocks: tuple[str, ...],
         rivers_only: bool = False,
+        montane: bool = False,
         vein_type: str = 'cluster',
         grade: tuple[int, int, int] = (),
         height: int = 2,  # For disc type veins, `size` is the width
@@ -77,7 +79,7 @@ class Vein(NamedTuple):
         assert project is None or project is True or project == 'offset'
 
         underground_rarity, underground_count = deep_indicator
-        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, rivers_only, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True, near_lava, simple_blocks)
+        return Vein(ore, 'tfc:%s_vein' % vein_type, rarity, size, min_y, max_y, density, grade, rocks, rivers_only, montane, height, radius, deposits, indicator, underground_rarity, underground_count, None if project is None else True, None if project != 'offset' else True, near_lava, simple_blocks)
 
     def config(self) -> dict[str, Any]:
         cfg = {
@@ -111,6 +113,8 @@ class Plant(NamedTuple):
 class Wood(NamedTuple):
     temp: float
     duration: int
+    evergreen: bool
+    flower_model: str
 
 
 class Berry(NamedTuple):
@@ -312,7 +316,7 @@ ORES: dict[str, Ore] = {
     'native_silver': Ore('silver', True, 'copper', 'silver', 'light_gray'),
     'cassiterite': Ore('tin', True, 'copper', 'tin', 'gray'),
     'bismuthinite': Ore('bismuth', True, 'copper', 'bismuth', 'green'),
-    'garnierite': Ore('nickel', True, 'bronze', 'nickel', 'brown'),
+    'garnierite': Ore('nickel', True, 'copper', 'nickel', 'brown'),
     'malachite': Ore('copper', True, 'copper', 'copper', 'green'),
     'magnetite': Ore('cast_iron', True, 'copper', 'iron', 'gray'),
     'limonite': Ore('cast_iron', True, 'copper', 'iron', 'yellow'),
@@ -323,21 +327,21 @@ ORES: dict[str, Ore] = {
     'gypsum': Ore(None, False, 'copper', 'gypsum'),
     'graphite': Ore(None, False, 'copper', 'graphite'),
     'sulfur': Ore(None, False, 'copper', 'sulfur'),
-    'cinnabar': Ore(None, False, 'bronze', 'redstone'),
-    'cryolite': Ore(None, False, 'bronze', 'redstone'),
+    'cinnabar': Ore(None, False, 'copper', 'redstone'),
+    'cryolite': Ore(None, False, 'copper', 'redstone'),
     'saltpeter': Ore(None, False, 'copper', 'saltpeter'),
     'sylvite': Ore(None, False, 'copper', 'sylvite'),
     'borax': Ore(None, False, 'copper', 'borax'),
-    'halite': Ore(None, False, 'bronze', 'halite', simple_blocks=True),
-    'amethyst': Ore(None, False, 'steel', 'amethyst'),  # Mohs: 7
-    'diamond': Ore(None, False, 'black_steel', 'diamond'),  # Mohs: 10
-    'emerald': Ore(None, False, 'steel', 'emerald'),  # Mohs: 7.5-8
-    'lapis_lazuli': Ore(None, False, 'wrought_iron', 'lapis'),  # Mohs: 5-6
-    'opal': Ore(None, False, 'wrought_iron', 'opal'),  # Mohs: 5.5-6.5
+    'halite': Ore(None, False, 'copper', 'halite', simple_blocks=True),
+    'amethyst': Ore(None, False, 'copper', 'amethyst'),  # Mohs: 7
+    'diamond': Ore(None, False, 'copper', 'diamond'),  # Mohs: 10
+    'emerald': Ore(None, False, 'copper', 'emerald'),  # Mohs: 7.5-8
+    'lapis_lazuli': Ore(None, False, 'copper', 'lapis'),  # Mohs: 5-6
+    'opal': Ore(None, False, 'copper', 'opal'),  # Mohs: 5.5-6.5
     'pyrite': Ore(None, False, 'copper', 'pyrite'),
-    'ruby': Ore(None, False, 'black_steel', 'ruby'),  # Mohs: 9
-    'sapphire': Ore(None, False, 'black_steel', 'sapphire'),  # Mohs: 9
-    'topaz': Ore(None, False, 'steel', 'topaz')  # Mohs: 8
+    'ruby': Ore(None, False, 'copper', 'ruby'),  # Mohs: 9
+    'sapphire': Ore(None, False, 'copper', 'sapphire'),  # Mohs: 9
+    'topaz': Ore(None, False, 'copper', 'topaz')  # Mohs: 8
 }
 ORE_GRADES = ('poor', 'normal', 'rich')
 
@@ -347,12 +351,15 @@ RICH = 15, 25, 60  # = 2550
 
 ORE_VEINS: dict[str, Vein] = {
     # Copper
-    # Native - only in IE, only surface, and common to compensate for the y-level getting cut off.
+    # Native - only in IE, only surface and montane, and common to compensate for the y-level getting cut off.
     # Malachite + Tetrahedrite - Sed + MM, can spawn in larger deposits, hence more common. Tetrahedrite also spawns at high altitude MM
     # All copper have high indicator rarity because it's necessary early on
-    'surface_native_copper': Vein.new('native_copper', 24, 20, 40, 130, 0.25, ('igneous_extrusive',), grade=POOR, deposits=True, indicator=14),
-    'surface_malachite': Vein.new('malachite', 32, 20, 40, 130, 0.25, ('marble', 'limestone', 'chalk', 'dolomite'), grade=POOR, indicator=14),
-    'surface_tetrahedrite': Vein.new('tetrahedrite', 7, 20, 90, 170, 0.25, ('metamorphic',), grade=POOR, indicator=8),
+    'surface_native_copper': Vein.new('native_copper', 36, 20, 40, 100, 0.25, ('igneous_extrusive',), grade=POOR, deposits=True, indicator=14),
+    'surface_malachite': Vein.new('malachite', 48, 20, 40, 100, 0.25, ('marble', 'limestone', 'chalk', 'dolomite'), grade=POOR, indicator=14),
+
+    'montane_native_copper': Vein.new('native_copper', 16, 20, 100, 300, 0.25, ('igneous_extrusive',), grade=POOR, deposits=True, indicator=14, montane=True),
+    'montane_malachite': Vein.new('malachite', 11, 20, 40, 300, 0.25, ('marble', 'limestone', 'chalk', 'dolomite'), grade=POOR, indicator=14, montane=True),
+    'montane_tetrahedrite': Vein.new('tetrahedrite', 3, 20, 90, 270, 0.25, ('metamorphic',), grade=POOR, indicator=8, montane=True),
 
     'normal_malachite': Vein.new('malachite', 45, 30, -30, 70, 0.5, ('marble', 'limestone', 'chalk', 'dolomite'), grade=NORMAL, indicator=25),
     'normal_tetrahedrite': Vein.new('tetrahedrite', 40, 30, -30, 70, 0.5, ('metamorphic',), grade=NORMAL, indicator=25),
@@ -365,24 +372,30 @@ ORE_VEINS: dict[str, Vein] = {
     'fake_native_gold': Vein.new('pyrite', 16, 15, -50, 70, 0.35, ('igneous_extrusive', 'igneous_intrusive'), indicator=0),
 
     # Silver - black bronze (T2 with gold), or for black steel. Rare and small in uplift mountains via high II or plentiful near bottom of world
-    'surface_native_silver': Vein.new('native_silver', 15, 10, 90, 180, 0.2, ('granite', 'diorite'), grade=POOR),
+    'montane_native_silver': Vein.new('native_silver', 7, 10, 90, 280, 0.2, ('granite', 'diorite'), grade=POOR, montane=True),
     'normal_native_silver': Vein.new('native_silver', 25, 25, -80, 20, 0.6, ('granite', 'diorite', 'gneiss', 'schist'), grade=RICH, indicator=0, deep_indicator=(1, 9)),
 
     # Tin - bronze T2, rare situation (II uplift mountain) but common and rich.
-    'surface_cassiterite': Vein.new('cassiterite', 5, 15, 80, 180, 0.4, ('igneous_intrusive',), grade=NORMAL, deposits=True),
+    'montane_cassiterite': Vein.new('cassiterite', 2, 15, 80, 300, 0.4, ('igneous_intrusive',), grade=NORMAL, deposits=True, montane=True),
 
     # Bismuth - bronze T2 surface via Sed, deep and rich via II
-    'surface_bismuthinite': Vein.new('bismuthinite', 32, 20, 40, 130, 0.3, ('sedimentary',), grade=POOR, indicator=14),
+    'surface_bismuthinite': Vein.new('bismuthinite', 48, 20, 40, 100, 0.3, ('sedimentary',), grade=POOR, indicator=14),
+    'montane_bismuthinite': Vein.new('bismuthinite', 24, 20, 100, 220, 0.3, ('sedimentary',), grade=POOR, indicator=14, montane=True),
     'normal_bismuthinite': Vein.new('bismuthinite', 45, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 4)),
 
     # Zinc - bronze T2, requires different source from bismuth, surface via IE, or deep via II
-    'surface_sphalerite': Vein.new('sphalerite', 30, 20, 40, 130, 0.3, ('igneous_extrusive',), grade=POOR),
+    'surface_sphalerite': Vein.new('sphalerite', 40, 20, 40, 100, 0.3, ('igneous_extrusive',), grade=POOR),
+    'montane_sphalerite': Vein.new('sphalerite', 20, 20, 100, 220, 0.3, ('igneous_extrusive',), grade=POOR, montane=True),
     'normal_sphalerite': Vein.new('sphalerite', 45, 40, -80, 20, 0.6, ('igneous_intrusive',), grade=RICH, indicator=0, deep_indicator=(1, 5)),
 
-    # Iron - both surface via IE and Sed. IE has one, Sed has two, so the two are higher rarity
+    # Iron - all occur on surface or in mountains via IE and Sed. IE has one, Sed has two, so the two are higher rarity
     'surface_hematite': Vein.new('hematite', 45, 20, 10, 90, 0.4, ('igneous_extrusive',), grade=NORMAL, indicator=24),
     'surface_magnetite': Vein.new('magnetite', 90, 20, 10, 90, 0.4, ('sedimentary',), grade=NORMAL, indicator=24),
     'surface_limonite': Vein.new('limonite', 90, 20, 10, 90, 0.4, ('sedimentary',), grade=NORMAL, indicator=24),
+
+    'montane_hematite': Vein.new('hematite', 25, 20, 90, 250, 0.4, ('igneous_extrusive',), grade=NORMAL, indicator=24, montane=True),
+    'montane_magnetite': Vein.new('magnetite', 45, 20, 90, 250, 0.4, ('sedimentary',), grade=NORMAL, indicator=24, montane=True),
+    'montane_limonite': Vein.new('limonite', 45, 20, 90, 250, 0.4, ('sedimentary',), grade=NORMAL, indicator=24, montane=True),
 
     # Nickel - only deep spawning II. Extra veins in gabbro
     'normal_garnierite': Vein.new('garnierite', 25, 18, -80, 0, 0.3, ('igneous_intrusive',), grade=NORMAL),
@@ -397,11 +410,12 @@ ORE_VEINS: dict[str, Vein] = {
 
     # Sulfur spawns near lava level in any low-level rock, common, but small veins, or in tuff near the surface
     'sulfur': Vein.new('sulfur', 4, 18, -64, -45, 0.25, ('igneous_intrusive', 'metamorphic'), vein_type='disc', height=5, near_lava=True),
-    'tuff_sulfur': Vein.new('sulfur', 4, 18, 40, 120, 0.45, ('tuff',), vein_type='disc', height=4),
+    'tuff_sulfur': Vein.new('sulfur', 2, 18, 40, 200, 0.45, ('tuff',), vein_type='disc', height=4),
 
-    # Redstone: Cryolite is deep II, cinnabar is deep MM, both are common enough within these rocks but rare to find
+    # Redstone: Cryolite is deep II, cinnabar is deep MM or Uplift Mountains, both are common enough within these rocks but rare to find
     'cryolite': Vein.new('cryolite', 16, 18, -70, -10, 0.7, ('granite', 'diorite')),
-    'cinnabar': Vein.new('cinnabar', 14, 18, -70, 10, 0.6, ('quartzite', 'phyllite', 'gneiss', 'schist')),
+    'normal_cinnabar': Vein.new('cinnabar', 14, 18, -70, 10, 0.6, ('quartzite', 'phyllite', 'gneiss', 'schist')),
+    'montane_cinnabar': Vein.new('cinnabar', 14, 14, 120, 280, 0.6, ('quartzite', 'phyllite', 'gneiss', 'schist'), montane=True),
 
     # Misc minerals - all spawning in discs, mostly in sedimentary rock. Rare, but all will spawn together
     # Gypsum is decorative, so more common, and Borax is sad, so more common (but smaller)
@@ -420,7 +434,7 @@ ORE_VEINS: dict[str, Vein] = {
 
     'amethyst': Vein.new('amethyst', 25, 8, 40, 60, 0.2, ('sedimentary', 'metamorphic'), vein_type='disc', rivers_only=True, height=4),
     'opal': Vein.new('opal', 25, 8, 40, 60, 0.2, ('sedimentary', 'igneous_extrusive'), vein_type='disc', rivers_only=True, height=4),
-    'ruby': Vein.new('ruby', 12, 22, -70, -10, 0.2, ('schist', 'gneiss')),
+    'deep_ruby': Vein.new('ruby', 80, 22, -70, -10, 0.2, ('marble',)),
 }
 
 ALL_MINERALS = ('bituminous_coal', 'lignite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
@@ -469,26 +483,26 @@ NON_WHITE_COLORS = COLORS[1:]
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'canola_oil', 'canola_oil_water', 'tallow', 'tannin', 'vinegar', 'beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
 
 WOODS: dict[str, Wood] = {
-    'acacia': Wood(650, 1000),
-    'ash': Wood(696, 1250),
-    'aspen': Wood(611, 1000),
-    'birch': Wood(652, 1750),
-    'blackwood': Wood(720, 1750),
-    'chestnut': Wood(651, 1500),
-    'douglas_fir': Wood(707, 1500),
-    'hickory': Wood(762, 2000),
-    'kapok': Wood(645, 1000),
-    'mangrove': Wood(655, 1000),
-    'maple': Wood(745, 2000),
-    'oak': Wood(728, 2250),
-    'palm': Wood(730, 1250),
-    'pine': Wood(627, 1250),
-    'rosewood': Wood(640, 1500),
-    'sequoia': Wood(612, 1750),
-    'spruce': Wood(608, 1500),
-    'sycamore': Wood(653, 1750),
-    'white_cedar': Wood(625, 1500),
-    'willow': Wood(603, 1000)
+    'acacia': Wood(650, 1000, False, 'bare'),
+    'ash': Wood(696, 1250, False, 'sparse'),
+    'aspen': Wood(611, 1000, False, 'bare'),
+    'birch': Wood(652, 1750, False, 'bare'),
+    'blackwood': Wood(720, 1750, False, 'leaves'),
+    'chestnut': Wood(651, 1500, False, 'leaves'),
+    'douglas_fir': Wood(707, 1500, True, 'cones'),
+    'hickory': Wood(762, 2000, False, 'sparse'),
+    'kapok': Wood(645, 1000, False, 'bare'),
+    'mangrove': Wood(655, 1000, False, 'leaves'),
+    'maple': Wood(745, 2000, False, 'bare'),
+    'oak': Wood(728, 2250, False, 'sparse'),
+    'palm': Wood(730, 1250, False, 'leaves'),
+    'pine': Wood(627, 1250, True, 'cones'),
+    'rosewood': Wood(640, 1500, False, 'bare'),
+    'sequoia': Wood(612, 1750, True, 'cones'),
+    'spruce': Wood(608, 1500, True, 'cones'),
+    'sycamore': Wood(653, 1750, False, 'sparse'),
+    'white_cedar': Wood(625, 1500, True, 'leaves'),
+    'willow': Wood(603, 1000, False, 'bare')
 }
 
 # DO NOT EDIT DIRECTLY - Imported directly from spreadsheet
@@ -848,7 +862,7 @@ VESSEL_TYPES = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'smooth_mud_bricks')
-SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'cactus_wood', 'compost', 'daub', 'dirty_jute_net', 'dried_cactus_wood', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid', 'canola', 'alfalfa', 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'canola_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle', 'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
+SIMPLE_ITEMS = ('alabaster_brick', 'bone_needle', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'cactus_wood', 'compost', 'daub', 'dirty_jute_net', 'dried_cactus_wood', 'empty_jar', 'empty_jar_with_lid', 'fire_clay', 'flower_cutting', 'goat_horn', 'gem_saw', 'glow_arrow', 'glue', 'hematitic_glass_batch', 'jacks', 'jar_lid', 'canola', 'alfalfa', 'jute', 'jute_fiber', 'jute_net', 'kaolin_clay', 'lamp_glass', 'lens', 'mortar', 'olive_paste', 'canola_paste', 'olivine_glass_batch', 'paddle', 'papyrus', 'papyrus_strip', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rope', 'rotten_compost', 'sandpaper', 'silica_glass_batch', 'silk_cloth', 'soaked_papyrus_strip', 'soot', 'spindle', 'stick_bunch', 'stick_bundle', 'straw', 'treated_hide', 'unrefined_paper', 'volcanic_glass_batch', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 
 GENERIC_POWDERS = {
     'charcoal': 'black',
@@ -919,8 +933,25 @@ BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'ch
 
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
-TFC_BIOMES = ['badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'plateau_wide', 'hills', 'rolling_hills', 'highlands', 'lake', 'lowlands', 'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'guano_island', 'shore', 'tidal_flats', 'sea_stacks', 'terrace_upper', 'terrace_lower', 'setback_cliffs', 'coastal_dunes', 'rocky_shores', 'embayments', 'salt_flats', 'mud_flats', 'dune_sea', 'grassy_dunes', 'whorled_canyons', 'stair_step_canyons', 'mesas', 'buttes', 'hoodoos', 'rocky_plateau', 'tower_karst_plains', 'burren_plains', 'shilin_plains', 'doline_plains', 'cenote_plains', 'tower_karst_canyons', 'doline_canyons', 'cenote_canyons', 'shilin_canyons', 'tower_karst_hills', 'shilin_hills', 'doline_hills', 'cenote_hills', 'tower_karst_highlands', 'burren_badlands_tall', 'shilin_highlands', 'doline_highlands', 'cenote_highlands', 'extreme_doline_plateau', 'burren_plateau', 'shilin_plateau', 'doline_plateau', 'cenote_plateau', 'tower_karst_lake', 'tower_karst_bay', 'extreme_doline_mountains', 'burren_badlands', 'doline_rolling_hills', 'cenote_rolling_hills', 'burren_roche_moutonee', 'active_shield_volcano', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'sunken_shield_volcano', 'shield_volcano_shore', 'old_shield_volcano_shore', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake', 'ice_sheet', 'ice_sheet_mountains', 'ice_sheet_oceanic_mountains', 'ice_sheet_shield_volcano', 'ice_sheet_tuyas', 'subglacial_lake', 'ice_sheet_edge', 'ice_sheet_tuyas_edge', 'ice_sheet_mountains_edge', 'ice_sheet_oceanic_mountains_edge', 'meltwater_lake', 'ice_sheet_oceanic', 'ice_sheet_shore', 'glaciated_shield_volcano', 'glaciated_mountains', 'glaciated_oceanic_mountains', 'glacially_carved_mountains', 'glacially_carved_oceanic_mountains', 'drumlins', 'tuyas', 'knob_and_kettle', 'patterned_ground', 'inverted_patterned_ground', 'stone_circles']
-KAOLIN_BIOMES = ['rolling_hills', 'highlands', 'plateau', 'plateau_wide', 'old_mountains', 'tower_karst_hills', 'tower_karst_highlands', 'extreme_doline_plateau', 'extreme_doline_mountains', 'doline_rolling_hills', 'doline_highlands', 'doline_plateau', 'cenote_rolling_hills', 'cenote_highlands', 'cenote_plateau', 'shilin_hills', 'shilin_highlands', 'shilin_plateau', 'buttes', 'mesas', 'stair_step_canyons', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'badlands', 'canyons']
+TFC_BIOMES = ['badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'plateau_wide', 'hills', 'rolling_hills', 'highlands', 'lake', 'lowlands',
+              'salt_marsh', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef',
+              'deep_ocean', 'deep_ocean_trench', 'river', 'guano_island', 'shore', 'tidal_flats', 'sea_stacks', 'terrace_upper', 'terrace_lower', 'setback_cliffs',
+              'coastal_dunes', 'rocky_shores', 'embayments', 'salt_flats', 'mud_flats', 'dune_sea', 'grassy_dunes', 'whorled_canyons', 'stair_step_canyons',
+              'mesas', 'buttes', 'hoodoos', 'rocky_plateau', 'tower_karst_plains', 'burren_plains', 'shilin_plains', 'doline_plains', 'cenote_plains',
+              'tower_karst_canyons', 'doline_canyons', 'cenote_canyons', 'shilin_canyons', 'tower_karst_hills', 'shilin_hills', 'doline_hills', 'cenote_hills',
+              'tower_karst_highlands', 'burren_badlands_tall', 'shilin_highlands', 'doline_highlands', 'cenote_highlands', 'extreme_doline_plateau',
+              'burren_plateau', 'shilin_plateau', 'doline_plateau', 'cenote_plateau', 'tower_karst_lake', 'tower_karst_bay', 'extreme_doline_mountains',
+              'burren_badlands', 'doline_rolling_hills', 'cenote_rolling_hills', 'burren_roche_moutonee', 'active_shield_volcano', 'dormant_shield_volcano',
+              'extinct_shield_volcano', 'ancient_shield_volcano', 'sunken_shield_volcano', 'shield_volcano_shore', 'old_shield_volcano_shore', 'mountain_lake',
+              'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake', 'ice_sheet',
+              'ice_sheet_mountains', 'ice_sheet_oceanic_mountains', 'ice_sheet_shield_volcano', 'ice_sheet_tuyas', 'subglacial_lake', 'ice_sheet_edge',
+              'ice_sheet_tuyas_edge', 'ice_sheet_mountains_edge', 'ice_sheet_oceanic_mountains_edge', 'meltwater_lake', 'ice_sheet_oceanic', 'ice_sheet_shore',
+              'glaciated_shield_volcano', 'glaciated_mountains', 'glaciated_oceanic_mountains', 'glacially_carved_mountains', 'glacially_carved_oceanic_mountains',
+              'drumlins', 'tuyas', 'knob_and_kettle', 'patterned_ground', 'inverted_patterned_ground', 'stone_circles', 'oceanic_volcanic_arc', 'ocean_ridge',
+              'rift_valley', 'rift_lake', 'collisional_mountains', 'volcanic_island', 'volcanic_mountain_islands', 'ice_sheet_volcanic_mountains',
+              'glaciated_volcanic_mountains', 'glacially_carved_volcanic_mountains', 'ice_sheet_volcanic_oceanic_mountains', 'glaciated_volcanic_oceanic_mountains',
+              'glacially_carved_volcanic_oceanic_mountains', 'ocean_atolls', 'deep_ocean_atolls', 'river_valley']
+KAOLIN_BIOMES = ['rolling_hills', 'highlands', 'plateau', 'plateau_wide', 'old_mountains', 'tower_karst_hills', 'tower_karst_highlands', 'extreme_doline_plateau', 'extreme_doline_mountains', 'doline_rolling_hills', 'doline_highlands', 'doline_plateau', 'cenote_rolling_hills', 'cenote_highlands', 'cenote_plateau', 'shilin_hills', 'shilin_highlands', 'shilin_plateau', 'buttes', 'mesas', 'stair_step_canyons', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'badlands', 'canyons', 'volcanic_mountain_islands', 'rift_valley', 'rift_lake']
 VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host', 'flow', 'bolt')
 
 BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'moth_diaphora', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashed_fritillary', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
@@ -1254,6 +1285,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.food_infinite_expiry': 'Never expires',
     'tfc.tooltip.food_rotten': 'Rotten!',
     'tfc.tooltip.food_rotten_special': 'Ewwww, are you really thinking of eating that? It looks disgusting',
+    'tfc.tooltip.flower_cutting': '§7Cutting of %s',
     'tfc.tooltip.nutrition': 'Nutrition:',
     'tfc.tooltip.nutrition_saturation': ' - Saturation: %s%%',
     'tfc.tooltip.nutrition_water': ' - Water: %s%%',
@@ -1402,6 +1434,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.sewing.stitch': 'Stitch',
     'tfc.tooltip.sewing.remove_stitch': 'Remove Stitch',
     'tfc.tooltip.sewing.select_recipe': 'Select Recipe',
+    'tfc.tooltip.rope.throw_me': 'Right click again to throw the rope in the direction you\'re facing.',
     'tfc.tooltip.firebox.time_to_heat': 'Heating %s blocks in %s',
     'tfc.tooltip.firebox.heated': 'Heated %s blocks',
     'tfc.tooltip.firebox.no_heat': 'No heatable area detected',
@@ -1688,6 +1721,7 @@ DEFAULT_LANG = {
     'entity.tfc.horse': 'Horse',
     'entity.tfc.horse.male': 'Stallion',
     'entity.tfc.horse.female': 'Mare',
+    'entity.tfc.rope_knot': 'Rope',
     **{'entity.tfc.boat.%s' % wood: lang('%s boat', wood) for wood in WOODS.keys()},
     **{'entity.tfc.chest_boat.%s' % wood: lang('%s boat with chest', wood) for wood in WOODS.keys()},
 

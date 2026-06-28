@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:glaciated_shield_volcano",
+    "tfc:glaciated_mountains",
+    "tfc:glaciated_oceanic_mountains",
+    "tfc:glaciated_volcanic_mountains",
+    "tfc:glaciated_volcanic_oceanic_mountains"
+  ]
+}

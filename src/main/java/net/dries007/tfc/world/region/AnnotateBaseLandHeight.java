@@ -46,12 +46,12 @@ public enum AnnotateBaseLandHeight implements RegionTask
 
                 if (point.island())
                 {
-                    point.baseOceanDepth = ISLAND_SEED_DEPTH;
+                    point.distanceToLand = ISLAND_SEED_DEPTH;
                     islandQueue.add(point.index);
                 }
                 else
                 {
-                    point.baseOceanDepth = 0;
+                    point.distanceToLand = 0;
                     queue.enqueue(point.index);
                 }
             }
@@ -61,7 +61,7 @@ public enum AnnotateBaseLandHeight implements RegionTask
         {
             final int last = queue.dequeueInt();
             final Region.Point lastPoint = region.atIndex(last);
-            final int nextDepth = lastPoint.baseOceanDepth + 1;
+            final int nextDepth = lastPoint.distanceToLand + 1;
 
             if (nextDepth == ISLAND_SEED_DEPTH && !islandQueue.isEmpty())
             {
@@ -75,7 +75,7 @@ public enum AnnotateBaseLandHeight implements RegionTask
                 for (int dz = -1; dz <= 1; dz++)
                 {
                     final @Nullable Region.Point point = region.atOffset(last, dx, dz);
-                    if (point != null && !point.land() && point.baseOceanDepth == 0)
+                    if (point != null && !point.land() && point.distanceToLand == 0)
                     {
                         if (!explored.get(point.index))
                         {
@@ -83,12 +83,12 @@ public enum AnnotateBaseLandHeight implements RegionTask
                             {
                                 // Not a true BFS, we have some 'cheat' points
                                 // To preserve the nature of the BFS we enqueueFirst for these points, so they stay in the right batch
-                                point.baseOceanDepth = lastPoint.baseOceanDepth;
+                                point.distanceToLand = lastPoint.distanceToLand;
                                 queue.enqueueFirst(point.index);
                             }
                             else
                             {
-                                point.baseOceanDepth = (byte) nextDepth;
+                                point.distanceToLand = (byte) nextDepth;
                                 queue.enqueue(point.index);
                             }
                         }

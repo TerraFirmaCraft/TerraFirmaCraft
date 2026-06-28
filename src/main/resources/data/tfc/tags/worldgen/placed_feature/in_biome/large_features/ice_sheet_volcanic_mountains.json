@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "#tfc:feature/stratovolcanoes",
+    "#tfc:feature/volcanic",
+    "#tfc:feature/surface_flood_fill_lakes"
+  ]
+}

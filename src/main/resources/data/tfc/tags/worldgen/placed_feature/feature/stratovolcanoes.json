@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:stratovolcano_pumice",
+    "tfc:fuji_caldera",
+    "tfc:fuji_spring",
+    "tfc:kelimutu_lava",
+    "tfc:kelimutu_spring_water",
+    "tfc:kelimutu_water",
+    "tfc:tahoma_caldera",
+    "tfc:tahoma_spring",
+    "tfc:wizard_island_lava",
+    "tfc:wizard_island_spring",
+    "tfc:random_fuji_fissure",
+    "tfc:random_fuji_spring_water_fissure",
+    "tfc:random_tahoma_fissure",
+    "tfc:random_tahoma_spring_water_fissure",
+    "tfc:random_kelimutu_fissure",
+    "tfc:random_kelimutu_spring_water_fissure",
+    "tfc:random_crater_lake_fissure",
+    "tfc:random_crater_lake_spring_water_fissure",
+    "tfc:fuji_rivulet",
+    "tfc:tahoma_rivulet",
+    "tfc:crater_lake_rivulet",
+    "tfc:crater_lake_sulfur"
+  ]
+}

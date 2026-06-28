@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:stratovolcano_rivulet",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 3
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:stratovolcano",
+      "variant": "fuji",
+      "min_easing": 0.7,
+      "hash_max": 0.4
+    }
+  ]
+}

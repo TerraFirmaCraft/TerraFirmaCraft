@@ -12,6 +12,7 @@
   "carvers": {
     "air": [
       "tfc:cave",
+      "tfc:deep_cave",
       "tfc:canyon"
     ],
     "liquid": []
@@ -25,6 +26,7 @@
     "#tfc:in_biome/strongholds",
     "#tfc:in_biome/veins",
     "#tfc:in_biome/veins/kaolin",
+    "#tfc:in_biome/veins/montane",
     "#tfc:in_biome/underground_decoration",
     "#tfc:in_biome/large_features/dormant_shield_volcano",
     "#tfc:in_biome/surface_decoration/dormant_shield_volcano",

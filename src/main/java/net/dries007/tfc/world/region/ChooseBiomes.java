@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.world.region;
 
+import net.minecraft.world.level.ChunkPos;
+
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
@@ -14,8 +18,6 @@ public enum ChooseBiomes implements RegionTask
 {
     INSTANCE;
 
-    private static final int[] MOUNTAIN_ALTITUDE_BIOMES = {MOUNTAINS, MOUNTAINS, MOUNTAINS, OLD_MOUNTAINS, OLD_MOUNTAINS, PLATEAU, HIGHLANDS};
-    private static final int[] OCEANIC_MOUNTAIN_ALTITUDE_BIOMES = {VOLCANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS, OCEANIC_MOUNTAINS, OCEANIC_MOUNTAINS, ROLLING_HILLS};
     private static final int[][] ALTITUDE_BIOMES = {
         {PLAINS, PLAINS, HILLS, HILLS, ROLLING_HILLS, LOW_CANYONS, LOWLANDS, LOWLANDS}, // Low
         {PLAINS, HILLS, ROLLING_HILLS, ROLLING_HILLS, ROLLING_HILLS, HIGHLANDS, BUTTES, MESAS, BADLANDS, PLATEAU_WIDE, CANYONS, CANYONS, LOW_CANYONS}, // Mid
@@ -42,8 +44,11 @@ public enum ChooseBiomes implements RegionTask
         {HIGHLANDS, HIGHLANDS, MESAS, HOODOOS, ROLLING_HILLS, ROLLING_HILLS, BADLANDS, BADLANDS, PLATEAU_WIDE, ROCKY_PLATEAU, STAIR_STEP_CANYONS, STAIR_STEP_CANYONS, OLD_MOUNTAINS, OLD_MOUNTAINS, WHORLED_CANYONS}, // High
     };
     private static final int[] KNOB_AND_KETTLE_BIOMES = {KNOB_AND_KETTLE, PATTERNED_GROUND, INVERTED_PATTERNED_GROUND};
-    private static final int[] ISLAND_BIOMES = {PLAINS, HILLS, ROLLING_HILLS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS, GUANO_ISLAND};
-    private static final int[] MID_DEPTH_OCEAN_BIOMES = {DEEP_OCEAN, OCEAN, OCEAN, OCEAN_REEF, OCEAN_REEF, OCEAN_REEF};
+    private static final int[] ISLAND_BIOMES = {ROLLING_HILLS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_MOUNTAIN_ISLANDS, GUANO_ISLAND};
+    private static final int[] RIFT_VALLEY_BIOMES = {RIFT_VALLEY, RIFT_VALLEY, RIFT_VALLEY, RIFT_LAKE, RIFT_LAKE};
+    private static final int[] VOLCANIC_ARC_BIOMES = {VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_OCEANIC_MOUNTAINS, VOLCANIC_ISLAND, OCEANIC_VOLCANIC_ARC};
+    private static final int[] BARRIER_ISLAND_BIOMES = {PLAINS, PLAINS, PLAINS, SALT_MARSH, TIDAL_FLATS};
+
 
     @Override
     public void apply(RegionGenerator.Context context)
@@ -60,48 +65,153 @@ public enum ChooseBiomes implements RegionTask
             {
                 point.biome = randomSeededFrom(rngSeed, areaSeed, ISLAND_BIOMES);
             }
+            // Rift valleys need to fire before mountains to override them
+            else if (point.distanceToEdge < 3 && point.divergence > 0 && point.land())
+            {
+                if (point.distanceToOcean > 2)
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, RIFT_VALLEY_BIOMES);
+                }
+                else
+                {
+                    point.biome = RIFT_VALLEY;
+                }
+            }
+            // Don't want rivers cutting wide valleys through collisional mountains, rift valleys, or ice sheets
+            else if (point.river() && point.distanceToEdge > 4 && point.temperature > -16f + 0.006f * point.rainfall)
+            {
+                point.biome = RIVER_VALLEY;
+            }
             else if (point.mountain())
             {
+                // Collisional mountains and surrounding oceanic mountains
                 final float temp = point.temperature;
-                if (point.coastalMountain())
+                if (point.divergence < 0 && point.distanceToEdge < 1.2 * context.generator().continentNoise.noise(point.x, point.z) - 5.2)
                 {
                     // Different temperature limits used because biomes at different elevations
                     final float maxIceSheetTemp = -16f + 0.006f * point.rainfall;
-                    if (temp < maxIceSheetTemp + 2)
+                    if (point.distanceToOcean < 3)
                     {
-                        point.biome = ICE_SHEET_OCEANIC_MOUNTAINS;
-                    }
-                    else if (temp < maxIceSheetTemp + 6)
-                    {
-                        point.biome = GLACIATED_OCEANIC_MOUNTAINS;
-                    }
-                    else if (temp < maxIceSheetTemp + 10)
-                    {
-                        point.biome = GLACIALLY_CARVED_OCEANIC_MOUNTAINS;
+                        if (temp < maxIceSheetTemp + 2)
+                        {
+                            point.biome = ICE_SHEET_OCEANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 6)
+                        {
+                            point.biome = GLACIATED_OCEANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 10)
+                        {
+                            point.biome = GLACIALLY_CARVED_OCEANIC_MOUNTAINS;
+                        }
+                        else
+                        {
+                            point.biome = OCEANIC_MOUNTAINS;
+                        }
                     }
                     else
                     {
-                        point.biome = randomSeededFrom(rngSeed, areaSeed, OCEANIC_MOUNTAIN_ALTITUDE_BIOMES);
+                        if (temp < maxIceSheetTemp + 4)
+                        {
+                            point.biome = ICE_SHEET_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 8)
+                        {
+                            point.biome = GLACIATED_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 11)
+                        {
+                            point.biome = GLACIALLY_CARVED_MOUNTAINS;
+                        }
+                        else
+                        {
+                            point.biome = COLLISIONAL_MOUNTAINS;
+                        }
+                    }
+                }
+                else if (point.coastalMountain())
+                {
+                    // Different temperature limits used because biomes at different elevations
+                    final float maxIceSheetTemp = -16f + 0.006f * point.rainfall;
+                    if (point.volcanic())
+                    {
+                        if (temp < maxIceSheetTemp + 2)
+                        {
+                            point.biome = ICE_SHEET_VOLCANIC_OCEANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 6)
+                        {
+                            point.biome = GLACIATED_VOLCANIC_OCEANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 10)
+                        {
+                            point.biome = GLACIALLY_CARVED_VOLCANIC_OCEANIC_MOUNTAINS;
+                        }
+                        else
+                        {
+                            point.biome = VOLCANIC_OCEANIC_MOUNTAINS;
+                        }
+                    }
+                    else
+                    {
+                        if (temp < maxIceSheetTemp + 2)
+                        {
+                            point.biome = ICE_SHEET_OCEANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 6)
+                        {
+                            point.biome = GLACIATED_OCEANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 10)
+                        {
+                            point.biome = GLACIALLY_CARVED_OCEANIC_MOUNTAINS;
+                        }
+                        else
+                        {
+                            point.biome = OCEANIC_MOUNTAINS;
+                        }
                     }
                 }
                 else
                 {
                     final float maxIceSheetTemp = -14f + 0.006f * point.rainfall;
-                    if (temp < maxIceSheetTemp)
+                    if (point.volcanic())
                     {
-                        point.biome = ICE_SHEET_MOUNTAINS;
-                    }
-                    else if (temp < maxIceSheetTemp + 4)
-                    {
-                        point.biome = GLACIATED_MOUNTAINS;
-                    }
-                    else if (temp < maxIceSheetTemp + 10)
-                    {
-                        point.biome = GLACIALLY_CARVED_MOUNTAINS;
+                        if (temp < maxIceSheetTemp + 4)
+                        {
+                            point.biome = ICE_SHEET_VOLCANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 8)
+                        {
+                            point.biome = GLACIATED_VOLCANIC_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 11)
+                        {
+                            point.biome = GLACIALLY_CARVED_VOLCANIC_MOUNTAINS;
+                        }
+                        else
+                        {
+                            point.biome = VOLCANIC_MOUNTAINS;
+                        }
                     }
                     else
                     {
-                        point.biome = randomSeededFrom(rngSeed, areaSeed, MOUNTAIN_ALTITUDE_BIOMES);
+                        if (temp < maxIceSheetTemp + 4)
+                        {
+                            point.biome = ICE_SHEET_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 8)
+                        {
+                            point.biome = GLACIATED_MOUNTAINS;
+                        }
+                        else if (temp < maxIceSheetTemp + 11)
+                        {
+                            point.biome = GLACIALLY_CARVED_MOUNTAINS;
+                        }
+                        else
+                        {
+                            point.biome = MOUNTAINS;
+                        }
                     }
                 }
             }
@@ -145,21 +255,36 @@ public enum ChooseBiomes implements RegionTask
                     point.biome = randomSeededFrom(rngSeed, areaSeed, ALTITUDE_BIOMES[point.discreteBiomeAltitude()]);
                 }
             }
-            else if (point.baseOceanDepth < 3)
+            else if (point.barrierIsland())
             {
-                point.biome = OCEAN;
+                if (point.volcanic())
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, VOLCANIC_ARC_BIOMES);
+                }
+                else
+                {
+                    point.biome = randomSeededFrom(rngSeed, areaSeed, BARRIER_ISLAND_BIOMES);
+                }
             }
-            else if (point.baseOceanDepth > 9)
+            else if (point.oceanDepth == 1)
+            {
+                point.biome = point.volcanic() ? OCEANIC_VOLCANIC_ARC : OCEAN_REEF;
+            }
+            else if (point.oceanDepth == 2)
+            {
+                point.biome = point.temperature > 12 && point.distanceToLand > 4 ? OCEAN_ATOLLS : OCEAN;
+            }
+            else if (point.oceanDepth == 3)
+            {
+                point.biome = OCEAN_RIDGE;
+            }
+            else if (point.oceanDepth == 5)
             {
                 point.biome = DEEP_OCEAN_TRENCH;
             }
-            else if (point.baseOceanDepth >= 5 || point.distanceToEdge < 2)
-            {
-                point.biome = DEEP_OCEAN;
-            }
             else
             {
-                point.biome = randomSeededFrom(rngSeed, areaSeed, MID_DEPTH_OCEAN_BIOMES);
+                point.biome = point.temperature > 12 && point.distanceToLand > 3 ? DEEP_OCEAN_ATOLLS : DEEP_OCEAN;
             }
 
             // Add hot spot biomes
@@ -255,6 +380,11 @@ public enum ChooseBiomes implements RegionTask
             if (point.distanceToOcean <= 2 && point.biome == LOWLANDS && point.rainfall > 220 && point.temperature > 18)
             {
                 point.biome = SALT_MARSH;
+            }
+
+            if (point.lake() && TFCLayers.hasLake(point.biome))
+            {
+                point.biome = TFCLayers.lakeFor(point.biome);
             }
         }
     }

@@ -1,0 +1,212 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:disc_vein",
+  "config": {
+    "rarity": 16,
+    "density": 1,
+    "min_y": -40,
+    "max_y": -4,
+    "project": true,
+    "project_offset": true,
+    "size": 50,
+    "height": 5,
+    "random_name": "ruby_marble_belt",
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/basalt"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/andesite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dacite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/granite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/diorite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/slate"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/schist"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/marble"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/marble",
+            "weight": 94
+          },
+          {
+            "block": "tfc:ore/ruby/marble",
+            "weight": 6
+          }
+        ]
+      }
+    ]
+  }
+}

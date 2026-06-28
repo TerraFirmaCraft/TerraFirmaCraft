@@ -56,6 +56,6 @@ public class BowlBlockEntityRenderer implements BlockEntityRenderer<BowlBlockEnt
 
         final float y = Mth.map(item.getCount(), 0, BowlBlockEntity.MAX_POWDER, 0.5f, 2f);
 
-        RenderHelpers.renderTexturedFace(poseStack, buffer, 0xFFFFFF, 2f / 16, 2f / 16, 14f / 16, 14f / 16, y / 16f, combinedOverlay, combinedLight, texture);
+        RenderHelpers.renderTexturedFace(poseStack, buffer, 0xFFFFFF, 4f / 16, 4f / 16, 12f / 16, 12f / 16, y / 16f, combinedOverlay, combinedLight, texture);
     }
 }

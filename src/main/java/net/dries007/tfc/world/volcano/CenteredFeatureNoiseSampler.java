@@ -31,12 +31,12 @@ public interface CenteredFeatureNoiseSampler
     boolean isValidBiome(BiomeExtension biome);
 
     /**
-     * @return A {@code rarity} parameter for this noise feature within the given biome. Will only be called if {@link #isValidBiome}
+     * @return A {@code frequency} parameter for this noise feature within the given biome. Will only be called if {@link #isValidBiome}
      * returns {@code true}. This value is provided to the following methods.
      */
-    default int getRarity(BiomeExtension biome)
+    default float getFrequency(BiomeExtension biome)
     {
-        return biome.getCenteredFeatureRarity();
+        return biome.getCenteredFeatureFrequency();
     }
 
     /**
@@ -44,13 +44,13 @@ public interface CenteredFeatureNoiseSampler
      */
     default float calculateEasing(BlockPos pos, BiomeExtension biome)
     {
-        return calculateEasing(pos.getX(), pos.getZ(), getRarity(biome));
+        return calculateEasing(pos.getX(), pos.getZ(), getFrequency(biome));
     }
 
     /**
      * @return A value representing how close we are to a given center point in {@code [0, 1]}, where higher values are closer to the center.
      */
-    float calculateEasing(int x, int z, int rarity);
+    float calculateEasing(int x, int z, float frequency);
 
     /**
      * @return The nearest center point to the given position.
@@ -58,22 +58,32 @@ public interface CenteredFeatureNoiseSampler
     @Nullable
     default BlockPos calculateCenter(BlockPos pos, BiomeExtension biome)
     {
-        return calculateCenter(pos.getX(), pos.getY(), pos.getZ(), getRarity(biome));
+        return calculateCenter(pos.getX(), pos.getY(), pos.getZ(), getFrequency(biome));
     }
 
     /**
      * @return The nearest center point to the given position.
      */
     @Nullable
-    BlockPos calculateCenter(int x, int y, int z, int rarity);
+    BlockPos calculateCenter(int x, int y, int z, float frequency);
 
     /**
      * Sample the nearest cellular noise feature cell to a given position.
-     * Returns false if the cell was excluded due to a rarity condition, or if the cell was too close to adjacent cells (possibly causing overlapping volcanoes)
      */
-    default boolean checkCellRarity(Cellular2D.Cell cell, int rarity)
+    default boolean checkCellRarity(Cellular2D.Cell cell, float frequency)
     {
-        if (rarity == 0) return false;
-        return Math.abs(cell.noise()) <= 1.0 / rarity;
+        if (frequency == 0) return false;
+        return Math.abs(cell.noise()) <= frequency;
     }
+
+    /**
+     * @return The cell at a given location.
+     */
+    Cellular2D getCellularNoise();
+
+    /**
+     * @return The cell at a given location.
+     */
+    @Nullable
+    VolcanoVariant getVolcanoVariant(Cellular2D.Cell cell);
 }

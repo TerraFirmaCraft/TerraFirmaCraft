@@ -12,6 +12,7 @@
   "carvers": {
     "air": [
       "tfc:cave",
+      "tfc:deep_cave",
       "tfc:canyon"
     ],
     "liquid": []

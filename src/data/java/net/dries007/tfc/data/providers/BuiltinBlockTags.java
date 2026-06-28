@@ -50,6 +50,7 @@ import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
@@ -139,7 +140,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.SPANISH_MOSS).get(),
             TFCBlocks.PLANTS.get(Plant.SPANISH_MOSS_PLANT).get(),
             TFCBlocks.PLANTS.get(Plant.LIANA).get(),
-            TFCBlocks.PLANTS.get(Plant.LIANA_PLANT).get()
+            TFCBlocks.PLANTS.get(Plant.LIANA_PLANT).get(),
+            TFCBlocks.ROPE.get(),
+            TFCBlocks.HANGING_ROPE.get()
         );
         tag(BlockTags.INFINIBURN_OVERWORLD).add(TFCBlocks.PIT_KILN);
         tag(BlockTags.INFINIBURN_END).add(TFCBlocks.PIT_KILN);
@@ -151,7 +154,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES)
             // Already includes base stone overworld, which includes raw and hardened stone
             .addTags(Tags.Blocks.GRAVELS, Tags.Blocks.COBBLESTONES)
-            .add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
+            .add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW)
+            .remove(Blocks.WATER);
         tag(EXTRA_CAVE_CARVER_REPLACEABLE)
             .add(TFCBlocks.ROCK_BLOCKS.get(Rock.LIMESTONE).get(Rock.BlockType.RAW).get())
             .add(TFCBlocks.ROCK_BLOCKS.get(Rock.DOLOMITE).get(Rock.BlockType.RAW).get())
@@ -222,7 +226,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.DEAD_CANE,
                 TFCBlocks.THATCH,
                 TFCBlocks.THATCH_BED,
-                TFCBlocks.TREE_ROOTS
+                TFCBlocks.TREE_ROOTS,
+                TFCBlocks.ROPE,
+                TFCBlocks.HANGING_ROPE
             );
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .add2(TFCBlocks.SANDSTONE)
@@ -283,7 +289,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.POWER_LOOM,
                 TFCBlocks.BRONZE_BELL,
                 TFCBlocks.BRASS_BELL,
-                TFCBlocks.LARGE_VESSEL
+                TFCBlocks.LARGE_VESSEL,
+                TFCBlocks.STEEL_ROPE_ANCHOR
             )
             .add(TFCBlocks.MOLD_TABLE)
             .add(TFCBlocks.CHANNEL)
@@ -436,7 +443,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(BREAKS_WHEN_ISOLATED).addTag(STONES_RAW);
         tag(FALLEN_LEAVES).add(TFCBlocks.WOODS, Wood.BlockType.FALLEN_LEAVES);
         tag(SEASONAL_LEAVES).addOnly(pivot(TFCBlocks.WOODS, Wood.BlockType.LEAVES), e -> !e.isConifer());
-
         tag(STONES_RAW).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW);
         tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
         tag(STONES_SMOOTH).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SMOOTH);
@@ -761,6 +767,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(HALOPHYTE).add(
             TFCBlocks.PLANTS.get(Plant.SEA_LAVENDER),
             TFCBlocks.PLANTS.get(Plant.CORDGRASS));
+        tag(BlockTags.GEODE_INVALID_BLOCKS).add(TFCFluids.SALT_WATER.createSourceBlock().getBlock()).addTag(BlockTags.DIRT);
         tag(SINGLE_BLOCK_REPLACEABLE)
             .addTag(BlockTags.SMALL_FLOWERS)
             .add(

@@ -28,13 +28,10 @@ public class CinderConeSurfaceBuilder implements SurfaceBuilder
     private final SurfaceBuilder parent;
     private final Seed seed;
 
-    private final Noise2D heightNoise;
-
     public CinderConeSurfaceBuilder(SurfaceBuilder parent, Seed seed)
     {
         this.seed = seed;
         this.parent = parent;
-        this.heightNoise = new OpenSimplex2D(seed.next()).octaves(2).spread(0.1f).scaled(-4, 4);
     }
 
     @Override
@@ -44,9 +41,9 @@ public class CinderConeSurfaceBuilder implements SurfaceBuilder
         {
             final CenteredFeatureNoiseSampler sampler = CenteredFeatureNoise.cinder(seed);
             final float easing = sampler.calculateEasing(context.pos(), context.cinderConeBiome());
-            if (easing > 0.6f && startY > context.cinderConeBiome().getCenteredFeatureRockHeight() + heightNoise.noise(context.pos().getX(), context.pos().getZ()))
+            if (easing > 0.6f && startY > context.getPreVolcanicHeight())
             {
-                buildVolcanicSurface(context, startY, endY, easing);
+                buildVolcanicSurface(context, startY, context.getPreVolcanicHeight() - 5, easing);
                 return;
             }
         }

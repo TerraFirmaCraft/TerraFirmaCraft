@@ -61,6 +61,7 @@ import net.dries007.tfc.common.entities.livestock.pet.Dog;
 import net.dries007.tfc.common.entities.livestock.pet.TFCCat;
 import net.dries007.tfc.common.entities.misc.GlowArrow;
 import net.dries007.tfc.common.entities.misc.HoldingMinecart;
+import net.dries007.tfc.common.entities.misc.RopeKnot;
 import net.dries007.tfc.common.entities.misc.Seat;
 import net.dries007.tfc.common.entities.misc.TFCBoat;
 import net.dries007.tfc.common.entities.misc.TFCChestBoat;
@@ -117,6 +118,7 @@ public class TFCEntities
     public static final Id<Seat> SEAT = register("seat", EntityType.Builder.of(Seat::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(4).updateInterval(20));
     public static final Id<TFCMinecartChest> CHEST_MINECART = register("chest_minecart", EntityType.Builder.of(TFCMinecartChest::new, MobCategory.MISC).sized(0.98F, 0.7F).passengerAttachments(0.1875F).clientTrackingRange(8));
     public static final Id<HoldingMinecart> HOLDING_MINECART = register("holding_minecart", EntityType.Builder.<HoldingMinecart>of(HoldingMinecart::new, MobCategory.MISC).sized(0.98F, 0.7F).passengerAttachments(0.1875F).clientTrackingRange(8));
+    public static final Id<RopeKnot> ROPE_KNOT = register("rope_knot", EntityType.Builder.<RopeKnot>of(RopeKnot::new, MobCategory.MISC).noSave().sized(0.375F, 0.5F).eyeHeight(0.0625F).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE));
 
     public static final Map<Wood, Id<TFCChestBoat>> CHEST_BOATS = Helpers.mapOf(Wood.class, wood ->
         register("chest_boat/" + wood.name(), EntityType.Builder.<TFCChestBoat>of((type, level) -> new TFCChestBoat(type, level, TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))

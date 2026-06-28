@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:flood_fill_lake",
+  "config": {
+    "overfill": true,
+    "replace_fluids": [
+      "minecraft:water"
+    ],
+    "state": "minecraft:lava"
+  }
+}

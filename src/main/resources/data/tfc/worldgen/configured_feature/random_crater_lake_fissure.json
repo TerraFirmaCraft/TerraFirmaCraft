@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tfc:crater_lake_topaz_volcano_fissure",
+      "tfc:crater_lake_topaz_volcano_fissure",
+      "tfc:crater_lake_topaz_volcano_fissure",
+      "tfc:crater_lake_diamond_volcano_fissure",
+      "tfc:crater_lake_volcano_fissure",
+      "tfc:crater_lake_volcano_fissure"
+    ]
+  }
+}

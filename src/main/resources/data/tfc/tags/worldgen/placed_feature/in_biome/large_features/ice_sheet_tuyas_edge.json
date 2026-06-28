@@ -10,6 +10,7 @@
     "tfc:bamboo_golden",
     "tfc:cave_vegetation",
     "#tfc:feature/tuyas",
+    "#tfc:feature/volcanic",
     "#tfc:feature/surface_flood_fill_lakes"
   ]
 }

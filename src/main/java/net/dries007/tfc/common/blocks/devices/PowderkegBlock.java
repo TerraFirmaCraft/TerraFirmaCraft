@@ -8,9 +8,11 @@ package net.dries007.tfc.common.blocks.devices;
 
 
 import java.util.Optional;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -40,6 +42,7 @@ import net.dries007.tfc.common.component.TFCComponents;
 import net.dries007.tfc.common.component.item.ItemListComponent;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class PowderkegBlock extends SealableDeviceBlock
 {

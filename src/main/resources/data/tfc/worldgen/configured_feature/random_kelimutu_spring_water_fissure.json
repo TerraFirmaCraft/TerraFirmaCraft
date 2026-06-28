@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tfc:kelimutu_sapphire_volcano_spring_water_fissure",
+      "tfc:kelimutu_sapphire_volcano_spring_water_fissure",
+      "tfc:kelimutu_emerald_volcano_spring_water_fissure",
+      "tfc:kelimutu_emerald_volcano_spring_water_fissure",
+      "tfc:kelimutu_volcano_spring_water_fissure",
+      "tfc:kelimutu_volcano_spring_water_fissure"
+    ]
+  }
+}

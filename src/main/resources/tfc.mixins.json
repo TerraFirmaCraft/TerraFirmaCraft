@@ -60,6 +60,7 @@
     "client.CreateWorldScreenMixin",
     "client.FogRendererMixin",
     "client.HangingSignEditScreenMixin",
+    "client.ItemBlockRenderTypesMixin",
     "client.ItemColorsMixin",
     "client.LiquidBlockRendererMixin",
     "client.MinecraftMixin",

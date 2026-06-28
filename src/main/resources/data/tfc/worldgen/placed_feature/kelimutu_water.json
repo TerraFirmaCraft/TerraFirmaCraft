@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:kelimutu_water",
+  "placement": [
+    {
+      "type": "tfc:stratovolcano",
+      "variant": "kelimutu",
+      "center": true,
+      "use_offset_center": true,
+      "hash_min": 0.75,
+      "hash_max": 1
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

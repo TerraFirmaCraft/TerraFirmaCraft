@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:topaz_volcano_fissure",
+  "placement": [
+    {
+      "type": "tfc:stratovolcano",
+      "variant": "fuji",
+      "center": true,
+      "hash_max": 0.6
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

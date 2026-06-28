@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cluster_vein",
   "config": {
-    "rarity": 32,
+    "rarity": 48,
     "density": 0.25,
     "min_y": 40,
-    "max_y": 130,
+    "max_y": 100,
     "size": 20,
     "random_name": "surface_malachite",
     "blocks": [

@@ -44,6 +44,7 @@ import net.dries007.tfc.common.recipes.ingredients.AndIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidContentIngredient;
 import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
+import net.dries007.tfc.common.recipes.outputs.FlowerCuttingModifier;
 import net.dries007.tfc.common.recipes.outputs.MealModifier;
 import net.dries007.tfc.util.Metal;
 
@@ -188,6 +189,13 @@ public interface CraftingRecipes extends Recipes
             .inputIsPrimary(TFCItems.SANDPAPER)
             .input(TFCItems.ORES.get(gem))
             .shapeless(item));
+
+        // Propagate a flower cutting back into the plant it was taken from, using compost
+        recipe()
+            .inputIsPrimary(TFCItems.FLOWER_CUTTING)
+            .input(TFCItems.COMPOST)
+            .addOutputModifier(FlowerCuttingModifier.INSTANCE)
+            .shapeless("flower_cutting");
 
         TFCBlocks.ALABASTER_BRICKS.forEach((color, block) -> addDecorations(block, TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color)));
         TFCBlocks.POLISHED_ALABASTER.forEach((color, block) -> addDecorations(block, TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color)));
@@ -1112,6 +1120,10 @@ public interface CraftingRecipes extends Recipes
             .input('X', TFCItems.JUTE_FIBER)
             .pattern("X X", " X ", "X X")
             .shaped(TFCItems.JUTE_NET);
+        recipe()
+            .input('X', TFCItems.JUTE_FIBER)
+            .pattern("X ", " X")
+            .shaped(TFCItems.ROPE, 2);
         replace("lead")
             .input('X', TFCItems.JUTE_FIBER)
             .pattern(" XX", " XX", "X  ")
@@ -1217,6 +1229,11 @@ public interface CraftingRecipes extends Recipes
             .pattern("PGM", " P ")
             .shaped(TFCBlocks.STEEL_PUMP);
         recipe()
+            .input('S', commonTagOf(Metal.STEEL, Metal.ItemType.ROD))
+            .input('G', TFCItems.GLUE)
+            .pattern("S ", "SG")
+            .shaped(TFCBlocks.STEEL_ROPE_ANCHOR);
+        recipe()
             .input('X', Tags.Items.RODS_WOODEN)
             .pattern("XXX", "XXX", "XXX")
             .shaped(TFCItems.STICK_BUNCH);
@@ -1306,7 +1323,7 @@ public interface CraftingRecipes extends Recipes
             .input(TFCItems.CANOLA)
             .shapeless(TFCItems.STRAW);
         recipe()
-            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.DOUBLE_SHEET))
+            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.SHEET))
             .pattern(" S ", "S S", " S ")
             .shaped(TFCBlocks.STOVE);
         recipe()

@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.fluids.RiverWaterFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.world.biome.BiomeBlendType;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -103,6 +104,8 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private final ChunkBaseBlockSource baseBlockSource;
 
     private final int[] surfaceHeight; // 16x16, block pos resolution
+    private final int[] preVolcanicHeight; // 16x16, block pos resolution
+    private final int[] surfaceIntegrityDepth; // 16x16, block pos resolution
     private final BiomeExtension[] localBiomes; // 16x16, block pos resolution
     private final BiomeExtension[] localBiomesNoRivers; // 16x16, block pos resolution
     private final double[] localBiomeWeights; // 16x16, block pos resolution
@@ -161,6 +164,8 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         this.aquifer = new TFCAquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise);
 
         this.surfaceHeight = new int[16 * 16];
+        this.preVolcanicHeight = new int[16 * 16];
+        this.surfaceIntegrityDepth = new int[16 * 16];
         this.localBiomes = new BiomeExtension[16 * 16];
         this.localBiomesNoRivers = new BiomeExtension[16 * 16];
         this.localBiomeWeights = new double[16 * 16];
@@ -174,6 +179,16 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     public int[] surfaceHeight()
     {
         return surfaceHeight;
+    }
+
+    public int[] preVolcanicHeight()
+    {
+        return preVolcanicHeight;
+    }
+
+    public int[] surfaceIntegrityDepth()
+    {
+        return surfaceIntegrityDepth;
     }
 
     public BiomeExtension[] localBiomes()
@@ -219,7 +234,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
                 double aquiferSurfaceHeight = biome.getAquiferSurfaceHeight(sampler, actualX, actualZ);
 
-                if (aquiferSurfaceHeight > seaLevel - 24 && sampleRiverDistSq(actualX, actualZ) < 15 * 15)
+                if (biome.hasRivers() && aquiferSurfaceHeight > seaLevel - 24 && sampleRiverDistSq(actualX, actualZ) < 15 * 15)
                 {
                     // When near a river, force aquifers below the river in a wide radius (15 blocks)
                     aquiferSurfaceHeight = seaLevel - 24;
@@ -371,6 +386,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         final int localIndex = localX + 16 * localZ;
         final int heightNoiseValue = surfaceHeight[localIndex]; // sample height, using the just-computed biome weights
+        final int surfaceIntegrityDepth = this.surfaceIntegrityDepth[localIndex];
         final BiomeExtension localBiome = localBiomes[localIndex];
 
         final Flow flow = localBiome.hasRivers() ? calculateFlowAt(cellX, cellZ) : Flow.NONE;
@@ -413,7 +429,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
                 interpolator.updateForY(cellDeltaY);
 
-                final double noise = calculateNoiseAtHeight(y, heightNoiseValue);
+                final double noise = calculateNoiseAtHeight(y, heightNoiseValue, surfaceIntegrityDepth);
                 final BlockState state = calculateBlockStateAtNoise(y, noise);
                 final FluidState fluid = state.getFluidState();
 
@@ -531,11 +547,12 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     }
 
     /**
-     * @param y                The y position
-     * @param heightNoiseValue The calculated average height noise, from {@link BiomeNoiseSampler#height()}
+     * @param y                     The y position
+     * @param heightNoiseValue      The calculated average height noise, from {@link BiomeNoiseSampler#height()}
+     * @param surfaceIntegrityDepth The depth above which noise should not carve
      * @return The density noise for the given y position, where positive noise is solid, in the range [0, 1]
      */
-    private double calculateNoiseAtHeight(int y, double heightNoiseValue)
+    private double calculateNoiseAtHeight(int y, double heightNoiseValue, int surfaceIntegrityDepth)
     {
         double noise = 0;
         for (Object2DoubleMap.Entry<BiomeNoiseSampler> entry : columnBiomeNoiseSamplers.object2DoubleEntrySet())
@@ -545,25 +562,11 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             noise += sampler.noise(y) * entry.getDoubleValue();
         }
 
-        // Apply transformations from rivers
-        // Each river blend type applies to the initial noise value, and then is weighted by its blend weight
         final double initialNoise = noise;
         noise = 0;
-        for (RiverBlendType type : RiverBlendType.ALL)
-        {
-            final double weight = riverBlendWeights[type.ordinal()];
-            if (type == RiverBlendType.NONE)
-            {
-                noise += weight * initialNoise;
-            }
-            else if (weight > 0)
-            {
-                final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
-                noise += weight * sampler.noise(y, initialNoise);
-            }
-        }
 
-        // Apply transformations from shores
+        // Apply transformations from shores before adding the forced no-carve zone
+        // Each blend type applies to the initial noise value, and then is weighted by its blend weight
         for (ShoreBlendType type : ShoreBlendType.ALL)
         {
             final double weight = shoreBlendWeights[type.ordinal()];
@@ -577,6 +580,32 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
                 noise += weight * sampler.noise(y, initialNoise);
             }
         }
+
+        // Add the forced no carve zone
+        if (surfaceIntegrityDepth > 0)
+        {
+            final int carveBelowHeight = (int) heightNoiseValue - surfaceIntegrityDepth;
+            noise = Mth.clampedMap(y, carveBelowHeight - 10, carveBelowHeight, noise, 0);
+        }
+
+        final double postShoreNoise = noise;
+
+        // Apply transformations from rivers
+        // Each river blend type applies to the initial noise value, and then is weighted by its blend weight
+        for (RiverBlendType type : RiverBlendType.ALL)
+        {
+            final double weight = riverBlendWeights[type.ordinal()];
+            if (type == RiverBlendType.NONE)
+            {
+                noise += weight * postShoreNoise;
+            }
+            else if (weight > 0)
+            {
+                final RiverNoiseSampler sampler = riverNoiseSamplers.get(type);
+                noise += weight * sampler.noise(y, postShoreNoise);
+            }
+        }
+
 
         noise = BiomeNoiseSampler.AIR_THRESHOLD - noise; // Positive noise = solid
         if (y > heightNoiseValue)
@@ -627,7 +656,7 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     }
 
     @Override
-    protected void updateLocalCaches(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, @Nullable RiverInfo info, double height, boolean couldBeSalty)
+    protected void updateLocalCaches(Object2DoubleMap<BiomeExtension> biomeWeights, BiomeExtension biomeAt, @Nullable RiverInfo info, double height, double preVolcanicHeight, boolean couldBeSalty, int surfaceIntegrityDepth)
     {
         final int localIndex = localX + 16 * localZ;
 
@@ -641,8 +670,23 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
         final double biomeWeightAt = biomeWeights.getOrDefault(biomeAt, 0.5);
         localBiomeWeights[localIndex] = biomeWeightAt;
         surfaceHeight[localIndex] = (int) height;
+        this.preVolcanicHeight[localIndex] = (int) preVolcanicHeight;
+        this.surfaceIntegrityDepth[localIndex] = surfaceIntegrityDepth;
 
-        baseBlockSource.useAccurateBiome(localX, localZ, biomeAt, biomeWeightAt, couldBeSalty);
+        double oceanWeight = 0;
+
+        for (Object2DoubleMap.Entry<BiomeExtension> entry : biomeWeights.object2DoubleEntrySet())
+        {
+            final BiomeExtension weightedBiome = entry.getKey();
+            final double weight = entry.getDoubleValue();
+
+            if (weightedBiome.biomeBlendType() == BiomeBlendType.OCEAN)
+            {
+                oceanWeight += weight;
+            }
+        }
+        final boolean forceCoastalSaltWater = biomeAt != TFCBiomes.RIVER && height <= seaLevel && oceanWeight >= 0.05;
+        baseBlockSource.useAccurateBiome(localX, localZ, biomeAt, biomeWeightAt, couldBeSalty, forceCoastalSaltWater);
     }
 
     private void sampleRiverData()

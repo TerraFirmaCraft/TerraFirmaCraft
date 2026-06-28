@@ -1,4 +1,7 @@
 {
+  "remove": [
+    "minecraft:water"
+  ],
   "values": [
     "#c:gravels",
     "#c:cobblestones",

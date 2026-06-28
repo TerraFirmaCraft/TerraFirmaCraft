@@ -22,6 +22,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.config.TFCConfig;
@@ -84,7 +85,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 
     private void spawnParticles(Button button)
     {
-        if (button instanceof KnappingButton knappingButton && menu.getKnappingType().spawnsParticles() && TFCConfig.CLIENT.enableScreenParticles.get() && Minecraft.useFancyGraphics())
+        if (button instanceof KnappingButton knappingButton && menu.getKnappingType().spawnsParticles() && TFCConfig.CLIENT.enableScreenParticles.get() && ClientHelpers.useFancyGraphics())
         {
             final RandomSource random = Minecraft.getInstance().font.random;
             final int amount = Mth.nextInt(random, 0, 3);

@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/acacia_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/acacia"
+      "model": "tfc:block/wood/leaves/dense_leaves/acacia"
     }
   }
 }

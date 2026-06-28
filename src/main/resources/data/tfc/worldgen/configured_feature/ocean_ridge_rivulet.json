@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:rivulet",
+  "config": {
+    "states": [
+      {
+        "replace": "tfc:rock/raw/rhyolite",
+        "with": "tfc:rock/magma/rhyolite"
+      },
+      {
+        "replace": "tfc:rock/raw/basalt",
+        "with": "tfc:rock/magma/basalt"
+      },
+      {
+        "replace": "tfc:rock/raw/andesite",
+        "with": "tfc:rock/magma/andesite"
+      },
+      {
+        "replace": "tfc:rock/raw/dacite",
+        "with": "tfc:rock/magma/dacite"
+      },
+      {
+        "replace": "tfc:rock/raw/granite",
+        "with": "tfc:rock/magma/granite"
+      },
+      {
+        "replace": "tfc:rock/raw/diorite",
+        "with": "tfc:rock/magma/diorite"
+      },
+      {
+        "replace": "tfc:rock/raw/gabbro",
+        "with": "tfc:rock/magma/gabbro"
+      },
+      {
+        "replace": "tfc:rock/hardened/rhyolite",
+        "with": "tfc:rock/magma/rhyolite"
+      },
+      {
+        "replace": "tfc:rock/hardened/basalt",
+        "with": "tfc:rock/magma/basalt"
+      },
+      {
+        "replace": "tfc:rock/hardened/andesite",
+        "with": "tfc:rock/magma/andesite"
+      },
+      {
+        "replace": "tfc:rock/hardened/dacite",
+        "with": "tfc:rock/magma/dacite"
+      },
+      {
+        "replace": "tfc:rock/hardened/granite",
+        "with": "tfc:rock/magma/granite"
+      },
+      {
+        "replace": "tfc:rock/hardened/diorite",
+        "with": "tfc:rock/magma/diorite"
+      },
+      {
+        "replace": "tfc:rock/hardened/gabbro",
+        "with": "tfc:rock/magma/gabbro"
+      }
+    ]
+  }
+}

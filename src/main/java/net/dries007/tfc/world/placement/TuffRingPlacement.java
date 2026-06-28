@@ -17,9 +17,9 @@ public class TuffRingPlacement extends CenterOrDistanceToPlacement<CenteredFeatu
 {
     public static final MapCodec<TuffRingPlacement> CODEC = codec(TuffRingPlacement::new);
 
-    public TuffRingPlacement(boolean center, float distance)
+    public TuffRingPlacement(boolean center, float minEasing, float maxEasing)
     {
-        super(center, distance);
+        super(center, minEasing, maxEasing);
     }
 
     @Override

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:cave",
   "config": {
-    "probability": 0.05,
+    "probability": 0.02,
     "y": {
       "type": "uniform",
       "min_inclusive": {
@@ -23,12 +23,12 @@
     "aquifers_enabled": true,
     "horizontal_radius_multiplier": {
       "type": "uniform",
-      "min_inclusive": 1,
+      "min_inclusive": 1.5,
       "max_exclusive": 2.5
     },
     "vertical_radius_multiplier": {
       "type": "uniform",
-      "min_inclusive": 1,
+      "min_inclusive": 1.5,
       "max_exclusive": 2.5
     },
     "floor_level": {

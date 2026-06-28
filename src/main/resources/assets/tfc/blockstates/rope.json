@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "ascending=false,facing=east": {
+      "model": "tfc:block/horizontal_rope",
+      "y": 90
+    },
+    "ascending=false,facing=north": {
+      "model": "tfc:block/horizontal_rope"
+    },
+    "ascending=false,facing=south": {
+      "model": "tfc:block/horizontal_rope",
+      "y": 180
+    },
+    "ascending=false,facing=west": {
+      "model": "tfc:block/horizontal_rope",
+      "y": 270
+    },
+    "ascending=true,facing=east": {
+      "model": "tfc:block/slope_rope",
+      "y": 90
+    },
+    "ascending=true,facing=north": {
+      "model": "tfc:block/slope_rope"
+    },
+    "ascending=true,facing=south": {
+      "model": "tfc:block/slope_rope",
+      "y": 180
+    },
+    "ascending=true,facing=west": {
+      "model": "tfc:block/slope_rope",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:ocean_ridge_rivulet",
+    "#tfc:feature/surface_flood_fill_lakes"
+  ]
+}

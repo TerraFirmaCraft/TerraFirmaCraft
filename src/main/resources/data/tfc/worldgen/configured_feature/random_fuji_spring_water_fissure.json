@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tfc:fuji_sapphire_volcano_spring_water_fissure",
+      "tfc:fuji_sapphire_volcano_spring_water_fissure",
+      "tfc:fuji_emerald_volcano_spring_water_fissure",
+      "tfc:fuji_emerald_volcano_spring_water_fissure",
+      "tfc:fuji_volcano_spring_water_fissure",
+      "tfc:fuji_volcano_spring_water_fissure"
+    ]
+  }
+}

@@ -1400,6 +1400,13 @@ public final class Helpers
         return (int) hash;
     }
 
+    public static int hash(long salt, int x, int z)
+    {
+        long hash = salt ^ ((long) x * PRIME_X) ^ z;
+        hash *= 0x27d4eb2d;
+        return (int) hash;
+    }
+
     public static RandomSource fork(RandomSource random)
     {
         return new XoroshiroRandomSource(random.nextLong(), random.nextLong());
@@ -1503,6 +1510,35 @@ public final class Helpers
             return (x >= 0 ? y / (x + y) : 1 - x / (-x + y));
         else
             return (x < 0 ? 2 - y / (-x - y) : 3 + x / (x - y));
+    }
+
+    /**
+     * Returns a y-value on a hyperbolic curve that intersects the x and y axes at the specified locations
+     */
+    public static double hyperbolicSection(double x, double xIntercept, double yIntercept)
+    {
+        return yIntercept * ((2 / (x / xIntercept + 1)) - 1);
+    }
+
+    /**
+     * Returns a new random double in the range [0, 1)
+     * @param input a double in the range [-1, 1]
+     * @param index an index for getting multiple values from one double
+     */
+    public static double hashDouble(double input, int index)
+    {
+        long inputBits = Double.doubleToLongBits(input);
+        long x = mix64(inputBits + index);
+        return (x >>> 11) * 0x1.0p-53;
+    }
+
+    public static long mix64(long x) {
+        x ^= x >>> 33;
+        x *= 0xff51afd7ed558ccdL;
+        x ^= x >>> 33;
+        x *= 0xc4ceb9fe1a85ec53L;
+        x ^= x >>> 33;
+        return x;
     }
 
     /**

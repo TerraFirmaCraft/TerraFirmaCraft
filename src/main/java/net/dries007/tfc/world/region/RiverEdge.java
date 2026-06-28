@@ -19,6 +19,7 @@ public final class RiverEdge
 {
     public static final int MIN_WIDTH = 8;
     public static final int MAX_WIDTH = 24;
+    public static final int MIN_VALLEY_WIDTH = 20;
 
     private static final int MAX_AFFECTING_GRID_DISTANCE = 1 + Mth.ceil(1.5f * AddRiversAndLakes.RIVER_LENGTH);
 

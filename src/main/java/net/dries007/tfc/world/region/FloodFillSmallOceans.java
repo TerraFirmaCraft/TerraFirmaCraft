@@ -31,6 +31,15 @@ public enum FloodFillSmallOceans implements RegionTask
                 floodFillSmallOcean(explored, point.index, region);
             }
         }
+
+        final BitSet exploredForShelf = new BitSet(region.size());
+        for (final var point : region.points())
+        {
+            if (point != null && !point.land() && point.oceanDepth != 2 && !exploredForShelf.get(point.index))
+            {
+                floodFillContinentalShelfDepression(exploredForShelf, point.index, region);
+            }
+        }
     }
 
     private void floodFillSmallOcean(BitSet explored, int index, Region region)
@@ -56,6 +65,46 @@ public enum FloodFillSmallOceans implements RegionTask
                         continue;
                     }
                     if (point.land() || explored.get(point.index))
+                    {
+                        continue;
+                    }
+
+                    explored.set(point.index);
+                    queue.enqueue(point.index);
+                    values.add(point.index);
+                }
+            }
+        }
+
+        if (values.size() < SMALL_OCEAN_FILL_THRESHOLD && !unbounded)
+        {
+            values.forEach(i -> region.atIndex(i).setLand());
+        }
+    }
+
+    private void floodFillContinentalShelfDepression(BitSet explored, int index, Region region)
+    {
+        final IntSet values = new IntOpenHashSet();
+        final IntArrayFIFOQueue queue = new IntArrayFIFOQueue();
+
+        queue.enqueue(index);
+        values.add(index);
+
+        boolean unbounded = false;
+        while (!queue.isEmpty())
+        {
+            final int last = queue.dequeueInt();
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dz = -1; dz <= 1; dz++)
+                {
+                    final @Nullable Region.Point point = region.atOffset(last, dx, dz);
+                    if (point == null)
+                    {
+                        unbounded = true;
+                        continue;
+                    }
+                    if (point.oceanDepth == 2 || explored.get(point.index))
                     {
                         continue;
                     }

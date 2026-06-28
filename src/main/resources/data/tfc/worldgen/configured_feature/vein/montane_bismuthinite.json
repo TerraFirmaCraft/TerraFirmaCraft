@@ -1,0 +1,177 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:cluster_vein",
+  "config": {
+    "rarity": 24,
+    "density": 0.3,
+    "min_y": 100,
+    "max_y": 220,
+    "size": 20,
+    "random_name": "montane_bismuthinite",
+    "blocks": [
+      {
+        "replace": [
+          "tfc:rock/raw/shale"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/shale"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/shale"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/shale"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/claystone"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/claystone"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/claystone"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/limestone"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/limestone"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/limestone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/conglomerate"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/conglomerate"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/conglomerate"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/dolomite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/dolomite"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/dolomite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chert"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/chert"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/chert"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/chert"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chalk"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/chalk"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/chalk"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/chalk"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/tuff"
+        ],
+        "with": [
+          {
+            "weight": 70,
+            "block": "tfc:ore/poor_bismuthinite/tuff"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/normal_bismuthinite/tuff"
+          },
+          {
+            "weight": 5,
+            "block": "tfc:ore/rich_bismuthinite/tuff"
+          }
+        ]
+      }
+    ],
+    "indicator": {
+      "rarity": 14,
+      "depth": 35,
+      "underground_rarity": 1,
+      "underground_count": 0,
+      "blocks": [
+        {
+          "block": "tfc:ore/small_bismuthinite"
+        }
+      ]
+    }
+  }
+}

@@ -42,7 +42,7 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "TerraFirmaCraft의 기온은 많은 요인에 의해 결정됩니다.$(br)$(li)첫째로는 지역, 그 중에서도 특히 위도 (Z 좌표)가 가장 큰 영향을 미칩니다.$(li)다음으로, 계절 또한 기온에 영향을 줍니다. 여름에는 더워지며, 겨울에는 추워집니다.$(li)마지막으로, 기온은 매일 달라질 수 있으며 심지어 시간마다 달라질 수도 있습니다.",
+      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the elevation will influence the temperature - it will be coldest at the tops of mountains.$(li)Next, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can be different day to day as well as varying from hour to hour.",
       "title": "Temperature"
     },
     {

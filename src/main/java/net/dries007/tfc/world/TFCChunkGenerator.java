@@ -439,6 +439,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final BiomeExtension cinderConeBiome = CenteredFeatureNoise.cinder(seed).getCenterBiome(chunkPos.getBlockX(8), chunkPos.getBlockZ(8), customBiomeSource);
         final BiomeExtension tuffRingBiome = CenteredFeatureNoise.tuffRing(seed).getCenterBiome(chunkPos.getBlockX(8), chunkPos.getBlockZ(8), customBiomeSource);
         final BiomeExtension tuyaBiome = CenteredFeatureNoise.tuya(seed).getCenterBiome(chunkPos.getBlockX(8), chunkPos.getBlockZ(8), customBiomeSource);
+        final BiomeExtension atollBiome = CenteredFeatureNoise.atolls(seed).getCenterBiome(chunkPos.getBlockX(8), chunkPos.getBlockZ(8), customBiomeSource);
+        final BiomeExtension stratovolcanoBiome = CenteredFeatureNoise.stratovolcano(seed).getCenterBiome(chunkPos.getBlockX(8), chunkPos.getBlockZ(8), customBiomeSource);
 
         return CompletableFuture.supplyAsync(() -> {
             filler.sampleAquiferSurfaceHeight(this::sampleBiomeNoRiver);
@@ -451,7 +453,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
             sections.forEach(LevelChunkSection::release);
 
-            surfaceManager.buildSurface(actualLevel, chunk, rockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomesNoRivers(), filler.localBiomeWeights(), filler.createSlopeMap(), random, getSeaLevel(), settings.minY(), cinderConeBiome, tuffRingBiome, tuyaBiome);
+            surfaceManager.buildSurface(actualLevel, chunk, rockLayerSettings(), chunkData, filler.localBiomes(), filler.localBiomesNoRivers(), filler.localBiomeWeights(), filler.createSlopeMap(), filler.preVolcanicHeight(), random, getSeaLevel(), settings.minY(), cinderConeBiome, tuffRingBiome, tuyaBiome, atollBiome, stratovolcanoBiome);
 
             return chunk;
         }, Util.backgroundExecutor());
@@ -624,7 +626,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         final EnumMap<CenteredFeatureBlendType, CenteredFeatureNoiseSampler> builder = new EnumMap<>(CenteredFeatureBlendType.class);
         for (CenteredFeatureBlendType blendType : CenteredFeatureBlendType.ALL)
         {
-            builder.put(blendType, blendType.createNoiseSampler(noiseSamplerSeed));
+             builder.put(blendType, blendType.createNoiseSampler(noiseSamplerSeed));
         }
         return builder;
     }

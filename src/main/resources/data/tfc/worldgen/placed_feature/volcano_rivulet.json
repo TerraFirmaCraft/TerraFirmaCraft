@@ -11,7 +11,7 @@
     },
     {
       "type": "tfc:volcano",
-      "distance": 0.7
+      "min_easing": 0.7
     }
   ]
 }

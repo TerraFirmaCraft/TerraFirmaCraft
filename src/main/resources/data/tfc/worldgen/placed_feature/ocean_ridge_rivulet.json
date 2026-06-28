@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:ocean_ridge_rivulet",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 2
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:ocean_ridge",
+      "min_distance": 0,
+      "max_distance": 32
+    }
+  ]
+}

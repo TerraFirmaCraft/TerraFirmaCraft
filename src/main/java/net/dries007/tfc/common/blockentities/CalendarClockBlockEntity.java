@@ -51,7 +51,7 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
             clock.needsUpdate = false;
         }
         //Made it update faster just for timed devices otherwise it still only updates redstone values every 3 seconds
-        else if (Calendars.SERVER.getCalendarTicks() % 20 == 0)
+        if (Calendars.SERVER.getCalendarTicks() % 20 == 0)
         {
             if (state.getValue(CalendarClockBlock.MODE).equals(CalendarClockBlock.Mode.TIMER))
             {
@@ -135,18 +135,12 @@ public class CalendarClockBlockEntity extends TickableBlockEntity
     public int getRedstoneSignal()
     {
         CalendarClockBlock.Mode mode = this.getBlockState().getValue(TFCBlockStateProperties.CLOCK_MODE);
-        if (mode.equals(CalendarClockBlock.Mode.HOUR))
+        return switch (mode)
         {
-            return hour > 11 ? hour - 12 : hour;
-        }
-        else if (mode.equals(CalendarClockBlock.Mode.MONTH))
-        {
-            return month;
-        }
-        else
-        {
-            return timer;
-        }
+            case HOUR -> hour % 12;
+            case MONTH -> month;
+            case TIMER -> timer;
+        };
     }
 
     @Override

@@ -42,7 +42,7 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "一个地区的温度是由几个因素共同决定的。$(br)$(li)首先，地质结构和纬度（Z 坐标）的影响是最大的。$(li)其次是当前的季节——夏天最热，冬天最冷。$(li)最后，每天的不同时间温度也会有所不同，且天和天之间也会有小幅变动。",
+      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the elevation will influence the temperature - it will be coldest at the tops of mountains.$(li)Next, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can be different day to day as well as varying from hour to hour.",
       "title": "温度"
     },
     {

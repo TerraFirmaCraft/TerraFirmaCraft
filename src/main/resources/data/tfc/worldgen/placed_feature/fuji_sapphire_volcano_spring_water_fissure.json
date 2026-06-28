@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:sapphire_volcano_spring_water_fissure",
+  "placement": [
+    {
+      "type": "tfc:stratovolcano",
+      "variant": "fuji",
+      "center": true,
+      "hash_min": 0.8
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

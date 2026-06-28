@@ -1,18 +1,49 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:geode",
+  "type": "minecraft:geode",
   "config": {
-    "outer": "tfc:rock/hardened/basalt",
-    "middle": "tfc:rock/hardened/quartzite",
-    "inner": [
-      {
-        "data": "tfc:ore/amethyst/quartzite",
-        "weight": 1
+    "blocks": {
+      "filling_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:air"
+        }
       },
-      {
-        "data": "tfc:rock/hardened/quartzite",
-        "weight": 5
-      }
-    ]
+      "outer_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "tfc:rock/hardened/basalt"
+        }
+      },
+      "middle_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "tfc:rock/hardened/quartzite"
+        }
+      },
+      "inner_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "tfc:rock/hardened/quartzite"
+        }
+      },
+      "alternate_inner_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "tfc:ore/amethyst/quartzite"
+        }
+      },
+      "invalid_blocks": "#minecraft:geode_invalid_blocks",
+      "cannot_replace": "#minecraft:features_cannot_replace",
+      "inner_placements": [
+        {
+          "Name": "minecraft:air"
+        }
+      ]
+    },
+    "use_alternate_layer0_chance": 0.3,
+    "invalid_blocks_threshold": 1,
+    "crack": {},
+    "layers": {}
   }
 }

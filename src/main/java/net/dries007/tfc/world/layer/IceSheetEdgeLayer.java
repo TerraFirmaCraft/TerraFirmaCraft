@@ -36,14 +36,14 @@ public enum IceSheetEdgeLayer implements AdjacentTransformLayer
         }
 
         // Ice sheet mountain edges
-        if (center == ICE_SHEET_OCEANIC_MOUNTAINS)
+        if (center == ICE_SHEET_OCEANIC_MOUNTAINS || center == ICE_SHEET_VOLCANIC_OCEANIC_MOUNTAINS)
         {
             if (matcher.test(IceSheetEdgeLayer::isNotIceSheet))
             {
                 return ICE_SHEET_OCEANIC_MOUNTAINS_EDGE;
             }
         }
-        if (center == ICE_SHEET_MOUNTAINS)
+        if (center == ICE_SHEET_MOUNTAINS || center == ICE_SHEET_VOLCANIC_MOUNTAINS)
         {
             if (matcher.test(IceSheetEdgeLayer::isNotIceSheet))
             {
@@ -120,11 +120,11 @@ public enum IceSheetEdgeLayer implements AdjacentTransformLayer
     public static boolean isNotIceSheet(int value)
     {
         return value != ICE_SHEET && value != ICE_SHEET_TUYAS && value != SUBGLACIAL_LAKE && value != ICE_SHEET_MOUNTAINS && value != ICE_SHEET_OCEANIC_MOUNTAINS
-            && value != ICE_SHEET_SHIELD_VOLCANO;
+            && value != ICE_SHEET_SHIELD_VOLCANO && value != ICE_SHEET_VOLCANIC_MOUNTAINS && value != ICE_SHEET_VOLCANIC_OCEANIC_MOUNTAINS;
     }
 
     public static boolean isNotIceSheetOrGlaciated(int value)
     {
-        return isNotIceSheet(value) && value != GLACIATED_MOUNTAINS && value != GLACIATED_OCEANIC_MOUNTAINS && value != GLACIATED_SHIELD_VOLCANO;
+        return isNotIceSheet(value) && value != GLACIATED_MOUNTAINS && value != GLACIATED_OCEANIC_MOUNTAINS && value != GLACIATED_SHIELD_VOLCANO && value != GLACIATED_VOLCANIC_MOUNTAINS && value != GLACIATED_VOLCANIC_OCEANIC_MOUNTAINS;
     }
 }

@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "has_rope=false,facing=east": {
+      "model": "tfc:block/steel_rope_anchor"
+    },
+    "has_rope=false,facing=north": {
+      "model": "tfc:block/steel_rope_anchor"
+    },
+    "has_rope=false,facing=south": {
+      "model": "tfc:block/steel_rope_anchor"
+    },
+    "has_rope=false,facing=west": {
+      "model": "tfc:block/steel_rope_anchor"
+    },
+    "has_rope=true,facing=east": {
+      "model": "tfc:block/steel_rope_anchor_rope",
+      "y": 90
+    },
+    "has_rope=true,facing=north": {
+      "model": "tfc:block/steel_rope_anchor_rope"
+    },
+    "has_rope=true,facing=south": {
+      "model": "tfc:block/steel_rope_anchor_rope",
+      "y": 180
+    },
+    "has_rope=true,facing=west": {
+      "model": "tfc:block/steel_rope_anchor_rope",
+      "y": 270
+    }
+  }
+}

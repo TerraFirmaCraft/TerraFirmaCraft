@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:stratovolcano_rivulet",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:stratovolcano",
+      "variant": "crater_lake",
+      "min_easing": 0.6,
+      "hash_min": 0.83
+    }
+  ]
+}

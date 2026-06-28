@@ -23,8 +23,10 @@
               "gabbro"
             ],
             "land": [
-              "igneous_extrusive",
-              "sedimentary"
+              "sedimentary",
+              "sedimentary",
+              "sedimentary",
+              "igneous_extrusive"
             ],
             "layers": [
               {
@@ -61,6 +63,14 @@
                   "basalt": "igneous_extrusive",
                   "dacite": "igneous_extrusive",
                   "rhyolite": "igneous_extrusive"
+                }
+              },
+              {
+                "id": "igneous_intrusive",
+                "layers": {
+                  "diorite": "intermediate",
+                  "gabbro": "mafic",
+                  "granite": "felsic"
                 }
               },
               {
@@ -106,10 +116,12 @@
                 "layers": {
                   "diorite": "low_grade",
                   "gabbro": "low_grade",
+                  "gneiss": "high_grade",
                   "granite": "low_grade",
                   "marble": "bottom",
                   "phyllite": "high_grade",
                   "quartzite": "bottom",
+                  "schist": "high_grade",
                   "slate": "high_grade"
                 }
               }
@@ -393,12 +405,15 @@
               }
             },
             "uplift": [
-              "sedimentary",
-              "uplift"
+              "uplift",
+              "uplift",
+              "uplift",
+              "sedimentary"
             ],
             "volcanic": [
               "igneous_extrusive",
-              "igneous_extrusive_x2"
+              "igneous_extrusive_x2",
+              "igneous_intrusive"
             ]
           },
           "spawn_center_x": 0,

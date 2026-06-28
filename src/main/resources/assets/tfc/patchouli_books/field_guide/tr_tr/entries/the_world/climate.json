@@ -42,7 +42,7 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "TerraFirmaCraft'ta sıcaklık bir dizi faktörden etkilenir:$(br)$(li)İlk olarak, bölge, özellikle de enlem (Z koordinatı) en büyük rolü oynar.$(li)İkinci olarak, mevcut mevsim sıcaklığı etkiler; Yaz aylarında en sıcak, Kış aylarında ise en soğuk olacaktır.$(li)Son olarak, sıcaklık günden güne farklılık gösterebileceği gibi saatten saate de değişebilir.",
+      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the elevation will influence the temperature - it will be coldest at the tops of mountains.$(li)Next, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can be different day to day as well as varying from hour to hour.",
       "title": "Sıcaklık"
     },
     {

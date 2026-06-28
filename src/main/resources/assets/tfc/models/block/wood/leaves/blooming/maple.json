@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/blooming_branches",
+  "textures": {
+    "leaves": "tfc:block/wood/leaves/blooming/maple",
+    "cross": "tfc:block/wood/leaves/bare/maple"
+  }
+}

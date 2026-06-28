@@ -4,9 +4,6 @@
   "ingredients": [
     {
       "item": "tfc:powder/limonite"
-    },
-    {
-      "item": "tfc:powder/native_gold"
     }
   ],
   "result": {

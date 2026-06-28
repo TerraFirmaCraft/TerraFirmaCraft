@@ -48,7 +48,7 @@ public class RivuletFeature extends Feature<BlockStateMapConfig>
         final Set<BlockPos> chosen = new HashSet<>();
         final LinkedList<BlockPos> branches = new LinkedList<>();
 
-        final BlockPos startPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, pos.getX(), pos.getZ()), pos.getZ());
+        final BlockPos startPos = new BlockPos(pos.getX(), world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, pos.getX(), pos.getZ()), pos.getZ());
         if (!world.getFluidState(startPos.below()).isEmpty()) return false;
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         branches.add(startPos);
@@ -83,7 +83,7 @@ public class RivuletFeature extends Feature<BlockStateMapConfig>
                     {
                         continue; // Outside of the bounding box, skip!
                     }
-                    final int height = world.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ());
+                    final int height = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, mutablePos.getX(), mutablePos.getZ());
                     if (height <= mutablePos.getY())
                     {
                         // Check that the block below is solid

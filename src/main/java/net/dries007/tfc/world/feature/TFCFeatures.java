@@ -87,7 +87,6 @@ public class TFCFeatures
     public static final Id<RivuletFeature> RIVULET = register("rivulet", RivuletFeature::new, BlockStateMapConfig.CODEC);
     public static final Id<FissureFeature> FISSURE = register("fissure", FissureFeature::new, FissureConfig.CODEC);
     public static final Id<HotSpringFeature> HOT_SPRING = register("hot_spring", HotSpringFeature::new, HotSpringConfig.CODEC);
-    public static final Id<TFCGeodeFeature> GEODE = register("geode", TFCGeodeFeature::new, TFCGeodeConfig.CODEC);
     public static final Id<CaveColumnFeature> CAVE_COLUMN = register("cave_column", CaveColumnFeature::new, NoneFeatureConfiguration.CODEC);
 
     public static final Id<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, ClusterVeinConfig.CODEC);
@@ -143,6 +142,7 @@ public class TFCFeatures
     public static final Id<SpringFeature> SPRING = register("spring", SpringFeature::new, SpringConfiguration.CODEC);
 
     public static final Id<SoilDiscFeature> SOIL_DISC = register("soil_disc", SoilDiscFeature::new, SoilDiscConfig.CODEC);
+    public static final Id<SoilForestAreaFeature> SOIL_FOREST_AREA = register("soil_forest_area", SoilForestAreaFeature::new, SoilForestAreaConfig.CODEC);
     public static final Id<PowderSnowFeature> POWDER_SNOW = register("powder_snow", PowderSnowFeature::new, BlockStateConfiguration.CODEC);
 
     public static final Id<IfThenFeature> IF_THEN = register("if_then", IfThenFeature::new, IfThenConfig.CODEC);

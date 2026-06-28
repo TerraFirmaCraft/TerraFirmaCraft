@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
+import net.dries007.tfc.util.Helpers;
 
 public class ShelfBlock extends PlacedItemBlock
 {
@@ -117,10 +118,7 @@ public class ShelfBlock extends PlacedItemBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        final BlockState state = defaultBlockState().setValue(FACING, context.getClickedFace().getOpposite());
-        return canSurvive(state, context.getLevel(), context.getClickedPos())
-            ? PlacedItemBlock.updateStateValues(context.getLevel(), context.getClickedPos().below(), state)
-            : null;
+        return Helpers.getSupportedDirectionalStateForPlacement(this, context, true);
     }
 
     @Override

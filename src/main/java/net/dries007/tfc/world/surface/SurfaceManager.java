@@ -44,7 +44,7 @@ public final class SurfaceManager
         this.builders = collectSurfaceBuilders(seed);
     }
 
-    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, BiomeExtension[] accurateChunkBiomes, BiomeExtension[] accurateChunkBiomesNoRivers, double[] accurateChunkBiomeWeights, double[] slopeMap, RandomSource random, int seaLevel, int minY, BiomeExtension cinderConeBiome, BiomeExtension tuffRingBiome, BiomeExtension tuyaBiome)
+    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, BiomeExtension[] accurateChunkBiomes, BiomeExtension[] accurateChunkBiomesNoRivers, double[] accurateChunkBiomeWeights, double[] slopeMap, int[] preVolcanicHeights, RandomSource random, int seaLevel, int minY, BiomeExtension cinderConeBiome, BiomeExtension tuffRingBiome, BiomeExtension tuyaBiome, BiomeExtension atollBiome, BiomeExtension stratovolcanoBiome)
     {
         final boolean debugSlope = false;
 
@@ -56,7 +56,7 @@ public final class SurfaceManager
             slopeVisualization(chunk, slopeMap, blockX, blockZ);
         }
 
-        final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, rockLayerSettings, seaLevel, minY, cinderConeBiome, tuffRingBiome, tuyaBiome);
+        final SurfaceBuilderContext context = new SurfaceBuilderContext(world, chunk, chunkData, random, rockLayerSettings, seaLevel, minY, cinderConeBiome, tuffRingBiome, tuyaBiome, atollBiome, stratovolcanoBiome);
         for (int x = 0; x < 16; ++x)
         {
             for (int z = 0; z < 16; ++z)
@@ -69,7 +69,9 @@ public final class SurfaceManager
                 final double weight = accurateChunkBiomeWeights[x + 16 * z];
                 final SurfaceBuilder builder = builders.get(biome);
 
-                context.buildSurface(biome, originalBiome, weight, biome.isSalty(), builder, blockX + x, y, blockZ + z, slope);
+                final int preVolcanicHeight = preVolcanicHeights[x + 16 * z];
+
+                context.buildSurface(biome, originalBiome, weight, biome.isSalty(), builder, blockX + x, y, blockZ + z, slope, preVolcanicHeight);
             }
         }
     }

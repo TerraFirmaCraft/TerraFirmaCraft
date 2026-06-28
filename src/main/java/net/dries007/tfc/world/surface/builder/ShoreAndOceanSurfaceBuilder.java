@@ -30,17 +30,18 @@ import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public class ShoreAndOceanSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory NORMAL = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, 6, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
-    public static final SurfaceBuilderFactory SANDY = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE, 6, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
-    public static final SurfaceBuilderFactory FORCE_RARE_SAND = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE, 6, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
-    public static final SurfaceBuilderFactory GRAVELLY = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.GRAVEL, SurfaceStates.RAW, 6, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
-    public static final SurfaceBuilderFactory OCEAN = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, 6, false, false, SimpleSurfaceBuilder.OCEAN_MUD.apply(seed));
-    public static final SurfaceBuilderFactory SEA_CLIFFS = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, 2, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
-    public static final SurfaceBuilderFactory OLD_SHIELD_VOLCANO = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.VOLCANIC_SHORE_SAND, SurfaceStates.VOLCANIC_SHORE_SANDSTONE, 6, true, false, ShieldVolcanoSurfaceBuilder.ACTIVE.apply(seed));
-    public static final SurfaceBuilderFactory ACTIVE_SHIELD_VOLCANO = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.VOLCANIC_SHORE_SAND, SurfaceStates.VOLCANIC_SHORE_SANDSTONE, 2, false, true, ShieldVolcanoSurfaceBuilder.DORMANT.apply(seed));
-    public static final SurfaceBuilderFactory MOUNTAINS = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.GRAVEL, SurfaceStates.RAW, 2, false, false, NormalSurfaceBuilder.ROCKY);
-    public static final SurfaceBuilderFactory VOLCANIC_MOUNTAINS = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.GRAVEL, SurfaceStates.RAW, 2, false, false, SimpleSurfaceBuilder.ROCKY_VOLCANIC_SOIL.apply(seed));
-    public static final SurfaceBuilderFactory ROCKY_SHORE = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.RAW, SurfaceStates.RAW, 6, false, false, SimpleSurfaceBuilder.ROCKY_SHORE.apply(seed));
+    public static final SurfaceBuilderFactory NORMAL = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, 6, false, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
+    public static final SurfaceBuilderFactory SANDY = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE, 6, false, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
+    public static final SurfaceBuilderFactory FORCE_RARE_SAND = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.RARE_SHORE_SAND, SurfaceStates.RARE_SHORE_SANDSTONE, 6, false, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
+    public static final SurfaceBuilderFactory GRAVELLY = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.GRAVEL, SurfaceStates.RAW, 6, false, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
+    public static final SurfaceBuilderFactory OCEAN = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, 6, false, false, false, SimpleSurfaceBuilder.OCEAN_MUD.apply(seed));
+    public static final SurfaceBuilderFactory SEA_CLIFFS = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, 2, false, false, false, NormalSurfaceBuilder.ROCKY.apply(seed));
+    public static final SurfaceBuilderFactory OLD_SHIELD_VOLCANO = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.VOLCANIC_SHORE_SAND, SurfaceStates.VOLCANIC_SHORE_SANDSTONE, 6, true, false, false, ShieldVolcanoSurfaceBuilder.ACTIVE.apply(seed));
+    public static final SurfaceBuilderFactory ACTIVE_SHIELD_VOLCANO = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.VOLCANIC_SHORE_SAND, SurfaceStates.VOLCANIC_SHORE_SANDSTONE, 2, false, true, false, ShieldVolcanoSurfaceBuilder.DORMANT.apply(seed));
+    public static final SurfaceBuilderFactory MOUNTAINS = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.GRAVEL, SurfaceStates.RAW, 2, false, false, false, NormalSurfaceBuilder.ROCKY);
+    public static final SurfaceBuilderFactory VOLCANIC_MOUNTAINS = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.GRAVEL, SurfaceStates.RAW, 2, false, false, false, SimpleSurfaceBuilder.ROCKY_VOLCANIC_SOIL.apply(seed));
+    public static final SurfaceBuilderFactory ROCKY_SHORE = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.RAW, SurfaceStates.RAW, 6, false, false, false, SimpleSurfaceBuilder.ROCKY_SHORE.apply(seed));
+    public static final SurfaceBuilderFactory OCEAN_RIDGE = seed -> new ShoreAndOceanSurfaceBuilder(seed, SurfaceStates.SHORE_SURFACE, SurfaceStates.SHORE_UNDERLAYER, 6, false, false, true, SimpleSurfaceBuilder.ROCKY_SHORE.apply(seed));
 
     final Seed seed;
     final SurfaceState surface;
@@ -48,6 +49,7 @@ public class ShoreAndOceanSurfaceBuilder implements SurfaceBuilder
     final int sandHeight;
     final boolean isShieldVolcano;
     final boolean isActiveShieldVolcano;
+    final boolean isOceanRidge;
     final SurfaceBuilder landBuilder;
     private final NormalNoise icebergPillarNoise;
     private final NormalNoise icebergPillarRoofNoise;
@@ -59,7 +61,7 @@ public class ShoreAndOceanSurfaceBuilder implements SurfaceBuilder
      * {@link net.minecraft.data.worldgen.NoiseData} for values
      * {@link SurfaceSystem}'s constructor for the specific noises used
      */
-    protected ShoreAndOceanSurfaceBuilder(Seed seed, SurfaceState surface, SurfaceState subsurface, int sandHeight, boolean shieldVolcano, boolean activeShieldVolcano, SurfaceBuilder landBuilder)
+    protected ShoreAndOceanSurfaceBuilder(Seed seed, SurfaceState surface, SurfaceState subsurface, int sandHeight, boolean shieldVolcano, boolean activeShieldVolcano, boolean oceanRidge, SurfaceBuilder landBuilder)
     {
         this.seed = seed;
         this.surface = surface;
@@ -67,6 +69,7 @@ public class ShoreAndOceanSurfaceBuilder implements SurfaceBuilder
         this.sandHeight = sandHeight;
         this.isShieldVolcano = shieldVolcano;
         this.isActiveShieldVolcano = activeShieldVolcano;
+        this.isOceanRidge = oceanRidge;
         this.landBuilder = landBuilder;
 
         final RandomSource random = seed.forkStable().fork();
@@ -101,7 +104,14 @@ public class ShoreAndOceanSurfaceBuilder implements SurfaceBuilder
         // If below beach level, ocean decorator can take over. Guaranteed below water level
         if (oceanFloorY < tideLevel - 5)
         {
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD);
+            if (isOceanRidge)
+            {
+                OceanRidgeSurfaceBuilder.INSTANCE.apply(seed).buildSurface(context, startY, endY);
+            }
+            else
+            {
+                NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD, SurfaceStates.OCEAN_MUD);
+            }
         }
         else if (oceanFloorY <= sandHeightAbsolute)
         {
@@ -124,9 +134,11 @@ public class ShoreAndOceanSurfaceBuilder implements SurfaceBuilder
                 NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, surface, surface, subsurface, surface, surface);
             }
         }
-
-        // Above the shore level, apply the specified surface builder
-        landBuilder.buildSurface(context, startY, endY);
+        else
+        {
+            // Above the shore level, apply the specified surface builder
+            landBuilder.buildSurface(context, startY, endY);
+        }
 
         // Frozen ocean extension is expensive, only run it if there's a chance of it doing something
         if (startY <= seaLevel)

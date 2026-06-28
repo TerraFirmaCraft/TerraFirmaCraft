@@ -42,7 +42,7 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "A temperatura em Terrafirmacraft é influenciada por vários fatores:$(br)$(li)Em primeiro lugar, a região, especialmente a latitude (Z Coordenada) desempenhará o maior papel.$(li)Em segundo lugar, a temporada atual influenciará a temperatura - será mais quente durante o verão e mais frio durante o inverno.$(li)Finalmente, a temperatura pode ser diferente dia a dia, bem como variando de hora a hora.",
+      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the elevation will influence the temperature - it will be coldest at the tops of mountains.$(li)Next, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can be different day to day as well as varying from hour to hour.",
       "title": "Temperature"
     },
     {

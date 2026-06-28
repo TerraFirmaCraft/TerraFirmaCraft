@@ -12,6 +12,7 @@
   "carvers": {
     "air": [
       "tfc:cave",
+      "tfc:deep_cave",
       "tfc:canyon"
     ],
     "liquid": []
@@ -24,6 +25,7 @@
     "#tfc:in_biome/surface_structures",
     "#tfc:in_biome/strongholds",
     "#tfc:in_biome/veins",
+    "#tfc:in_biome/veins/montane",
     "#tfc:in_biome/underground_decoration",
     "#tfc:in_biome/large_features/glacially_carved_mountains",
     "#tfc:in_biome/surface_decoration/glacially_carved_mountains",

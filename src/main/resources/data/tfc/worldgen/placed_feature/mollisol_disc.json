@@ -18,9 +18,7 @@
       "min_temperature": -9,
       "max_temperature": 3,
       "min_groundwater": 250,
-      "forest_types": [
-        "grassland"
-      ],
+      "max_forest": 3,
       "ignore_rivers": true
     }
   ]

@@ -46,7 +46,7 @@ public enum ChooseRocks implements RegionTask
                 final int dist = Math.abs(dx) + Math.abs(dz);
                 if (point != null && dist < minDist)
                 {
-                    if (point.island() && dist < 4 || point.hotSpotAge > 0)
+                    if (point.island() && dist < 4 || point.hotSpotAge > 0 || point.volcanic())
                     {
                         type = VOLCANIC;
                         minDist = dist;

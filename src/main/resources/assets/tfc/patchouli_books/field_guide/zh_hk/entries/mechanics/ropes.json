@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Ropes",
+  "category": "tfc:mechanics",
+  "icon": "tfc:rope",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Rope$() can be strung up to climb down cliffs and shafts. To hang a rope, $(item)$(k:key.use)$() it on the tip of a $(thing)Rock Spike$(), or on a $(thing)Steel Rope Anchor$(). This ties off the rope and turns the block into an anchor."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(item)$(k:key.use)$() the rope again to throw it out in the direction you are facing, laying down rope that you can climb. To recall the rope, $(item)$(k:key.use)$() the anchor with an empty hand. The rope will be destroyed, the spike will turn back into an anchor, and the items returned to you."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/steel_rope_anchor",
+      "text": "$(thing)Rock Spikes$() cannot be picked up, so the $(thing)Steel Rope Anchor$() can be crafted and placed wherever you need an anchor instead."
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:rope": 0,
+    "tfc:steel_rope_anchor": 0
+  }
+}

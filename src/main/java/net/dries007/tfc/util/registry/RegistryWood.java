@@ -42,4 +42,8 @@ public interface RegistryWood extends StringRepresentable
     BlockSetType getBlockSet();
 
     WoodType getVanillaWoodType();
+
+    boolean isConifer();
+
+    float getFlowerOffset();
 }

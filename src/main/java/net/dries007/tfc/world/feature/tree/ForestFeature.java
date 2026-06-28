@@ -56,6 +56,9 @@ public class ForestFeature extends Feature<ForestConfig>
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ForestType forestType = data.getForestType();
 
+        // This needs to happen before the random early exit
+        placeSoilDisc(level, context.chunkGenerator(), random, config, data, mutablePos.set(pos), forestType);
+
         if (random.nextFloat() > forestType.getPerChunkChance()) return false;
 
         int treeCount = forestType.sampleTrees(random);
@@ -78,6 +81,7 @@ public class ForestFeature extends Feature<ForestConfig>
             placeLeafPile(level, random, pos, config, data, mutablePos, forestType.sampleLeafPiles(random), forestType);
             placeFallenTree(level, random, pos, config, data, mutablePos, forestType);
         }
+
         return placedTrees || placedBushes;
     }
 
@@ -129,8 +133,6 @@ public class ForestFeature extends Feature<ForestConfig>
                     feature = entry.getFeature();
                 }
             }
-            if (typeConfig.getDensity() >= 3)
-                placeSoilDisc(level, generator, random, mutablePos, entry);
             return feature.place(level, generator, random, mutablePos);
         }
         return false;
@@ -333,31 +335,57 @@ public class ForestFeature extends Feature<ForestConfig>
         }
     }
 
-    private void placeSoilDisc(WorldGenLevel level, ChunkGenerator generator, RandomSource random, BlockPos.MutableBlockPos mutablePos, ForestConfig.Entry entry)
+    private boolean placeSoilDisc(WorldGenLevel level, ChunkGenerator generator, RandomSource random, ForestConfig config, ChunkData chunkData, BlockPos.MutableBlockPos mutablePos, ForestType type)
     {
-        // Staggers centers of soil discs relative to trees
-        mutablePos.move(random.nextInt(4) - 2, 0, random.nextInt(4) - 2);
-        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, mutablePos.getX(), mutablePos.getZ()));
 
-        if (entry.soilDiscFeature().isPresent())
+        // We need to get the full list, not just one tree from it
+        final List<ForestConfig.Entry> entries = getTrees(chunkData, config, mutablePos, level);
+
+        // Remove excess entries in the same way as the getTree method
+        final int maxSize = type.getMaxTreeTypes();
+        final int originalSize = entries.size();
+        for (int i = maxSize; i < originalSize; i++)
         {
-            entry.soilDiscFeature().get().value().place(level, generator, random, mutablePos);
+            entries.removeLast();
         }
+        int alternate = type.getAlternateSize();
+        while (entries.size() > 1 && alternate > 0)
+        {
+            entries.remove(0);
+            alternate--;
+        }
+
+        boolean placed = false;
+        // We loop through all trees that may be placed, so that higher priority soil discs can override lower priority ones
+        for (ForestConfig.Entry entry : entries)
+        {
+            if (entry != null && entry.soilDiscFeature().isPresent())
+            {
+                placed |= entry.soilDiscFeature().get().value().place(level, generator, random, mutablePos);
+            }
+        }
+        return placed;
+    }
+
+    private List<ForestConfig.Entry> getTrees(ChunkData chunkData, ForestConfig config, BlockPos pos, WorldGenLevel level)
+    {
+        // For southern hemispheres, flip rain variance
+        final float rainVariance = chunkData.getRainVariance(pos) * (SolarCalculator.getInNorthernHemisphere(pos, level.getLevel()) ? 1f : -1f);
+        final float groundwater = chunkData.getAverageGroundwater(pos);
+        final int elevation = pos.getY();
+        final float averageTemperature = EnvironmentHelpers.adjustAvgTempForElev(elevation, chunkData.getAverageSeaLevelTemp(pos));
+
+        return config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg)
+            .filter(entry -> entry.isValid(averageTemperature, groundwater, rainVariance, elevation))
+            .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, groundwater, rainVariance, elevation)))
+            .collect(Collectors.toList());
     }
 
     @Nullable
     private ForestConfig.Entry getTree(ChunkData chunkData, RandomSource random, ForestConfig config, BlockPos pos, ForestType type, WorldGenLevel level)
     {
-        // For southern hemispheres, flip rain variance
-        final float rainVariance = chunkData.getRainVariance(pos) * (SolarCalculator.getInNorthernHemisphere(pos, level.getLevel()) ? 1f : -1f);
-
-        final float groundwater = chunkData.getAverageGroundwater(pos);
-        final int elevation = pos.getY();
-        final float averageTemperature = EnvironmentHelpers.adjustAvgTempForElev(elevation, chunkData.getAverageSeaLevelTemp(pos));
-        final List<ForestConfig.Entry> entries = config.entries().stream().map(configuredFeature -> configuredFeature.value().config()).map(cfg -> (ForestConfig.Entry) cfg)
-            .filter(entry -> entry.isValid(averageTemperature, groundwater, rainVariance, elevation))
-            .sorted(Comparator.comparingDouble(entry -> entry.distanceFromMean(averageTemperature, groundwater, rainVariance, elevation)))
-            .collect(Collectors.toList());
+        final List<ForestConfig.Entry> entries = getTrees(chunkData, config, pos, level);
 
         if (entries.isEmpty()) return null;
         if (entries.size() == 1)

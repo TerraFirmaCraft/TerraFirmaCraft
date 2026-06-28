@@ -9,6 +9,10 @@
       "text": "群峦传说中有非常非常多$(italic)不同$()种类的植物。$(br2)不同的植物出现在不同的$(l:the_world/climate)气候$()中，它们的外观会随当前季节变化——经历开花、休眠的周期，或随着当地温度变化而改变颜色。色彩鲜艳的花朵通常可以在$(l:mechanics/quern)手推磨$()中粉碎以获得$(l:mechanics/dye)染料$()。"
     },
     {
+      "type": "patchouli:text",
+      "text": "Flowers can be $(thing)propagated$() by $(item)$(k:key.use)$() them with shears. This drops a $(thing)Flower Cutting$(). Crafting a Flower Cutting with Compost will give you two of the original flower back, thus duplicating it."
+    },
+    {
       "type": "patchouli:multiblock",
       "multiblock": {
         "pattern": [

@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:ice_sheet",
+    "tfc:ice_sheet_mountains",
+    "tfc:ice_sheet_oceanic_mountains",
+    "tfc:ice_sheet_volcanic_mountains",
+    "tfc:ice_sheet_volcanic_oceanic_mountains",
+    "tfc:ice_sheet_shield_volcano",
+    "tfc:ice_sheet_tuyas",
+    "tfc:subglacial_lake",
+    "tfc:ice_sheet_edge",
+    "tfc:ice_sheet_tuyas_edge",
+    "tfc:ice_sheet_mountains_edge",
+    "tfc:ice_sheet_oceanic_mountains_edge",
+    "tfc:ice_sheet_oceanic",
+    "tfc:ice_sheet_shore"
+  ]
+}

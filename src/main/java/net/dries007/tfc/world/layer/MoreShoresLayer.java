@@ -19,9 +19,9 @@ public enum MoreShoresLayer implements AdjacentTransformLayer
     @Override
     public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
-        if (center != TFCLayers.OCEAN)
+        Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
+        if (matcher.test(TFCLayers::isOcean))
         {
-            Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
             if (matcher.test(layer -> layer == TFCLayers.TERRACE_LOWER))
             {
                 return TFCLayers.TERRACE_UPPER;
@@ -30,7 +30,7 @@ public enum MoreShoresLayer implements AdjacentTransformLayer
             {
                 return TFCLayers.SEA_STACKS;
             }
-            if (matcher.test(layer -> layer == TFCLayers.TIDAL_FLATS || layer == TFCLayers.SHORE))
+            if (matcher.test(layer -> layer == TFCLayers.TIDAL_FLATS))
             {
                 return TFCLayers.SHORE;
             }

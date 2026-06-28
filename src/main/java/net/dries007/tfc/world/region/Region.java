@@ -207,19 +207,25 @@ public final class Region
         static final short FLAG_LAKE = 0b1000;
         static final short FLAG_MOUNTAIN = 0b10000;
         static final short FLAG_COASTAL_MOUNTAIN = 0b100000;
+        static final short FLAG_VOLCANIC = 0b1000000;
+        static final short FLAG_BARRIER_ISLAND = 0b10000000;
 
         /** Distance to the nearest ocean. Note the actual distance may be lower if {@code distanceToEdge} is smaller than this. Negative values indicate an ocean, where {@code -2} indicates an ocean adjacent to land. */
         public byte distanceToOcean = 0;
+        /** Distance to the nearest deep ocean (deep_ocean, deep_ocean_trench, or ocean_ridge) */
+        public byte distanceToDeepOcean = 0;
         /** Distance to the nearest edge of the region. This is important because certain tasks need to not go too near to the edge to avoid continuity issues */
         public byte distanceToEdge = 0;
         public byte distanceToWestCoast = 0;
-        public byte baseOceanDepth = 0;
+        public byte distanceToLand = 0;
         public byte baseLandHeight = 0;
         public byte biomeAltitude = 0;
+        public byte oceanDepth = 0;
 
         public float rainfall;
         public float rainfallVariance;
         public float temperature;
+        public float divergence;
 
         public int biome = TFCLayers.OCEAN;
         public int rock = 0;
@@ -245,6 +251,8 @@ public final class Region
         public boolean lake() { return (flags & FLAG_LAKE) != 0; }
         public boolean mountain() { return (flags & FLAG_MOUNTAIN) != 0; }
         public boolean coastalMountain() { return (flags & FLAG_COASTAL_MOUNTAIN) != 0; }
+        public boolean volcanic() { return (flags & FLAG_VOLCANIC) != 0; }
+        public boolean barrierIsland() { return (flags & FLAG_BARRIER_ISLAND) != 0; }
 
         public int discreteBiomeAltitude() { return Math.floorDiv(biomeAltitude, AnnotateBiomeAltitude.WIDTH); }
 
@@ -255,5 +263,7 @@ public final class Region
         public void setLake() { flags |= FLAG_LAKE; }
         public void setMountain() { flags |= FLAG_MOUNTAIN; }
         public void setCoastalMountain() { flags |= FLAG_COASTAL_MOUNTAIN; }
+        public void setVolcanic() { flags |= FLAG_VOLCANIC; }
+        public void setBarrierIsland() { flags |= FLAG_BARRIER_ISLAND; }
     }
 }

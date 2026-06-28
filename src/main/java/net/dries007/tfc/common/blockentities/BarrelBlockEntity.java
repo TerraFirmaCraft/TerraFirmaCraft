@@ -460,9 +460,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         assert level != null;
         if (!level.isClientSide())
         {
-            // Drop container items, but allow the main slot to be filled
-            Helpers.spawnItem(level, worldPosition, Helpers.removeStack(inventory, SLOT_FLUID_CONTAINER_IN));
-            Helpers.spawnItem(level, worldPosition, Helpers.removeStack(inventory, SLOT_FLUID_CONTAINER_OUT));
+            inventory.whileMutable(() -> {
+                // Drop container items, but allow the main slot to be filled
+                Helpers.spawnItem(level, worldPosition, Helpers.removeStack(inventory, SLOT_FLUID_CONTAINER_IN));
+                Helpers.spawnItem(level, worldPosition, Helpers.removeStack(inventory, SLOT_FLUID_CONTAINER_OUT));
+            });
         }
 
         sealedTick = Calendars.get(level).getTicks();

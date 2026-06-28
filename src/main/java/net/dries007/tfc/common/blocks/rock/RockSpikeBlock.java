@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Locale;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -48,11 +49,19 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     public static final VoxelShape MIDDLE_SHAPE = box(4, 0, 4, 12, 16, 12);
     public static final VoxelShape TIP_SHAPE = box(6, 0, 6, 10, 16, 10);
 
-    public RockSpikeBlock(Properties properties)
+    private final Supplier<? extends Block> anchor;
+
+    public RockSpikeBlock(Properties properties, Supplier<? extends Block> anchor)
     {
         super(properties);
+        this.anchor = anchor;
 
         registerDefaultState(stateDefinition.any().setValue(PART, Part.BASE).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+    }
+
+    public Block getAnchor()
+    {
+        return anchor.get();
     }
 
     @Override

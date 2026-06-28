@@ -23,13 +23,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.dries007.tfc.common.blocks.ISlowEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 @Mixin(SnowLayerBlock.class)
-public abstract class SnowLayerBlockMixin extends Block
+public abstract class SnowLayerBlockMixin extends Block implements ISlowEntities
 {
     private SnowLayerBlockMixin(Properties properties)
     {
@@ -37,7 +38,7 @@ public abstract class SnowLayerBlockMixin extends Block
     }
 
     @Override
-    public float getSpeedFactor()
+    public float slowEntityFactor(BlockState state)
     {
         return TFCConfig.SERVER.enableSnowSlowEntities.get() ? 0.6f : 1.0f;
     }

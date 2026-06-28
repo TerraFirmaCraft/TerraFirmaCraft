@@ -793,7 +793,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "Кіновар",
       "link_recipes": false,
-      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
+      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground or high in mountains, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -1009,7 +1009,7 @@
       "item": "tfc:ore/emerald",
       "title": "Смарагд",
       "link_recipes": false,
-      "text": "Смарагд є декоративним $(l:mechanics/gems)дорогоцінним каменем$(). Виглядає досить гарно. Знайти б когось у цьому неймовірно самотньому світі, то міг би обмінятися з ним...$(br2)Він з’являється у тонких вертикальних рудних утвореннях, висота яких може досягати 60 блоків. Його можна знайти в $(l:the_world/geology#igneous_intrusive)магматичних інтрузивних$() породах."
+      "text": "Emerald is a $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to a hundred blocks tall. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks, or associated with hotsprings."
     },
     {
       "type": "patchouli:multiblock",
@@ -1036,7 +1036,7 @@
       "item": "tfc:ore/diamond",
       "title": "Кімберліт",
       "link_recipes": false,
-      "text": "Кімберліт є декоративним та коштовним $(l:mechanics/gems)дорогоцінним каменем$(). Виявляється в тонких вертикальних рудних утвореннях, що мають назву $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)кімберлітові трубки$(). Вони можуть досягати 60 блоків у висоту. Міститься виключно у $(thing)габро$()."
+      "text": "Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to a hundred blocks tall. These can only be found in $(thing)Gabbro$(). Kimberlite also occurs rarely in volcanic fissures."
     },
     {
       "type": "patchouli:multiblock",
@@ -1063,7 +1063,7 @@
       "item": "tfc:ore/lapis_lazuli",
       "title": "Лазурит",
       "link_recipes": false,
-      "text": "Lapis Lazuli is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/dye)Blue Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
+      "text": "Lapis Lazuli is a decorative $(l:mechanics/gems)Gemstone$() which can be used to make $(l:mechanics/dye)Blue Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
     },
     {
       "type": "patchouli:multiblock",
@@ -1090,7 +1090,7 @@
       "item": "tfc:ore/amethyst",
       "title": "Amethyst",
       "link_recipes": false,
-      "text": "Amethyst is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40."
+      "text": "Amethyst is a decorative $(l:mechanics/gems)Gemstone$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40, or in geodes below y=30."
     },
     {
       "type": "patchouli:multiblock",
@@ -1117,7 +1117,7 @@
       "item": "tfc:ore/opal",
       "title": "Opal",
       "link_recipes": false,
-      "text": "Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
+      "text": "Opal is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
     },
     {
       "type": "patchouli:multiblock",
@@ -1140,11 +1140,11 @@
     },
     {
       "type": "patchouli:spotlight",
-      "anchor": "ruby",
-      "item": "tfc:ore/ruby",
-      "title": "Ruby",
+      "anchor": "pyrite",
+      "item": "tfc:ore/pyrite",
+      "title": "Pyrite",
       "link_recipes": false,
-      "text": "Ruby is a decorative $(thing)Mineral$(). It can be found in $(thing)Schist$() and $(thing)Gneiss$() rock below y=-10."
+      "text": "Pyrite, or fool's gold, is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Igneous Intrusive) and $(thing)Igneous Extrusive$() beloy y=70."
     },
     {
       "type": "patchouli:multiblock",
@@ -1158,11 +1158,92 @@
           ]
         ],
         "mapping": {
-          "X": "tfc:ore/ruby/schist"
+          "X": "tfc:ore/pyrite/granite"
         }
       },
       "name": "",
-      "text": "Ruby in Schist.",
+      "text": "Pyrite in Granite.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "ruby",
+      "item": "tfc:ore/ruby",
+      "title": "Ruby",
+      "link_recipes": false,
+      "text": "Ruby is a decorative $(l:mechanics/gems)Gemstone$(). It can be found rarely in $(thing)Marble$() rock below y=-10, or more commonly in veins of $(thing)Marble$() rock Collisional Mountains"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/ruby/marble"
+        }
+      },
+      "name": "",
+      "text": "Ruby in Marble.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sapphire",
+      "item": "tfc:ore/sapphire",
+      "title": "Sapphire",
+      "link_recipes": false,
+      "text": "Sapphire is a decorative $(l:mechanics/gems)Gemstone$(). It can be found $(thing)Hot Springs$() fissures."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sapphire/gabbro"
+        }
+      },
+      "name": "",
+      "text": "Sapphire in Gabbro.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "topaz",
+      "item": "tfc:ore/topaz",
+      "title": "Topaz",
+      "link_recipes": false,
+      "text": "Topaz is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in the fissures of Volcanoes."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/topaz/schist"
+        }
+      },
+      "name": "",
+      "text": "Topaz in Schist.",
       "enable_visualize": false
     }
   ],
@@ -1238,6 +1319,9 @@
     "tfc:ore/lapis_lazuli": 54,
     "tfc:ore/amethyst": 56,
     "tfc:ore/opal": 58,
-    "tfc:ore/ruby": 60
+    "tfc:ore/pyrite": 60,
+    "tfc:ore/ruby": 62,
+    "tfc:ore/sapphire": 64,
+    "tfc:ore/topaz": 66
   }
 }

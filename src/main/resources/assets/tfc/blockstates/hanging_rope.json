@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/vertical_rope_side",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "tfc:block/vertical_rope_side"
+    },
+    "facing=south": {
+      "model": "tfc:block/vertical_rope_side",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tfc:block/vertical_rope_side",
+      "y": 270
+    }
+  }
+}

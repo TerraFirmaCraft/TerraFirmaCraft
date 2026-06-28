@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tfc:kelimutu_topaz_volcano_fissure",
+      "tfc:kelimutu_topaz_volcano_fissure",
+      "tfc:kelimutu_topaz_volcano_fissure",
+      "tfc:kelimutu_diamond_volcano_fissure",
+      "tfc:kelimutu_volcano_fissure",
+      "tfc:kelimutu_volcano_fissure"
+    ]
+  }
+}

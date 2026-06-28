@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/douglas_fir_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/douglas_fir"
+      "model": "tfc:block/wood/leaves/dense_leaves/douglas_fir"
     }
   }
 }

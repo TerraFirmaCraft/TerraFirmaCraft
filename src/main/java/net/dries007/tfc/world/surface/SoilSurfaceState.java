@@ -99,6 +99,31 @@ public class SoilSurfaceState implements SurfaceState
         return type == SoilBlockType.GRASS ? new SoilSurfaceState.NeedsPostProcessing(regions) : new SoilSurfaceState(regions);
     }
 
+    public static SurfaceState buildSiltySurfaceType(SoilBlockType type, SurfaceState dry)
+    {
+        final ImmutableList<SurfaceState> regions = ImmutableList.of(
+            SurfaceStates.SNOW,
+            SurfaceStates.SNOW,
+            transition(SurfaceStates.SNOW, dry),
+            dry,
+            transition(dry, SurfaceStates.COARSE_FLUVISOL_BASE),
+            SurfaceStates.COARSE_FLUVISOL_BASE,
+            transition(SurfaceStates.COARSE_FLUVISOL_BASE, soil(type, SoilBlockType.Variant.FLUVISOL)),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL),
+            soil(type, SoilBlockType.Variant.FLUVISOL)
+        );
+        return type == SoilBlockType.GRASS ? new SoilSurfaceState.NeedsPostProcessing(regions) : new SoilSurfaceState(regions);
+    }
+
     public static SurfaceState buildMidType(SoilBlockType type, SurfaceState dry)
     {
         final ImmutableList<SurfaceState> regions = ImmutableList.of(
@@ -264,13 +289,17 @@ public class SoilSurfaceState implements SurfaceState
         final float rainfall = context.groundWater();
         final float temperature = Helpers.adjustAverageTemperatureByElevation(context.pos().getY(), context.averageTemperature(), context.getSeaLevel());
 
+        final BlockPos pos = context.pos();
+        final float noise = (float) PATCH_NOISE.noise(pos.getX(), pos.getZ());
+        final float dither = (Helpers.hash(729375982L, context.pos()) & 127) * (1f / 64) - 1;
+
         // Rain-controlled surface: <64 pure gravel, <91 mixed gravel/dirt, <118 dirt, <145 mixed dirt/grass, otherwise grass
-        final int rainIndex = (int) Mth.clampedMap(rainfall, 35, 450, 3, regions.size() - 0.01f);
+        final int rainIndex = (int) Mth.clampedMap(rainfall + 15 * noise + 10 * dither, 35, 450, 3, regions.size() - 0.01f);
 
         // Temperature-controlled surface: <-17.4 pure snow, <-16.6 mixed gravel/snow <-15.7 pure gravel, <-15 mixed gravel/dirt, <14.1, <-13.2 mixed dirt/grass, otherwise grass
         // -17c = Koppen EF/ET Border
         // -12c = Koppen ET Border
-        final int tempIndex = (int) Mth.clampedMap(temperature, -19, -4, 0, regions.size() - 0.01f);
+        final int tempIndex = (int) Mth.clampedMap(temperature, -19 + 0.5 * noise + 0.5 * dither, -4, 0, regions.size() - 0.01f);
 
         return regions.get(Math.min(rainIndex, tempIndex)).getState(context);
     }

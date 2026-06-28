@@ -17,9 +17,9 @@ public class CinderConePlacement extends CenterOrDistanceToPlacement<CenteredFea
 {
     public static final MapCodec<CinderConePlacement> CODEC = codec(CinderConePlacement::new);
 
-    public CinderConePlacement(boolean center, float distance)
+    public CinderConePlacement(boolean center, float minEasing, float maxEasing)
     {
-        super(center, distance);
+        super(center, minEasing, maxEasing);
     }
 
     @Override

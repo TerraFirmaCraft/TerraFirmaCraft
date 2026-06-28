@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/rosewood_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/rosewood"
+      "model": "tfc:block/wood/leaves/dense_leaves/rosewood"
     }
   }
 }

@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:atoll_coral_tree",
+  "placement": [
+    {
+      "type": "tfc:climate",
+      "min_temperature": 12,
+      "max_temperature": 50
+    },
+    {
+      "type": "minecraft:noise_based_count",
+      "noise_to_count_ratio": 7,
+      "noise_factor": 160.0,
+      "noise_offset": 1
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "tfc:atoll",
+      "min_easing": 0.3,
+      "max_easing": 0.42
+    }
+  ]
+}

@@ -45,16 +45,17 @@ public class TuyaSurfaceBuilder implements SurfaceBuilder
             final float easing = sampler.calculateEasing(context.pos(), context.tuyaBiome());
             if (1 - easing < 0.16f)
             {
-                buildVolcanicSurface(context, startY, endY, (int) heightNoise.noise(context.pos().getX(), context.pos().getZ()));
+                buildVolcanicSurface(context, startY, endY);
                 return;
             }
         }
         parent.buildSurface(context, startY, endY);
     }
 
-    private void buildVolcanicSurface(SurfaceBuilderContext context, int startY, int endY, int noise)
+    private void buildVolcanicSurface(SurfaceBuilderContext context, int startY, int endY)
     {
         final BlockState basalt = TFCBlocks.ROCK_BLOCKS.get(Rock.BASALT).get(Rock.BlockType.RAW).get().defaultBlockState();
+        final int prevolcanicHeight = context.getPreVolcanicHeight();
 
         int surfaceDepth = -1;
         for (int y = startY; y >= endY; --y)
@@ -67,7 +68,7 @@ public class TuyaSurfaceBuilder implements SurfaceBuilder
             }
             else if (context.isDefaultBlock(stateAt))
             {
-                if (y > context.tuyaBiome().getCenteredFeatureRockHeight() + noise)
+                if (y > prevolcanicHeight)
                 {
                     if (surfaceDepth == -1)
                     {

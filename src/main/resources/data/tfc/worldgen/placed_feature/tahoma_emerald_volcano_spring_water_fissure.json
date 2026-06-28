@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:emerald_volcano_spring_water_fissure",
+  "placement": [
+    {
+      "type": "tfc:stratovolcano",
+      "variant": "tahoma",
+      "center": true,
+      "hash_max": 0.8
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

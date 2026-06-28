@@ -209,7 +209,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(COMPOST_GREENS).addTags(COMPOST_GREENS_LOW, COMPOST_GREENS_MEDIUM, COMPOST_GREENS_HIGH);
         tag(COMPOST_GREENS_LOW)
             .addOnly(TFCBlocks.PLANTS, Plant::givesGreenCompost)
-            .add(TFCItems.ALFALFA);
+            .add(TFCItems.ALFALFA)
+            .add(TFCItems.FLOWER_CUTTING);
         tag(COMPOST_GREENS_MEDIUM).addTag(GRAINS);
         tag(COMPOST_GREENS_HIGH).addTags(VEGETABLES, FRUITS).add(TFCBlocks.PUMPKIN, TFCBlocks.MELON);
         tag(COMPOST_BROWNS).addTags(COMPOST_BROWNS_LOW, COMPOST_BROWNS_MEDIUM, COMPOST_BROWNS_HIGH);

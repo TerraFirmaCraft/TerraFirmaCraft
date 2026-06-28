@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:wizard_island_spring",
+  "placement": [
+    {
+      "type": "tfc:stratovolcano",
+      "variant": "crater_lake",
+      "center": true,
+      "use_offset_center": true,
+      "hash_min": 0.8,
+      "hash_max": 1
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    }
+  ]
+}

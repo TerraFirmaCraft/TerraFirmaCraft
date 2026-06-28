@@ -42,7 +42,7 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "На температуру в TerraFirmaCraft впливає ряд факторів:$(br)$(li)По-перше, найбільшу роль відіграватиме географічна широта (координата Z).$(li)По-друге, на температуру вплине нинішня пора року – найспекотніше влітку, а найхолодніше взимку.$(li)Нарешті, температура може змінюватися щодня, а також коливатися час від часу.",
+      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the elevation will influence the temperature - it will be coldest at the tops of mountains.$(li)Next, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can be different day to day as well as varying from hour to hour.",
       "title": "Temperature"
     },
     {

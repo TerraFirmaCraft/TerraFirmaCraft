@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:atoll_coral_mushroom",
+    "tfc:atoll_coral_tree",
+    "tfc:atoll_coral_claw",
+    "tfc:atoll_guano",
+    "tfc:forest",
+    "#tfc:feature/surface_flood_fill_lakes"
+  ]
+}

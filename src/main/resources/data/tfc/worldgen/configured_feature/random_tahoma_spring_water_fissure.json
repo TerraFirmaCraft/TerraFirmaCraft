@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tfc:tahoma_sapphire_volcano_spring_water_fissure",
+      "tfc:tahoma_sapphire_volcano_spring_water_fissure",
+      "tfc:tahoma_emerald_volcano_spring_water_fissure",
+      "tfc:tahoma_emerald_volcano_spring_water_fissure",
+      "tfc:tahoma_volcano_spring_water_fissure",
+      "tfc:tahoma_volcano_spring_water_fissure"
+    ]
+  }
+}

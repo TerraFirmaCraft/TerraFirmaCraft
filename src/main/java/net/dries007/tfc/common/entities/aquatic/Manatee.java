@@ -108,6 +108,15 @@ public class Manatee extends WaterAnimal implements AquaticMob
     }
 
     @Override
+    public void playAmbientSound()
+    {
+        if (this.isInWater())
+        {
+            super.playAmbientSound();
+        }
+    }
+
+    @Override
     protected float getBlockSpeedFactor()
     {
         return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.ANIMAL_IGNORED_PLANTS) ? 1.0F : super.getBlockSpeedFactor();

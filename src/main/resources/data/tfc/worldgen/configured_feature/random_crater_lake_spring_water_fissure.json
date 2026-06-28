@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:simple_random_selector",
+  "config": {
+    "features": [
+      "tfc:crater_lake_sapphire_volcano_spring_water_fissure",
+      "tfc:crater_lake_sapphire_volcano_spring_water_fissure",
+      "tfc:crater_lake_emerald_volcano_spring_water_fissure",
+      "tfc:crater_lake_emerald_volcano_spring_water_fissure",
+      "tfc:crater_lake_volcano_spring_water_fissure",
+      "tfc:crater_lake_volcano_spring_water_fissure"
+    ]
+  }
+}

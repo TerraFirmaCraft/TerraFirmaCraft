@@ -48,5 +48,37 @@
         "stream": true
       }
     ]
+  },
+  "entity.salmon.ambient": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.cod.ambient": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.tropical_fish.ambient": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.puffer_fish.ambient": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
+      }
+    ]
   }
 }

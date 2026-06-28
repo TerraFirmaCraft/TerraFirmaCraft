@@ -214,6 +214,21 @@ public interface Noise2D
     /**
      * Used to generate varying-height cliffs starting at various noise values
      *
+     * @param start easing value where noise should begin to show up
+     * @param end easing value where noise is at full strength
+     * @param easingNoise noise for easing
+     */
+    default Noise2D easeIn(double start, double end, double minScale, double maxScale, Noise2D easingNoise)
+    {
+        return (x, z) -> {
+            final double easing = easingNoise.noise(x, z);
+            return Mth.clampedMap(easing, start, end, minScale, maxScale) * Noise2D.this.noise(x, z);
+        };
+    }
+
+    /**
+     * Used to generate varying-height cliffs starting at various noise values
+     *
      * @param compare value above which cliffs should be added
      * @param addend  cliff height noise
      */

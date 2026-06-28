@@ -17,9 +17,9 @@ public class TuyaPlacement extends CenterOrDistanceToPlacement<CenteredFeatureNo
 {
     public static final MapCodec<TuyaPlacement> CODEC = codec(TuyaPlacement::new);
 
-    public TuyaPlacement(boolean center, float distance)
+    public TuyaPlacement(boolean center, float minEasing, float maxEasing)
     {
-        super(center, distance);
+        super(center, minEasing, maxEasing);
     }
 
     @Override

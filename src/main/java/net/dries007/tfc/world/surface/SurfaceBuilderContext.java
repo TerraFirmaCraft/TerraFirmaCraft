@@ -42,18 +42,21 @@ public class SurfaceBuilderContext
 
     @Nullable private BiomeExtension biome;
     @Nullable private BiomeExtension originalBiome;
-    private BiomeExtension cinderConeBiome;
-    private BiomeExtension tuffRingBiome;
-    private BiomeExtension tuyaBiome;
+    private final BiomeExtension cinderConeBiome;
+    private final BiomeExtension tuffRingBiome;
+    private final BiomeExtension tuyaBiome;
+    private final BiomeExtension atollBiome;
+    private final BiomeExtension stratovolcanoBiome;
     private double biomeWeight;
     private double slope;
+    private int preVolcanicHeight;
     private float temperature;
     private float baseGroundwater;
     private float rainfall;
     private float rainVariance;
     private boolean salty;
 
-    public SurfaceBuilderContext(LevelAccessor level, ChunkAccess chunk, ChunkData chunkData, RandomSource random, RockLayerSettings rockLayerSettings, int seaLevel, int minY, BiomeExtension cinderConeBiome, BiomeExtension tuffRingBiome, BiomeExtension tuyaBiome)
+    public SurfaceBuilderContext(LevelAccessor level, ChunkAccess chunk, ChunkData chunkData, RandomSource random, RockLayerSettings rockLayerSettings, int seaLevel, int minY, BiomeExtension cinderConeBiome, BiomeExtension tuffRingBiome, BiomeExtension tuyaBiome, BiomeExtension atollBiome, BiomeExtension stratovolcanoBiome)
     {
         this.level = level;
         this.chunk = chunk;
@@ -65,6 +68,8 @@ public class SurfaceBuilderContext
         this.cinderConeBiome = cinderConeBiome;
         this.tuffRingBiome = tuffRingBiome;
         this.tuyaBiome = tuyaBiome;
+        this.atollBiome = atollBiome;
+        this.stratovolcanoBiome = stratovolcanoBiome;
 
         this.defaultBlockStates = new ObjectOpenHashSet<>();
         this.defaultFluidStates = new ObjectOpenHashSet<>();
@@ -78,12 +83,13 @@ public class SurfaceBuilderContext
         defaultFluidStates.add(Blocks.WATER.defaultBlockState());
     }
 
-    public void buildSurface(BiomeExtension biome, BiomeExtension originalBiome, double biomeWeight, boolean salty, SurfaceBuilder builder, int x, int y, int z, double slope)
+    public void buildSurface(BiomeExtension biome, BiomeExtension originalBiome, double biomeWeight, boolean salty, SurfaceBuilder builder, int x, int y, int z, double slope, int preVolcanicHeight)
     {
         this.biome = biome;
         this.originalBiome = originalBiome;
         this.biomeWeight = biomeWeight;
         this.slope = slope;
+        this.preVolcanicHeight = preVolcanicHeight;
         this.temperature = chunkData.getAverageSeaLevelTemp(x, z);
         this.baseGroundwater = chunkData.getBaseGroundwater(x, z);
         this.rainfall = chunkData.getAverageRainfall(x, z);
@@ -126,6 +132,16 @@ public class SurfaceBuilderContext
     public BiomeExtension tuyaBiome()
     {
         return tuyaBiome;
+    }
+
+    public BiomeExtension atollBiome()
+    {
+        return atollBiome;
+    }
+
+    public BiomeExtension stratovolcanoBiome()
+    {
+        return stratovolcanoBiome;
     }
 
     public double weight()
@@ -271,5 +287,15 @@ public class SurfaceBuilderContext
     public int calculateAltitudeSlopeSurfaceDepth(int y, int minimumReturnValue)
     {
         return calculateAltitudeSlopeSurfaceDepth(y, minimumReturnValue, 5);
+    }
+
+    public int getPreVolcanicHeight()
+    {
+        return preVolcanicHeight;
+    }
+
+    public void setPreVolcanicHeight(int preVolcanicHeight)
+    {
+        this.preVolcanicHeight = preVolcanicHeight;
     }
 }

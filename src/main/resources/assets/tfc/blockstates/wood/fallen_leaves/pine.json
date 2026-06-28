@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/pine_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/pine"
+      "model": "tfc:block/wood/leaves/dense_leaves/pine"
     }
   }
 }

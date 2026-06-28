@@ -14,7 +14,7 @@ public interface RiverNoiseSampler
 {
     RiverNoiseSampler NONE = new RiverNoiseSampler() {};
 
-    default double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double caveWeight, double thisWeight)
+    default double setColumnAndSampleHeight(RiverInfo info, int x, int z, double heightIn, double thisWeight)
     {
         return heightIn;
     }

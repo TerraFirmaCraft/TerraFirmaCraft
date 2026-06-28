@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.BiomeNoise;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -77,7 +78,7 @@ public final class RegionGenerator
         this.settings = settings;
         this.seed = seed;
 
-        this.cellNoise = new Cellular2D(seed.next()).spread(1f / Units.CELL_WIDTH_IN_GRID);
+        this.cellNoise = continentCellNoise(1f);
 
         // Both of these caches are queried, and cached, on a cell-coordinate basis
         // Since cells are large (~12km), a small concurrent cache should be enough
@@ -131,9 +132,63 @@ public final class RegionGenerator
         return seed;
     }
 
+    public Cellular2D continentCellNoise(float scaleFactor)
+    {
+        return BiomeNoise.continentCellNoise(scaleFactor, seed.seed());
+    }
+
     public ChunkDataGenerator chunkDataGenerator()
     {
         return chunkDataGenerator;
+    }
+
+    /**
+     * @return A double representing whether a point is near a converging (negative) or diverging (positive) tectonic boundary, and what magnitude
+     */
+    public double getDivergence(Region.Point point)
+    {
+        final Cellular2D.Cell thisCell = cellNoise.cell(point.x, point.z);
+        final double thisX = thisCell.x();
+        final double thisY = thisCell.y();
+        final double adjacentX = thisCell.nx();
+        final double adjacentY = thisCell.ny();
+        final Cellular2D.Cell adjacentCell = cellNoise.cell(adjacentX, adjacentY);
+
+        final double thisVX = getVX(thisCell.noise());
+        final double thisVY = getVY(thisCell.noise());
+        final double adjacentVX = getVX(adjacentCell.noise());
+        final double adjacentVY = getVY(adjacentCell.noise());
+
+        final double convergeX = getDivergence(thisX, adjacentX, thisVX, adjacentVX);
+        final double convergeY = getDivergence(thisY, adjacentY, thisVY, adjacentVY);
+
+        return convergeX + convergeY;
+    }
+
+    /**
+     * @return A double representing whether two points in a 1D space with different velocities are converging (negative) or diverging (positive) and to what magnitude
+     */
+    public double getDivergence(double x0, double x1, double v0, double v1)
+    {
+        double dvx = v1 - v0;
+        if (x0 < x1)
+        {
+            return dvx;
+        }
+        else
+        {
+            return -dvx;
+        }
+    }
+
+    public double getVX(double noise)
+    {
+        return Helpers.hashDouble(noise, 95274);
+    }
+
+    public double getVY(double noise)
+    {
+        return Helpers.hashDouble(noise, 894824);
     }
 
     /**
@@ -265,21 +320,23 @@ public final class RegionGenerator
     public enum Task
     {
         INIT(Init.INSTANCE),
-        ADD_CONTINENTS(AddContinents.INSTANCE),
         ANNOTATE_DISTANCE_TO_CELL_EDGE(AnnotateDistanceToCellEdge.INSTANCE),
+        ANNOTATE_BOUNDARY_TYPES(AnnotateBoundaryTypes.INSTANCE),
+        ADD_CONTINENTS(AddContinentsAndSetOceanDepths.INSTANCE),
         FLOOD_FILL_SMALL_OCEANS(FloodFillSmallOceans.INSTANCE),
-        ADD_ISLANDS(AddIslands.INSTANCE),
         ADD_HOTSPOTS(AddHotspots.INSTANCE),
         ANNOTATE_DISTANCE_TO_OCEAN(AnnotateDistanceToOcean.INSTANCE),
+        ANNOTATE_DISTANCE_TO_DEEP_OCEAN(AnnotateDistanceToDeepOcean.INSTANCE),
         ANNOTATE_BASE_LAND_HEIGHT(AnnotateBaseLandHeight.INSTANCE),
         ANNOTATE_DISTANCE_TO_WEST_COAST(AnnotateDistanceToWestCoast.INSTANCE),
-        ADD_MOUNTAINS(AddMountains.INSTANCE),
+        ADD_MOUNTAINS(AddMountainsAndBarrierIslands.INSTANCE),
+        ADD_ISLANDS(AddIslands.INSTANCE),
         ANNOTATE_BIOME_ALTITUDE(AnnotateBiomeAltitude.INSTANCE),
         ANNOTATE_CLIMATE(AnnotateClimate.INSTANCE),
         CHOOSE_ROCKS(ChooseRocks.INSTANCE),
         ANNOTATE_KARST_SURFACE(KarstSurfaceRocks.INSTANCE),
-        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         ADD_RIVERS_AND_LAKES(AddRiversAndLakes.INSTANCE),
+        CHOOSE_BIOMES(ChooseBiomes.INSTANCE),
         ;
 
         private static final Task[] VALUES = values();
