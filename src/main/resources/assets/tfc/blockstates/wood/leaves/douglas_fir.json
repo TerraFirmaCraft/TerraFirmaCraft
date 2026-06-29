@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "": {
-      "model": "tfc:block/wood/leaves/douglas_fir"
+      "model": "tfc:block/wood/leaves/douglas_fir_dynamic"
     }
   }
 }

@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/aspen_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/aspen"
+      "model": "tfc:block/wood/leaves/dense_leaves/aspen"
     }
   }
 }

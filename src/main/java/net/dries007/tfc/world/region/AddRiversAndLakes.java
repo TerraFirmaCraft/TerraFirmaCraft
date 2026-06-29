@@ -188,10 +188,9 @@ public enum AddRiversAndLakes implements RegionTask
         final int gridZ = (int) (edge.source().y() + 0.3f * offsetZ);
 
         final Region.Point point = region.at(gridX, gridZ);
-        if (point != null && point.land() && point.distanceToOcean >= 2 && point.distanceToEdge >= 2 && TFCLayers.hasLake(point.biome))
+        if (point != null && point.land() && point.distanceToOcean >= 2 && point.distanceToEdge >= 2)
         {
             point.setLake();
-            point.biome = TFCLayers.lakeFor(point.biome);
             point.rainfall += 0.09f * (500f - point.rainfall); // Small, localized rainfall increase around lakes of ~45mm max
         }
     }

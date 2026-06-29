@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/side_blooming_leaves",
+  "textures": {
+    "leaves": "tfc:block/wood/leaves/dense_leaves/chestnut",
+    "overlay": "tfc:block/wood/leaves/blooming/chestnut_0"
+  }
+}

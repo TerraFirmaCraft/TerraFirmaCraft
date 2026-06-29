@@ -70,6 +70,8 @@ public class ServerConfig extends BaseConfig
     public final Supplier<Size> chestMaximumItemSize;
     // Blocks - Large Vessel
     public final Supplier<Boolean> largeVesselEnableAutomation;
+    // Blocks - Crate
+    public final Supplier<Boolean> crateEnableAutomation;
     // Blocks - Quern
     public final Supplier<Boolean> quernEnableAutomation;
     // Blocks - Torch
@@ -367,6 +369,10 @@ public class ServerConfig extends BaseConfig
         builder.swap("largeVessel");
 
         largeVesselEnableAutomation = builder.comment("If true, large vessels will interact with in-world automation such as hoppers on a side-specific basis.").define("largeVesselEnableAutomation", true);
+
+        builder.swap("crate");
+
+        crateEnableAutomation = builder.comment("If true, crates will interact with in-world automation such as hoppers on a side-specific basis.").define("crateEnableAutomation", true);
 
         builder.swap("quern");
 

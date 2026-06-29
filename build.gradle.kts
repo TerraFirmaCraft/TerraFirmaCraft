@@ -9,7 +9,7 @@ plugins {
 
 // Toolchain versions
 val minecraftVersion: String = "1.21.1"
-val neoForgeVersion: String = "21.1.197"
+val neoForgeVersion: String = "21.1.234"
 val parchmentVersion: String = "2024.11.17"
 val parchmentMinecraftVersion: String = "1.21.1"
 
@@ -156,6 +156,9 @@ dependencies {
 
     // ModernFix - useful at runtime for significant memory savings in TFC in dev (see i.e. wall block shape caches)
     runtimeOnly(group = "curse.maven", name = "modernfix-790626", version = "6766126")
+
+    // Sodium - useful for testing graphics behavior
+//    runtimeOnly(group = "curse.maven", name = "sodium-394468", version = "6382651")
 
     // Data
     "dataImplementation"(sourceSets["main"].output)

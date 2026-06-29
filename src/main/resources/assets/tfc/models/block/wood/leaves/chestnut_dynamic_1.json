@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:leaves",
+  "dense_leaves": {
+    "parent": "tfc:block/wood/leaves/dense_leaves/chestnut"
+  },
+  "sparse_leaves": {
+    "parent": "tfc:block/wood/leaves/sparse_leaves/chestnut"
+  },
+  "bare": {
+    "parent": "tfc:block/wood/leaves/bare/chestnut"
+  },
+  "blooming": {
+    "parent": "tfc:block/wood/leaves/blooming/chestnut_1"
+  }
+}

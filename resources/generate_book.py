@@ -263,6 +263,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             # Overview of various plants
             # Mention some usages (dyes)
             text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$().'),
+            text('Flowers can be $(thing)propagated$() by $(item)$(k:key.use)$() them with shears. This drops a $(thing)Flower Cutting$(). Crafting a Flower Cutting with Compost will give you two of the original flower back, thus duplicating it.'),
             block_spotlight('Standard', 'Standard plants are like small flowers. They grow on grass, dirt, and farmland.', 'tfc:plant/anthurium'),
             block_spotlight('Dry', 'Dry plants are like standard plants, but they can grow on sand. These generally only spawn in areas with low rainfall.', 'tfc:plant/sagebrush'),
             two_tall_block_spotlight('Cacti', 'Cacti can grow two blocks high, and they will damage you!', 'tfc:plant/barrel_cactus[part=lower]', 'tfc:plant/barrel_cactus[part=upper]').anchor('cacti'),
@@ -279,7 +280,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             two_tall_block_spotlight('Tall Water Plant', 'Tall water plants can grow with just the bottom block in water. $(thing)Water Taro$() and $()Cattail$() can be broken with a $(thing)Knife$() for $(thing)Roots$().', 'tfc:plant/cattail[part=lower,fluid=water]', 'tfc:plant/cattail[part=upper]'),
             two_tall_block_spotlight('Floating', 'Floating plants sit on top of the water. Boats will break them on contact.', 'minecraft:water', 'tfc:plant/duckweed'),
             two_tall_block_spotlight('Kelp', 'Kelp are twisting vines that grow underwater.', 'tfc:plant/winged_kelp_plant[fluid=salt_water]', 'tfc:plant/winged_kelp[fluid=salt_water]'),
-            two_tall_block_spotlight('Tree Kelp', 'Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().', 'tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]', 'tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]'),  # note: anyone want to make a nice multiblock for this?
+            two_tall_block_spotlight('Tree Kelp', 'Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().', 'tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]', 'tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]'),  # note: anyone want to make a nice multiblock for this?,
+            empty_last_page(),
         )),
         entry('wild_crops', 'Wild Crops', 'tfc:textures/gui/book/icons/wild_crops.png', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
@@ -920,8 +922,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/jar/plum_unsealed', text_contents='Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!'),
             crafting('tfc:crafting/food/rye_bread_jam_sandwich_sjs_jar', text_contents='Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over.'),
             text('Jars can be placed on solid surfaces with $(item)$(k:key.use)$(). A block can contain four jars of any kind.'),
-            crafting('tfc:crafting/wood/shelf/oak', text_contents='$(thing)Shelves$() can be attached to solid walls. Items, including jars, can be placed on top of them by using the item - including jars - on the shelf, or underneath.'),
-            empty_last_page()
         )),
         entry('bread', 'Bread', 'tfc:food/barley_bread', pages=(
             text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().').link('#c:foods/bread', '#c:foods/dough', '#c:foods/grain', '#c:foods/flour'),
@@ -1046,6 +1046,18 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         entry('heating', 'Heating', 'tfc:textures/gui/book/icons/heating.png', pages=(
             text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:getting_started/firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
             text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(#FFDD00)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(#FFDD00)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(d)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(d)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
+        )),
+        entry('storage', 'Storage', 'tfc:wood/chest/oak', pages=(
+            text('Your own inventory only holds so much, so there are many ways to keep items safe and organized, such as $(thing)Chests$() and $(thing)Crates$(), $(thing)Tool Racks$(), $(thing)Shelves$(), and $(thing)Baskets$().$(br2)Keep in mind that an item\'s $(l:getting_started/size_and_weight)Size ⇲$() limits which containers it will fit inside.'),
+            crafting('tfc:crafting/wood/chest/oak', text_contents='A $(thing)Chest$() is the most basic storage block, crafted from a single type of $(thing)Lumber$().'),
+            text('A $(thing)Chest$() has 18 slots. $(br2)Chests hold items up to $(thing)Large$() in size. $(thing)Very Large$() items, such as $(thing)Logs$(), are too big to fit and must be stored another way.', title='Chests'),
+            crafting('tfc:crafting/wood/trapped_chest/oak', text_contents='A $(thing)Trapped Chest$() stores items just like a normal chest, but emits a $(thing)Redstone$() signal while it is open.'),
+            crafting('tfc:crafting/wood/crate/oak', text_contents='A $(thing)Crate$() stores a single type of item, but up to 36 stacks of it, in sizes up to $(thing)Large$().'),
+            text('To insert items, use $(item)$(k:key.use)$() on the crate while holding them. With an empty hand, $(item)$(k:key.use)$() takes out a single stack, and if $(item)$(k:key.sneak)$() is held, it empties the whole crate at once.', title='Crates'),
+            crafting('tfc:crafting/wood/tool_rack/oak', text_contents='A $(thing)Tool Rack$() is mounted on the side of a solid block. Place or take a tool with $(item)$(k:key.use)$(). Only items that can be used as tools may be placed on it.'),
+            crafting('tfc:crafting/wood/shelf/oak', text_contents='$(thing)Shelves$() can be attached to solid walls. Items, including jars, can be placed on top of them by using the item on the shelf or underneath.'),
+            text('For storing $(thing)food$() and slowing $(l:mechanics/decay)decay$(), nothing use a $(thing)Vessel$(). See their chapters for details:$(br)$(li)$(l:mechanics/decay#small_vessels)Small Vessels$()$(li)$(l:mechanics/decay#large_vessels)Large Vessels$()', title='Vessels'),
+            crafting('tfc:crafting/basket', text_contents='$(thing)Baskets$() can hold 64 items inside them. Insert and extract by placing the item on the basket with $(item)$(k:key.use)$(). Larger items take up more space.'),
         )),
         entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/molten_lit.png', pages=(
             text('The $(thing)Charcoal Forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for smithing on an $(l:mechanics/anvils)anvil$(). $(br)It is constructed with 5 $(thing)stone$() blocks surrounding a $(l:mechanics/charcoal_pit#charcoal_pile)charcoal pile$() of 7 or 8 layers which is then lit.'),

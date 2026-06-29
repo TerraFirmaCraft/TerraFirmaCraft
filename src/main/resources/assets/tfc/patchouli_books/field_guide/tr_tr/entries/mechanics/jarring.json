@@ -29,11 +29,6 @@
     {
       "type": "patchouli:text",
       "text": "Kavanozlar, $(item)$(k:key.use)$() tuşuyla katı yüzeylere yerleştirilebilir. Bir blok, herhangi bir türden dört kavanoz içerebilir."
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/shelf/oak",
-      "text": "$(thing)Raflar$(), katı duvarlara monte edilebilir. Kavanozlar da dahil olmak üzere eşyalar, eşyayı rafın üzerine veya altına $(item)$(k:key.use)$() tuşuyla kullanarak yerleştirilebilir."
     }
   ],
   "read_by_default": true

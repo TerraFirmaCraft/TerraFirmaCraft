@@ -928,6 +928,33 @@ public final class Helpers
         return stack;
     }
 
+    /**
+     * Inserts every stack from {@code source} that {@code destination} accepts while ignoring creation date and
+     * stopping once the destination is full. Inserted items are removed from {@code source} in place; anything that
+     * does not fit (or that {@link IItemHandler#isItemValid} rejects) is left untouched.
+     */
+    public static void mergeInsertAll(IItemHandler destination, Container source)
+    {
+        final int slots = destination.getSlots();
+        int cursor = 0;
+        for (int slot = 0; slot < source.getContainerSize() && cursor < slots; slot++)
+        {
+            final ItemStack stack = source.getItem(slot);
+            if (stack.isEmpty() || !destination.isItemValid(cursor, stack))
+                continue;
+            ItemStack remainder = stack;
+            while (cursor < slots && !remainder.isEmpty())
+            {
+                remainder = mergeInsertStack(destination, cursor, remainder);
+                if (!remainder.isEmpty())
+                {
+                    cursor++; // slot is now full, move on
+                }
+            }
+            source.setItem(slot, remainder);
+        }
+    }
+
     public static boolean insertOne(Level level, BlockPos pos, Supplier<? extends BlockEntityType<? extends InventoryBlockEntity<?>>> type, ItemStack stack)
     {
         return level.getBlockEntity(pos, type.get()).map(entity -> insertOne(entity, stack)).orElse(false);

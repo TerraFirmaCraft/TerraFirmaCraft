@@ -3,6 +3,6 @@
   "parent": "tfc:block/plant/flowerpot/template_potted_krummholz",
   "textures": {
     "0": "tfc:block/wood/log/spruce",
-    "1": "tfc:block/wood/leaves/spruce"
+    "1": "tfc:block/wood/leaves/dense_leaves/spruce"
   }
 }

@@ -29,11 +29,6 @@
     {
       "type": "patchouli:text",
       "text": "Jars can be placed on solid surfaces with $(item)$(k:key.use)$(). A block can contain four jars of any kind."
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/shelf/oak",
-      "text": "$(thing)Shelves$() can be attached to solid walls. Items, including jars, can be placed on top of them by using the item - including jars - on the shelf, or underneath."
     }
   ],
   "read_by_default": true

@@ -23,6 +23,7 @@ import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
@@ -434,7 +435,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             // in more intense precipitation, starting at 5 for most storms (but also applying other effects for lighter precipitation)
             //
             // However, we still limit ourselves if the user is not using fancy graphics (boo!)
-            final int blockRadius = Minecraft.useFancyGraphics()
+            final int blockRadius = ClientHelpers.useFancyGraphics()
                 ? (int) Mth.map(rainIntensity, 0f, 1f, 5, 15)
                 : 5;
 
@@ -687,7 +688,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
             // Include all factors that vanilla does (fancy graphics, particle settings, rain level), but also include rain intensity
             final float adjustedRainIntensity = rainLevel
                 * Mth.clampedMap(rainIntensity, 0, 0.3f, 0, 1)
-                * (Minecraft.useFancyGraphics() ? 1f : 0.5f)
+                * (ClientHelpers.useFancyGraphics() ? 1f : 0.5f)
                 * (minecraft.options.particles().get() == ParticleStatus.DECREASED ? 0.7f : 1f);
             final int particleAmount = isSnowing ? 0 : (int) (100f * adjustedRainIntensity * adjustedRainIntensity);
 

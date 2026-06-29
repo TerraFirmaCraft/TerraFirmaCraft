@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/spruce_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/spruce"
+      "model": "tfc:block/wood/leaves/dense_leaves/spruce"
     }
   }
 }

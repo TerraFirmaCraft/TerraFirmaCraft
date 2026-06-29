@@ -111,6 +111,7 @@ public final class TFCBlockEntities
     public static final Id<PowderkegBlockEntity> POWDERKEG = register("powderkeg", PowderkegBlockEntity::new, TFCBlocks.POWDERKEG);
     public static final Id<TFCChestBlockEntity> CHEST = register("chest", TFCChestBlockEntity::new, woodBlocks(Wood.BlockType.CHEST));
     public static final Id<TFCTrappedChestBlockEntity> TRAPPED_CHEST = register("trapped_chest", TFCTrappedChestBlockEntity::new, woodBlocks(Wood.BlockType.TRAPPED_CHEST));
+    public static final Id<CrateBlockEntity> CRATE = register("crate", CrateBlockEntity::new, woodBlocks(Wood.BlockType.CRATE));
     public static final Id<BarrelBlockEntity> BARREL = register("barrel", BarrelBlockEntity::new, woodBlocks(Wood.BlockType.BARREL));
     public static final Id<LoomBlockEntity> LOOM = register("loom", LoomBlockEntity::new, woodBlocks(Wood.BlockType.LOOM));
     public static final Id<SluiceBlockEntity> SLUICE = register("sluice", SluiceBlockEntity::new, woodBlocks(Wood.BlockType.SLUICE));

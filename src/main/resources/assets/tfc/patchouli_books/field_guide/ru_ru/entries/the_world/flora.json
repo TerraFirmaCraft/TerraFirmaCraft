@@ -9,6 +9,10 @@
       "text": "В TerraFirmaCraft существует очень, очень, $(italic)очень$() много различных видов растений. Разные растения появляются в разных $(l:the_world/climate)климатических условиях$(), а их внешний вид может меняться в зависимости от текущего сезона — проходя через циклы цветения и покоя или меняя цвет с изменением температуры. Яркие цветы обычно можно измельчить в $(l:mechanics/quern)жёрнове$() для получения $(l:mechanics/dye)красителя$()."
     },
     {
+      "type": "patchouli:text",
+      "text": "Flowers can be $(thing)propagated$() by $(item)$(k:key.use)$() them with shears. This drops a $(thing)Flower Cutting$(). Crafting a Flower Cutting with Compost will give you two of the original flower back, thus duplicating it."
+    },
+    {
       "type": "patchouli:multiblock",
       "multiblock": {
         "pattern": [

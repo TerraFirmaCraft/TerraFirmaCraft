@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/blooming_leaves_column",
+  "textures": {
+    "side": "tfc:block/wood/leaves/dense_leaves/palm",
+    "end": "tfc:block/wood/leaves/dense_leaves/palm_top",
+    "overlay": "tfc:block/wood/leaves/blooming/palm"
+  }
+}

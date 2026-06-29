@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/sequoia_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/sequoia"
+      "model": "tfc:block/wood/leaves/dense_leaves/sequoia"
     }
   }
 }

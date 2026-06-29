@@ -96,4 +96,12 @@ public class FreshwaterFish extends Salmon implements AquaticMob
         return Helpers.isBlock(level().getBlockState(blockPosition()), TFCTags.Blocks.ANIMAL_IGNORED_PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
+    @Override
+    public void playAmbientSound()
+    {
+        if (this.isInWater())
+        {
+            super.playAmbientSound();
+        }
+    }
 }

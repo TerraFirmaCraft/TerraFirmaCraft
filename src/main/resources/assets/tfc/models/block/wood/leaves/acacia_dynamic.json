@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "tfc:leaves",
+  "dense_leaves": {
+    "parent": "tfc:block/wood/leaves/dense_leaves/acacia"
+  },
+  "sparse_leaves": {
+    "parent": "tfc:block/wood/leaves/sparse_leaves/acacia"
+  },
+  "bare": {
+    "parent": "tfc:block/wood/leaves/bare/acacia"
+  },
+  "blooming": {
+    "parent": "tfc:block/wood/leaves/blooming/acacia"
+  }
+}

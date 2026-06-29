@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/kapok_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/kapok"
+      "model": "tfc:block/wood/leaves/dense_leaves/kapok"
     }
   }
 }
