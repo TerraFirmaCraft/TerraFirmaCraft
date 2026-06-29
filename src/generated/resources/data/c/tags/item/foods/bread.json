@@ -1,11 +1,11 @@
 {
   "values": [
-    "tfc:food/barley_bread",
-    "tfc:food/maize_bread",
-    "tfc:food/oat_bread",
-    "tfc:food/rye_bread",
-    "tfc:food/rice_bread",
-    "tfc:food/wheat_bread",
+    "#c:foods/barley_bread",
+    "#c:foods/maize_bread",
+    "#c:foods/oat_bread",
+    "#c:foods/rye_bread",
+    "#c:foods/rice_bread",
+    "#c:foods/wheat_bread",
     "minecraft:bread"
   ]
 }

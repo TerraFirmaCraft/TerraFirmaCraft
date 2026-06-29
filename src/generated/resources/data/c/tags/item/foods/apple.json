@@ -1,6 +1,6 @@
 {
   "values": [
-    "tfc:food/green_apple",
-    "tfc:food/red_apple"
+    "#c:foods/red_apple",
+    "#c:foods/green_apple"
   ]
 }

@@ -1,18 +1,24 @@
 {
   "values": [
     "#c:tool_heads/pickaxe",
+    "#c:tool_heads/propick",
     "#c:tool_heads/axe",
-    "#c:tool_heads/sword",
     "#c:tool_heads/shovel",
     "#c:tool_heads/hoe",
+    "#c:tool_heads/chisel",
     "#c:tool_heads/hammer",
-    "#c:tool_heads/scythe",
-    "#c:tool_heads/propick",
     "#c:tool_heads/saw",
+    "#c:tool_heads/javelin",
+    "#c:tool_heads/sword",
     "#c:tool_heads/mace",
+    "#c:tool_heads/knife",
+    "#c:tool_heads/scythe",
+    "#c:tool_heads/axe",
+    "#c:tool_heads/hammer",
+    "#c:tool_heads/hoe",
     "#c:tool_heads/javelin",
     "#c:tool_heads/knife",
-    "#c:tool_heads/chisel",
+    "#c:tool_heads/shovel",
     "#c:tool_heads/spindle",
     "#c:tool_heads/fishing_hook"
   ]
