@@ -11,6 +11,6 @@
     "parent": "tfc:block/wood/leaves/bare/chestnut"
   },
   "blooming": {
-    "parent": "tfc:block/wood/leaves/blooming/chestnut"
+    "parent": "tfc:block/wood/leaves/blooming/chestnut_1"
   }
 }

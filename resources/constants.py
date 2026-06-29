@@ -488,7 +488,7 @@ WOODS: dict[str, Wood] = {
     'aspen': Wood(611, 1000, False, 'bare'),
     'birch': Wood(652, 1750, False, 'bare'),
     'blackwood': Wood(720, 1750, False, 'leaves'),
-    'chestnut': Wood(651, 1500, False, 'leaves'),
+    'chestnut': Wood(651, 1500, False, 'random'),
     'douglas_fir': Wood(707, 1500, True, 'cones'),
     'hickory': Wood(762, 2000, False, 'sparse'),
     'kapok': Wood(645, 1000, False, 'bare'),

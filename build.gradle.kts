@@ -9,7 +9,7 @@ plugins {
 
 // Toolchain versions
 val minecraftVersion: String = "1.21.1"
-val neoForgeVersion: String = "21.1.197"
+val neoForgeVersion: String = "21.1.234"
 val parchmentVersion: String = "2024.11.17"
 val parchmentMinecraftVersion: String = "1.21.1"
 
