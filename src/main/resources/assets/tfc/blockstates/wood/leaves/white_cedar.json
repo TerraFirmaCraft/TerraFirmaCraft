@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "": {
-      "model": "tfc:block/wood/leaves/white_cedar"
+      "model": "tfc:block/wood/leaves/white_cedar_dynamic"
     }
   }
 }

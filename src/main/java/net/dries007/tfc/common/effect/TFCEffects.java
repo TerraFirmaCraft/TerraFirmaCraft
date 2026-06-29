@@ -29,8 +29,8 @@ public class TFCEffects
     public static final Id<MobEffect> OVERBURDENED = register("overburdened", () -> new TFCMobEffect(MobEffectCategory.HARMFUL, 0x263659)
         .addAttributeModifier(Attributes.MOVEMENT_SPEED, Helpers.identifier("effect.move"), -7.5D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
         .addAttributeModifier(NeoForgeMod.SWIM_SPEED, Helpers.identifier("effect.swim_speed"), -7.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-    public static final Id<MobEffect> EXHAUSTED = register("exhausted", () -> new TFCMobEffect(MobEffectCategory.HARMFUL, 0x667A25));
-    public static final Id<MobEffect> THIRST = register("thirst", () -> new TFCMobEffect(MobEffectCategory.HARMFUL, 0x9DADD1));
+    public static final Id<MobEffect> EXHAUSTED = register("exhausted", () -> new ExhaustedEffect(MobEffectCategory.HARMFUL, 0x667A25));
+    public static final Id<MobEffect> THIRST = register("thirst", () -> new ThirstEffect(MobEffectCategory.HARMFUL, 0x9DADD1));
 
     public static <T extends MobEffect> Id<T> register(String name, Supplier<T> supplier)
     {

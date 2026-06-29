@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/sequoia"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/sequoia"
+    }
+  },
+  "pattern": [
+    "SLS",
+    "L L",
+    "SLS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/crate/sequoia"
+  }
+}

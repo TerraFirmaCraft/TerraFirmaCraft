@@ -1,0 +1,21 @@
+{
+  "type": "tfc:advanced_shapeless_crafting",
+  "ingredients": [
+    {
+      "item": "tfc:flower_cutting"
+    },
+    {
+      "item": "tfc:compost"
+    }
+  ],
+  "primary_ingredient": {
+    "item": "tfc:flower_cutting"
+  },
+  "result": {
+    "modifiers": [
+      {
+        "type": "tfc:flower_cutting"
+      }
+    ]
+  }
+}

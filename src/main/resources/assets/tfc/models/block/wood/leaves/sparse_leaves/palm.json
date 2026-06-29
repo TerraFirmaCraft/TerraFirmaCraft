@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/sparse_leaves_column",
+  "textures": {
+    "side": "tfc:block/wood/leaves/sparse_leaves/palm",
+    "end": "tfc:block/wood/leaves/sparse_leaves/palm_top",
+    "cross": "tfc:block/wood/leaves/bare/palm"
+  }
+}

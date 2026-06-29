@@ -154,6 +154,9 @@ public class OverworldClimateModel implements ClimateModel
         return ChunkData.get(level, pos).getRainVariance(pos);
     }
 
+    /**
+    * For positive values of variance, drought in January/rain in July, for negative values drought in summer, the opposite
+     */
     @Override
     public float getInstantRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
     {
@@ -162,7 +165,6 @@ public class OverworldClimateModel implements ClimateModel
         final float rainAverage = data.getAverageRainfall(pos);
         final float fractionOfYear = ICalendar.getFractionOfYear(calendarTicks, daysInMonth);
 
-        // For positive values of variance, drought in winter, rain in summer, reverse for negative values
         return rainVariance == 0 ? rainAverage : Helpers.triangle(rainVariance * rainAverage, rainAverage, 1f, fractionOfYear + 0.75f);
     }
 

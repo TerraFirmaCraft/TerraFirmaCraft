@@ -40,11 +40,13 @@ public class ChunkBaseBlockSource
      * around the shore. This can be addressed by only placing freshwater when the biome weight is sufficiently high, but that causes
      * rivers to be salty as they do not ever have high biome weights, so that is then special cased. With both of those checks, there is
      * still an edge case where if we only check the primary biome's weight, at intersections between 3 non-salty biomes saltwater will
-     * generate because the highest weight is still low. Thus, before running those checks we see if there are any nearby biomes that are salty
+     * generate because the highest weight is still low. Thus, before running those checks, we see if there are any nearby biomes that are salty.
+     * Add a extra check to force salt water in spots that are sufficiently close to shore/ocean at sea level. This mostly fixes the issue of fresh
+     * water occurring where water pools generate in land biomes but are connected to the ocean.
      */
-    public void useAccurateBiome(int localX, int localZ, BiomeExtension biome, double weight, boolean couldBeSalty)
+    public void useAccurateBiome(int localX, int localZ, BiomeExtension biome, double weight, boolean couldBeSalty, boolean forceSaltWater)
     {
-        cachedFluidStates[index(localX, localZ)] = !couldBeSalty || (!biome.isSalty() && (weight > 0.5 || biome == TFCBiomes.RIVER)) ? freshWater : saltWater;
+        cachedFluidStates[index(localX, localZ)] = forceSaltWater || (couldBeSalty && (biome.isSalty() || (weight <= 0.5 && biome != TFCBiomes.RIVER))) ? saltWater : freshWater;
     }
 
     public BlockState getBaseBlock(int blockX, int blockY, int blockZ)

@@ -33,6 +33,7 @@ public class ItemStackModifiers
     public static final Id<CopyForgingBonusModifier> COPY_FORGING_BONUS = register("copy_forging_bonus", CopyForgingBonusModifier.INSTANCE);
     public static final Id<ResetFoodModifier> RESET_FOOD = register("reset_food", ResetFoodModifier.INSTANCE);
     public static final Id<EmptyBowlModifier> EMPTY_BOWL = register("empty_bowl", EmptyBowlModifier.INSTANCE);
+    public static final Id<FlowerCuttingModifier> FLOWER_CUTTING = register("flower_cutting", FlowerCuttingModifier.INSTANCE);
     public static final Id<AddBaitToRodModifier> ADD_BAIT_TO_ROD = register("add_bait_to_rod", AddBaitToRodModifier.INSTANCE);
     public static final Id<AddGlassModifier> ADD_GLASS = register("add_glass", AddGlassModifier.INSTANCE);
     public static final Id<AddPowderModifier> ADD_POWDER = register("add_powder", AddPowderModifier.INSTANCE);

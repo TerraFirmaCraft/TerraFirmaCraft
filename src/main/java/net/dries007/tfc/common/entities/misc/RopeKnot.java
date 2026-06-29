@@ -22,11 +22,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.RopeAnchorBlock;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 
 public class RopeKnot extends LeashFenceKnotEntity implements Leashable
 {
@@ -91,6 +89,11 @@ public class RopeKnot extends LeashFenceKnotEntity implements Leashable
     @Override
     public boolean survives()
     {
+        final Entity holder = getLeashHolder();
+        if (holder == null)
+            return false;
+        if (holder.distanceToSqr(this) > 16 * 16)
+            return false;
         return level().getBlockState(pos).getBlock() instanceof RopeAnchorBlock;
     }
 
@@ -122,7 +125,7 @@ public class RopeKnot extends LeashFenceKnotEntity implements Leashable
     public void remove(Entity.RemovalReason reason)
     {
         if (!this.level().isClientSide && reason.shouldDestroy() && this.isLeashed())
-            this.dropLeash(true, true);
+            this.dropLeash(true, false);
 
         super.remove(reason);
     }

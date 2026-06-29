@@ -16,12 +16,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
+
+import static net.dries007.tfc.world.TFCChunkGenerator.*;
 
 public final class TFCColors
 {
@@ -30,8 +33,8 @@ public final class TFCColors
     public static final ResourceLocation WATER_COLORS_LOCATION = Helpers.identifier("textures/colormap/water.png");
     public static final ResourceLocation WATER_FOG_COLORS_LOCATION = Helpers.identifier("textures/colormap/water_fog.png");
     public static final ResourceLocation FOLIAGE_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage.png");
+    public static final ResourceLocation FOLIAGE_SUMMER_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage.png");
     public static final ResourceLocation FOLIAGE_FALL_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_fall.png");
-    public static final ResourceLocation FOLIAGE_WINTER_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_winter.png");
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
     public static final ResourceLocation TALL_GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/tall_grass.png");
 
@@ -47,7 +50,7 @@ public final class TFCColors
     private static int[] WATER_FOG_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_FALL_COLORS_CACHE = new int[COLORMAP_SIZE];
-    private static int[] FOLIAGE_WINTER_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] FOLIAGE_SUMMER_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] GRASS_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] TALL_GRASS_COLORS_CACHE = new int[COLORMAP_SIZE];
 
@@ -88,9 +91,9 @@ public final class TFCColors
         FOLIAGE_FALL_COLORS_CACHE = foliageFallColorsCache;
     }
 
-    public static void setFoliageWinterColors(int[] foliageWinterColorsCache)
+    public static void setFoliageSummerColors(int[] foliageSummerColorsCache)
     {
-        FOLIAGE_WINTER_COLORS_CACHE = foliageWinterColorsCache;
+        FOLIAGE_SUMMER_COLORS_CACHE = foliageSummerColorsCache;
     }
 
     public static void setGrassColors(int[] grassColorsCache)
@@ -133,38 +136,106 @@ public final class TFCColors
     }
 
     /**
-     * Gets a color based on average temperature and time of year. Autumn occurs at different times of the year at height-adjusted average temperatures from the poles to 12c
+     * Uses similar logic to {@link net.dries007.tfc.client.model.LeavesBlockModel#getModelFromBlockState} to display different colors for leaf blocks at different times of year
+     * As an overview, the colormaps used are:
+     * Winter - Uniform brown - Displayed in winter months in sufficiently cold climates, or during sufficiently extreme dry seasons of sufficiently warm climates
+     * Summer - Variable green based on rainfall and time of year - Light green in spring/early wet season, darker green in summer and for evergreen trees/climates
+     * Autumn - Variable bright colors based on the species of tree and the time of year, progressing from green at the start of autumn, to brown at the end
      */
     private static int getSeasonalFoliageColor(BlockPos pos, int autumnIndex)
     {
         final Level level = ClientHelpers.getLevel();
-        float temp = Climate.getAverageTemperature(level, pos);
-        final float offset = ClientHelpers.inNorthernHemisphere() ? 0f : 0.5f; // Offset for Southern Hemisphere
-        float timeOfYear = (Calendars.CLIENT.getCalendarFractionOfYear() + offset) % 1f;
-        final float tempClamped = temp > 12f ? 12f : Math.max(temp, -20f);
+        final BlockPos seaLevelPos = new BlockPos(pos.getX(), SEA_LEVEL_Y, pos.getZ());
+        float temp = Climate.getAverageTemperature(level, seaLevelPos);
+        float rainVar = Climate.getRainfallVariance(level, pos);
+        if ((temp > 11.7 && temp < 12.8) || (rainVar > 0.38 && rainVar < 0.42))
+        {
+            final int positionClimateHash = (Helpers.hash(912381187503828153L, pos) & 127);
+            temp += (float) (positionClimateHash - 63) / 4_000f;
+            rainVar += (float) (positionClimateHash - 63) / 60_000f;
+        }
+        final float rainVarAbs = Math.abs(rainVar);
 
-        final float cubedTerm = 1.5f * (float) Math.pow(tempClamped + 3f, 3f) / 4913f;
-        final float squaredTerm = 0.5f * (float) Math.pow(tempClamped + 3f, 2f) / 289f;
-        final float autumnStart = (cubedTerm + squaredTerm + 8.5f) / 12f;
-        final float autumnEnd = temp > 12f ? autumnStart : (cubedTerm - squaredTerm + 10.5f) / 12f;
-        final float springStart = 1f - autumnEnd;
+        // Shortcut if evergreen climate
+        if (temp > 12f && Math.abs(rainVar) < 0.4)
+        {
+            return getGreenSeasonFoliageColor(pos);
+        }
+
+        float timeOfYear = Calendars.CLIENT.getCalendarFractionOfYear();
+
+        // See Desmos: https://www.desmos.com/calculator/jw5zkjxtnz
+        final float x;
+        final boolean inNorthernHemisphere = SolarCalculator.getInNorthernHemisphere(pos.getZ(), ClimateRenderCache.INSTANCE.getHemisphereScale());
+        float seasonOffset = 0;
+        if (temp <= 12f)
+        {
+            // Numbers chosen to create a 2.5-month summer at -20c avg, and a 12-month "summer" at 15c avg
+            x = 1.25f * Math.max(temp, -20f) + 7.6f;
+            if (!inNorthernHemisphere)
+            {
+                seasonOffset = 0.5f;
+            }
+        }
+        else
+        {
+            // For dry-season controlled climates, the minimum rain must be below 120
+            final float avgRain = Climate.getAverageRainfall(level, seaLevelPos);
+            final float minRain = avgRain * (1 - rainVarAbs);
+
+            // Small gap in temperature is so that there are small evergreen bands between dry-season controlled areas and winter-controlled areas
+            if (rainVarAbs > 0.4 && temp > 12.5f && minRain <= 120)
+            {
+                if (rainVar < 0)
+                {
+                    seasonOffset = 0.5f;
+                }
+                // Numbers chosen to create a 4-month wet season at max rain var & min rain = 0, and a 12-month "wet season" at minimum rain var & min rain = 120
+                // Uses multiple variables to ensure smooth transitions, and that biomes that have green grass year-round do not lose leaves
+                x = -.2604f * (0.4f - rainVarAbs) * (120f - minRain) + 18.75f + 5.3f;
+            }
+            // If not in any of the above areas, must be in an evergreen border-belt
+            else
+            {
+                return getGreenSeasonFoliageColor(pos);
+            }
+        }
+
+        final float cubedTerm = x * x * x / 4096; // 1 / 16^3
+        final float squaredTerm = x * x / 256; // 1 / 16^2
+
+        // Offset the seasons by six months if in southern hemisphere, or if dry season is in the summer
+        // Positional hashing to fuzz the time of year per-block
+        final int positionDeltaHash = (Helpers.hash(836494187578334123L, pos) & 127);
+        timeOfYear = (1 + timeOfYear + seasonOffset + ((positionDeltaHash - 63) / 4096f)) % 1;
+
+        final float autumnStart = (cubedTerm - squaredTerm + 8.5f) / 12f;
+        final float autumnEnd = (cubedTerm - squaredTerm + 10.5f) / 12f;
 
         if (timeOfYear > autumnEnd)
         {
-            return getAverageClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
+            // Winter brown
+            return getWinterFoliageColor();
         }
         else if (timeOfYear > autumnStart)
         {
             return getAutumnColor(FOLIAGE_FALL_COLORS_CACHE, timeOfYear, autumnStart, autumnEnd, pos, autumnIndex);
         }
-        else if (timeOfYear > springStart)
+        final float springStart = 1f - autumnEnd;
+        if (timeOfYear > springStart)
         {
-            return getClimateColor(FOLIAGE_COLORS_CACHE, pos);
+            return getSpringSummerColor(FOLIAGE_SUMMER_COLORS_CACHE, timeOfYear, springStart, autumnStart, pos);
         }
         else
         {
-            return getAverageClimateColor(FOLIAGE_WINTER_COLORS_CACHE, pos, temp);
+            // Winter brown
+            return getWinterFoliageColor();
         }
+    }
+
+    public static int getWinterFoliageColor()
+    {
+        return 0x7c592b;
     }
 
     public static int getFoliageColor(@Nullable BlockPos pos, int tintIndex)
@@ -240,6 +311,43 @@ public final class TFCColors
         {
             final float groundwater = Climate.getAverageGroundwater(level, pos);
             return getClimateColor(colorCache, averageTemperature, groundwater);
+        }
+        return 0;
+    }
+
+    /**
+     * Queries a color map based on current groundwater and the time of year. Time is horizontal, left is spring. Groundwater is vertical, up is high.
+     */
+    private static int getSpringSummerColor(int[] colorCache, float timeOfYear, float springStartTime, float autumnStartTime, BlockPos pos)
+    {
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
+        {
+            final ClimateModel model = Climate.get(level);
+            final float groundwater = model.getInstantGroundwater(level, pos);
+
+
+            final int summerProgressIndex = Mth.clamp((int) (255f * (timeOfYear - springStartTime) / (autumnStartTime - springStartTime)), 0, 255);
+            final int rainfallIndex = 255 - Mth.clamp((int) (groundwater * 255f / 500f), 0, 255);
+
+            return colorCache[summerProgressIndex | (rainfallIndex << 8)];
+        }
+        return 0;
+    }
+
+    /**
+     * Queries a color map based on current groundwater, and a constant time of year, mid-summer. Used for deciduous trees in evergreen climates. Groundwater is vertical, up is high.
+     */
+    private static int getGreenSeasonFoliageColor(BlockPos pos)
+    {
+        final Level level = ClientHelpers.getLevel();
+        if (level != null)
+        {
+            final ClimateModel model = Climate.get(level);
+            final float groundwater = model.getInstantGroundwater(level, pos);
+            final int rainfallIndex = 255 - Mth.clamp((int) (groundwater * 255f / 500f), 0, 255);
+
+            return FOLIAGE_SUMMER_COLORS_CACHE[127 | (rainfallIndex << 8)];
         }
         return 0;
     }

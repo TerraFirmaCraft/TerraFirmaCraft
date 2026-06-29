@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/acacia"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/acacia"
+    }
+  },
+  "pattern": [
+    "SLS",
+    "L L",
+    "SLS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/crate/acacia"
+  }
+}

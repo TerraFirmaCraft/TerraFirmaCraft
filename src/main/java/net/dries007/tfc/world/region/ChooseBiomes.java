@@ -9,6 +9,7 @@ package net.dries007.tfc.world.region;
 import net.minecraft.world.level.ChunkPos;
 
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 
 import static net.dries007.tfc.world.layer.TFCLayers.*;
@@ -379,6 +380,11 @@ public enum ChooseBiomes implements RegionTask
             if (point.distanceToOcean <= 2 && point.biome == LOWLANDS && point.rainfall > 220 && point.temperature > 18)
             {
                 point.biome = SALT_MARSH;
+            }
+
+            if (point.lake() && TFCLayers.hasLake(point.biome))
+            {
+                point.biome = TFCLayers.lakeFor(point.biome);
             }
         }
     }

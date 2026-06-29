@@ -97,7 +97,7 @@ public abstract class BaseRecipeCategory<T extends Recipe<?>> extends AbstractRe
             return List.of(output.getEmptyStack());
         }
         return inputs.stream()
-            .map(output::getStack)
+            .map(output::getSingleStackDisplayOnly)
             .map(FoodCapability::setTransientNonDecaying) // Avoid decaying in JEI views
             .toList();
     }

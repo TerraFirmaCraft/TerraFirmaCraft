@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,12 +32,6 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.function.IntFunction;
-import java.util.stream.Collectors;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -203,8 +201,18 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
             return BY_NAME.getOrDefault(name, byId(0));
         }
 
-        public static Jellyfish.Type byId(int index) {
+        public static Jellyfish.Type byId(int index)
+        {
             return BY_ID.apply(index);
+        }
+    }
+
+    @Override
+    public void playAmbientSound()
+    {
+        if (this.isInWater())
+        {
+            super.playAmbientSound();
         }
     }
 }

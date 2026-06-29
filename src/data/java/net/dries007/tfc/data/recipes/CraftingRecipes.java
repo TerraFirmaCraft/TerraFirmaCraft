@@ -37,6 +37,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
+import net.dries007.tfc.common.items.TFCBundleItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingCraftingRecipe;
 import net.dries007.tfc.common.recipes.FoodCombiningCraftingRecipe;
@@ -44,6 +45,7 @@ import net.dries007.tfc.common.recipes.ingredients.AndIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidContentIngredient;
 import net.dries007.tfc.common.recipes.ingredients.LacksTraitIngredient;
 import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
+import net.dries007.tfc.common.recipes.outputs.FlowerCuttingModifier;
 import net.dries007.tfc.common.recipes.outputs.MealModifier;
 import net.dries007.tfc.util.Metal;
 
@@ -188,6 +190,18 @@ public interface CraftingRecipes extends Recipes
             .inputIsPrimary(TFCItems.SANDPAPER)
             .input(TFCItems.ORES.get(gem))
             .shapeless(item));
+
+        recipe()
+            .inputIsPrimary(TFCItems.FLOWER_CUTTING)
+            .input(TFCItems.COMPOST)
+            .addOutputModifier(FlowerCuttingModifier.INSTANCE)
+            .shapeless("flower_cutting");
+        recipe()
+            .input('S', TFCItems.STRAW)
+            .input('M', TFCTags.Items.MUD)
+            .input('F', ItemTags.FLOWERS)
+            .pattern("FFF", "SMS", " S ")
+            .shaped(TFCItems.BASKET);
 
         TFCBlocks.ALABASTER_BRICKS.forEach((color, block) -> addDecorations(block, TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color)));
         TFCBlocks.POLISHED_ALABASTER.forEach((color, block) -> addDecorations(block, TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color)));
@@ -440,6 +454,11 @@ public interface CraftingRecipes extends Recipes
                 .input('L', lumber)
                 .pattern("LLL", "L L", "LLL")
                 .shaped(blocks.get(Wood.BlockType.CHEST));
+            recipe()
+                .input('L', lumber)
+                .input('S', blocks.get(Wood.BlockType.STRIPPED_LOG))
+                .pattern("SLS", "L L", "SLS")
+                .shaped(blocks.get(Wood.BlockType.CRATE));
             recipe()
                 .input(blocks.get(Wood.BlockType.CHEST))
                 .input(Items.MINECART)
@@ -1315,7 +1334,7 @@ public interface CraftingRecipes extends Recipes
             .input(TFCItems.CANOLA)
             .shapeless(TFCItems.STRAW);
         recipe()
-            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.DOUBLE_SHEET))
+            .input('S', ingredientOf(Metal.CAST_IRON, Metal.ItemType.SHEET))
             .pattern(" S ", "S S", " S ")
             .shaped(TFCBlocks.STOVE);
         recipe()

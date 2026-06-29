@@ -9,7 +9,7 @@ import generate_textures
 
 ASSETS_PATH = './src/main/resources/assets/'
 TEXTURE_FORGIVENESS_PATHS: List = ['_fluff', 'block/burlap', 'block/powder', 'metal/smooth', 'metal/block', 'block/molten_flow', 'block/molten_still', 'block/paper', 'block/unrefined_paper', 'yellow_bell', 'red_bell', 'green_bell', 'sandstone/side', 'quiver', 'placed_item', 'spawn_egg', 'metal/door']
-MODEL_FORGIVENESS_PATHS: List = ['block/jar', 'block/firepit_log_', 'block/ceramic/', 'mold/ceramic/', 'crankshaft_wheel', 'firepit_pot_placed']
+MODEL_FORGIVENESS_PATHS: List = ['block/jar', 'block/firepit_log_', 'block/ceramic/', 'mold/ceramic/', 'crankshaft_wheel', 'firepit_pot_placed', 'block/wood/leaves/bare', 'block/wood/leaves/blooming', 'block/wood/leaves/dense_leaves', 'block/wood/leaves/sparse_leaves']
 LANG_PATH = ASSETS_PATH + 'tfc/lang/en_us.json'
 SOUNDS_PATH = ASSETS_PATH + 'tfc/sounds.json'
 

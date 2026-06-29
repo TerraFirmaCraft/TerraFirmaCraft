@@ -49,6 +49,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Season;
+import net.dries007.tfc.util.registry.RegistryWood;
 
 public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension, IFluidLoggable, ISlowEntities
 {
@@ -95,18 +96,18 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     }
 
     private final ExtendedProperties properties;
-    private final int autumnIndex;
+    private final RegistryWood wood;
     @Nullable private final Supplier<? extends Block> fallenLeaves;
     @Nullable private final Supplier<? extends Block> fallenTwig;
 
-    public TFCLeavesBlock(ExtendedProperties properties, int autumnIndex, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
+    public TFCLeavesBlock(ExtendedProperties properties, RegistryWood wood, @Nullable Supplier<? extends Block> fallenLeaves, @Nullable Supplier<? extends Block> fallenTwig)
     {
         super(properties.properties());
 
         this.properties = properties;
         this.fallenLeaves = fallenLeaves;
         this.fallenTwig = fallenTwig;
-        this.autumnIndex = autumnIndex;
+        this.wood = wood;
 
         // Distance is dependent on tree species
         registerDefaultState(stateDefinition.any().setValue(DISTANCE, 1).setValue(PERSISTENT, false));
@@ -329,7 +330,17 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
 
     public int getAutumnIndex()
     {
-        return autumnIndex;
+        return wood.autumnIndex();
+    }
+
+    public float getFlowerOffset()
+    {
+        return wood.getFlowerOffset();
+    }
+
+    public boolean isConifer()
+    {
+        return wood.isConifer();
     }
 
     private int updateDistance(LevelAccessor level, BlockPos pos)

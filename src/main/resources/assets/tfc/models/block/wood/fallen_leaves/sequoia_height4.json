@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/groundcover/fallen_leaves_height4",
   "textures": {
-    "all": "tfc:block/wood/leaves/sequoia"
+    "all": "tfc:block/wood/leaves/dense_leaves/sequoia"
   }
 }

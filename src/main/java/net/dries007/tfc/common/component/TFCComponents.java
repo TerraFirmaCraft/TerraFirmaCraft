@@ -68,6 +68,7 @@ public final class TFCComponents
     public static final Id<ItemListComponent> INGREDIENTS = register("ingredients", ItemListComponent.CODEC, ItemListComponent.STREAM_CODEC);
     public static final Id<ItemComponent> DEPOSIT = register("deposit", ItemComponent.CODEC, ItemComponent.STREAM_CODEC);
     public static final Id<ItemComponent> BAIT = register("bait", ItemComponent.CODEC, ItemComponent.STREAM_CODEC);
+    public static final Id<ItemComponent> PLANT = register("plant", ItemComponent.CODEC, ItemComponent.STREAM_CODEC);
 
     // Added only to Items.EGG, via modify event
     public static final Id<EggComponent> EGG = register("egg", EggComponent.CODEC, EggComponent.STREAM_CODEC);

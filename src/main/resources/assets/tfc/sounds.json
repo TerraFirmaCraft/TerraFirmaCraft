@@ -774,8 +774,8 @@
     "subtitle": "subtitles.entity.tfc.bluegill.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -838,8 +838,8 @@
     "subtitle": "subtitles.entity.tfc.crappie.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -902,8 +902,8 @@
     "subtitle": "subtitles.entity.tfc.largemouth_bass.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -966,8 +966,8 @@
     "subtitle": "subtitles.entity.tfc.smallmouth_bass.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1030,8 +1030,8 @@
     "subtitle": "subtitles.entity.tfc.rainbow_trout.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1094,8 +1094,8 @@
     "subtitle": "subtitles.entity.tfc.lake_trout.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1158,8 +1158,8 @@
     "subtitle": "subtitles.entity.tfc.arctic_char.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1223,8 +1223,8 @@
     "subtitle": "subtitles.entity.tfc.burbot.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1288,8 +1288,8 @@
     "subtitle": "subtitles.entity.tfc.muksun.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1353,8 +1353,8 @@
     "subtitle": "subtitles.entity.tfc.northern_pike.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1418,8 +1418,8 @@
     "subtitle": "subtitles.entity.tfc.pacu.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1483,8 +1483,8 @@
     "subtitle": "subtitles.entity.tfc.peacock_bass.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1547,8 +1547,8 @@
     "subtitle": "subtitles.entity.tfc.red_piranha.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1611,8 +1611,8 @@
     "subtitle": "subtitles.entity.tfc.spotted_gudgeon.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1675,8 +1675,8 @@
     "subtitle": "subtitles.entity.tfc.tilapia.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1740,8 +1740,8 @@
     "subtitle": "subtitles.entity.tfc.jellyfish.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },
@@ -1804,8 +1804,8 @@
     "subtitle": "subtitles.entity.tfc.manatee.ambient",
     "sounds": [
       {
-        "name": "minecraft:mob/dolphin/splash1",
-        "volume": 0.9
+        "name": "minecraft:entity.turtle.swim",
+        "type": "event"
       }
     ]
   },

@@ -376,6 +376,7 @@ public final class TFCCreativeTabs
             //out.accept(PatchouliIntegration.getFieldGuide(true));
         }
 
+        out.accept(TFCItems.BASKET);
         out.accept(TFCItems.FIRESTARTER);
         out.accept(TFCItems.FLINT_AND_PYRITE);
         out.accept(Items.FLINT_AND_STEEL);
@@ -392,6 +393,7 @@ public final class TFCCreativeTabs
         out.accept(TFCItems.SPINDLE);
         out.accept(TFCItems.COMPOST);
         out.accept(TFCItems.ROTTEN_COMPOST);
+        out.accept(TFCItems.FLOWER_CUTTING);
         out.accept(TFCItems.PURE_NITROGEN);
         out.accept(TFCItems.PURE_POTASSIUM);
         out.accept(TFCItems.PURE_PHOSPHORUS);

@@ -112,7 +112,6 @@ public class CalendarClockBlock extends DeviceBlock
                 Direction direction = state.getValue(FACING);
                 switch (state.getValue(MODE))
                 {
-                    case HOUR:
                     case MONTH:
                         final Direction oppositeDirection = direction.getOpposite();
                         final BlockState blockState1 = level.getBlockState(pos.relative(oppositeDirection));
@@ -137,7 +136,7 @@ public class CalendarClockBlock extends DeviceBlock
                     default:
                         blockState = state.setValue(MODE, Mode.MONTH);
                 }
-                level.setBlock(pos, blockState, 2);
+                level.setBlockAndUpdate(pos, blockState);
                 level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockState));
                 if (level.getBlockEntity(pos) instanceof CalendarClockBlockEntity clock)
                 {

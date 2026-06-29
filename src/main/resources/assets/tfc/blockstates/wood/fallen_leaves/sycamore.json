@@ -23,7 +23,7 @@
       "model": "tfc:block/wood/fallen_leaves/sycamore_height14"
     },
     "layers=8": {
-      "model": "tfc:block/wood/leaves/sycamore"
+      "model": "tfc:block/wood/leaves/dense_leaves/sycamore"
     }
   }
 }

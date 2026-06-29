@@ -86,6 +86,7 @@ import net.dries007.tfc.client.extensions.ItemRendererExtension;
 import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.DoubleIngotPileBlockModel;
 import net.dries007.tfc.client.model.IngotPileBlockModel;
+import net.dries007.tfc.client.model.LeavesBlockModel;
 import net.dries007.tfc.client.model.MoldTableBlockModel;
 import net.dries007.tfc.client.model.MoldsModelLoader;
 import net.dries007.tfc.client.model.PlantBlockModel;
@@ -211,6 +212,7 @@ import net.dries007.tfc.client.render.blockentity.TripHammerBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.VaneBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.WaterWheelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.WindmillBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.PowderkegBlockEntityRenderer;
 import net.dries007.tfc.client.render.entity.AnimalRenderer;
 import net.dries007.tfc.client.render.entity.DogRenderer;
 import net.dries007.tfc.client.render.entity.GlowArrowRenderer;
@@ -418,17 +420,10 @@ public final class ClientEventHandler
         // Wood blocks
         TFCBlocks.WOODS.values().forEach(map -> {
             Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE, SEWING_TABLE, SHELF, POTTED_SAPLING, ENCASED_AXLE, CLUTCH, GEAR_BOX).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
-            // todo see ItemBlockRenderTypes we need to switch the leaves properties correctly
-            Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutoutMipped));
+
         });
 
-        // todo see ItemBlockRenderTypes we need to switch the leaves properties correctly
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.TREE_ROOTS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.PINE_KRUMMHOLZ.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SPRUCE_KRUMMHOLZ.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WHITE_CEDAR_KRUMMHOLZ.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ASPEN_KRUMMHOLZ.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_PINE_KRUMMHOLZ.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_DOUGLAS_FIR_KRUMMHOLZ.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.POTTED_SPRUCE_KRUMMHOLZ.get(), cutoutMipped);
@@ -479,7 +474,6 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.CRANBERRY_BUSH.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_BERRY_BUSH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_CANE.get(), cutout);
-        TFCBlocks.FRUIT_TREE_LEAVES.values().forEach(leaves -> ItemBlockRenderTypes.setRenderLayer(leaves.get(), cutoutMipped));
         TFCBlocks.FRUIT_TREE_SAPLINGS.values().forEach(leaves -> ItemBlockRenderTypes.setRenderLayer(leaves.get(), cutout));
         TFCBlocks.FRUIT_TREE_POTTED_SAPLINGS.values().forEach(leaves -> ItemBlockRenderTypes.setRenderLayer(leaves.get(), cutout));
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BANANA_PLANT.get(), cutout);
@@ -724,6 +718,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.CHANNEL.get(), ctx -> new ChannelBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.MOLD_TABLE.get(), ctx -> new MoldBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CALENDAR_CLOCK.get(), CalendarClockBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.POWDERKEG.get(), ctx -> new PowderkegBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -866,6 +861,7 @@ public final class ClientEventHandler
         event.register(Helpers.identifier("double_ingot_pile"), DoubleIngotPileBlockModel.INSTANCE);
         event.register(Helpers.identifier("scraping"), ScrapingBlockModel.INSTANCE);
         event.register(Helpers.identifier("plant"), PlantBlockModel.Loader.INSTANCE);
+        event.register(Helpers.identifier("leaves"), LeavesBlockModel.Loader.INSTANCE);
         event.register(Helpers.identifier("mold"), new MoldsModelLoader());
         event.register(Helpers.identifier("mold_table"), MoldTableBlockModel.Loader.INSTANCE);
     }
@@ -995,8 +991,8 @@ public final class ClientEventHandler
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setGrassColors, TFCColors.GRASS_COLORS_LOCATION));
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setTallGrassColors, TFCColors.TALL_GRASS_COLORS_LOCATION));
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageColors, TFCColors.FOLIAGE_COLORS_LOCATION));
+        event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageSummerColors, TFCColors.FOLIAGE_SUMMER_COLORS_LOCATION));
         event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageFallColors, TFCColors.FOLIAGE_FALL_COLORS_LOCATION));
-        event.registerReloadListener(new ColorMapReloadListener(TFCColors::setFoliageWinterColors, TFCColors.FOLIAGE_WINTER_COLORS_LOCATION));
 
         event.registerReloadListener(new StarsReloadListener());
     }
