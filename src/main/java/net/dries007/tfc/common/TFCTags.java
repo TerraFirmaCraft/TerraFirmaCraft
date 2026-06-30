@@ -472,6 +472,8 @@ public class TFCTags
 
         // Common Tags
         public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_ingots");
+        public static final TagKey<Item> SHEETS = commonTag("sheets");
+        public static final TagKey<Item> DOUBLE_SHEETS = commonTag("double_sheets");
         public static final TagKey<Item> PLATES = commonTag("plates");
         public static final TagKey<Item> DOUBLE_PLATES = commonTag("double_plates");
         public static final TagKey<Item> DOUBLE_SHEETS_ANY_BRONZE = tag("double_sheets/any_bronze");

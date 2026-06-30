@@ -850,19 +850,17 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 final TagKey<Item> doubleSheetTag = c.apply("double_sheets/" + metalName);
 
                 metalTag(metal, Metal.ItemType.DOUBLE_INGOT, DOUBLE_INGOTS);
-                //metalTag(metal, Metal.ItemType.SHEET, PLATES); // changed to plates to match other mods usage
-                //metalTag(metal, Metal.ItemType.DOUBLE_SHEET, DOUBLE_PLATES); // changed to double plates to match other mods usage
                 metalTag(metal, Metal.ItemType.ROD, Tags.Items.RODS);
 
                 tag(c.apply("rods/all_metal"))
                     .addTag(rodTag);
                 tag(sheetTag)
                     .add(TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHEET));
-                tag(c.apply("sheets"))
+                tag(SHEETS)
                     .addTag(sheetTag);
                 tag(doubleSheetTag)
                     .add(TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.DOUBLE_SHEET));
-                tag(c.apply("double_sheets"))
+                tag(DOUBLE_SHEETS)
                     .addTag(doubleSheetTag);
             }
         }

@@ -9,6 +9,7 @@ package net.dries007.tfc.data.providers;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -27,6 +28,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
@@ -348,18 +350,30 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         // ===== Common Tags ===== //
 
+        final Function<String, TagKey<Block>> c = path -> commonTagOf(Registries.BLOCK, path);
+
         //Anvils
+
+        final TagKey<Block> anvilsTag = c.apply("anvils");
 
         TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.allParts())
             {
-                tag(commonTagOf(Registries.BLOCK, "anvils/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.ANVIL));
-                tag(commonTagOf(Registries.BLOCK, "anvils")).addTag(commonTagOf(Registries.BLOCK, "anvils/" + metal.getSerializedName()));
+                final TagKey<Block> anvilTag = c.apply("anvils/" + metal.getSerializedName());
+
+                tag(anvilTag)
+                    .add(blocks.get(Metal.BlockType.ANVIL));
+
+                tag(anvilsTag)
+                    .addTag(anvilTag);
             }
         });
 
-        tag(commonTagOf(Registries.BLOCK, "anvils/stone")).add(TFCBlocks.ROCK_ANVILS);
-        tag(commonTagOf(Registries.BLOCK, "anvils")).addTag(commonTagOf(Registries.BLOCK, "anvils/stone"));
+        tag(c.apply("anvils/stone"))
+            .add(TFCBlocks.ROCK_ANVILS);
+
+        tag(anvilsTag)
+            .addTag(c.apply("anvils/stone"));
 
         //Barrels
 
@@ -367,52 +381,69 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Bars
 
+        final TagKey<Block> barsTag = c.apply("bars");
+
         TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.allParts())
             {
-                tag(commonTagOf(Registries.BLOCK, "bars/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.BARS));
-                tag(commonTagOf(Registries.BLOCK, "bars")).addTag(commonTagOf(Registries.BLOCK, "bars/" + metal.getSerializedName()));
+                final TagKey<Block> metalBarsTag = c.apply("bars/" + metal.getSerializedName());
+
+                tag(metalBarsTag)
+                    .add(blocks.get(Metal.BlockType.BARS));
+
+                tag(barsTag)
+                    .addTag(metalBarsTag);
             }
         });
 
         //Bookshelves
 
-        tag(commonTagOf(Registries.BLOCK, "bookshelves/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.BOOKSHELF);
-        tag(commonTagOf(Registries.BLOCK, "bookshelves")).addTags(commonTagOf(Registries.BLOCK, "bookshelves/wooden"));
+        tag(c.apply("bookshelves/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.BOOKSHELF);
+
+        tag(c.apply("bookshelves"))
+            .addTag(c.apply("bookshelves/wooden"));
 
         //Bricks
 
-        tag(commonTagOf(Registries.BLOCK, "bricks/plaster"))
+        final TagKey<Block> bricksTag = c.apply("bricks");
+
+        tag(c.apply("bricks/plaster"))
             .add(TFCBlocks.ALABASTER_BRICKS)
             .addAll(TFCBlocks.ALABASTER_BRICK_DECORATIONS);
 
-        tag(commonTagOf(Registries.BLOCK, "bricks/mud"))
+        tag(c.apply("bricks/mud"))
             .add(TFCBlocks.SOIL.get(SoilBlockType.MUD_BRICKS))
             .addAll(TFCBlocks.MUD_BRICK_DECORATIONS);
 
-        TFCBlocks.ROCK_BLOCKS.forEach((rock, blockMap) -> {
-            tag(commonTagOf(Registries.BLOCK, "bricks/" + rock.getSerializedName())).add(
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.BRICKS),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_BRICKS),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.CRACKED_BRICKS),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.CHISELED),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.BRICKS).slab(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.BRICKS).stair(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.BRICKS).wall(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_BRICKS).slab(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_BRICKS).stair(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_BRICKS).wall(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.CRACKED_BRICKS).slab(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.CRACKED_BRICKS).stair(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.CRACKED_BRICKS).wall()
+        TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) -> {
+            final TagKey<Block> rockBricksTag = c.apply("bricks/" + rock.getSerializedName());
+            final Map<Rock.BlockType, DecorationBlockHolder> decorations = TFCBlocks.ROCK_DECORATIONS.get(rock);
+
+            tag(rockBricksTag).add(
+                blocks.get(Rock.BlockType.BRICKS),
+                blocks.get(Rock.BlockType.MOSSY_BRICKS),
+                blocks.get(Rock.BlockType.CRACKED_BRICKS),
+                blocks.get(Rock.BlockType.CHISELED),
+                decorations.get(Rock.BlockType.BRICKS).slab(),
+                decorations.get(Rock.BlockType.BRICKS).stair(),
+                decorations.get(Rock.BlockType.BRICKS).wall(),
+                decorations.get(Rock.BlockType.MOSSY_BRICKS).slab(),
+                decorations.get(Rock.BlockType.MOSSY_BRICKS).stair(),
+                decorations.get(Rock.BlockType.MOSSY_BRICKS).wall(),
+                decorations.get(Rock.BlockType.CRACKED_BRICKS).slab(),
+                decorations.get(Rock.BlockType.CRACKED_BRICKS).stair(),
+                decorations.get(Rock.BlockType.CRACKED_BRICKS).wall()
             );
-            tag(commonTagOf(Registries.BLOCK, "bricks")).addTag(commonTagOf(Registries.BLOCK, "bricks/" + rock.getSerializedName()));
+
+            tag(bricksTag)
+                .addTag(rockBricksTag);
         });
 
-        tag(commonTagOf(Registries.BLOCK, "bricks/chiseled"))
+        tag(c.apply("bricks/chiseled"))
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.CHISELED);
 
-        tag(commonTagOf(Registries.BLOCK, "bricks/cracked"))
+        tag(c.apply("bricks/cracked"))
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.CRACKED_BRICKS)
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.CRACKED_BRICKS)
                 .values().stream().map(DecorationBlockHolder::slab))
@@ -421,7 +452,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.CRACKED_BRICKS)
                 .values().stream().map(DecorationBlockHolder::wall));
 
-        tag(commonTagOf(Registries.BLOCK, "bricks/mossy"))
+        tag(c.apply("bricks/mossy"))
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_BRICKS)
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_BRICKS)
                 .values().stream().map(DecorationBlockHolder::slab))
@@ -430,51 +461,71 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_BRICKS)
                 .values().stream().map(DecorationBlockHolder::wall));
 
-        tag(commonTagOf(Registries.BLOCK, "bricks/mud")).add(TFCBlocks.SMOOTH_MUD_BRICKS);
+        tag(c.apply("bricks/mud"))
+            .add(TFCBlocks.SMOOTH_MUD_BRICKS);
 
-        tag(commonTagOf(Registries.BLOCK, "bricks/plaster")).add(TFCBlocks.PLAIN_ALABASTER_BRICKS);
-        tag(commonTagOf(Registries.BLOCK, "bricks/fire")).add(
+        tag(c.apply("bricks/plaster"))
+            .add(TFCBlocks.PLAIN_ALABASTER_BRICKS);
+
+        tag(c.apply("bricks/fire")).add(
             TFCBlocks.FIRE_BRICKS, TFCBlocks.REINFORCED_FIRE_BRICKS,
             TFCBlocks.FIRE_BRICK_SHELF
         );
 
-        tag(commonTagOf(Registries.BLOCK, "bricks")).addTags(
-            commonTagOf(Registries.BLOCK, "bricks/plaster"),
-            commonTagOf(Registries.BLOCK, "bricks/fire"),
-            commonTagOf(Registries.BLOCK, "bricks/mud"),
-            commonTagOf(Registries.BLOCK, "bricks/mossy"),
-            commonTagOf(Registries.BLOCK, "bricks/cracked"),
-            commonTagOf(Registries.BLOCK, "bricks/chiseled")
+        tag(bricksTag).addTags(
+            c.apply("bricks/plaster"),
+            c.apply("bricks/fire"),
+            c.apply("bricks/mud"),
+            c.apply("bricks/mossy"),
+            c.apply("bricks/cracked"),
+            c.apply("bricks/chiseled")
         );
 
         //Buttons
 
-        tag(commonTagOf(Registries.BLOCK, "buttons/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.BUTTON);
-        tag(commonTagOf(Registries.BLOCK, "buttons/stone")).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.BUTTON);
-        tag(commonTagOf(Registries.BLOCK, "buttons")).addTags(
-            commonTagOf(Registries.BLOCK, "buttons/wooden"),
-            commonTagOf(Registries.BLOCK, "buttons/stone")
+        tag(c.apply("buttons/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.BUTTON);
+        tag(c.apply("buttons/stone"))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.BUTTON);
+
+        tag(c.apply("buttons")).addTags(
+            c.apply("buttons/wooden"),
+            c.apply("buttons/stone")
         );
 
         //Candles
 
-        TFCBlocks.DYED_CANDLE.forEach((color, candle) -> {
-            final var candleCake = TFCBlocks.DYED_CANDLE_CAKES.get(color);
+        final TagKey<Block> candlesTag = c.apply("candles");
 
-            tag(commonTagOf(Registries.BLOCK, "candles/" + color.getSerializedName())).add(candleCake.key(), candle.key());
-            tag(commonTagOf(Registries.BLOCK, "candles")).addTag(commonTagOf(Registries.BLOCK, "candles/" + color.getSerializedName()));
-            tag(commonTagOf(Registries.BLOCK, "dyed/" + color.getSerializedName())).add(candleCake.key(), candle.key());
+        TFCBlocks.DYED_CANDLE.forEach((color, candle) -> {
+            final TagKey<Block> coloredCandleTag = c.apply("candles/" + color.getSerializedName());
+            final TagKey<Block> dyedTag = c.apply("dyed/" + color.getSerializedName());
+
+            tag(coloredCandleTag)
+                .add(candle.key());
+
+            tag(candlesTag)
+                .addTag(coloredCandleTag);
+
+            tag(dyedTag)
+                .add(candle.key());
         });
 
-        tag(commonTagOf(Registries.BLOCK, "candles")).add(TFCBlocks.CANDLE);
+        tag(candlesTag)
+            .add(TFCBlocks.CANDLE);
 
         //Chains
 
         TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.allParts())
             {
-                tag(commonTagOf(Registries.BLOCK, "chains/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.CHAIN));
-                tag(Tags.Blocks.CHAINS).addTag(commonTagOf(Registries.BLOCK, "chains/" + metal.getSerializedName()));
+                final TagKey<Block> chainTag = c.apply("chains/" + metal.getSerializedName());
+
+                tag(chainTag)
+                    .add(blocks.get(Metal.BlockType.CHAIN));
+
+                tag(Tags.Blocks.CHAINS)
+                    .addTag(chainTag);
             }
         });
 
@@ -483,47 +534,56 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(Tags.Blocks.CHESTS_WOODEN)
             .add(TFCBlocks.WOODS, Wood.BlockType.CHEST)
             .add(TFCBlocks.WOODS, Wood.BlockType.TRAPPED_CHEST);
-        tag(Tags.Blocks.CHESTS_TRAPPED).add(TFCBlocks.WOODS, Wood.BlockType.TRAPPED_CHEST);
+
+        tag(Tags.Blocks.CHESTS_TRAPPED)
+            .add(TFCBlocks.WOODS, Wood.BlockType.TRAPPED_CHEST);
 
         //Clays
 
-        tag(commonTagOf(Registries.BLOCK, "clays/normal"))
+        tag(c.apply("clays/normal"))
             .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY))
             .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF))
             .add(TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS));
-        tag(commonTagOf(Registries.BLOCK, "clays/kaolin")).add(
+        tag(c.apply("clays/kaolin")).add(
             TFCBlocks.PINK_KAOLIN_CLAY,
             TFCBlocks.RED_KAOLIN_CLAY,
             TFCBlocks.WHITE_KAOLIN_CLAY,
             TFCBlocks.KAOLIN_CLAY_GRASS
         );
-        tag(commonTagOf(Registries.BLOCK, "clays/fire")).add(TFCBlocks.FIRE_CLAY_BLOCK);
-        tag(commonTagOf(Registries.BLOCK, "clays/hardened")).add(TFCBlocks.HARDENED_CLAY);
+        tag(c.apply("clays/fire")).add(TFCBlocks.FIRE_CLAY_BLOCK);
+        tag(c.apply("clays/hardened")).add(TFCBlocks.HARDENED_CLAY);
 
-        tag(commonTagOf(Registries.BLOCK, "clays")).addTags(
-            commonTagOf(Registries.BLOCK, "clays/normal"),
-            commonTagOf(Registries.BLOCK, "clays/kaolin"),
-            commonTagOf(Registries.BLOCK, "clays/fire"),
-            commonTagOf(Registries.BLOCK, "clays/hardened")
+        tag(c.apply("clays")).addTags(
+            c.apply("clays/normal"),
+            c.apply("clays/kaolin"),
+            c.apply("clays/fire"),
+            c.apply("clays/hardened")
         );
 
         //Cobblestones
 
+        final TagKey<Block> cobblestonesTag = c.apply("cobblestones");
+
         TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) -> {
-            tag(commonTagOf(Registries.BLOCK, "cobblestones/" + rock.getSerializedName())).add(
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.COBBLE),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_COBBLE),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.COBBLE).slab(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.COBBLE).stair(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.COBBLE).wall(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).slab(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).stair(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.MOSSY_COBBLE).wall()
+            final TagKey<Block> rockCobblestonesTag = c.apply("cobblestones/" + rock.getSerializedName());
+            final Map<Rock.BlockType, DecorationBlockHolder> decorations = TFCBlocks.ROCK_DECORATIONS.get(rock);
+
+            tag(rockCobblestonesTag).add(
+                blocks.get(Rock.BlockType.COBBLE),
+                blocks.get(Rock.BlockType.MOSSY_COBBLE),
+                decorations.get(Rock.BlockType.COBBLE).slab(),
+                decorations.get(Rock.BlockType.COBBLE).stair(),
+                decorations.get(Rock.BlockType.COBBLE).wall(),
+                decorations.get(Rock.BlockType.MOSSY_COBBLE).slab(),
+                decorations.get(Rock.BlockType.MOSSY_COBBLE).stair(),
+                decorations.get(Rock.BlockType.MOSSY_COBBLE).wall()
             );
-            tag(commonTagOf(Registries.BLOCK, "cobblestones")).addTag(commonTagOf(Registries.BLOCK, "cobblestones/" + rock.getSerializedName()));
+
+            tag(cobblestonesTag)
+                .addTag(rockCobblestonesTag);
         });
 
-        tag(commonTagOf(Registries.BLOCK, "cobblestone/mossy"))
+        tag(c.apply("cobblestones/mossy"))
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_COBBLE)
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.MOSSY_COBBLE)
                 .values().stream().map(DecorationBlockHolder::slab))
@@ -535,22 +595,25 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         //Corals
         //c:corals, c:corals/dead, c:corals/living, c:corals/block, c:corals/fan, c:coral/plant
 
-        tag(commonTagOf(Registries.BLOCK, "corals/plant"))
+        tag(c.apply("corals/plant"))
             .add(TFCBlocks.CORAL, Coral.BlockType.CORAL)
             .add(TFCBlocks.CORAL, Coral.BlockType.DEAD_CORAL);
-        tag(commonTagOf(Registries.BLOCK, "corals/fan"))
+
+        tag(c.apply("corals/fan"))
             .add(TFCBlocks.CORAL, Coral.BlockType.CORAL_FAN)
             .add(TFCBlocks.CORAL, Coral.BlockType.DEAD_CORAL_FAN)
             .add(TFCBlocks.CORAL, Coral.BlockType.CORAL_WALL_FAN)
             .add(TFCBlocks.CORAL, Coral.BlockType.DEAD_CORAL_WALL_FAN);
-        tag(commonTagOf(Registries.BLOCK, "corals/block")).add(
+
+        tag(c.apply("corals/block")).add(
             Blocks.BRAIN_CORAL_BLOCK, Blocks.DEAD_BRAIN_CORAL_BLOCK,
             Blocks.BUBBLE_CORAL_BLOCK, Blocks.DEAD_BUBBLE_CORAL_BLOCK,
             Blocks.FIRE_CORAL_BLOCK, Blocks.DEAD_FIRE_CORAL_BLOCK,
             Blocks.HORN_CORAL_BLOCK, Blocks.DEAD_HORN_CORAL_BLOCK,
             Blocks.TUBE_CORAL_BLOCK, Blocks.DEAD_TUBE_CORAL_BLOCK
         );
-        tag(commonTagOf(Registries.BLOCK, "corals/living")).add(
+
+        tag(c.apply("corals/living")).add(
                 Blocks.BRAIN_CORAL_BLOCK,
                 Blocks.BUBBLE_CORAL_BLOCK,
                 Blocks.FIRE_CORAL_BLOCK,
@@ -559,7 +622,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.CORAL, Coral.BlockType.CORAL)
             .add(TFCBlocks.CORAL, Coral.BlockType.CORAL_FAN)
             .add(TFCBlocks.CORAL, Coral.BlockType.CORAL_WALL_FAN);
-        tag(commonTagOf(Registries.BLOCK, "corals/dead")).add(
+
+        tag(c.apply("corals/dead")).add(
                 Blocks.DEAD_BRAIN_CORAL_BLOCK,
                 Blocks.DEAD_BUBBLE_CORAL_BLOCK,
                 Blocks.DEAD_FIRE_CORAL_BLOCK,
@@ -568,69 +632,107 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.CORAL, Coral.BlockType.DEAD_CORAL)
             .add(TFCBlocks.CORAL, Coral.BlockType.DEAD_CORAL_FAN)
             .add(TFCBlocks.CORAL, Coral.BlockType.DEAD_CORAL_WALL_FAN);
-        tag(commonTagOf(Registries.BLOCK, "corals")).addTags(
-            commonTagOf(Registries.BLOCK, "corals/plant"),
-            commonTagOf(Registries.BLOCK, "corals/fan"),
-            commonTagOf(Registries.BLOCK, "corals/block"),
-            commonTagOf(Registries.BLOCK, "corals/living"),
-            commonTagOf(Registries.BLOCK, "corals/dead")
+
+        tag(c.apply("corals")).addTags(
+            c.apply("corals/plant"),
+            c.apply("corals/fan"),
+            c.apply("corals/block"),
+            c.apply("corals/living"),
+            c.apply("corals/dead")
         );
+
+        //Crates
+
+        tag(c.apply("crates/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.CRATE);
+
+        tag(c.apply("crates"))
+            .addTag(c.apply("crates/wooden"));
 
         //Crops
 
+        final TagKey<Block> cropsTag = c.apply("crops");
+
         TFCBlocks.CROPS.forEach((crop, cropBlock) -> {
-            tag(commonTagOf(Registries.BLOCK, "crops/" + crop.getSerializedName()))
-                .add(cropBlock.key(), TFCBlocks.DEAD_CROPS.get(crop).key(), TFCBlocks.WILD_CROPS.get(crop).key());
-            tag(commonTagOf(Registries.BLOCK, "crops"))
-                .addTag(commonTagOf(Registries.BLOCK, "crops/" + crop.getSerializedName()));
+            final TagKey<Block> cropTag = c.apply("crops/" + crop.getSerializedName());
+
+            tag(cropTag)
+                .add(
+                    cropBlock,
+                    TFCBlocks.DEAD_CROPS.get(crop),
+                    TFCBlocks.WILD_CROPS.get(crop)
+                );
+
+            tag(cropsTag)
+                .addTag(cropTag);
         });
-        tag(commonTagOf(Registries.BLOCK, "crops/corn"))
-            .add(TFCBlocks.CROPS.get(Crop.MAIZE).key(), TFCBlocks.DEAD_CROPS.get(Crop.MAIZE).key(), TFCBlocks.WILD_CROPS.get(Crop.MAIZE).key());
-        tag(commonTagOf(Registries.BLOCK, "crops"))
-            .addTag(commonTagOf(Registries.BLOCK, "crops/corn"));
-        tag(commonTagOf(Registries.BLOCK, "crops/beetroot"))
-            .add(TFCBlocks.CROPS.get(Crop.BEET).key(), TFCBlocks.DEAD_CROPS.get(Crop.BEET).key(), TFCBlocks.WILD_CROPS.get(Crop.BEET).key());
-        tag(commonTagOf(Registries.BLOCK, "crops"))
-            .addTag(commonTagOf(Registries.BLOCK, "crops/beetroot"));
-        tag(commonTagOf(Registries.BLOCK, "crops/pumpkin")).add(TFCBlocks.PUMPKIN);
-        tag(commonTagOf(Registries.BLOCK, "crops/melon")).add(TFCBlocks.MELON);
+
+        tag(c.apply("crops/corn"))
+            .addTag(c.apply("crops/" + Crop.MAIZE.getSerializedName()));
+
+        tag(c.apply("crops/beetroot"))
+            .addTag(c.apply("crops/" + Crop.BEET.getSerializedName()));
+
+        tag(c.apply("crops/pumpkin"))
+            .add(TFCBlocks.PUMPKIN);
+
+        tag(c.apply("crops/melon"))
+            .add(TFCBlocks.MELON);
+
+        tag(cropsTag).addTags(
+            c.apply("crops/corn"),
+            c.apply("crops/beetroot"),
+            c.apply("crops/pumpkin"),
+            c.apply("crops/melon")
+        );
 
         //Doors
 
-        tag(commonTagOf(Registries.BLOCK, "doors/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.DOOR);
-        tag(commonTagOf(Registries.BLOCK, "doors/iron"))
+        tag(c.apply("doors/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.DOOR);
+        tag(c.apply("doors/iron"))
             .add(Blocks.IRON_DOOR)
             .add(TFCBlocks.FIREPROOF_DOOR);
-        tag(commonTagOf(Registries.BLOCK, "doors")).addTags(
-            commonTagOf(Registries.BLOCK, "doors/wooden"),
-            commonTagOf(Registries.BLOCK, "doors/iron")
+        tag(c.apply("doors")).addTags(
+            c.apply("doors/wooden"),
+            c.apply("doors/iron")
         );
 
         //Dyed
         //c:dyed, c:dyed/COLOR
 
+        final TagKey<Block> dyedTag = c.apply("dyed");
+
         TFCBlocks.RAW_ALABASTER.forEach((color, rawAlabaster) -> {
+            final TagKey<Block> colorDyedTag = c.apply("dyed/" + color.getSerializedName());
+
             final DecorationBlockHolder brickDecorations = TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color);
             final DecorationBlockHolder polishedDecorations = TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color);
 
-            tag(commonTagOf(Registries.BLOCK, "dyed/" + color.getSerializedName())).add(
-                brickDecorations.slab().key(), brickDecorations.stair().key(), brickDecorations.wall().key(),
-                TFCBlocks.POLISHED_ALABASTER.get(color).key(),
-                polishedDecorations.slab().key(), polishedDecorations.stair().key(), polishedDecorations.wall().key(),
-                rawAlabaster.key(),
-                TFCBlocks.GLAZED_LARGE_VESSELS.get(color).key(), TFCBlocks.DYED_CANDLE_CAKES.get(color).key(),
+            tag(colorDyedTag).add(
+                brickDecorations.slab().key(),         brickDecorations.stair().key(),
+                brickDecorations.wall().key(),         TFCBlocks.POLISHED_ALABASTER.get(color).key(),
+                polishedDecorations.slab().key(),      polishedDecorations.stair().key(),
+                polishedDecorations.wall().key(),      rawAlabaster.key(),
+                TFCBlocks.DYED_CANDLE_CAKES.get(color).key(),
+                TFCBlocks.GLAZED_LARGE_VESSELS.get(color).key(),
                 TFCBlocks.STAINED_WATTLE.get(color).key()
             );
+
+            tag(dyedTag)
+                .addTag(colorDyedTag);
         });
 
         //Fences
-        tag(Tags.Blocks.FENCES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.FENCE);
-        tag(Tags.Blocks.FENCE_GATES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
-        tag(Tags.Blocks.FENCES_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.LOG_FENCE);
+
+        tag(Tags.Blocks.FENCES_WOODEN)
+            .add(TFCBlocks.WOODS, Wood.BlockType.FENCE)
+            .add(TFCBlocks.WOODS, Wood.BlockType.LOG_FENCE);
+        tag(Tags.Blocks.FENCE_GATES_WOODEN)
+            .add(TFCBlocks.WOODS, Wood.BlockType.FENCE_GATE);
 
         //Flowers
 
-        tag(commonTagOf(Registries.BLOCK, "flowers/tall")).add(
+        tag(c.apply("flowers/tall")).add(
             TFCBlocks.PLANTS.get(Plant.AZALEA), TFCBlocks.PLANTS.get(Plant.BEAR_GRASS), TFCBlocks.PLANTS.get(Plant.CANNA),
             TFCBlocks.PLANTS.get(Plant.FOXGLOVE), TFCBlocks.PLANTS.get(Plant.LILAC), TFCBlocks.PLANTS.get(Plant.MOUNTAIN_HULLWORT),
             TFCBlocks.PLANTS.get(Plant.PALASH), TFCBlocks.PLANTS.get(Plant.ROSE), TFCBlocks.PLANTS.get(Plant.SAPPHIRE_TOWER),
@@ -638,7 +740,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.WATER_CANNA)
         );
 
-        tag(commonTagOf(Registries.BLOCK, "flowers/small")).add(
+        tag(c.apply("flowers/small")).add(
             TFCBlocks.PLANTS.get(Plant.ALLIUM), TFCBlocks.PLANTS.get(Plant.ANTHURIUM), TFCBlocks.PLANTS.get(Plant.BLACK_ORCHID),
             TFCBlocks.PLANTS.get(Plant.BLOOD_LILY), TFCBlocks.PLANTS.get(Plant.BLUE_GINGER), TFCBlocks.PLANTS.get(Plant.BLUE_ORCHID),
             TFCBlocks.PLANTS.get(Plant.BUTTERCUP), TFCBlocks.PLANTS.get(Plant.BUTTERFLY_MILKWEED), TFCBlocks.PLANTS.get(Plant.CALENDULA),
@@ -659,77 +761,109 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.YELLOW_SAXIFRAGE), TFCBlocks.PLANTS.get(Plant.YELLOW_WATER_LILY), TFCBlocks.PLANTS.get(Plant.YUCCA)
         );
 
-        tag(commonTagOf(Registries.BLOCK, "flowers")).addTags(
-            commonTagOf(Registries.BLOCK, "flowers/tall"),
-            commonTagOf(Registries.BLOCK, "flowers/small")
+        tag(c.apply("flowers")).addTags(
+            c.apply("flowers/tall"),
+            c.apply("flowers/small")
         );
 
         //Foods
 
-        tag(commonTagOf(Registries.BLOCK, "foods/cake")).add(TFCBlocks.CAKE).add(TFCBlocks.DYED_CANDLE_CAKES);
-        tag(commonTagOf(Registries.BLOCK, "foods/edible_when_placed")).add(TFCBlocks.CAKE).add(TFCBlocks.DYED_CANDLE_CAKES);
-        tag(commonTagOf(Registries.BLOCK, "cake")).add(TFCBlocks.CAKE).add(TFCBlocks.DYED_CANDLE_CAKES);
-        tag(commonTagOf(Registries.BLOCK, "foods")).addTags(
-            commonTagOf(Registries.BLOCK, "foods/cake"),
-            commonTagOf(Registries.BLOCK, "foods/edible_when_placed")
+        tag(c.apply("foods/cake"))
+            .add(TFCBlocks.CAKE)
+            .add(TFCBlocks.DYED_CANDLE_CAKES);
+        tag(c.apply("foods/edible_when_placed"))
+            .add(TFCBlocks.CAKE)
+            .add(TFCBlocks.DYED_CANDLE_CAKES);
+        tag(c.apply("cake"))
+            .add(TFCBlocks.CAKE)
+            .add(TFCBlocks.DYED_CANDLE_CAKES);
+        tag(c.apply("foods")).addTags(
+            c.apply("foods/cake"),
+            c.apply("foods/edible_when_placed")
         );
 
         //Grates
 
+        final TagKey<Block> gratesTag = c.apply("grates");
+
         TFCBlocks.METALS.forEach((metal, blocks) -> {
             if (metal.allParts())
             {
-                tag(commonTagOf(Registries.BLOCK, "grates/" + metal.getSerializedName())).add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.GRATE));
-                tag(commonTagOf(Registries.BLOCK, "grates")).addTag(commonTagOf(Registries.BLOCK, "grates/" + metal.getSerializedName()));
-            }
-            if(metal.allParts() && metal.weatheredParts())
-            {
-                tag(commonTagOf(Registries.BLOCK, "grates/" + metal.getSerializedName()))
-                    .add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.EXPOSED_GRATE))
-                    .add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.OXIDIZED_GRATE))
-                    .add(TFCBlocks.METALS.get(metal).get(Metal.BlockType.WEATHERED_GRATE));
+                final TagKey<Block> metalGratesTag = c.apply("grates/" + metal.getSerializedName());
+
+                tag(metalGratesTag)
+                    .add(blocks.get(Metal.BlockType.GRATE));
+
+                if (metal.weatheredParts())
+                {
+                    tag(metalGratesTag)
+                        .add(blocks.get(Metal.BlockType.EXPOSED_GRATE))
+                        .add(blocks.get(Metal.BlockType.OXIDIZED_GRATE))
+                        .add(blocks.get(Metal.BlockType.WEATHERED_GRATE));
+                }
             }
         });
 
-        tag(commonTagOf(Registries.BLOCK, "grates/normal")).add(TFCBlocks.METALS, Metal.BlockType.GRATE);
-        tag(commonTagOf(Registries.BLOCK, "grates/exposed")).add(TFCBlocks.METALS, Metal.BlockType.EXPOSED_GRATE);
-        tag(commonTagOf(Registries.BLOCK, "grates/oxidized")).add(TFCBlocks.METALS, Metal.BlockType.OXIDIZED_GRATE);
-        tag(commonTagOf(Registries.BLOCK, "grates/weathered")).add(TFCBlocks.METALS, Metal.BlockType.WEATHERED_GRATE);
+        tag(c.apply("grates/normal"))
+            .add(TFCBlocks.METALS, Metal.BlockType.GRATE);
 
-        tag(commonTagOf(Registries.BLOCK, "grates")).addTags(
-            commonTagOf(Registries.BLOCK, "grates/normal"),
-            commonTagOf(Registries.BLOCK, "grates/exposed"),
-            commonTagOf(Registries.BLOCK, "grates/oxidized"),
-            commonTagOf(Registries.BLOCK, "grates/weathered")
-            );
+        tag(c.apply("grates/exposed"))
+            .add(TFCBlocks.METALS, Metal.BlockType.EXPOSED_GRATE);
+
+        tag(c.apply("grates/oxidized"))
+            .add(TFCBlocks.METALS, Metal.BlockType.OXIDIZED_GRATE);
+
+        tag(c.apply("grates/weathered"))
+            .add(TFCBlocks.METALS, Metal.BlockType.WEATHERED_GRATE);
+
+        tag(gratesTag).addTags(
+            c.apply("grates/normal"),
+            c.apply("grates/exposed"),
+            c.apply("grates/oxidized"),
+            c.apply("grates/weathered")
+        );
 
         //Gravels
 
+        final TagKey<Block> gravelsTag = c.apply("gravels");
+
         TFCBlocks.ROCK_BLOCKS.forEach((rock, blocks) -> {
-            tag(commonTagOf(Registries.BLOCK, "gravels/" + rock.getSerializedName())).add(TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.GRAVEL));
-            tag(commonTagOf(Registries.BLOCK, "gravels")).addTag(commonTagOf(Registries.BLOCK, "gravels/" + rock.getSerializedName()));
+            final TagKey<Block> rockGravelTag = c.apply("gravels/" + rock.getSerializedName());
+
+            tag(rockGravelTag)
+                .add(blocks.get(Rock.BlockType.GRAVEL));
+
+            tag(gravelsTag)
+                .addTag(rockGravelTag);
         });
 
         //Icicle
 
-        tag(commonTagOf(Registries.BLOCK, "icicle")).add(TFCBlocks.ICICLE);
+        tag(c.apply("icicle"))
+            .add(TFCBlocks.ICICLE);
 
         //Item Piles
         //c:item_piles, c:item_piles/TYPE
 
-        tag(commonTagOf(Registries.BLOCK, "item_piles/log")).add(TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE);
-        tag(commonTagOf(Registries.BLOCK, "item_piles/double_ingot")).add(TFCBlocks.DOUBLE_INGOT_PILE);
-        tag(commonTagOf(Registries.BLOCK, "item_piles/ingot")).add(TFCBlocks.INGOT_PILE);
+        tag(c.apply("item_piles/double_ingot"))
+            .add(TFCBlocks.DOUBLE_INGOT_PILE);
 
-        tag(commonTagOf(Registries.BLOCK, "item_piles")).addTags(
-            commonTagOf(Registries.BLOCK, "item_piles/log"),
-            commonTagOf(Registries.BLOCK, "item_piles/double_ingot"),
-            commonTagOf(Registries.BLOCK, "item_piles/ingot")
+        tag(c.apply("item_piles/ingot"))
+            .add(TFCBlocks.INGOT_PILE);
+
+        tag(c.apply("item_piles/log"))
+            .add(TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE);
+
+        tag(c.apply("item_piles")).addTags(
+            c.apply("item_piles/double_ingot"),
+            c.apply("item_piles/ingot"),
+            c.apply("item_piles/log")
         );
 
         //Magma
 
-        tag(commonTagOf(Registries.BLOCK, "magma")).add(TFCBlocks.MAGMA_BLOCKS);
+        tag(c.apply("magma"))
+            .add(TFCBlocks.MAGMA_BLOCKS);
 
         // Ores
         // We don't include "ore_bearing_ground/???" tags, because they are specific to stone (or known vanilla stones) only
@@ -739,7 +873,10 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         // For graded ores, we add ores/<metal>/grade, and include all grades in the main ore tag
         //c:ores c:ores/METAL, c:ores_in_ground/ROCK, c:ore_rates/RATE, c:ores/METAL/GRADE
 
+        final TagKey<Block> oresInGroundTag = c.apply("ores_in_ground");
+
         //Deposits
+
         for (OreDeposit dep : OreDeposit.values())
         {
             final String metalName = dep == OreDeposit.CASSITERITE ? "tin"
@@ -747,121 +884,211 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 : dep == OreDeposit.NATIVE_GOLD ? "gold"
                 : dep == OreDeposit.NATIVE_SILVER ? "silver"
                 : dep.name().toLowerCase(Locale.ROOT);
+
+            final TagKey<Block> metalOreTag = c.apply("ores/" + metalName);
+            final TagKey<Block> smallMetalOreTag = c.apply("ores/" + metalName + "/small");
+
             for (Rock rock : Rock.values())
             {
-                tag(commonTagOf(Registries.BLOCK, "ores_in_ground/gravel")).add(TFCBlocks.ORE_DEPOSITS.get(rock).get(dep));
-                tag(commonTagOf(Registries.BLOCK, "ore_rates/sparse")).add(TFCBlocks.ORE_DEPOSITS.get(rock).get(dep));
-                tag(commonTagOf(Registries.BLOCK, "ores/" + metalName + "/small")).add(TFCBlocks.ORE_DEPOSITS.get(rock).get(dep));
+                final var deposit = TFCBlocks.ORE_DEPOSITS.get(rock).get(dep);
+
+                tag(c.apply("ores_in_ground/gravel"))
+                    .add(deposit);
+
+                tag(Tags.Blocks.ORE_RATES_SPARSE)
+                    .add(deposit);
+
+                tag(smallMetalOreTag)
+                    .add(deposit);
             }
-            tag(commonTagOf(Registries.BLOCK, "ores/" + metalName)).addTag(commonTagOf(Registries.BLOCK, "ores/" + metalName + "/small"));
-            tag(commonTagOf(Registries.BLOCK, "ores")).addTag(commonTagOf(Registries.BLOCK, "ores/" + metalName));
+            tag(metalOreTag)
+                .addTag(smallMetalOreTag);
+
+            tag(Tags.Blocks.ORES)
+                .addTag(metalOreTag);
         }
-        tag(commonTagOf(Registries.BLOCK, "ores_in_ground")).addTag(commonTagOf(Registries.BLOCK, "ores_in_ground/gravel"));
+        tag(oresInGroundTag)
+            .addTag(c.apply("ores_in_ground/gravel"));
 
         //Regular Ores
         for (Rock rock : Rock.values())
         {
+            final TagKey<Block> oresInRockTag = c.apply("ores_in_ground/" + rock.getSerializedName());
+
             for (Ore ore : Ore.values())
             {
                 if (ore.isGraded())
                 {
                     final String metalName = ore.metal() == Metal.CAST_IRON ? "iron" : ore.metal().getSerializedName();
+                    final TagKey<Block> metalOreTag = c.apply("ores/" + metalName);
+
                     for (Ore.Grade grade : Ore.Grade.values())
                     {
-                        tag(commonTagOf(Registries.BLOCK, "ores/" + metalName + "/" + grade.name().toLowerCase(Locale.ROOT))).add(TFCBlocks.GRADED_ORES.get(rock).get(ore).get(grade));
-                        tag(commonTagOf(Registries.BLOCK, "ore_rates/singular")).add(TFCBlocks.GRADED_ORES.get(rock).get(ore).get(grade));
-                        tag(commonTagOf(Registries.BLOCK, "ores_in_ground/" + rock.getSerializedName())).add(TFCBlocks.GRADED_ORES.get(rock).get(ore).get(grade));
-                        tag(commonTagOf(Registries.BLOCK, "ores/" + metalName)).addTag(commonTagOf(Registries.BLOCK, "ores/" + metalName + "/" + grade.name().toLowerCase(Locale.ROOT)));
+                        final String gradeName = grade.name().toLowerCase(Locale.ROOT);
+                        final TagKey<Block> gradedOreTag = c.apply("ores/" + metalName + "/" + gradeName);
+                        final var oreBlock = TFCBlocks.GRADED_ORES.get(rock).get(ore).get(grade);
+
+                        tag(gradedOreTag)
+                            .add(oreBlock);
+
+                        tag(Tags.Blocks.ORE_RATES_SINGULAR)
+                            .add(oreBlock);
+
+                        tag(oresInRockTag)
+                            .add(oreBlock);
+
+                        tag(metalOreTag)
+                            .addTag(gradedOreTag);
                     }
-                    tag(commonTagOf(Registries.BLOCK, "ores")).addTag(commonTagOf(Registries.BLOCK, "ores/" + metalName));
+
+                    tag(Tags.Blocks.ORES)
+                        .addTag(metalOreTag);
                 }
                 else if (ore.hasBlock())
                 {
-                    tag(commonTagOf(Registries.BLOCK, "ores/" + ore.name().toLowerCase(Locale.ROOT))).add(TFCBlocks.ORES.get(rock).get(ore));
-                    tag(commonTagOf(Registries.BLOCK, "ore_rates/singular")).add(TFCBlocks.ORES.get(rock).get(ore));
-                    tag(commonTagOf(Registries.BLOCK, "ores_in_ground/" + rock.getSerializedName())).add(TFCBlocks.ORES.get(rock).get(ore));
-                    tag(commonTagOf(Registries.BLOCK, "ores")).addTag(commonTagOf(Registries.BLOCK, "ores/" + ore.name().toLowerCase(Locale.ROOT)));
+                    final String oreName = ore.name().toLowerCase(Locale.ROOT);
+                    final TagKey<Block> oreTag = c.apply("ores/" + oreName);
+                    final var oreBlock = TFCBlocks.ORES.get(rock).get(ore);
+
+                    tag(oreTag)
+                        .add(oreBlock);
+
+                    tag(Tags.Blocks.ORE_RATES_SINGULAR)
+                        .add(oreBlock);
+
+                    tag(oresInRockTag)
+                        .add(oreBlock);
+
+                    tag(Tags.Blocks.ORES)
+                        .addTag(oreTag);
                 }
             }
-            tag(commonTagOf(Registries.BLOCK, "ores_in_ground")).addTag(commonTagOf(Registries.BLOCK, "ores_in_ground/" + rock.getSerializedName()));
+
+            tag(oresInGroundTag)
+                .addTag(oresInRockTag);
         }
 
+        //Small Ores
         for (var entry : TFCBlocks.SMALL_ORES.entrySet())
         {
-            Ore ore = entry.getKey();
-            Metal metal = ore.metal();
+            final Ore ore = entry.getKey();
+            final var smallOre = entry.getValue();
+
+            final Metal metal = ore.metal();
             final String metalName = metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
-            tag(commonTagOf(Registries.BLOCK, "ores/" + metalName + "/small")).add(TFCBlocks.SMALL_ORES.get(ore));
-            tag(Tags.Blocks.ORE_RATES_SINGULAR).add(TFCBlocks.SMALL_ORES.get(ore));
-            tag(commonTagOf(Registries.BLOCK, "ores/" + metalName)).addTag(commonTagOf(Registries.BLOCK, "ores/" + metalName + "/small"));
+
+            final TagKey<Block> smallOreTag = c.apply("ores/" + metalName + "/small");
+            final TagKey<Block> metalOreTag = c.apply("ores/" + metalName);
+
+            tag(smallOreTag)
+                .add(smallOre);
+
+            tag(Tags.Blocks.ORE_RATES_SINGULAR)
+                .add(smallOre);
+
+            tag(metalOreTag)
+                .addTag(smallOreTag);
         }
 
         //No Block
-
-        tag(commonTagOf(Registries.BLOCK, "ores/salt")).add(
+        tag(c.apply("ores/salt")).add(
             TFCBlocks.HALITE,
             TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.SALT_LICK)
         );
-        tag(commonTagOf(Registries.BLOCK, "ores/coal")).add(
+        tag(c.apply("ores/coal")).add(
             TFCBlocks.LIGNITE,
             TFCBlocks.BITUMINOUS_COAL
         );
-        tag(commonTagOf(Registries.BLOCK, "ores/flint")).add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.FLINT));
+        tag(c.apply("ores/flint"))
+            .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.FLINT))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
+
         tag(Tags.Blocks.ORE_RATES_SINGULAR).add(
             TFCBlocks.LIGNITE,
             TFCBlocks.BITUMINOUS_COAL,
-            TFCBlocks.HALITE
+            TFCBlocks.HALITE,
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.FLINT)
         );
 
+        tag(Tags.Blocks.ORE_RATES_DENSE).add(
+            TFCBlocks.HALITE, TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.SALT_LICK)
+        );
 
-        tag(commonTagOf(Registries.BLOCK, "ores")).addTags(
-            commonTagOf(Registries.BLOCK, "ores/salt"),
-            commonTagOf(Registries.BLOCK, "ores/coal")
+        tag(Tags.Blocks.ORE_RATES_SPARSE)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
+
+        tag(c.apply("ores")).addTags(
+            c.apply("ores/salt"),
+            c.apply("ores/coal"),
+            c.apply(("ores/flint"))
         );
 
         //Lamps
 
+        final TagKey<Block> lampsTag = c.apply("lamps");
+
         TFCBlocks.METALS.forEach((metal, blocks) -> {
-            if(metal.allParts())
+            if (metal.allParts())
             {
-                tag(commonTagOf(Registries.BLOCK, "lamps/" + metal.getSerializedName())).add(blocks.get(Metal.BlockType.LAMP));
-                tag(commonTagOf(Registries.BLOCK, "lamps")).addTag(commonTagOf(Registries.BLOCK, "lamps/" + metal.getSerializedName()));
+                final TagKey<Block> metalLampTag = c.apply("lamps/" + metal.getSerializedName());
+
+                tag(metalLampTag)
+                    .add(blocks.get(Metal.BlockType.LAMP));
+
+                tag(lampsTag)
+                    .addTag(metalLampTag);
             }
         });
 
         //Leaves
         //c:leaves
 
-        tag(commonTagOf(Registries.BLOCK, "leaves")).add(TFCBlocks.WOODS, Wood.BlockType.LEAVES);
+        tag(c.apply("leaves"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.LEAVES)
+            .add(TFCBlocks.WOODS, Wood.BlockType.FALLEN_LEAVES);
 
         //Logs
         //c:logs, c:logs/WOOD
 
+        final TagKey<Block> logsTag = c.apply("logs");
+
         TFCBlocks.WOODS.forEach((wood, blocks) -> {
-            tag(commonTagOf(Registries.BLOCK, "logs/" + wood.getSerializedName())).add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.LOG));
-            tag(commonTagOf(Registries.BLOCK, "logs")).addTags(commonTagOf(Registries.BLOCK, "logs/" + wood.getSerializedName()));
+            final TagKey<Block> woodLogsTag = c.apply("logs/" + wood.getSerializedName());
+
+            tag(woodLogsTag)
+                .add(blocks.get(Wood.BlockType.LOG));
+
+            tag(logsTag)
+                .addTag(woodLogsTag);
         });
 
         //Peat
 
-        tag(commonTagOf(Registries.BLOCK, "peat")).add(TFCBlocks.PEAT, TFCBlocks.PEAT_GRASS);
+        tag(c.apply("peat"))
+            .add(TFCBlocks.PEAT, TFCBlocks.PEAT_GRASS);
 
         //Planks
         //c:planks, c:planks/WOOD
 
+        final TagKey<Block> planksTag = c.apply("planks");
+
         TFCBlocks.WOODS.forEach((wood, blocks) -> {
-            tag(commonTagOf(Registries.BLOCK, "planks/" + wood.getSerializedName())).add(
+            final TagKey<Block> woodPlanksTag = c.apply("planks/" + wood.getSerializedName());
+
+            tag(woodPlanksTag).add(
                 blocks.get(Wood.BlockType.PLANKS),
                 blocks.get(Wood.BlockType.SLAB),
                 blocks.get(Wood.BlockType.STAIRS)
             );
-            tag(commonTagOf(Registries.BLOCK, "planks")).addTag(commonTagOf(Registries.BLOCK, "planks/" + wood.getSerializedName()));
+
+            tag(planksTag)
+                .addTag(woodPlanksTag);
         });
 
         //Plants
         //c:plants, c:plants/tall, c:plants/small, c:plants/water, c:plants/salt_water, c:plants/ground, c:plants/wall
 
-        tag(commonTagOf(Registries.BLOCK, "plants/tall")).add(
+        tag(c.apply("plants/tall")).add(
             TFCBlocks.PLANTS.get(Plant.AZALEA), TFCBlocks.PLANTS.get(Plant.BEAR_GRASS), TFCBlocks.PLANTS.get(Plant.CANNA),
             TFCBlocks.PLANTS.get(Plant.FOXGLOVE), TFCBlocks.PLANTS.get(Plant.LILAC), TFCBlocks.PLANTS.get(Plant.MOUNTAIN_HULLWORT),
             TFCBlocks.PLANTS.get(Plant.PALASH), TFCBlocks.PLANTS.get(Plant.ROSE), TFCBlocks.PLANTS.get(Plant.SAPPHIRE_TOWER),
@@ -869,7 +1096,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.WATER_CANNA)
         );
 
-        tag(commonTagOf(Registries.BLOCK, "plants/small")).add(
+        tag(c.apply("plants/small")).add(
             TFCBlocks.PLANTS.get(Plant.ALLIUM), TFCBlocks.PLANTS.get(Plant.ANTHURIUM), TFCBlocks.PLANTS.get(Plant.BLACK_ORCHID),
             TFCBlocks.PLANTS.get(Plant.BLOOD_LILY), TFCBlocks.PLANTS.get(Plant.BLUE_GINGER), TFCBlocks.PLANTS.get(Plant.BLUE_ORCHID),
             TFCBlocks.PLANTS.get(Plant.BUTTERCUP), TFCBlocks.PLANTS.get(Plant.BUTTERFLY_MILKWEED), TFCBlocks.PLANTS.get(Plant.CALENDULA),
@@ -890,73 +1117,118 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.YELLOW_SAXIFRAGE), TFCBlocks.PLANTS.get(Plant.YELLOW_WATER_LILY), TFCBlocks.PLANTS.get(Plant.YUCCA)
         );
 
-        tag(commonTagOf(Registries.BLOCK, "plants/water")).add(
+        tag(c.apply("plants/water")).add(
             TFCBlocks.PLANTS.get(Plant.ARROWHEAD)
         );
 
-        tag(commonTagOf(Registries.BLOCK, "plants")).addTags(
-            commonTagOf(Registries.BLOCK, "plants/tall"),
-            commonTagOf(Registries.BLOCK, "plants/small"),
-            commonTagOf(Registries.BLOCK, "plants/water"),
-            commonTagOf(Registries.BLOCK, "plants/salt_water"),
-            commonTagOf(Registries.BLOCK, "plants/hanging"),
-            commonTagOf(Registries.BLOCK, "plants/ground")
+        tag(c.apply("plants")).addTags(
+            c.apply("plants/tall"),
+            c.apply("plants/small"),
+            c.apply("plants/water"),
+            c.apply("plants/salt_water"),
+            c.apply("plants/hanging"),
+            c.apply("plants/ground")
         );
 
         //Player Workstations
         //c:player_workstations, c:player_workstations/WORK_STATION
 
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/anvil"))
+        final TagKey<Block> playerWorkstationsTag = c.apply("player_workstations");
+
+        tag(c.apply("player_workstations/anvil"))
             .add(TFCBlocks.METALS, Metal.BlockType.ANVIL)
             .add(TFCBlocks.ROCK_ANVILS);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/blast_furnace")).add(TFCBlocks.BLAST_FURNACE);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/bloomery")).add(TFCBlocks.BLOOMERY);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/composter")).add(TFCBlocks.COMPOSTER);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/crucible")).add(TFCBlocks.CRUCIBLE);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/charcoal_forge")).add(TFCBlocks.CHARCOAL_FORGE);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/firebox")).add(TFCBlocks.FIREBOX);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/firepit")).add(TFCBlocks.FIREPIT);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/pit_kiln")).add(TFCBlocks.PIT_KILN);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/grill")).add(TFCBlocks.GRILL);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/mold_table")).add(TFCBlocks.MOLD_TABLE);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/nest_box")).add(TFCBlocks.NEST_BOX);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/quern")).add(TFCBlocks.QUERN);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/lectern")).add(TFCBlocks.WOODS, Wood.BlockType.LECTERN);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/loom")).add(TFCBlocks.WOODS, Wood.BlockType.LOOM);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/scraping")).add(TFCBlocks.SCRAPING);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/scribing_table")).add(TFCBlocks.WOODS, Wood.BlockType.SCRIBING_TABLE);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/sewing_table")).add(TFCBlocks.WOODS, Wood.BlockType.SEWING_TABLE);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations/stove")).add(TFCBlocks.STOVE, TFCBlocks.STOVE_POT);
-        tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
-        tag(commonTagOf(Registries.BLOCK, "player_workstations")).addTags(
-            commonTagOf(Registries.BLOCK, "player_workstations/anvil"),
-            commonTagOf(Registries.BLOCK, "player_workstations/blast_furnace"),
-            commonTagOf(Registries.BLOCK, "player_workstations/bloomery"),
-            commonTagOf(Registries.BLOCK, "player_workstations/composter"),
-            commonTagOf(Registries.BLOCK, "player_workstations/charcoal_forge"),
-            commonTagOf(Registries.BLOCK, "player_workstations/crucible"),
-            commonTagOf(Registries.BLOCK, "player_workstations/firebox"),
-            commonTagOf(Registries.BLOCK, "player_workstations/firepit"),
-            commonTagOf(Registries.BLOCK, "player_workstations/grill"),
-            commonTagOf(Registries.BLOCK, "player_workstations/mold_table"),
-            commonTagOf(Registries.BLOCK, "player_workstations/nest_box"),
-            commonTagOf(Registries.BLOCK, "player_workstations/quern"),
-            commonTagOf(Registries.BLOCK, "player_workstations/lectern"),
-            commonTagOf(Registries.BLOCK, "player_workstations/loom"),
-            commonTagOf(Registries.BLOCK, "player_workstations/scraping"),
-            commonTagOf(Registries.BLOCK, "player_workstations/scribing_table"),
-            commonTagOf(Registries.BLOCK, "player_workstations/sewing_table"),
-            commonTagOf(Registries.BLOCK, "player_workstations/stove")
+
+        tag(c.apply("player_workstations/blast_furnace"))
+            .add(TFCBlocks.BLAST_FURNACE);
+
+        tag(c.apply("player_workstations/bloomery"))
+            .add(TFCBlocks.BLOOMERY);
+
+        tag(c.apply("player_workstations/charcoal_forge"))
+            .add(TFCBlocks.CHARCOAL_FORGE);
+
+        tag(c.apply("player_workstations/composter"))
+            .add(TFCBlocks.COMPOSTER);
+
+        tag(c.apply("player_workstations/crucible"))
+            .add(TFCBlocks.CRUCIBLE);
+
+        tag(c.apply("player_workstations/firebox"))
+            .add(TFCBlocks.FIREBOX);
+
+        tag(c.apply("player_workstations/firepit"))
+            .add(TFCBlocks.FIREPIT);
+
+        tag(c.apply("player_workstations/grill"))
+            .add(TFCBlocks.GRILL);
+
+        tag(c.apply("player_workstations/lectern"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.LECTERN);
+
+        tag(c.apply("player_workstations/loom"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.LOOM);
+
+        tag(c.apply("player_workstations/mold_table"))
+            .add(TFCBlocks.MOLD_TABLE);
+
+        tag(c.apply("player_workstations/nest_box"))
+            .add(TFCBlocks.NEST_BOX);
+
+        tag(c.apply("player_workstations/pit_kiln"))
+            .add(TFCBlocks.PIT_KILN);
+
+        tag(c.apply("player_workstations/quern"))
+            .add(TFCBlocks.QUERN);
+
+        tag(c.apply("player_workstations/scraping"))
+            .add(TFCBlocks.SCRAPING);
+
+        tag(c.apply("player_workstations/scribing_table"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.SCRIBING_TABLE);
+
+        tag(c.apply("player_workstations/sewing_table"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.SEWING_TABLE);
+
+        tag(c.apply("player_workstations/stove"))
+            .add(TFCBlocks.STOVE, TFCBlocks.STOVE_POT);
+
+        tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES)
+            .add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
+
+        tag(playerWorkstationsTag).addTags(
+            c.apply("player_workstations/anvil"),
+            c.apply("player_workstations/blast_furnace"),
+            c.apply("player_workstations/bloomery"),
+            c.apply("player_workstations/charcoal_forge"),
+            c.apply("player_workstations/composter"),
+            c.apply("player_workstations/crucible"),
+            c.apply("player_workstations/firebox"),
+            c.apply("player_workstations/firepit"),
+            c.apply("player_workstations/grill"),
+            c.apply("player_workstations/lectern"),
+            c.apply("player_workstations/loom"),
+            c.apply("player_workstations/mold_table"),
+            c.apply("player_workstations/nest_box"),
+            c.apply("player_workstations/pit_kiln"),
+            c.apply("player_workstations/quern"),
+            c.apply("player_workstations/scraping"),
+            c.apply("player_workstations/scribing_table"),
+            c.apply("player_workstations/sewing_table"),
+            c.apply("player_workstations/stove")
         );
 
         //Potted Plants
 
-        tag(commonTagOf(Registries.BLOCK, "potted_plants")).add(TFCBlocks.POTTED_PLANTS).add(TFCBlocks.FRUIT_TREE_POTTED_SAPLINGS).add(TFCBlocks.WOODS, Wood.BlockType.POTTED_SAPLING);
+        tag(c.apply("potted_plants"))
+            .add(TFCBlocks.POTTED_PLANTS)
+            .add(TFCBlocks.FRUIT_TREE_POTTED_SAPLINGS)
+            .add(TFCBlocks.WOODS, Wood.BlockType.POTTED_SAPLING);
 
         //Power
         //c:power, c:power/capability, c:power/capability/tfc_mech, c:power/function, c:power/function/provider, c:power/function/transmitter, c:power/function/consumer
 
-        tag(commonTagOf(Registries.BLOCK, "power/capability/tfc_mech"))
+        tag(c.apply("power/capability/tfc_mech"))
             .add(TFCBlocks.WOODS, Wood.BlockType.AXLE)
             .add(TFCBlocks.WOODS, Wood.BlockType.ENCASED_AXLE)
             .add(TFCBlocks.WOODS, Wood.BlockType.CLUTCH)
@@ -965,33 +1237,41 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.WOODS, Wood.BlockType.WATER_WHEEL)
             .add(TFCBlocks.WOODS, Wood.BlockType.WINDMILL)
             .add(TFCBlocks.TRIP_HAMMER, TFCBlocks.CREATIVE_MOTOR, TFCBlocks.CRANKSHAFT, TFCBlocks.POWER_LOOM, TFCBlocks.QUERN);
-        tag(commonTagOf(Registries.BLOCK, "power/function/provider"))
+        tag(c.apply("power/function/provider"))
             .add(TFCBlocks.WOODS, Wood.BlockType.WATER_WHEEL)
             .add(TFCBlocks.WOODS, Wood.BlockType.WATER_WHEEL)
             .add(TFCBlocks.CREATIVE_MOTOR);
-        tag(commonTagOf(Registries.BLOCK, "power/function/transmitter"))
+        tag(c.apply("power/function/transmitter"))
             .add(TFCBlocks.WOODS, Wood.BlockType.AXLE)
             .add(TFCBlocks.WOODS, Wood.BlockType.ENCASED_AXLE)
             .add(TFCBlocks.WOODS, Wood.BlockType.CLUTCH)
             .add(TFCBlocks.WOODS, Wood.BlockType.BLADED_AXLE)
             .add(TFCBlocks.WOODS, Wood.BlockType.GEAR_BOX);
-        tag(commonTagOf(Registries.BLOCK, "power/function/consumer")).add(
+        tag(c.apply("power/function/consumer")).add(
             TFCBlocks.TRIP_HAMMER, TFCBlocks.CRANKSHAFT,
             TFCBlocks.QUERN, TFCBlocks.POWER_LOOM
         );
 
-        tag(commonTagOf(Registries.BLOCK, "power/capability")).addTag(commonTagOf(Registries.BLOCK, "power/capability/tfc_mech"));
-        tag(commonTagOf(Registries.BLOCK, "power")).addTag(commonTagOf(Registries.BLOCK, "power/capability"));
-        tag(commonTagOf(Registries.BLOCK, "power/function")).addTag(commonTagOf(Registries.BLOCK, "power/function/provider"));
-        tag(commonTagOf(Registries.BLOCK, "power/function")).addTag(commonTagOf(Registries.BLOCK, "power/function/transmitter"));
-        tag(commonTagOf(Registries.BLOCK, "power/function")).addTag(commonTagOf(Registries.BLOCK, "power/function/consumer"));
-        tag(commonTagOf(Registries.BLOCK, "power")).addTag(commonTagOf(Registries.BLOCK, "power/function"));
+        tag(c.apply("power/capability")).addTag(c.apply("power/capability/tfc_mech"));
+        tag(c.apply("power")).addTag(c.apply("power/capability"));
+        tag(c.apply("power/function")).addTag(c.apply("power/function/provider"));
+        tag(c.apply("power/function")).addTag(c.apply("power/function/transmitter"));
+        tag(c.apply("power/function")).addTag(c.apply("power/function/consumer"));
+        tag(c.apply("power")).addTag(c.apply("power/function"));
 
         //Pressure Plates
         //c:pressure_plates, c:pressure_plates/wooden, c:pressure_plates/stone
 
-        tag(commonTagOf(Registries.BLOCK, "pressure_plates/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.PRESSURE_PLATE);
-        tag(commonTagOf(Registries.BLOCK, "pressure_plates/stone")).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.PRESSURE_PLATE);
+        tag(c.apply("pressure_plates/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.PRESSURE_PLATE);
+
+        tag(c.apply("pressure_plates/stone"))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.PRESSURE_PLATE);
+
+        tag(c.apply("pressure_plates")).addTags(
+            c.apply("pressure_plates/wooden"),
+            c.apply("pressure_plates/stone")
+        );
 
         //Relocation Not Supported
         //c:relocation_not_supported
@@ -1011,327 +1291,244 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Rods
 
-        tag(commonTagOf(Registries.BLOCK, "rods/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
-        tag(commonTagOf(Registries.BLOCK, "rods")).addTag(commonTagOf(Registries.BLOCK, "rods/wooden"));
+        tag(c.apply("rods/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
+        tag(c.apply("rods"))
+            .addTag(c.apply("rods/wooden"));
 
         //Sands
 
-        tag(commonTagOf(Registries.BLOCK, "sands/volcanic")).add(TFCBlocks.SAND.get(SandBlockType.BLACK));
-        tag(commonTagOf(Registries.BLOCK, "sands/hematitic")).add(
+        for (SandBlockType sand : SandBlockType.values())
+        {
+            final TagKey<Block> sandTag = c.apply("sands/" + sand.name().toLowerCase(Locale.ROOT));
+
+            tag(sandTag)
+                .add(TFCBlocks.SAND.get(sand));
+
+            tag(c.apply("sands"))
+                .addTag(sandTag);
+        }
+
+        tag(c.apply("sands/volcanic"))
+            .add(TFCBlocks.SAND.get(SandBlockType.BLACK));
+
+        tag(c.apply("sands/hematitic")).add(
             TFCBlocks.SAND.get(SandBlockType.RED),
             TFCBlocks.SAND.get(SandBlockType.PINK),
             TFCBlocks.SAND.get(SandBlockType.YELLOW)
         );
-        tag(commonTagOf(Registries.BLOCK, "sands/olivine")).add(
+        tag(c.apply("sands/olivine")).add(
             TFCBlocks.SAND.get(SandBlockType.BROWN),
             TFCBlocks.SAND.get(SandBlockType.GREEN)
         );
-        tag(commonTagOf(Registries.BLOCK, "sands/silica")).add(TFCBlocks.SAND.get(SandBlockType.WHITE));
+        tag(c.apply("sands/silica")).add(TFCBlocks.SAND.get(SandBlockType.WHITE));
 
-        tag(commonTagOf(Registries.BLOCK, "sands/black")).add(TFCBlocks.SAND.get(SandBlockType.BLACK));
-        tag(commonTagOf(Registries.BLOCK, "sands/red")).add(TFCBlocks.SAND.get(SandBlockType.RED));
-        tag(commonTagOf(Registries.BLOCK, "sands/pink")).add(TFCBlocks.SAND.get(SandBlockType.PINK));
-        tag(commonTagOf(Registries.BLOCK, "sands/yellow")).add(TFCBlocks.SAND.get(SandBlockType.YELLOW));
-        tag(commonTagOf(Registries.BLOCK, "sands/brown")).add(TFCBlocks.SAND.get(SandBlockType.BROWN));
-        tag(commonTagOf(Registries.BLOCK, "sands/green")).add(TFCBlocks.SAND.get(SandBlockType.GREEN));
-
-        tag(commonTagOf(Registries.BLOCK, "sands")).addTags(
-            commonTagOf(Registries.BLOCK, "sands/volcanic"),
-            commonTagOf(Registries.BLOCK, "sands/hematitic"),
-            commonTagOf(Registries.BLOCK, "sands/olivine"),
-            commonTagOf(Registries.BLOCK, "sands/silica"),
-            commonTagOf(Registries.BLOCK, "sands/black"),
-            commonTagOf(Registries.BLOCK, "sands/red"),
-            commonTagOf(Registries.BLOCK, "sands/pink"),
-            commonTagOf(Registries.BLOCK, "sands/yellow"),
-            commonTagOf(Registries.BLOCK, "sands/brown"),
-            commonTagOf(Registries.BLOCK, "sands/green")
+        tag(c.apply("sands")).addTags(
+            c.apply("sands/volcanic"),
+            c.apply("sands/hematitic"),
+            c.apply("sands/olivine"),
+            c.apply("sands/silica")
         );
 
         //Sandstone
 
-        tag(Tags.Blocks.SANDSTONE_BLOCKS).add2(TFCBlocks.SANDSTONE);
-        tag(Tags.Blocks.SANDSTONE_SLABS).add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::slab);
-        tag(Tags.Blocks.SANDSTONE_STAIRS).add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::stair);
-        tag(commonTagOf(Registries.BLOCK, "sandstone/walls")).add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::wall);
+        tag(Tags.Blocks.SANDSTONE_BLOCKS)
+            .add2(TFCBlocks.SANDSTONE);
+        tag(Tags.Blocks.SANDSTONE_SLABS)
+            .add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::slab);
+        tag(Tags.Blocks.SANDSTONE_STAIRS)
+            .add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::stair);
+        tag(c.apply("sandstone/walls"))
+            .add2(TFCBlocks.SANDSTONE_DECORATIONS, DecorationBlockHolder::wall);
 
-        tag(commonTagOf(Registries.BLOCK, "sandstone/black_blocks")).add(
-            TFCBlocks.SANDSTONE.get(SandBlockType.BLACK).get(SandstoneBlockType.CUT),
-            TFCBlocks.SANDSTONE.get(SandBlockType.BLACK).get(SandstoneBlockType.RAW),
-            TFCBlocks.SANDSTONE.get(SandBlockType.BLACK).get(SandstoneBlockType.SMOOTH)
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/brown_blocks")).add(
-            TFCBlocks.SANDSTONE.get(SandBlockType.BROWN).get(SandstoneBlockType.CUT),
-            TFCBlocks.SANDSTONE.get(SandBlockType.BROWN).get(SandstoneBlockType.RAW),
-            TFCBlocks.SANDSTONE.get(SandBlockType.BROWN).get(SandstoneBlockType.SMOOTH)
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/green_blocks")).add(
-            TFCBlocks.SANDSTONE.get(SandBlockType.GREEN).get(SandstoneBlockType.CUT),
-            TFCBlocks.SANDSTONE.get(SandBlockType.GREEN).get(SandstoneBlockType.RAW),
-            TFCBlocks.SANDSTONE.get(SandBlockType.GREEN).get(SandstoneBlockType.SMOOTH)
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/pink_blocks")).add(
-            TFCBlocks.SANDSTONE.get(SandBlockType.PINK).get(SandstoneBlockType.CUT),
-            TFCBlocks.SANDSTONE.get(SandBlockType.PINK).get(SandstoneBlockType.RAW),
-            TFCBlocks.SANDSTONE.get(SandBlockType.PINK).get(SandstoneBlockType.SMOOTH)
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/red_blocks")).add(
-            TFCBlocks.SANDSTONE.get(SandBlockType.RED).get(SandstoneBlockType.CUT),
-            TFCBlocks.SANDSTONE.get(SandBlockType.RED).get(SandstoneBlockType.RAW),
-            TFCBlocks.SANDSTONE.get(SandBlockType.RED).get(SandstoneBlockType.SMOOTH)
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/white_blocks")).add(
-            TFCBlocks.SANDSTONE.get(SandBlockType.WHITE).get(SandstoneBlockType.CUT),
-            TFCBlocks.SANDSTONE.get(SandBlockType.WHITE).get(SandstoneBlockType.RAW),
-            TFCBlocks.SANDSTONE.get(SandBlockType.WHITE).get(SandstoneBlockType.SMOOTH)
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/yellow_blocks")).add(
-            TFCBlocks.SANDSTONE.get(SandBlockType.YELLOW).get(SandstoneBlockType.CUT),
-            TFCBlocks.SANDSTONE.get(SandBlockType.YELLOW).get(SandstoneBlockType.RAW),
-            TFCBlocks.SANDSTONE.get(SandBlockType.YELLOW).get(SandstoneBlockType.SMOOTH)
-        );
+        tag(c.apply("sandstone"))
+            .addTag(c.apply("sandstone/walls"));
 
-        tag(commonTagOf(Registries.BLOCK, "sandstone/black_slabs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.CUT).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.RAW).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.SMOOTH).slab()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/brown_slabs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.CUT).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.RAW).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.SMOOTH).slab()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/green_slabs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.CUT).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.RAW).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.SMOOTH).slab()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/pink_slabs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.CUT).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.RAW).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.SMOOTH).slab()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/red_slabs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.CUT).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.RAW).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.SMOOTH).slab()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/white_slabs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.CUT).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.RAW).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.SMOOTH).slab()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/yellow_slabs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.CUT).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.RAW).slab(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.SMOOTH).slab()
-        );
+        for (SandBlockType sand : SandBlockType.values())
+        {
+            final String sandName = sand.name().toLowerCase(Locale.ROOT);
 
-        tag(commonTagOf(Registries.BLOCK, "sandstone/black_stairs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.CUT).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.RAW).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.SMOOTH).stair()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/brown_stairs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.CUT).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.RAW).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.SMOOTH).stair()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/green_stairs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.CUT).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.RAW).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.SMOOTH).stair()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/pink_stairs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.CUT).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.RAW).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.SMOOTH).stair()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/red_stairs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.CUT).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.RAW).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.SMOOTH).stair()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/white_stairs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.CUT).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.RAW).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.SMOOTH).stair()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/yellow_stairs")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.CUT).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.RAW).stair(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.SMOOTH).stair()
-        );
+            final TagKey<Block> blocksTag = c.apply("sandstone/" + sandName + "_blocks");
+            final TagKey<Block> slabsTag = c.apply("sandstone/" + sandName + "_slabs");
+            final TagKey<Block> stairsTag = c.apply("sandstone/" + sandName + "_stairs");
+            final TagKey<Block> wallsTag = c.apply("sandstone/" + sandName + "_walls");
 
-        tag(commonTagOf(Registries.BLOCK, "sandstone/black_walls")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.CUT).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.RAW).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BLACK).get(SandstoneBlockType.SMOOTH).wall()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/brown_walls")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.CUT).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.RAW).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.BROWN).get(SandstoneBlockType.SMOOTH).wall()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/green_walls")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.CUT).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.RAW).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.GREEN).get(SandstoneBlockType.SMOOTH).wall()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/pink_walls")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.CUT).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.RAW).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.PINK).get(SandstoneBlockType.SMOOTH).wall()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/red_walls")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.CUT).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.RAW).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.RED).get(SandstoneBlockType.SMOOTH).wall()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/white_walls")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.CUT).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.RAW).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.WHITE).get(SandstoneBlockType.SMOOTH).wall()
-        );
-        tag(commonTagOf(Registries.BLOCK, "sandstone/yellow_walls")).add(
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.CUT).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.RAW).wall(),
-            TFCBlocks.SANDSTONE_DECORATIONS.get(SandBlockType.YELLOW).get(SandstoneBlockType.SMOOTH).wall()
-        );
+            tag(blocksTag)
+                .add(TFCBlocks.SANDSTONE.get(sand));
 
-        tag(commonTagOf(Registries.BLOCK, "sandstone")).addTags(
-            commonTagOf(Registries.BLOCK, "sandstone/walls"),
-            commonTagOf(Registries.BLOCK, "sandstone/black_blocks"),
-            commonTagOf(Registries.BLOCK, "sandstone/brown_blocks"),
-            commonTagOf(Registries.BLOCK, "sandstone/green_blocks"),
-            commonTagOf(Registries.BLOCK, "sandstone/pink_blocks"),
-            commonTagOf(Registries.BLOCK, "sandstone/red_blocks"),
-            commonTagOf(Registries.BLOCK, "sandstone/white_blocks"),
-            commonTagOf(Registries.BLOCK, "sandstone/yellow_blocks"),
-            commonTagOf(Registries.BLOCK, "sandstone/black_slabs"),
-            commonTagOf(Registries.BLOCK, "sandstone/brown_slabs"),
-            commonTagOf(Registries.BLOCK, "sandstone/green_slabs"),
-            commonTagOf(Registries.BLOCK, "sandstone/pink_slabs"),
-            commonTagOf(Registries.BLOCK, "sandstone/red_slabs"),
-            commonTagOf(Registries.BLOCK, "sandstone/white_slabs"),
-            commonTagOf(Registries.BLOCK, "sandstone/yellow_slabs"),
-            commonTagOf(Registries.BLOCK, "sandstone/black_stairs"),
-            commonTagOf(Registries.BLOCK, "sandstone/brown_stairs"),
-            commonTagOf(Registries.BLOCK, "sandstone/green_stairs"),
-            commonTagOf(Registries.BLOCK, "sandstone/pink_stairs"),
-            commonTagOf(Registries.BLOCK, "sandstone/red_stairs"),
-            commonTagOf(Registries.BLOCK, "sandstone/white_stairs"),
-            commonTagOf(Registries.BLOCK, "sandstone/yellow_stairs"),
-            commonTagOf(Registries.BLOCK, "sandstone/black_walls"),
-            commonTagOf(Registries.BLOCK, "sandstone/brown_walls"),
-            commonTagOf(Registries.BLOCK, "sandstone/green_walls"),
-            commonTagOf(Registries.BLOCK, "sandstone/pink_walls"),
-            commonTagOf(Registries.BLOCK, "sandstone/red_walls"),
-            commonTagOf(Registries.BLOCK, "sandstone/white_walls"),
-            commonTagOf(Registries.BLOCK, "sandstone/yellow_walls")
-        );
+            tag(slabsTag)
+                .add(TFCBlocks.SANDSTONE_DECORATIONS.get(sand).values().stream().map(DecorationBlockHolder::slab));
+
+            tag(stairsTag)
+                .add(TFCBlocks.SANDSTONE_DECORATIONS.get(sand).values().stream().map(DecorationBlockHolder::stair));
+
+            tag(wallsTag)
+                .add(TFCBlocks.SANDSTONE_DECORATIONS.get(sand).values().stream().map(DecorationBlockHolder::wall));
+
+            tag(c.apply("sandstone"))
+                .addTags(blocksTag, slabsTag, stairsTag, wallsTag);
+        }
 
         //Soils -- Could also be Dirts
         //c:soils, c:soils/VARIANT
 
-        TFCBlocks.SOIL.get(SoilBlockType.CLAY).forEach((soil, clay) -> {
-            tag(commonTagOf(Registries.BLOCK, "soils/" + soil.name())).add(
-                clay,
-                TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.COARSE_DIRT).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.DRYING_BRICKS).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.DUFF).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.MUD).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.MUDDY_ROOTS).get(soil),
-                TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT).get(soil)
+        //Soils
+
+        final TagKey<Block> soilsTag = c.apply("soils");
+
+        for (SoilBlockType.Variant variant : SoilBlockType.Variant.values())
+        {
+            final TagKey<Block> variantSoilsTag = c.apply("soils/" + variant.name().toLowerCase(Locale.ROOT));
+
+            tag(variantSoilsTag).add(
+                TFCBlocks.SOIL.get(SoilBlockType.CLAY_DUFF).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.CLAY_GRASS).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.COARSE_DIRT).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.DRYING_BRICKS).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.DUFF).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.GRASS).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.MUD).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.MUDDY_ROOTS).get(variant),
+                TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT).get(variant)
             );
-            tag(commonTagOf(Registries.BLOCK, "soils")).addTag(commonTagOf(Registries.BLOCK, "soils/" + soil.name()));
-        });
+
+            tag(soilsTag)
+                .addTag(variantSoilsTag);
+        }
 
         //Stones
-        //c:stones, c:stones/ROCK, c:stones/mossy, c:stones/spike, c:stones/raw, c:stones/hardened, c:stones/loose
+        //c:stones, c:stones/ROCK, c:stones/mossy, c:stones/spike, c:stones/raw, c:stones/hardened, c:stones/loose, c:stones/smooth
 
         for (Rock rock : Rock.values())
         {
-            tag(commonTagOf(Registries.BLOCK, "stones/" + rock.getSerializedName())).add(
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.HARDENED),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.LOOSE),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.MOSSY_LOOSE),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW),
-                TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.SPIKE),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.RAW).slab(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.RAW).stair(),
-                TFCBlocks.ROCK_DECORATIONS.get(rock).get(Rock.BlockType.RAW).wall()
+            final TagKey<Block> rockStonesTag = c.apply("stones/" + rock.getSerializedName());
+            final Map<Rock.BlockType, ? extends IdHolder<? extends Block>> blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
+            final Map<Rock.BlockType, DecorationBlockHolder> decorations = TFCBlocks.ROCK_DECORATIONS.get(rock);
+
+            tag(rockStonesTag).add(
+                blocks.get(Rock.BlockType.HARDENED),
+                blocks.get(Rock.BlockType.LOOSE),
+                blocks.get(Rock.BlockType.MOSSY_LOOSE),
+                blocks.get(Rock.BlockType.RAW),
+                blocks.get(Rock.BlockType.SMOOTH),
+                blocks.get(Rock.BlockType.SPIKE),
+                decorations.get(Rock.BlockType.RAW).slab(),
+                decorations.get(Rock.BlockType.RAW).stair(),
+                decorations.get(Rock.BlockType.RAW).wall(),
+                decorations.get(Rock.BlockType.SMOOTH).slab(),
+                decorations.get(Rock.BlockType.SMOOTH).stair(),
+                decorations.get(Rock.BlockType.SMOOTH).wall()
             );
-            tag(Tags.Blocks.STONES).addTags(commonTagOf(Registries.BLOCK, "stones/" + rock.getSerializedName()));
+
+            tag(Tags.Blocks.STONES)
+                .addTag(rockStonesTag);
         }
 
-        tag(STONES_SPIKE).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SPIKE);
+        tag(STONES_SPIKE)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SPIKE);
+
         tag(STONES_RAW)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.RAW)
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.RAW)
                 .values().stream().map(DecorationBlockHolder::slab))
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.RAW)
-                .values().stream().map(DecorationBlockHolder::slab))
+                .values().stream().map(DecorationBlockHolder::stair))
             .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.RAW)
-                .values().stream().map(DecorationBlockHolder::slab));
-        tag(STONES_HARDENED).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
+                .values().stream().map(DecorationBlockHolder::wall));
+
+        tag(STONES_SMOOTH)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.SMOOTH)
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.SMOOTH)
+                .values().stream().map(DecorationBlockHolder::slab))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.SMOOTH)
+                .values().stream().map(DecorationBlockHolder::stair))
+            .add(pivot(TFCBlocks.ROCK_DECORATIONS, Rock.BlockType.SMOOTH)
+                .values().stream().map(DecorationBlockHolder::wall));
+
+        tag(STONES_HARDENED)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.HARDENED);
+
         tag(STONES_LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.LOOSE)
             .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE);
-        tag(commonTagOf(Registries.BLOCK, "stones/mossy")).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE);
-        tag(Tags.Blocks.STONES).addTags(STONES_HARDENED, STONES_LOOSE, STONES_RAW, STONES_SPIKE, commonTagOf(Registries.BLOCK, "stones/mossy"));
+
+        tag(c.apply("stones/mossy"))
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.MOSSY_LOOSE);
+
+        tag(Tags.Blocks.STONES).addTags(
+            STONES_HARDENED,
+            STONES_LOOSE,
+            STONES_RAW,
+            STONES_SPIKE,
+            STONES_SMOOTH,
+            c.apply("stones/mossy")
+        );
 
         //Saplings
         //c:saplings, c:saplings/WOOD
 
-        for (Wood wood : Wood.VALUES)
-        {
-            tag(commonTagOf(Registries.BLOCK, "saplings/" + wood.getSerializedName())).add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SAPLING));
-            tag(commonTagOf(Registries.BLOCK, "saplings")).addTags(commonTagOf(Registries.BLOCK, "saplings/" + wood.getSerializedName()));
-        }
+        final TagKey<Block> saplingsTag = c.apply("saplings");
+
+        TFCBlocks.WOODS.forEach((wood, blocks) -> {
+            final TagKey<Block> woodSaplingsTag = c.apply("saplings/" + wood.getSerializedName());
+
+            tag(woodSaplingsTag)
+                .add(blocks.get(Wood.BlockType.SAPLING));
+
+            tag(saplingsTag)
+                .addTag(woodSaplingsTag);
+        });
 
         //Shelves
         //c:shelves, c:shelves/wooden, c:shelves/brick
 
-        tag(commonTagOf(Registries.BLOCK, "shelves/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.SHELF);
-        tag(commonTagOf(Registries.BLOCK, "shelves/brick")).add(TFCBlocks.FIRE_BRICK_SHELF);
-        tag(commonTagOf(Registries.BLOCK, "shelves")).addTags(
-            commonTagOf(Registries.BLOCK, "shelves/wooden"),
-            commonTagOf(Registries.BLOCK, "shelves/brick")
+        tag(c.apply("shelves/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.SHELF);
+        tag(c.apply("shelves/brick"))
+
+            .add(TFCBlocks.FIRE_BRICK_SHELF);
+
+        tag(c.apply("shelves")).addTags(
+            c.apply("shelves/wooden"),
+            c.apply("shelves/brick")
         );
 
         //Signs
 
-        tag(commonTagOf(Registries.BLOCK, "signs/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.SIGN).add(TFCBlocks.WOODS, Wood.BlockType.WALL_SIGN);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/bismuth_bronze")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.BISMUTH_BRONZE).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.BISMUTH_BRONZE);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/black_bronze")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.BLACK_BRONZE).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.BLACK_BRONZE);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/black_steel")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.BLACK_STEEL).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.BLACK_STEEL);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/blue_steel")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.BLUE_STEEL).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.BLUE_STEEL);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/bronze")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.BRONZE).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.BRONZE);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/copper")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.COPPER).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.COPPER);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/red_steel")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.RED_STEEL).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.RED_STEEL);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/steel")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.STEEL).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.STEEL);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging/iron")).add(TFCBlocks.CEILING_HANGING_SIGNS, Metal.WROUGHT_IRON).add(TFCBlocks.WALL_HANGING_SIGNS, Metal.WROUGHT_IRON);
-        tag(commonTagOf(Registries.BLOCK, "signs/hanging")).addTags(
-            commonTagOf(Registries.BLOCK, "signs/hanging/bismuth_bronze"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/black_bronze"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/black_steel"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/blue_steel"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/bronze"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/copper"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/red_steel"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/steel"),
-            commonTagOf(Registries.BLOCK, "signs/hanging/iron")
-        );
-        tag(commonTagOf(Registries.BLOCK, "signs")).addTags(
-            commonTagOf(Registries.BLOCK, "signs/wooden"),
-            commonTagOf(Registries.BLOCK, "signs/hanging")
+        final TagKey<Block> signTag = c.apply("signs");
+        final TagKey<Block> woodenSignTag = c.apply("signs/wooden");
+        final TagKey<Block> hangingSignTag = c.apply("signs/hanging");
+
+        for (Metal metal : Metal.values()){
+
+            if(metal.allParts())
+            {
+                final String metalName = metal == Metal.WROUGHT_IRON ? "iron" : metal.getSerializedName();
+                final TagKey<Block> metalHangingSignsTag = c.apply("signs/hanging/" + metalName);
+
+                tag(metalHangingSignsTag)
+                    .add(TFCBlocks.CEILING_HANGING_SIGNS, metal)
+                    .add(TFCBlocks.WALL_HANGING_SIGNS, metal);
+
+                tag(woodenSignTag)
+                    .add(TFCBlocks.CEILING_HANGING_SIGNS, metal)
+                    .add(TFCBlocks.WALL_HANGING_SIGNS, metal);
+
+                tag(hangingSignTag)
+                    .addTag(metalHangingSignsTag);
+            }
+        }
+
+        tag(woodenSignTag)
+            .add(TFCBlocks.WOODS, Wood.BlockType.SIGN)
+            .add(TFCBlocks.WOODS, Wood.BlockType.WALL_SIGN);
+
+        tag(signTag).addTags(
+            woodenSignTag,
+            hangingSignTag
         );
 
         //Slabs
@@ -1339,78 +1536,114 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         //Sluices
 
-        tag(commonTagOf(Registries.BLOCK, "sluices/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.SLUICE);
-        tag(commonTagOf(Registries.BLOCK, "sluices")).addTags(commonTagOf(Registries.BLOCK, "sluices/wooden"));
+        tag(c.apply("sluices/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.SLUICE);
+
+        tag(c.apply("sluices"))
+            .addTags(c.apply("sluices/wooden"));
 
         //Stairs
 
 
         //Storage Blocks
-        //Storage blocks are blocks that take 4 or 9 items and compress them into a block and can be then converted back into the 4/9 items
 
-        tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).remove(Blocks.HAY_BLOCK); // We repurpose this as storing straw
-        tag(Tags.Blocks.STORAGE_BLOCKS_SLIME).remove(Blocks.SLIME_BLOCK);
+        tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT)
+            .remove(Blocks.HAY_BLOCK); // We repurpose this as storing straw
 
-        tag(commonTagOf(Registries.BLOCK, "storage_blocks/glue")).add(Blocks.SLIME_BLOCK);
-        tag(commonTagOf(Registries.BLOCK, "storage_blocks/thatch")).add(Blocks.HAY_BLOCK);
+        tag(Tags.Blocks.STORAGE_BLOCKS_SLIME)
+            .remove(Blocks.SLIME_BLOCK);
+
+        tag(c.apply("storage_blocks/glue"))
+            .add(Blocks.SLIME_BLOCK);
+
+        tag(c.apply("storage_blocks/thatch"))
+            .add(Blocks.HAY_BLOCK);
 
         //Stripped Logs
         //c:stripped_logs, c:stripped_logs/WOOD
 
-        for (Wood wood : Wood.values())
-        {
-            tag(commonTagOf(Registries.BLOCK, "stripped_logs/" + wood.getSerializedName())).add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.STRIPPED_LOG));
-            tag(Tags.Blocks.STRIPPED_LOGS).addTag(commonTagOf(Registries.BLOCK, "stripped_logs/" + wood.getSerializedName()));
-        }
+        TFCBlocks.WOODS.forEach((wood, blocks) -> {
+            final TagKey<Block> strippedWoodLogsTag = c.apply("stripped_logs/" + wood.getSerializedName());
+
+            tag(strippedWoodLogsTag)
+                .add(blocks.get(Wood.BlockType.STRIPPED_LOG));
+
+            tag(Tags.Blocks.STRIPPED_LOGS)
+                .addTag(strippedWoodLogsTag);
+        });
 
         //Stripped Wood
         //c:stripped_woods, c:stripped_woods/WOOD
 
-        for (Wood wood : Wood.values())
-        {
-            tag(commonTagOf(Registries.BLOCK, "stripped_woods/" + wood.getSerializedName())).add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.STRIPPED_WOOD));
-            tag(Tags.Blocks.STRIPPED_WOODS).addTag(commonTagOf(Registries.BLOCK, "stripped_woods/" + wood.getSerializedName()));
-        }
+        TFCBlocks.WOODS.forEach((wood, blocks) -> {
+            final TagKey<Block> strippedWoodTag = c.apply("stripped_woods/" + wood.getSerializedName());
+
+            tag(strippedWoodTag)
+                .add(blocks.get(Wood.BlockType.STRIPPED_WOOD));
+
+            tag(Tags.Blocks.STRIPPED_WOODS)
+                .addTag(strippedWoodTag);
+        });
 
         //Supports
 
-        tag(commonTagOf(Registries.BLOCK, "supports/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.HORIZONTAL_SUPPORT).add(TFCBlocks.WOODS, Wood.BlockType.VERTICAL_SUPPORT);
-        tag(commonTagOf(Registries.BLOCK, "supports")).addTags(commonTagOf(Registries.BLOCK, "supports/wooden"));
+        tag(c.apply("supports/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.HORIZONTAL_SUPPORT).add(TFCBlocks.WOODS, Wood.BlockType.VERTICAL_SUPPORT);
+
+        tag(c.apply("supports"))
+            .addTags(c.apply("supports/wooden"));
 
         //Thatch
 
-        tag(commonTagOf(Registries.BLOCK, "thatch")).add(TFCBlocks.THATCH);
+        tag(c.apply("thatch"))
+            .add(TFCBlocks.THATCH);
 
         //Tool Racks
 
-        tag(commonTagOf(Registries.BLOCK, "tool_racks/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.TOOL_RACK);
-        tag(commonTagOf(Registries.BLOCK, "tool_racks")).addTags(commonTagOf(Registries.BLOCK, "tool_racks/wooden"));
+        tag(c.apply("tool_racks/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.TOOL_RACK);
+
+        tag(c.apply("tool_racks"))
+            .addTags(c.apply("tool_racks/wooden"));
 
         //Trapdoors
 
-        tag(commonTagOf(Registries.BLOCK, "trapdoors/wooden")).add(TFCBlocks.WOODS, Wood.BlockType.TRAPDOOR);
-        tag(commonTagOf(Registries.BLOCK, "trapdoors/metal")).add(TFCBlocks.METALS, Metal.BlockType.TRAPDOOR);
-        tag(commonTagOf(Registries.BLOCK, "trapdoors")).addTags(
-            commonTagOf(Registries.BLOCK, "trapdoors/wooden"),
-            commonTagOf(Registries.BLOCK, "trapdoors/metal")
+        tag(c.apply("trapdoors/wooden"))
+            .add(TFCBlocks.WOODS, Wood.BlockType.TRAPDOOR);
+
+        tag(c.apply("trapdoors/metal"))
+            .add(TFCBlocks.METALS, Metal.BlockType.TRAPDOOR);
+
+        tag(c.apply("trapdoors")).addTags(
+            c.apply("trapdoors/wooden"),
+            c.apply("trapdoors/metal")
         );
 
         //Walls
 
         //Wattle
 
-        tag(commonTagOf(Registries.BLOCK, "wattle"))
+        tag(c.apply("wattle"))
             .add(TFCBlocks.STAINED_WATTLE)
             .add(TFCBlocks.WATTLE, TFCBlocks.UNSTAINED_WATTLE);
 
         //Woods
         //c:woods, c:woods/WOOD
 
-        for (Wood wood : Wood.VALUES)
-        {
-            tag(commonTagOf(Registries.BLOCK, "woods/" + wood.getSerializedName())).add(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WOOD));
-            tag(commonTagOf(Registries.BLOCK, "woods")).addTags(commonTagOf(Registries.BLOCK, "woods/" + wood.getSerializedName()));
-        }
+        //Woods
+        //c:woods, c:woods/WOOD
+
+        final TagKey<Block> woodsTag = c.apply("woods");
+
+        TFCBlocks.WOODS.forEach((wood, blocks) -> {
+            final TagKey<Block> woodTag = c.apply("woods/" + wood.getSerializedName());
+
+            tag(woodTag)
+                .add(blocks.get(Wood.BlockType.WOOD));
+
+            tag(woodsTag)
+                .addTag(woodTag);
+        });
 
         // ===== TFC Tags ===== //
 

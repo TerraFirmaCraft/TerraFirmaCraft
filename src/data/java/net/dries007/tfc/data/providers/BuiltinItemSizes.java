@@ -52,8 +52,10 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("chests", Tags.Items.CHESTS, Size.LARGE, Weight.LIGHT);
         add("ingots", DifferenceIngredient.of(Ingredient.of(Tags.Items.INGOTS), Ingredient.of(Tags.Items.BRICKS)), Size.LARGE, Weight.MEDIUM);
         add("double_ingots", TFCTags.Items.DOUBLE_INGOTS, Size.LARGE, Weight.MEDIUM);
-        add("sheets", TFCTags.Items.PLATES, Size.LARGE, Weight.MEDIUM);
-        add("double_sheets", TFCTags.Items.DOUBLE_PLATES, Size.LARGE, Weight.MEDIUM);
+        add("plates", TFCTags.Items.PLATES, Size.LARGE, Weight.MEDIUM);
+        add("double_plates", TFCTags.Items.DOUBLE_PLATES, Size.LARGE, Weight.MEDIUM);
+        add("sheets", TFCTags.Items.SHEETS, Size.LARGE, Weight.MEDIUM);
+        add("double_sheets", TFCTags.Items.DOUBLE_SHEETS, Size.LARGE, Weight.MEDIUM);
         add("rods", Tags.Items.RODS, Size.NORMAL, Weight.LIGHT);
         add("dyes", Tags.Items.DYES, Size.TINY, Weight.LIGHT);
         add("foods", Tags.Items.FOODS, Size.SMALL, Weight.LIGHT);
