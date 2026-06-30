@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.world.region;
 
-import net.minecraft.world.level.ChunkPos;
-
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 
@@ -129,7 +126,7 @@ public enum ChooseBiomes implements RegionTask
                         }
                     }
                 }
-                else if (point.coastalMountain())
+                else if (point.coastalMountain() && point.island())
                 {
                     // Different temperature limits used because biomes at different elevations
                     final float maxIceSheetTemp = -16f + 0.006f * point.rainfall;
