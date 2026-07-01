@@ -126,7 +126,7 @@ public enum ChooseBiomes implements RegionTask
                         }
                     }
                 }
-                else if (point.coastalMountain() && point.island())
+                else if (point.coastalMountain() && !point.land())
                 {
                     // Different temperature limits used because biomes at different elevations
                     final float maxIceSheetTemp = -16f + 0.006f * point.rainfall;
