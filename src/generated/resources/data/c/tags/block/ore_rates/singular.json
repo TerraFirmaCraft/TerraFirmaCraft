@@ -1127,6 +1127,7 @@
     "tfc:ore/small_tetrahedrite",
     "tfc:lignite",
     "tfc:bituminous_coal",
-    "tfc:halite"
+    "tfc:halite",
+    "tfc:groundcover/flint"
   ]
 }

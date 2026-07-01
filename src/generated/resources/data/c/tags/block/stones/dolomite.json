@@ -4,6 +4,13 @@
     "tfc:rock/loose/dolomite",
     "tfc:rock/mossy_loose/dolomite",
     "tfc:rock/raw/dolomite",
-    "tfc:rock/spike/dolomite"
+    "tfc:rock/smooth/dolomite",
+    "tfc:rock/spike/dolomite",
+    "tfc:rock/raw/dolomite_slab",
+    "tfc:rock/raw/dolomite_stairs",
+    "tfc:rock/raw/dolomite_wall",
+    "tfc:rock/smooth/dolomite_slab",
+    "tfc:rock/smooth/dolomite_stairs",
+    "tfc:rock/smooth/dolomite_wall"
   ]
 }

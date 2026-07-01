@@ -1,11 +1,10 @@
 {
   "values": [
-    "tfc:clay/andisol",
     "tfc:clay_duff/andisol",
     "tfc:clay_grass/andisol",
     "tfc:coarse_dirt/andisol",
-    "tfc:dirt/andisol",
     "tfc:drying_bricks/andisol",
+    "tfc:dirt/andisol",
     "tfc:duff/andisol",
     "tfc:farmland/andisol",
     "tfc:grass/andisol",

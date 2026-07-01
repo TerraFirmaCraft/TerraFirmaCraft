@@ -1,7 +1,7 @@
 {
   "values": [
-    "tfc:cut_sandstone/brown_wall",
     "tfc:raw_sandstone/brown_wall",
-    "tfc:smooth_sandstone/brown_wall"
+    "tfc:smooth_sandstone/brown_wall",
+    "tfc:cut_sandstone/brown_wall"
   ]
 }

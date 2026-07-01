@@ -1,6 +1,5 @@
 {
   "values": [
-    "tfc:candle_cake/pink",
     "tfc:candle/pink",
     "tfc:alabaster/bricks/pink_slab",
     "tfc:alabaster/bricks/pink_stairs",
@@ -10,8 +9,8 @@
     "tfc:alabaster/polished/pink_stairs",
     "tfc:alabaster/polished/pink_wall",
     "tfc:alabaster/raw/pink",
-    "tfc:ceramic/large_vessel/pink",
     "tfc:candle_cake/pink",
+    "tfc:ceramic/large_vessel/pink",
     "tfc:wattle/pink"
   ]
 }

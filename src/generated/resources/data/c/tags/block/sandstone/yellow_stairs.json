@@ -1,7 +1,7 @@
 {
   "values": [
-    "tfc:cut_sandstone/yellow_stairs",
     "tfc:raw_sandstone/yellow_stairs",
-    "tfc:smooth_sandstone/yellow_stairs"
+    "tfc:smooth_sandstone/yellow_stairs",
+    "tfc:cut_sandstone/yellow_stairs"
   ]
 }

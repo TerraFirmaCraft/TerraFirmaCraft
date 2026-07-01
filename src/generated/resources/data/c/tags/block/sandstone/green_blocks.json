@@ -1,7 +1,7 @@
 {
   "values": [
-    "tfc:cut_sandstone/green",
     "tfc:raw_sandstone/green",
-    "tfc:smooth_sandstone/green"
+    "tfc:smooth_sandstone/green",
+    "tfc:cut_sandstone/green"
   ]
 }

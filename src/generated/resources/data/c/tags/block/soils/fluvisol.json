@@ -1,11 +1,10 @@
 {
   "values": [
-    "tfc:clay/fluvisol",
     "tfc:clay_duff/fluvisol",
     "tfc:clay_grass/fluvisol",
     "tfc:coarse_dirt/fluvisol",
-    "tfc:dirt/fluvisol",
     "tfc:drying_bricks/fluvisol",
+    "tfc:dirt/fluvisol",
     "tfc:duff/fluvisol",
     "tfc:farmland/fluvisol",
     "tfc:grass/fluvisol",

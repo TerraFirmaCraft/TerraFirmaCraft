@@ -4,6 +4,13 @@
     "tfc:rock/loose/limestone",
     "tfc:rock/mossy_loose/limestone",
     "tfc:rock/raw/limestone",
-    "tfc:rock/spike/limestone"
+    "tfc:rock/smooth/limestone",
+    "tfc:rock/spike/limestone",
+    "tfc:rock/raw/limestone_slab",
+    "tfc:rock/raw/limestone_stairs",
+    "tfc:rock/raw/limestone_wall",
+    "tfc:rock/smooth/limestone_slab",
+    "tfc:rock/smooth/limestone_stairs",
+    "tfc:rock/smooth/limestone_wall"
   ]
 }

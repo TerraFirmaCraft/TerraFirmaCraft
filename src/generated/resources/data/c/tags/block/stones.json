@@ -25,6 +25,7 @@
     "#c:stones/loose",
     "#c:stones/raw",
     "#c:stones/spike",
+    "#c:stones/smooth",
     "#c:stones/mossy"
   ]
 }

@@ -4,6 +4,13 @@
     "tfc:rock/loose/chalk",
     "tfc:rock/mossy_loose/chalk",
     "tfc:rock/raw/chalk",
-    "tfc:rock/spike/chalk"
+    "tfc:rock/smooth/chalk",
+    "tfc:rock/spike/chalk",
+    "tfc:rock/raw/chalk_slab",
+    "tfc:rock/raw/chalk_stairs",
+    "tfc:rock/raw/chalk_wall",
+    "tfc:rock/smooth/chalk_slab",
+    "tfc:rock/smooth/chalk_stairs",
+    "tfc:rock/smooth/chalk_wall"
   ]
 }

@@ -4,6 +4,13 @@
     "tfc:rock/loose/marble",
     "tfc:rock/mossy_loose/marble",
     "tfc:rock/raw/marble",
-    "tfc:rock/spike/marble"
+    "tfc:rock/smooth/marble",
+    "tfc:rock/spike/marble",
+    "tfc:rock/raw/marble_slab",
+    "tfc:rock/raw/marble_stairs",
+    "tfc:rock/raw/marble_wall",
+    "tfc:rock/smooth/marble_slab",
+    "tfc:rock/smooth/marble_stairs",
+    "tfc:rock/smooth/marble_wall"
   ]
 }

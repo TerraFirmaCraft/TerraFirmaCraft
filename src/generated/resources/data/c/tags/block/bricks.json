@@ -26,6 +26,7 @@
     "#c:bricks/mud",
     "#c:bricks/mossy",
     "#c:bricks/cracked",
-    "#c:bricks/chiseled"
+    "#c:bricks/chiseled",
+    "#c:bricks/aqueduct"
   ]
 }

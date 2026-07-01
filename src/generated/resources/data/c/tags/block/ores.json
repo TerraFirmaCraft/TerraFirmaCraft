@@ -614,6 +614,7 @@
     "#c:ores/sapphire",
     "#c:ores/topaz",
     "#c:ores/salt",
-    "#c:ores/coal"
+    "#c:ores/coal",
+    "#c:ores/flint"
   ]
 }

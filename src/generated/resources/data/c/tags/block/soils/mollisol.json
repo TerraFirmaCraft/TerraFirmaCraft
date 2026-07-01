@@ -1,11 +1,10 @@
 {
   "values": [
-    "tfc:clay/mollisol",
     "tfc:clay_duff/mollisol",
     "tfc:clay_grass/mollisol",
     "tfc:coarse_dirt/mollisol",
-    "tfc:dirt/mollisol",
     "tfc:drying_bricks/mollisol",
+    "tfc:dirt/mollisol",
     "tfc:duff/mollisol",
     "tfc:farmland/mollisol",
     "tfc:grass/mollisol",

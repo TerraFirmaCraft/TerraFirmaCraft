@@ -1,6 +1,5 @@
 {
   "values": [
-    "tfc:candle_cake/yellow",
     "tfc:candle/yellow",
     "tfc:alabaster/bricks/yellow_slab",
     "tfc:alabaster/bricks/yellow_stairs",
@@ -10,8 +9,8 @@
     "tfc:alabaster/polished/yellow_stairs",
     "tfc:alabaster/polished/yellow_wall",
     "tfc:alabaster/raw/yellow",
-    "tfc:ceramic/large_vessel/yellow",
     "tfc:candle_cake/yellow",
+    "tfc:ceramic/large_vessel/yellow",
     "tfc:wattle/yellow"
   ]
 }

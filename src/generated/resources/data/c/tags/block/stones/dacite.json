@@ -4,6 +4,13 @@
     "tfc:rock/loose/dacite",
     "tfc:rock/mossy_loose/dacite",
     "tfc:rock/raw/dacite",
-    "tfc:rock/spike/dacite"
+    "tfc:rock/smooth/dacite",
+    "tfc:rock/spike/dacite",
+    "tfc:rock/raw/dacite_slab",
+    "tfc:rock/raw/dacite_stairs",
+    "tfc:rock/raw/dacite_wall",
+    "tfc:rock/smooth/dacite_slab",
+    "tfc:rock/smooth/dacite_stairs",
+    "tfc:rock/smooth/dacite_wall"
   ]
 }

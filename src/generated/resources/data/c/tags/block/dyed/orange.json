@@ -1,6 +1,5 @@
 {
   "values": [
-    "tfc:candle_cake/orange",
     "tfc:candle/orange",
     "tfc:alabaster/bricks/orange_slab",
     "tfc:alabaster/bricks/orange_stairs",
@@ -10,8 +9,8 @@
     "tfc:alabaster/polished/orange_stairs",
     "tfc:alabaster/polished/orange_wall",
     "tfc:alabaster/raw/orange",
-    "tfc:ceramic/large_vessel/orange",
     "tfc:candle_cake/orange",
+    "tfc:ceramic/large_vessel/orange",
     "tfc:wattle/orange"
   ]
 }

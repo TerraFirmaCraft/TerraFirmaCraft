@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#c:plants/tall",
+    "#c:plants/small",
+    "#c:plants/water",
+    "#c:plants/salt_water",
+    "#c:plants/hanging",
+    "#c:plants/wall",
+    "#c:plants/floating"
+  ]
+}
