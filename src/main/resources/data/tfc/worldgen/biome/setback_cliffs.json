@@ -34,7 +34,7 @@
     "creature": [
       {
         "type": "tfc:crocodile",
-        "weight": 20,
+        "weight": 10,
         "minCount": 1,
         "maxCount": 1
       },
@@ -125,6 +125,18 @@
       {
         "type": "tfc:sabertooth",
         "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:cougar",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:panther",
+        "weight": 1,
         "minCount": 1,
         "maxCount": 1
       },
