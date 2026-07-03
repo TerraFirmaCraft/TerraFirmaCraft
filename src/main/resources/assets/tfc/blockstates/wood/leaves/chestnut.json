@@ -1,8 +1,36 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "variants": {
-    "": {
-      "model": "tfc:block/wood/leaves/chestnut_dynamic"
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "tfc:block/wood/leaves/chestnut_empty"
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "tfc:block/wood/leaves/chestnut_dynamic_0",
+          "weight": 8
+        },
+        {
+          "model": "tfc:block/wood/leaves/chestnut_dynamic_1",
+          "weight": 5
+        },
+        {
+          "model": "tfc:block/wood/leaves/chestnut_dynamic_2",
+          "weight": 5
+        },
+        {
+          "model": "tfc:block/wood/leaves/chestnut_dynamic_3",
+          "weight": 5
+        },
+        {
+          "model": "tfc:block/wood/leaves/chestnut_dynamic_4",
+          "weight": 12
+        }
+      ]
     }
-  }
+  ]
 }

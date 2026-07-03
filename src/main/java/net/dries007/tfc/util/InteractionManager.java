@@ -113,6 +113,10 @@ public final class InteractionManager
     /**
      * Registers TFC's interactions.
      */
+
+    // Can't register 2 interactions per item, so this one needs to be called by the salad one
+    final static BlockItemPlacement WOODEN_BOWL = new BlockItemPlacement(Items.BOWL, TFCBlocks.WOODEN_BOWL);
+
     public static void registerDefaultInteractions()
     {
         registerBlock(Ingredient.of(TFCTags.Items.THATCH_BED_HIDES), (stack, context) -> {
@@ -307,8 +311,6 @@ public final class InteractionManager
             }
         }
 
-        registerBlock(new BlockItemPlacement(Items.BOWL, TFCBlocks.WOODEN_BOWL));
-
         // Knapping
         final KeyedIngredient knapping = KeyedIngredient.of(
             stack -> KnappingType.get(stack) != null,
@@ -365,13 +367,24 @@ public final class InteractionManager
             // Only open salads when shift key is down
             // Normally when consuming bowl food (like salads), you'll be holding right click down causing the salad gui to immediately open
             // That feels bad to use, so we require shift to open salads - better in the common case
-            if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown())
+            if (context.getPlayer() != null)
             {
-                if (context.getPlayer() instanceof ServerPlayer player)
+                if (context.getPlayer().isShiftKeyDown())
                 {
-                    player.openMenu(TFCContainerProviders.SALAD);
+                    if (context.getPlayer() instanceof ServerPlayer player)
+                    {
+                        player.openMenu(TFCContainerProviders.SALAD);
+                    }
+                    return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
                 }
-                return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
+                else
+                {
+                    ItemStack itemStack = context.getItemInHand();
+                    if (itemStack.is(WOODEN_BOWL.getItem()))
+                    {
+                        return WOODEN_BOWL.onItemUse(itemStack, context);
+                    }
+                }
             }
             return InteractionResult.PASS;
         });

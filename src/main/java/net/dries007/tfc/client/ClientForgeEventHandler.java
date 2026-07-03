@@ -224,6 +224,10 @@ public class ClientForgeEventHandler
             {
                 GlassblowingOverlays.render(minecraft, graphics);
             }
+            if (event.getName() == VanillaGuiLayers.CROSSHAIR)
+            {
+                CrateOverlays.render(minecraft, graphics);
+            }
         }
     }
 

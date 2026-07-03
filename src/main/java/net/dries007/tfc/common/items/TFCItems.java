@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -207,6 +209,7 @@ public final class TFCItems
 
     public static final ItemId EMPTY_JAR_WITH_LID = register("empty_jar_with_lid");
     public static final ItemId JAR_LID = register("jar_lid");
+    public static final ItemId BASKET = register("basket", () -> new TFCBundleItem(new Properties().component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY)));
     public static final ItemId BONE_NEEDLE = register("bone_needle", () -> new Item(new Properties().durability(64)));
     public static final ItemId BLANK_DISC = register("blank_disc");
     public static final ItemId BLUBBER = register("blubber");

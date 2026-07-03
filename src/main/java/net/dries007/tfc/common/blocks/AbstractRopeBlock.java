@@ -37,13 +37,16 @@ public class AbstractRopeBlock extends HorizontalDirectionalBlock implements IFl
             return;
         // Note: the anchor block itself is intentionally not added here. It is only the seed for the walk - the caller
         // is responsible for converting it back into a spike - so only the rope blocks hanging from it are recalled.
+        // Every rope in a line faces back towards its anchor (FACING == dir.getOpposite(), see RopeItem.placeRopes), so
+        // we only continue across ropes with that facing. This stops the walk from straying into an unrelated rope line
+        // that this one merely points at but is not physically connected to.
         while (true)
         {
             if (state.getBlock() instanceof HangingRopeBlock)
             {
                 pos = pos.below();
                 state = level.getBlockState(pos);
-                if (isRope(state))
+                if (continuesLine(state, dir))
                 {
                     positions.add(pos);
                 }
@@ -56,11 +59,11 @@ public class AbstractRopeBlock extends HorizontalDirectionalBlock implements IFl
             {
                 pos = pos.relative(dir);
                 state = level.getBlockState(pos);
-                if (!isRope(state))
+                if (!continuesLine(state, dir))
                 {
                     pos = pos.below();
                     state = level.getBlockState(pos);
-                    if (isRope(state))
+                    if (continuesLine(state, dir))
                     {
                         positions.add(pos);
                     }
@@ -77,13 +80,19 @@ public class AbstractRopeBlock extends HorizontalDirectionalBlock implements IFl
         }
         positions.reversed().forEach(ropePos -> {
             level.destroyBlock(ropePos, false);
-            ItemHandlerHelper.giveItemToPlayer(player, TFCItems.ROPE.get().getDefaultInstance());
+            if (!player.isCreative())
+                ItemHandlerHelper.giveItemToPlayer(player, TFCItems.ROPE.get().getDefaultInstance());
         });
     }
 
     private static boolean isRope(BlockState state)
     {
         return state.getBlock() instanceof AbstractRopeBlock;
+    }
+
+    private static boolean continuesLine(BlockState state, Direction dir)
+    {
+        return isRope(state) && state.getValue(FACING) == dir.getOpposite();
     }
 
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;

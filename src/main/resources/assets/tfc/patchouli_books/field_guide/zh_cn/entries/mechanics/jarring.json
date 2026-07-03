@@ -29,11 +29,6 @@
     {
       "type": "patchouli:text",
       "text": "罐子可以用$(item)$(k:key.use)$()放置在固体表面上。一个方块上最多可以放置四个任意类型的罐子。"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/shelf/oak",
-      "text": "$(thing)架子$()可以挂在实心墙壁上。物品（包括罐子）可以放在架子上方，只需拿着物品（包括罐子）右键点击架子或其下方即可。"
     }
   ],
   "read_by_default": true

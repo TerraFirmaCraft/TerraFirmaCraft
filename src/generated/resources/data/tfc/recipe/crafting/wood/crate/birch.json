@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "tfc:wood/lumber/birch"
+    },
+    "S": {
+      "item": "tfc:wood/stripped_log/birch"
+    }
+  },
+  "pattern": [
+    "SLS",
+    "L L",
+    "SLS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wood/crate/birch"
+  }
+}

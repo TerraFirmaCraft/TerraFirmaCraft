@@ -262,12 +262,6 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random, ModelData modelData, @Nullable RenderType renderType)
     {
-        final BakedModelData bakedData = modelData.get(BakedModelData.PROPERTY);
-        if (bakedData != null)
-        {
-            return bakedData.toRender.getQuads(state, direction, random, modelData, renderType);
-        }
-
         return getModelFromBlockState(state, null).getQuads(state, direction, random, modelData, renderType);
     }
 

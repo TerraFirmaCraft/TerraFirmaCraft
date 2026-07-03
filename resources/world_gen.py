@@ -2005,7 +2005,7 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
 }
 
 LAND_CREATURES: Dict[str, Dict[str, Any]] = {
-    'crocodile': spawner('tfc:crocodile', min_count=1, max_count=1, weight=20),
+    'crocodile': spawner('tfc:crocodile', min_count=1, max_count=1, weight=10),
     'pig': spawner('tfc:pig', min_count=1, max_count=4),
     'cow': spawner('tfc:cow', min_count=1, max_count=4),
     'goat': spawner('tfc:goat', min_count=1, max_count=4),
@@ -2021,6 +2021,8 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1, weight=2),
     'lion': spawner('tfc:lion', min_count=1, max_count=3, weight=2),
     'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1, weight=2),
+    'cougar': spawner('tfc:cougar', min_count=1, max_count=1, weight=2),
+    'panther': spawner('tfc:panther', min_count=1, max_count=1, weight=1),
     'tiger': spawner('tfc:tiger', min_count=1, max_count=1, weight=2),
     'rabbit': spawner('tfc:rabbit', min_count=1, max_count=4, weight=3),
     'fox': spawner('tfc:fox', min_count=1, max_count=1),

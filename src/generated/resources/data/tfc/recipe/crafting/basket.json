@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "tag": "minecraft:flowers"
+    },
+    "M": {
+      "tag": "tfc:mud"
+    },
+    "S": {
+      "item": "tfc:straw"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "SMS",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:basket"
+  }
+}

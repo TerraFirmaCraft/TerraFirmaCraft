@@ -180,7 +180,8 @@ public class RopeItem extends Item
                         if (!hangingRope.canSurvive(level, cursor))
                             return;
                         level.setBlockAndUpdate(cursor, hangingRope);
-                        stack.shrink(1);
+                        if (!player.isCreative())
+                            stack.shrink(1);
                         cursor.move(0, -1, 0);
                     }
                     else
@@ -188,7 +189,8 @@ public class RopeItem extends Item
                         if (!slopeRope.canSurvive(level, cursor))
                             return;
                         level.setBlockAndUpdate(cursor, slopeRope);
-                        stack.shrink(1);
+                        if (!player.isCreative())
+                            stack.shrink(1);
                         previous = RopeState.SLOPE;
                         cursor.move(dir);
                     }
@@ -207,7 +209,8 @@ public class RopeItem extends Item
                             if (!hangingRope.canSurvive(level, cursor))
                                 return;
                             level.setBlockAndUpdate(cursor, hangingRope);
-                            stack.shrink(1);
+                            if (!player.isCreative())
+                                stack.shrink(1);
                             cursor.move(0, -1, 0);
                             previous = RopeState.VERTICAL;
                         }
@@ -216,7 +219,8 @@ public class RopeItem extends Item
                             if (!slopeRope.canSurvive(level, cursor))
                                 return;
                             level.setBlockAndUpdate(cursor, slopeRope);
-                            stack.shrink(1);
+                            if (!player.isCreative())
+                                stack.shrink(1);
                             previous = RopeState.SLOPE;
                             cursor.move(dir);
                         }
@@ -230,7 +234,8 @@ public class RopeItem extends Item
                             if (!horizontalRope.canSurvive(level, cursor))
                                 return;
                             level.setBlockAndUpdate(cursor, horizontalRope);
-                            stack.shrink(1);
+                            if (!player.isCreative())
+                                stack.shrink(1);
                             previous = RopeState.HORIZONTAL;
                             cursor.move(dir);
                         }

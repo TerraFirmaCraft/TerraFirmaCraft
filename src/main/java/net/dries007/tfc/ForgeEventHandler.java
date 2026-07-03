@@ -634,7 +634,7 @@ public final class ForgeEventHandler
             level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.CERAMIC_BOWL.get())
+        else if (block == TFCBlocks.CERAMIC_BOWL.get() || block == TFCBlocks.WOODEN_BOWL.get())
         {
             if (level.getBlockEntity(pos) instanceof BowlBlockEntity bowl)
             {

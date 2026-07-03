@@ -376,6 +376,7 @@ public final class TFCCreativeTabs
             //out.accept(PatchouliIntegration.getFieldGuide(true));
         }
 
+        out.accept(TFCItems.BASKET);
         out.accept(TFCItems.FIRESTARTER);
         out.accept(TFCItems.FLINT_AND_PYRITE);
         out.accept(Items.FLINT_AND_STEEL);
