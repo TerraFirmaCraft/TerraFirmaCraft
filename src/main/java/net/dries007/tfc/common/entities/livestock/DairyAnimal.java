@@ -42,7 +42,7 @@ public abstract class DairyAnimal extends ProducingMammal
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         final ItemStack held = player.getItemInHand(hand);
-        final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(held, Capabilities.FLUID_ITEM);
+        final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(held.copyWithCount(1), Capabilities.FLUID_ITEM);
 
         if (!held.isEmpty() && destFluidItemHandler != null)
         {
