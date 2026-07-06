@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -32,6 +33,32 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
     protected void addTags(HolderLookup.Provider provider)
     {
         // ===== Vanilla Tags ===== //
+        tag(EntityTypeTags.IMPACT_PROJECTILES)
+            .add(TFCEntities.THROWN_JAVELIN.get());
+        tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)
+            .add(TFCEntities.POLAR_BEAR.get())
+            .add(TFCEntities.PENGUIN.get());
+        tag(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+            .addTag(WATER_AMBIENT)
+            .add(
+                TFCEntities.MANATEE.get(),
+                TFCEntities.SQUID.get(),
+                TFCEntities.OCTOPOTEUTHIS.get(),
+                TFCEntities.TURTLE.get()
+            );
+        tag(EntityTypeTags.AQUATIC)
+            .addTags(WATER_AMBIENT, WATER_CREATURES)
+            .add(TFCEntities.TURTLE.get());
+        tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+            .addTag(OVIPAROUS_ANIMALS)
+            .add(
+                TFCEntities.GROUSE.get(),
+                TFCEntities.PHEASANT.get(),
+                TFCEntities.TURKEY.get(),
+                TFCEntities.PEAFOWL.get(),
+                TFCEntities.CAT.get(),
+                TFCEntities.OCELOT.get()
+            );
 
         // ===== Common Tags ===== //
         final var boatsTag = tag(Tags.EntityTypes.BOATS);

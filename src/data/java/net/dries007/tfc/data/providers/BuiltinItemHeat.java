@@ -143,7 +143,7 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         addAndMeltIron(Items.IRON_DOOR, 200);
         addAndMeltIron(TFCBlocks.BLAST_FURNACE, 3200);
         addAndMeltIron(TFCBlocks.FIREPROOF_DOOR, 600);
-        addAndMeltIron(TFCBlocks.STOVE, 1600);
+        addAndMeltIron(TFCBlocks.STOVE, 800);
 
         addAndMelt(Items.BELL, Metal.GOLD, 100);
         addAndMelt(TFCBlocks.BRONZE_BELL, Metal.BRONZE, 100);

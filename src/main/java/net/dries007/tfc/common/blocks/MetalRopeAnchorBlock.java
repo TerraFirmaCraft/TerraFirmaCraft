@@ -7,9 +7,13 @@
 package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -44,6 +48,21 @@ public class MetalRopeAnchorBlock extends RopeAnchorBlock
             return InteractionResult.PASS;
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos)
+    {
+        return super.updateShape(state.setValue(HAS_ROPE, isRopeAttached(level, pos, state)), direction, neighborState, level, pos, neighborPos);
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+    {
+        if (state.getValue(HAS_ROPE) && !isRopeAttached(level, pos, state))
+        {
+            level.setBlockAndUpdate(pos, state.setValue(HAS_ROPE, false));
+        }
     }
 
     @Override

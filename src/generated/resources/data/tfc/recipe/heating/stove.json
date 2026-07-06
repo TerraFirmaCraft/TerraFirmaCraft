@@ -4,7 +4,7 @@
     "item": "tfc:stove"
   },
   "result_fluid": {
-    "amount": 1600,
+    "amount": 800,
     "id": "tfc:metal/cast_iron"
   },
   "temperature": 1535.0

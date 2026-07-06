@@ -140,6 +140,12 @@ public interface HeatRecipes extends Recipes
             new FluidStack(meltFluidFor(metal), units(type)),
             temperatureOf(metal), new ItemStack(item).isDamageableItem()))));
 
+        add(nameOf(TFCBlocks.STEEL_ROPE_ANCHOR), new HeatingRecipe(
+            Ingredient.of(TFCBlocks.STEEL_ROPE_ANCHOR),
+            ItemStackProvider.empty(),
+            new FluidStack(meltFluidFor(Metal.STEEL), units(Metal.ItemType.ROD) * 2),
+            temperatureOf(Metal.STEEL), new ItemStack(TFCBlocks.STEEL_ROPE_ANCHOR).isDamageableItem()));
+
         Helpers.mapOf(Metal.class, Metal::allParts, metal ->
             Helpers.mapOf(Wood.class, wood -> TFCItems.HANGING_SIGNS.get(wood).get(metal)).values()
         ).forEach((metal, items) -> add("hanging_sign/" + metal.name(), new HeatingRecipe(

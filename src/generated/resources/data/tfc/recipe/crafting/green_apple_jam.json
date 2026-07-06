@@ -3,7 +3,15 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "tfc:jar/green_apple_unsealed"
+      "type": "tfc:and",
+      "children": [
+        {
+          "item": "tfc:jar/green_apple_unsealed"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
     }
   ],
   "result": {

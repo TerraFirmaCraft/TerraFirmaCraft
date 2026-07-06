@@ -37,7 +37,6 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
-import net.dries007.tfc.common.items.TFCBundleItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingCraftingRecipe;
 import net.dries007.tfc.common.recipes.FoodCombiningCraftingRecipe;
@@ -654,7 +653,7 @@ public interface CraftingRecipes extends Recipes
 
         TFCItems.JAM.forEach((food, item) ->
             recipe()
-                .input(TFCItems.UNSEALED_FRUIT_PRESERVES.get(food))
+                .input(notRotten(Ingredient.of(TFCItems.UNSEALED_FRUIT_PRESERVES.get(food))))
                 .shapeless(item));
 
         replace("activator_rail")
@@ -1049,7 +1048,7 @@ public interface CraftingRecipes extends Recipes
             .input('M', FluidContentIngredient.of(Fluids.WATER, 100))
             .input('S', TFCTags.Items.SWEETENERS)
             .input('E', notRotten(Ingredient.of(Items.EGG)))
-            .input('F', TFCTags.Items.FLOUR)
+            .input('F', notRotten(Ingredient.of(TFCTags.Items.FLOUR)))
             .pattern(" M ", "SES", "FFF")
             .shaped(TFCBlocks.CAKE);
         recipe()

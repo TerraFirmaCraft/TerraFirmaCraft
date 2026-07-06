@@ -14,7 +14,15 @@
       ]
     },
     "F": {
-      "tag": "c:foods/flour"
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "c:foods/flour"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
     },
     "M": {
       "type": "tfc:fluid_content",
