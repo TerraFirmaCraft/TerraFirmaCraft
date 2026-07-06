@@ -1,9 +1,9 @@
 {
   "values": [
-    "tfc:food/grain_salad",
-    "tfc:food/fruit_salad",
-    "tfc:food/vegetables_salad",
-    "tfc:food/protein_salad",
-    "tfc:food/dairy_salad"
+    "#c:foods/grain_salad",
+    "#c:foods/fruit_salad",
+    "#c:foods/vegetables_salad",
+    "#c:foods/protein_salad",
+    "#c:foods/dairy_salad"
   ]
 }

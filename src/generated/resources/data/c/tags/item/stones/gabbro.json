@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/gabbro",
+    "tfc:rock/loose/gabbro",
+    "tfc:rock/mossy_loose/gabbro",
+    "tfc:rock/raw/gabbro",
+    "tfc:rock/smooth/gabbro",
+    "tfc:rock/spike/gabbro",
+    "tfc:rock/raw/gabbro_slab",
+    "tfc:rock/raw/gabbro_stairs",
+    "tfc:rock/raw/gabbro_wall",
+    "tfc:rock/smooth/gabbro_slab",
+    "tfc:rock/smooth/gabbro_stairs",
+    "tfc:rock/smooth/gabbro_wall"
+  ]
+}

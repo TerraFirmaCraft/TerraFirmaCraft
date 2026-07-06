@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/shale",
+    "tfc:rock/loose/shale",
+    "tfc:rock/mossy_loose/shale",
+    "tfc:rock/raw/shale",
+    "tfc:rock/smooth/shale",
+    "tfc:rock/spike/shale",
+    "tfc:rock/raw/shale_slab",
+    "tfc:rock/raw/shale_stairs",
+    "tfc:rock/raw/shale_wall",
+    "tfc:rock/smooth/shale_slab",
+    "tfc:rock/smooth/shale_stairs",
+    "tfc:rock/smooth/shale_wall"
+  ]
+}

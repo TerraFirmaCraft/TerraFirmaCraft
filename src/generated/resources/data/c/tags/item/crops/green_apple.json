@@ -1,5 +1,7 @@
 {
   "values": [
+    "tfc:plant/green_apple_leaves",
+    "tfc:plant/green_apple_sapling",
     "tfc:food/green_apple"
   ]
 }

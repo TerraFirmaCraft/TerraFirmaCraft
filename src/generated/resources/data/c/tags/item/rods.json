@@ -19,6 +19,7 @@
     "#c:rods/black_steel",
     "#c:rods/blue_steel",
     "#c:rods/red_steel",
-    "#c:rods/all_metal"
+    "#c:rods/all_metal",
+    "#c:rods/wooden"
   ]
 }

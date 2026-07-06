@@ -1,12 +1,12 @@
 {
   "values": [
     "tfc:mud_brick/entisol",
-    "tfc:mud_brick/alfisol",
-    "tfc:mud_brick/podzol",
-    "tfc:mud_brick/andisol",
-    "tfc:mud_brick/fluvisol",
     "tfc:mud_brick/aridisol",
     "tfc:mud_brick/oxisol",
+    "tfc:mud_brick/fluvisol",
+    "tfc:mud_brick/andisol",
+    "tfc:mud_brick/podzol",
+    "tfc:mud_brick/alfisol",
     "tfc:mud_brick/mollisol"
   ]
 }

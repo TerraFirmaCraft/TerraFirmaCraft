@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/slate",
+    "tfc:rock/loose/slate",
+    "tfc:rock/mossy_loose/slate",
+    "tfc:rock/raw/slate",
+    "tfc:rock/smooth/slate",
+    "tfc:rock/spike/slate",
+    "tfc:rock/raw/slate_slab",
+    "tfc:rock/raw/slate_stairs",
+    "tfc:rock/raw/slate_wall",
+    "tfc:rock/smooth/slate_slab",
+    "tfc:rock/smooth/slate_stairs",
+    "tfc:rock/smooth/slate_wall"
+  ]
+}

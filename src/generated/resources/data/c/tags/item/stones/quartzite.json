@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/quartzite",
+    "tfc:rock/loose/quartzite",
+    "tfc:rock/mossy_loose/quartzite",
+    "tfc:rock/raw/quartzite",
+    "tfc:rock/smooth/quartzite",
+    "tfc:rock/spike/quartzite",
+    "tfc:rock/raw/quartzite_slab",
+    "tfc:rock/raw/quartzite_stairs",
+    "tfc:rock/raw/quartzite_wall",
+    "tfc:rock/smooth/quartzite_slab",
+    "tfc:rock/smooth/quartzite_stairs",
+    "tfc:rock/smooth/quartzite_wall"
+  ]
+}

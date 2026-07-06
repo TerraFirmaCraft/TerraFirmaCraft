@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:metal/grate/bismuth_bronze",
+    "tfc:metal/grate/black_bronze",
+    "tfc:metal/grate/bronze",
+    "tfc:metal/grate/copper",
+    "tfc:metal/grate/wrought_iron",
+    "tfc:metal/grate/steel",
+    "tfc:metal/grate/black_steel",
+    "tfc:metal/grate/blue_steel",
+    "tfc:metal/grate/red_steel"
+  ]
+}

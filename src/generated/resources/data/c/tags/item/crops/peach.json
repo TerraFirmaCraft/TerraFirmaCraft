@@ -1,5 +1,7 @@
 {
   "values": [
+    "tfc:plant/peach_leaves",
+    "tfc:plant/peach_sapling",
     "tfc:food/peach"
   ]
 }

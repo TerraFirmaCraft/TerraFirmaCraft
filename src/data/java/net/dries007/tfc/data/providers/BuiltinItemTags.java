@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +38,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.internal.NeoForgeItemTagsProvider;
@@ -44,10 +46,13 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.DecorationBlockHolder;
 import net.dries007.tfc.common.blocks.GroundcoverBlockType;
+import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.Plant;
+import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -100,6 +105,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
+
+        final Function<String, TagKey<Item>> c = path -> commonTagOf(Registries.ITEM, path);
+
         // ===== Copy BlockTags => ItemTags ===== //
 
         // Uses the vanilla and neo builders to establish which tags need to be copied,
@@ -133,44 +141,742 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         // ===== Common Tags ===== //
 
-        final Function<String, TagKey<Item>> c = path -> commonTagOf(Registries.ITEM, path);
+        //Copy Common Tags Block => Item
 
+        //Anvils
+        for (Metal metal : Metal.values())
+        {
+            if (metal.allParts())
+            {
+                copyCommon("anvils/" + metal.getSerializedName());
+            }
+        }
+
+        copyCommon("anvils/stone");
+        copyCommon("anvils");
+
+        //Barrels
+
+        copyCommon("barrels/wooden");
+        copyCommon("barrels");
+
+        // Bars
+
+        for (Metal metal : Metal.values())
+        {
+            if (metal.allParts())
+            {
+                copyCommon("bars/" + metal.getSerializedName());
+            }
+        }
+
+        copyCommon("bars");
+
+        // Bookshelves
+
+        copyCommon("bookshelves/wooden");
+        copyCommon("bookshelves");
+
+        // Brick Blocks
+
+        final TagKey<Item> brickBlocksTag = c.apply("brick_blocks");
+
+        for (Rock rock : Rock.values())
+        {
+            final String rockName = rock.getSerializedName();
+            final TagKey<Item> rockBrickBlocksTag = c.apply("brick_blocks/" + rockName);
+
+            copyCommon(
+                "bricks/" + rockName,
+                "brick_blocks/" + rockName
+            );
+
+            tag(brickBlocksTag)
+                .addTag(rockBrickBlocksTag);
+        }
+
+        copyCommon("bricks/chiseled", "brick_blocks/chiseled");
+        copyCommon("bricks/cracked", "brick_blocks/cracked");
+        copyCommon("bricks/fire", "brick_blocks/fire");
+        copyCommon("bricks/mossy", "brick_blocks/mossy");
+        copyCommon("bricks/mud", "brick_blocks/mud");
+        copyCommon("bricks/plaster", "brick_blocks/plaster");
+
+        tag(brickBlocksTag).addTags(
+            c.apply("brick_blocks/chiseled"),
+            c.apply("brick_blocks/cracked"),
+            c.apply("brick_blocks/fire"),
+            c.apply("brick_blocks/mossy"),
+            c.apply("brick_blocks/mud"),
+            c.apply("brick_blocks/plaster")
+        );
+
+        // Buttons
+
+        copyCommon("buttons/stone");
+        copyCommon("buttons/wooden");
+        copyCommon("buttons");
+
+        // Chains
+
+        for (Metal metal : Metal.values())
+        {
+            if (metal.allParts())
+            {
+                copyCommon("chains/" + metal.getSerializedName());
+            }
+        }
+
+        copyCommon("chains");
+
+        // Clays
+
+        copyCommon("clays/fire");
+        copyCommon("clays/hardened");
+        copyCommon("clays/kaolin");
+        copyCommon("clays/normal");
+        copyCommon("clays");
+
+        // Cobblestones
+
+        for (Rock rock : Rock.values())
+        {
+            copyCommon("cobblestones/" + rock.getSerializedName());
+        }
+
+        copyCommon("cobblestones/mossy");
+        copyCommon("cobblestones");
+
+        // Corals
+
+        copyCommon("corals/plant");
+        copyCommon("corals/block");
+
+        // Crates
+
+        copyCommon("crates/wooden");
+        copyCommon("crates");
+
+        // Crops
+
+        copyCommon("crops");
+
+        // Doors
+
+        copyCommon("doors/iron");
+        copyCommon("doors/wooden");
+        copyCommon("doors");
+
+        // Flowers
+
+        copyCommon("flowers/small");
+        copyCommon("flowers/tall");
+        copyCommon("flowers");
+
+        // Grates
+
+        for (Metal metal : Metal.values())
+        {
+            if (metal.allParts())
+            {
+                copyCommon("grates/" + metal.getSerializedName());
+            }
+        }
+
+        copyCommon("grates/normal");
+        copyCommon("grates/exposed");
+        copyCommon("grates/oxidized");
+        copyCommon("grates/weathered");
+        copyCommon("grates");
+
+        // Gravels
+
+        for (Rock rock : Rock.values())
+        {
+            copyCommon("gravels/" + rock.getSerializedName());
+        }
+
+        copyCommon("gravels");
+
+        //Ice
+
+        copyCommon("ice");
+
+        // Icicle
+
+        copyCommon("icicle");
+
+        // Magma
+
+        copyCommon("magma");
+
+        // Lamps
+
+        for (Metal metal : Metal.values())
+        {
+            if (metal.allParts())
+            {
+                copyCommon("lamps/" + metal.getSerializedName());
+            }
+        }
+
+        copyCommon("lamps");
+
+        // Leaves
+
+        copyCommon("leaves");
+
+        // Logs
+
+        for (Wood wood : Wood.VALUES)
+        {
+            copyCommon("logs/" + wood.getSerializedName());
+        }
+
+        copyCommon("logs");
+
+        // Peat
+
+        copyCommon("peat");
+
+        // Pipes
+
+        copyCommon("pipes/fluid");
+        copyCommon("pipes");
+
+        // Planks
+
+        for (Wood wood : Wood.VALUES)
+        {
+            copyCommon("planks/" + wood.getSerializedName());
+        }
+
+        copyCommon("planks");
+
+        // Player Workstations
+
+        copyCommon("player_workstations/anvil");
+        copyCommon("player_workstations/blast_furnace");
+        copyCommon("player_workstations/bloomery");
+        copyCommon("player_workstations/composter");
+        copyCommon("player_workstations/crucible");
+        copyCommon("player_workstations/firebox");
+        copyCommon("player_workstations/firepit");
+        copyCommon("player_workstations/grill");
+        copyCommon("player_workstations/lectern");
+        copyCommon("player_workstations/loom");
+        copyCommon("player_workstations/mold_table");
+        copyCommon("player_workstations/nest_box");
+        copyCommon("player_workstations/quern");
+        copyCommon("player_workstations/scribing_table");
+        copyCommon("player_workstations/sewing_table");
+        copyCommon("player_workstations/stove");
+
+        // Pressure Plates
+
+        copyCommon("pressure_plates/stone");
+        copyCommon("pressure_plates/wooden");
+        copyCommon("pressure_plates");
+
+        // Rods
+
+        copyCommon("rods/wooden");
+        copyCommon("rods");
+
+        // Sands
+
+        copyCommon("sands/hematitic");
+        copyCommon("sands/olivine");
+        copyCommon("sands/silica");
+        copyCommon("sands/volcanic");
+
+        for (SandBlockType sand : SandBlockType.values())
+        {
+            copyCommon(
+                "sands/" + sand.name().toLowerCase(Locale.ROOT)
+            );
+        }
+
+        // Sandstone
+
+        copyCommon("sandstone/walls");
+
+        for (SandBlockType sand : SandBlockType.values())
+        {
+            final String sandName =
+                sand.name().toLowerCase(Locale.ROOT);
+
+            copyCommon("sandstone/" + sandName + "_blocks");
+            copyCommon("sandstone/" + sandName + "_slabs");
+            copyCommon("sandstone/" + sandName + "_stairs");
+            copyCommon("sandstone/" + sandName + "_walls");
+        }
+
+        copyCommon("sandstone");
+
+        copyCommon("sands");
+
+        // Soils
+
+        for (SoilBlockType.Variant soil : SoilBlockType.Variant.values())
+        {
+            copyCommon(
+                "soils/" + soil.name().toLowerCase(Locale.ROOT)
+            );
+        }
+
+        copyCommon("soils");
+
+        // Stones
+
+        for (Rock rock : Rock.values())
+        {
+            copyCommon(
+                "stones/" + rock.getSerializedName()
+            );
+        }
+
+        copyCommon("stones/hardened");
+        copyCommon("stones/loose");
+        copyCommon("stones/mossy");
+        copyCommon("stones/raw");
+        copyCommon("stones/smooth");
+        copyCommon("stones/spike");
+
+        copyCommon("stones");
+
+        // Saplings
+
+        for (Wood wood : Wood.VALUES)
+        {
+            copyCommon("saplings/" + wood.getSerializedName());
+        }
+
+        copyCommon("saplings");
+
+        // Shelves
+
+        copyCommon("shelves/brick");
+        copyCommon("shelves/wooden");
+        copyCommon("shelves");
+
+        // Sluices
+
+        copyCommon("sluices/wooden");
+        copyCommon("sluices");
+
+        // Storage Blocks
+
+        copyCommon("storage_blocks/glue");
+        copyCommon("storage_blocks/thatch");
+        copyCommon("storage_blocks");
+
+        // Stripped Logs
+
+        for (Wood wood : Wood.VALUES)
+        {
+            copyCommon(
+                "stripped_logs/" + wood.getSerializedName()
+            );
+        }
+
+        copyCommon("stripped_logs");
+
+        // Stripped Wood
+
+        for (Wood wood : Wood.VALUES)
+        {
+            copyCommon(
+                "stripped_woods/" + wood.getSerializedName()
+            );
+        }
+
+        copyCommon("stripped_woods");
+
+        // Supports
+
+        final TagKey<Item> supportsTag = c.apply("supports");
+        final TagKey<Item> woodenSupportsTag = c.apply("supports/wooden");
+
+        tag(woodenSupportsTag)
+            .add(TFCItems.SUPPORTS);
+
+        tag(supportsTag)
+            .addTag(woodenSupportsTag);
+
+        // Thatch
+
+        copyCommon("thatch");
+
+        // Tool Racks
+
+        copyCommon("tool_racks/wooden");
+        copyCommon("tool_racks");
+
+        // Trapdoors
+
+        copyCommon("trapdoors/wooden");
+        copyCommon("trapdoors/metal");
+        copyCommon("trapdoors");
+
+        // Wattle
+
+        copyCommon("wattle");
+
+        // Woods
+
+        for (Wood wood : Wood.VALUES)
+        {
+            copyCommon(
+                "woods/" + wood.getSerializedName()
+            );
+        }
+
+        copyCommon("woods");
         //-----Block Item Tags------//
 
-        tag(Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
-        tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
+        // Candles
+
+        final TagKey<Item> candlesTag = c.apply("candles");
+
+        TFCBlocks.DYED_CANDLE.forEach((color, candle) -> {
+            final TagKey<Item> coloredCandlesTag =
+                c.apply("candles/" + color.getSerializedName());
+
+            tag(coloredCandlesTag)
+                .add(candle);
+
+            tag(candlesTag)
+                .addTag(coloredCandlesTag);
+
+            tag(c.apply("dyed/" + color.getSerializedName()))
+                .add(candle);
+        });
+
+        tag(candlesTag)
+            .add(TFCBlocks.CANDLE);
+
+        //Corals
+
+        tag(c.apply("corals/living"))
+            .add(
+                Blocks.BRAIN_CORAL_BLOCK,
+                Blocks.BUBBLE_CORAL_BLOCK,
+                Blocks.FIRE_CORAL_BLOCK,
+                Blocks.HORN_CORAL_BLOCK,
+                Blocks.TUBE_CORAL_BLOCK
+            )
+            .add(TFCBlocks.CORAL, Coral.BlockType.CORAL);
+
+        tag(c.apply("corals/dead"))
+            .add(
+                Blocks.DEAD_BRAIN_CORAL_BLOCK,
+                Blocks.DEAD_BUBBLE_CORAL_BLOCK,
+                Blocks.DEAD_FIRE_CORAL_BLOCK,
+                Blocks.DEAD_HORN_CORAL_BLOCK,
+                Blocks.DEAD_TUBE_CORAL_BLOCK
+            )
+            .add(TFCBlocks.CORAL, Coral.BlockType.DEAD_CORAL);
+
+        tag(c.apply("corals")).addTags(
+            c.apply("corals/plant"),
+            c.apply("corals/block"),
+            c.apply("corals/living"),
+            c.apply("corals/dead")
+        );
+
+        //Crops
+
+        TFCBlocks.FRUIT_TREE_LEAVES.forEach((crop, leaves) -> {
+            final TagKey<Item> cropTag =
+                c.apply("crops/" + crop.getSerializedName());
+
+            tag(cropTag).add(
+                leaves,
+                TFCBlocks.FRUIT_TREE_SAPLINGS.get(crop)
+            );
+        });
+
+        TFCBlocks.SPREADING_BUSHES.forEach((crop, bush) -> {
+            final TagKey<Item> cropTag =
+                c.apply("crops/" + crop.name().toLowerCase(Locale.ROOT));
+
+            tag(cropTag)
+                .add(bush);
+        });
+
+        TFCBlocks.STATIONARY_BUSHES.forEach((crop, bush) -> {
+            final TagKey<Item> cropTag =
+                c.apply("crops/" + crop.name().toLowerCase(Locale.ROOT));
+
+            tag(cropTag)
+                .add(bush);
+        });
+
+        tag(c.apply("crops/cranberry"))
+            .add(TFCBlocks.CRANBERRY_BUSH);
+
+        tag(c.apply("crops/apple")).addTags(
+            c.apply("crops/green_apple"),
+            c.apply("crops/red_apple")
+        );
+
+        tag(c.apply("crops/banana"))
+            .add(TFCBlocks.BANANA_SAPLING);
+
+        tag(c.apply("crops/melon"))
+            .add(
+                TFCBlocks.MELON,
+                TFCBlocks.WILD_CROPS.get(Crop.MELON)
+            )
+            .add(Food.MELON_SLICE);
+
+        tag(c.apply("crops/pumpkin"))
+            .add(
+                TFCBlocks.PUMPKIN,
+                TFCBlocks.WILD_CROPS.get(Crop.PUMPKIN)
+            )
+            .add(Food.PUMPKIN_CHUNKS);
+
+        copyCommon("crops");
+
+        // Dyed
+
+        for (DyeColor color : DyeColor.values())
+        {
+            final TagKey<Item> dyedTag = c.apply("dyed/" + color.getSerializedName());
+
+            final DecorationBlockHolder brickDecorations =
+                TFCBlocks.ALABASTER_BRICK_DECORATIONS.get(color);
+
+            final DecorationBlockHolder polishedDecorations =
+                TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color);
+
+            tag(dyedTag)
+                // Dyed block items
+                .add(
+                    TFCBlocks.RAW_ALABASTER.get(color),
+                    TFCBlocks.POLISHED_ALABASTER.get(color),
+
+                    brickDecorations.slab(),
+                    brickDecorations.stair(),
+                    brickDecorations.wall(),
+
+                    polishedDecorations.slab(),
+                    polishedDecorations.stair(),
+                    polishedDecorations.wall(),
+
+                    TFCBlocks.GLAZED_LARGE_VESSELS.get(color),
+                    TFCBlocks.STAINED_WATTLE.get(color)
+                )
+
+                // Dyed standalone items
+                .add(
+                    TFCItems.GLAZED_VESSELS.get(color),
+                    TFCItems.UNFIRED_GLAZED_LARGE_VESSELS.get(color),
+                    TFCItems.UNFIRED_GLAZED_VESSELS.get(color),
+                    TFCItems.WINDMILL_BLADES.get(color)
+                );
+
+            tag(Tags.Items.DYED)
+                .addTag(dyedTag);
+        }
+
+        //Fertilizers
 
         tag(Tags.Items.FERTILIZERS)
             .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.GUANO));
 
-        //Rods
+        // Foods
 
-        tag(Tags.Items.RODS_WOODEN).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
+        tag(c.apply("foods/cake"))
+            .add(TFCBlocks.CAKE);
 
-        //Sands
+        tag(c.apply("foods/edible_when_placed"))
+            .add(TFCBlocks.CAKE);
 
-        tag(Tags.Items.SANDS).addTags(
-            SILICA_SAND,
-            OLIVINE_SAND,
-            HEMATITIC_SAND,
-            VOLCANIC_SAND
+        tag(c.apply("cake"))
+            .add(TFCBlocks.CAKE);
+
+        tag(c.apply("foods")).addTags(
+            c.apply("foods/cake"),
+            c.apply("foods/edible_when_placed")
         );
 
-        tag(SILICA_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.WHITE)
+        // Ores
+
+        final Set<String> oreTagsToCopy = new LinkedHashSet<>();
+
+        for (OreDeposit deposit : OreDeposit.values())
+        {
+            final String metalName = switch (deposit)
+            {
+                case CASSITERITE -> "tin";
+                case NATIVE_COPPER -> "copper";
+                case NATIVE_GOLD -> "gold";
+                case NATIVE_SILVER -> "silver";
+                default -> deposit.name().toLowerCase(Locale.ROOT);
+            };
+
+            oreTagsToCopy.add("ores/" + metalName + "/small");
+            oreTagsToCopy.add("ores/" + metalName);
+        }
+
+        for (Ore ore : Ore.values())
+        {
+            if (ore.isGraded())
+            {
+                final Metal metal = ore.metal();
+                final String metalName =
+                    metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
+
+                for (Ore.Grade grade : Ore.Grade.values())
+                {
+                    oreTagsToCopy.add(
+                        "ores/" + metalName + "/" +
+                            grade.name().toLowerCase(Locale.ROOT)
+                    );
+                }
+
+                oreTagsToCopy.add("ores/" + metalName);
+            }
+            else if (ore.hasBlock())
+            {
+                oreTagsToCopy.add(
+                    "ores/" + ore.name().toLowerCase(Locale.ROOT)
+                );
+            }
+        }
+
+        for (Ore ore : TFCBlocks.SMALL_ORES.keySet())
+        {
+            final Metal metal = ore.metal();
+            final String metalName =
+                metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
+
+            oreTagsToCopy.add("ores/" + metalName + "/small");
+            oreTagsToCopy.add("ores/" + metalName);
+        }
+
+        oreTagsToCopy.forEach(this::copyCommon);
+
+        copyCommon("ores/coal");
+
+        tag(c.apply("ores/salt"))
+            .add(TFCBlocks.HALITE);
+
+        tag(c.apply("ores/flint"))
+            .add(Items.FLINT)
+            .add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.GRAVEL);
+
+        copyCommon("ores");
+
+
+        // Ores in Ground
+        copyCommon("ores_in_ground/gravel");
+
+        for (Rock rock : Rock.values())
+        {
+            copyCommon(
+                "ores_in_ground/" + rock.getSerializedName()
+            );
+        }
+
+        copyCommon("ores_in_ground");
+
+        // Plants
+
+        final TagKey<Item> plantsTag = c.apply("plants");
+        final TagKey<Item> smallPlantsTag = c.apply("plants/small");
+        final TagKey<Item> tallPlantsTag = c.apply("plants/tall");
+        final TagKey<Item> waterPlantsTag = c.apply("plants/water");
+        final TagKey<Item> saltWaterPlantsTag = c.apply("plants/salt_water");
+        final TagKey<Item> floatingPlantsTag = c.apply("plants/floating");
+        final TagKey<Item> hangingPlantsTag = c.apply("plants/hanging");
+        final TagKey<Item> wallPlantsTag = c.apply("plants/wall");
+
+        tag(smallPlantsTag)
+            .addOnly(
+                TFCBlocks.PLANTS,
+                plant -> plant.needsItem() && plant.isSmallPlant()
+            )
+            .add(
+                TFCBlocks.ASPEN_KRUMMHOLZ,
+                TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ,
+                TFCBlocks.PINE_KRUMMHOLZ,
+                TFCBlocks.SPRUCE_KRUMMHOLZ,
+                TFCBlocks.WHITE_CEDAR_KRUMMHOLZ
+            );
+
+        tag(tallPlantsTag)
+            .addOnly(
+                TFCBlocks.PLANTS,
+                plant -> plant.needsItem() && plant.isTallPlant()
+            );
+
+        tag(waterPlantsTag)
+            .addOnly(
+                TFCBlocks.PLANTS,
+                plant -> plant.needsItem() && plant.isFreshWaterPlant()
+            );
+
+        tag(saltWaterPlantsTag)
+            .addOnly(
+                TFCBlocks.PLANTS,
+                plant -> plant.needsItem() && plant.isSaltWaterPlant()
+            );
+
+        tag(floatingPlantsTag)
+            .addOnly(
+                TFCBlocks.PLANTS,
+                plant -> plant.needsItem() && plant.isSurfaceWaterPlant()
+            );
+
+        tag(hangingPlantsTag)
+            .addOnly(
+                TFCBlocks.PLANTS,
+                plant -> plant.needsItem() && plant.isHangingPlant()
+            );
+
+        tag(wallPlantsTag)
+            .addOnly(
+                TFCBlocks.PLANTS,
+                plant -> plant.needsItem() && plant.isWallPlant()
+            );
+
+        tag(plantsTag)
+            .addOnly(TFCBlocks.PLANTS, Plant::needsItem)
+            .add(
+                TFCBlocks.ASPEN_KRUMMHOLZ,
+                TFCBlocks.DOUGLAS_FIR_KRUMMHOLZ,
+                TFCBlocks.PINE_KRUMMHOLZ,
+                TFCBlocks.SPRUCE_KRUMMHOLZ,
+                TFCBlocks.WHITE_CEDAR_KRUMMHOLZ
+            );
+
+        //Player Workstations
+
+        tag( c.apply("player_workstations")).addTags(
+            Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES,
+            c.apply("player_workstations/anvil"),
+            c.apply("player_workstations/blast_furnace"),
+            c.apply("player_workstations/bloomery"),
+            c.apply("player_workstations/composter"),
+            c.apply("player_workstations/crucible"),
+            c.apply("player_workstations/firebox"),
+            c.apply("player_workstations/firepit"),
+            c.apply("player_workstations/grill"),
+            c.apply("player_workstations/lectern"),
+            c.apply("player_workstations/loom"),
+            c.apply("player_workstations/mold_table"),
+            c.apply("player_workstations/nest_box"),
+            c.apply("player_workstations/quern"),
+            c.apply("player_workstations/scribing_table"),
+            c.apply("player_workstations/sewing_table"),
+            c.apply("player_workstations/stove")
         );
-        tag(OLIVINE_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.GREEN),
-            TFCBlocks.SAND.get(SandBlockType.BROWN)
-        );
-        tag(HEMATITIC_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.YELLOW),
-            TFCBlocks.SAND.get(SandBlockType.RED),
-            TFCBlocks.SAND.get(SandBlockType.PINK)
-        );
-        tag(VOLCANIC_SAND).add(
-            TFCBlocks.SAND.get(SandBlockType.BLACK)
-        );
+
+        //Raw Materials
 
         for (var entry : TFCBlocks.SMALL_ORES.entrySet())
         {
@@ -183,6 +889,44 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             tag(Tags.Items.RAW_MATERIALS)
                 .addTag(c.apply(tagName));
         }
+
+        // Signs
+
+        final TagKey<Item> signsTag = c.apply("signs");
+        final TagKey<Item> woodenSignsTag = c.apply("signs/wooden");
+        final TagKey<Item> hangingSignsTag = c.apply("signs/hanging");
+
+        tag(woodenSignsTag)
+            .add(TFCItems.SIGNS);
+
+        for (Metal metal : Metal.values())
+        {
+            if (metal.allParts())
+            {
+                final String metalName = metal == Metal.WROUGHT_IRON
+                    ? "iron"
+                    : metal.getSerializedName();
+
+                final TagKey<Item> metalHangingSignsTag =
+                    c.apply("signs/hanging/" + metalName);
+
+                tag(metalHangingSignsTag)
+                    .add(TFCItems.HANGING_SIGNS, metal);
+
+                tag(hangingSignsTag)
+                    .addTag(metalHangingSignsTag);
+            }
+        }
+
+        tag(signsTag).addTags(
+            hangingSignsTag,
+            woodenSignsTag
+        );
+
+        //Storage Blocks
+
+        tag(Tags.Items.STORAGE_BLOCKS_WHEAT).remove(Items.HAY_BLOCK);
+        tag(Tags.Items.STORAGE_BLOCKS_SLIME).remove(Items.SLIME_BLOCK);
 
         //-----Item Tags-----//
 
@@ -1747,6 +2491,16 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
     private void copy(TagKey<Block> blockTag, TagKey<Item> itemTag)
     {
         this.tagsToCopy.put(blockTag, itemTag);
+    }
+
+    private void copyCommon(String path)
+    {
+        copy(commonTagOf(Registries.BLOCK, path), commonTagOf(Registries.ITEM, path));
+    }
+
+    private void copyCommon(String blockPath, String itemPath)
+    {
+        copy(commonTagOf(Registries.BLOCK, blockPath), commonTagOf(Registries.ITEM, itemPath));
     }
 
     @Override

@@ -773,13 +773,18 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             final DecorationBlockHolder polishedDecorations = TFCBlocks.ALABASTER_POLISHED_DECORATIONS.get(color);
 
             tag(colorDyedTag).add(
-                brickDecorations.slab().key(),         brickDecorations.stair().key(),
-                brickDecorations.wall().key(),         TFCBlocks.POLISHED_ALABASTER.get(color).key(),
-                polishedDecorations.slab().key(),      polishedDecorations.stair().key(),
-                polishedDecorations.wall().key(),      rawAlabaster.key(),
+                brickDecorations.slab().key(),
+                brickDecorations.stair().key(),
+                brickDecorations.wall().key(),
+                TFCBlocks.POLISHED_ALABASTER.get(color).key(),
+                polishedDecorations.slab().key(),
+                polishedDecorations.stair().key(),
+                polishedDecorations.wall().key(),
+                rawAlabaster.key(),
                 TFCBlocks.DYED_CANDLE_CAKES.get(color).key(),
                 TFCBlocks.GLAZED_LARGE_VESSELS.get(color).key(),
-                TFCBlocks.STAINED_WATTLE.get(color).key()
+                TFCBlocks.STAINED_WATTLE.get(color).key(),
+                TFCBlocks.ALABASTER_BRICKS.get(color).key()
             );
 
             tag(dyedTag)
@@ -904,7 +909,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         //Ice
 
         tag(c.apply("ice"))
-            .add(TFCBlocks.SEA_ICE);
+            .add(TFCBlocks.SEA_ICE)
+            .add(Blocks.ICE);
 
         //Icicle
 
@@ -1074,13 +1080,11 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         tag(Tags.Blocks.ORE_RATES_SINGULAR).add(
             TFCBlocks.LIGNITE,
-            TFCBlocks.BITUMINOUS_COAL,
-            TFCBlocks.HALITE,
-            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.FLINT)
+            TFCBlocks.BITUMINOUS_COAL
         );
 
         tag(Tags.Blocks.ORE_RATES_DENSE).add(
-            TFCBlocks.HALITE, TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.SALT_LICK)
+            TFCBlocks.HALITE
         );
 
         tag(Tags.Blocks.ORE_RATES_SPARSE)
@@ -1140,6 +1144,9 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
 
         tag(c.apply("pipes/fluid"))
             .add(TFCBlocks.STEEL_PIPE);
+
+        tag(c.apply("pipes"))
+            .addTag(c.apply("pipes/fluid"));
 
         //Planks
         //c:planks, c:planks/WOOD
@@ -1655,9 +1662,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
         tag(c.apply("wattle"))
             .add(TFCBlocks.STAINED_WATTLE)
             .add(TFCBlocks.WATTLE, TFCBlocks.UNSTAINED_WATTLE);
-
-        //Woods
-        //c:woods, c:woods/WOOD
 
         //Woods
         //c:woods, c:woods/WOOD

@@ -1,15 +1,15 @@
 {
   "values": [
-    "tfc:food/blackberry",
-    "tfc:food/blueberry",
-    "tfc:food/bunchberry",
-    "tfc:food/cloudberry",
-    "tfc:food/cranberry",
-    "tfc:food/elderberry",
-    "tfc:food/gooseberry",
-    "tfc:food/raspberry",
-    "tfc:food/snowberry",
-    "tfc:food/strawberry",
-    "tfc:food/wintergreen_berry"
+    "#c:foods/blackberry",
+    "#c:foods/blueberry",
+    "#c:foods/bunchberry",
+    "#c:foods/cloudberry",
+    "#c:foods/cranberry",
+    "#c:foods/elderberry",
+    "#c:foods/gooseberry",
+    "#c:foods/raspberry",
+    "#c:foods/snowberry",
+    "#c:foods/strawberry",
+    "#c:foods/wintergreen_berry"
   ]
 }

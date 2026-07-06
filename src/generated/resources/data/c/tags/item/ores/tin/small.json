@@ -1,0 +1,26 @@
+{
+  "values": [
+    "tfc:deposit/cassiterite/granite",
+    "tfc:deposit/cassiterite/diorite",
+    "tfc:deposit/cassiterite/gabbro",
+    "tfc:deposit/cassiterite/shale",
+    "tfc:deposit/cassiterite/claystone",
+    "tfc:deposit/cassiterite/limestone",
+    "tfc:deposit/cassiterite/conglomerate",
+    "tfc:deposit/cassiterite/dolomite",
+    "tfc:deposit/cassiterite/chert",
+    "tfc:deposit/cassiterite/chalk",
+    "tfc:deposit/cassiterite/tuff",
+    "tfc:deposit/cassiterite/rhyolite",
+    "tfc:deposit/cassiterite/basalt",
+    "tfc:deposit/cassiterite/andesite",
+    "tfc:deposit/cassiterite/dacite",
+    "tfc:deposit/cassiterite/quartzite",
+    "tfc:deposit/cassiterite/slate",
+    "tfc:deposit/cassiterite/phyllite",
+    "tfc:deposit/cassiterite/schist",
+    "tfc:deposit/cassiterite/gneiss",
+    "tfc:deposit/cassiterite/marble",
+    "tfc:ore/small_cassiterite"
+  ]
+}

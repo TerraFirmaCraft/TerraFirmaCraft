@@ -1,0 +1,28 @@
+{
+  "values": [
+    "tfc:deposit/native_copper/granite",
+    "tfc:deposit/native_copper/diorite",
+    "tfc:deposit/native_copper/gabbro",
+    "tfc:deposit/native_copper/shale",
+    "tfc:deposit/native_copper/claystone",
+    "tfc:deposit/native_copper/limestone",
+    "tfc:deposit/native_copper/conglomerate",
+    "tfc:deposit/native_copper/dolomite",
+    "tfc:deposit/native_copper/chert",
+    "tfc:deposit/native_copper/chalk",
+    "tfc:deposit/native_copper/tuff",
+    "tfc:deposit/native_copper/rhyolite",
+    "tfc:deposit/native_copper/basalt",
+    "tfc:deposit/native_copper/andesite",
+    "tfc:deposit/native_copper/dacite",
+    "tfc:deposit/native_copper/quartzite",
+    "tfc:deposit/native_copper/slate",
+    "tfc:deposit/native_copper/phyllite",
+    "tfc:deposit/native_copper/schist",
+    "tfc:deposit/native_copper/gneiss",
+    "tfc:deposit/native_copper/marble",
+    "tfc:ore/small_native_copper",
+    "tfc:ore/small_malachite",
+    "tfc:ore/small_tetrahedrite"
+  ]
+}

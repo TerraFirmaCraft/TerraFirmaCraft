@@ -1,0 +1,31 @@
+{
+  "values": [
+    "#c:brick_blocks/granite",
+    "#c:brick_blocks/diorite",
+    "#c:brick_blocks/gabbro",
+    "#c:brick_blocks/shale",
+    "#c:brick_blocks/claystone",
+    "#c:brick_blocks/limestone",
+    "#c:brick_blocks/conglomerate",
+    "#c:brick_blocks/dolomite",
+    "#c:brick_blocks/chert",
+    "#c:brick_blocks/chalk",
+    "#c:brick_blocks/tuff",
+    "#c:brick_blocks/rhyolite",
+    "#c:brick_blocks/basalt",
+    "#c:brick_blocks/andesite",
+    "#c:brick_blocks/dacite",
+    "#c:brick_blocks/quartzite",
+    "#c:brick_blocks/slate",
+    "#c:brick_blocks/phyllite",
+    "#c:brick_blocks/schist",
+    "#c:brick_blocks/gneiss",
+    "#c:brick_blocks/marble",
+    "#c:brick_blocks/chiseled",
+    "#c:brick_blocks/cracked",
+    "#c:brick_blocks/fire",
+    "#c:brick_blocks/mossy",
+    "#c:brick_blocks/mud",
+    "#c:brick_blocks/plaster"
+  ]
+}

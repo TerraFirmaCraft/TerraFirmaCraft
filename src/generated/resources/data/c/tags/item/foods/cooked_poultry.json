@@ -1,11 +1,11 @@
 {
   "values": [
-    "tfc:food/cooked_chicken",
-    "tfc:food/cooked_quail",
-    "tfc:food/cooked_pheasant",
-    "tfc:food/cooked_grouse",
-    "tfc:food/cooked_turkey",
-    "tfc:food/cooked_peafowl",
-    "tfc:food/cooked_duck"
+    "#c:foods/cooked_chicken",
+    "#c:foods/cooked_quail",
+    "#c:foods/cooked_pheasant",
+    "#c:foods/cooked_grouse",
+    "#c:foods/cooked_turkey",
+    "#c:foods/cooked_peafowl",
+    "#c:foods/cooked_duck"
   ]
 }

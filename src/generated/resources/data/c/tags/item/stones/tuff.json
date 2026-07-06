@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/tuff",
+    "tfc:rock/loose/tuff",
+    "tfc:rock/mossy_loose/tuff",
+    "tfc:rock/raw/tuff",
+    "tfc:rock/smooth/tuff",
+    "tfc:rock/spike/tuff",
+    "tfc:rock/raw/tuff_slab",
+    "tfc:rock/raw/tuff_stairs",
+    "tfc:rock/raw/tuff_wall",
+    "tfc:rock/smooth/tuff_slab",
+    "tfc:rock/smooth/tuff_stairs",
+    "tfc:rock/smooth/tuff_wall"
+  ]
+}

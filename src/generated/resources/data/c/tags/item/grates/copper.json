@@ -1,0 +1,8 @@
+{
+  "values": [
+    "tfc:metal/grate/copper",
+    "tfc:metal/exposed_grate/copper",
+    "tfc:metal/oxidized_grate/copper",
+    "tfc:metal/weathered_grate/copper"
+  ]
+}

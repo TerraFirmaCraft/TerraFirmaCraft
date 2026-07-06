@@ -1,9 +1,5 @@
 {
   "values": [
-    "tfc:bucket/jellyfish",
-    "tfc:bucket/tropical_fish",
-    "tfc:bucket/pufferfish",
-    "tfc:bucket/cod",
     "tfc:bucket/bluegill",
     "tfc:bucket/crappie",
     "tfc:bucket/lake_trout",
@@ -19,6 +15,10 @@
     "tfc:bucket/spotted_gudgeon",
     "tfc:bucket/peacock_bass",
     "tfc:bucket/pacu",
-    "tfc:bucket/red_piranha"
+    "tfc:bucket/red_piranha",
+    "tfc:bucket/jellyfish",
+    "tfc:bucket/tropical_fish",
+    "tfc:bucket/pufferfish",
+    "tfc:bucket/cod"
   ]
 }
