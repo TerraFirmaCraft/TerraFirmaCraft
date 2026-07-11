@@ -296,15 +296,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.UNFIRED_CHANNEL)
             .add(TFCItems.UNFIRED_MOLD_TABLE);
 
-        tag(TOOL_RACKS).add(TFCBlocks.WOODS, Wood.BlockType.TOOL_RACK);
         tag(SCRIBING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.SCRIBING_TABLE);
         tag(SEWING_TABLES).add(TFCBlocks.WOODS, Wood.BlockType.SEWING_TABLE);
-        tag(SLUICES).add(TFCBlocks.WOODS, Wood.BlockType.SLUICE);
-        tag(LOOMS).add(TFCBlocks.WOODS, Wood.BlockType.LOOM);
-        tag(BARRELS).add(TFCBlocks.WOODS, Wood.BlockType.BARREL);
         tag(TWIGS).add(TFCBlocks.WOODS, Wood.BlockType.TWIG);
         tag(ItemTags.BOATS).add(TFCItems.BOATS);
-        copy(TFCTags.Blocks.LAMPS, LAMPS);
         tag(MINECARTS)
             .add(Items.MINECART)
             .add(TFCItems.CHEST_MINECARTS);
@@ -328,6 +323,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 TFCItems.LATTICE_WINDMILL_BLADE,
                 TFCItems.RUSTIC_WINDMILL_BLADE);
         tag(AXLES).add(TFCBlocks.WOODS, Wood.BlockType.AXLE);
+        tag(BLADED_AXLES).add(TFCBlocks.WOODS, Wood.BlockType.BLADED_AXLE);
+        tag(ENCASED_AXLES).add(TFCBlocks.WOODS, Wood.BlockType.ENCASED_AXLE);
         tag(GEAR_BOXES).add(TFCBlocks.WOODS, Wood.BlockType.GEAR_BOX);
         tag(CLUTCHES).add(TFCBlocks.WOODS, Wood.BlockType.CLUTCH);
         tag(SUPPORT_BEAMS).add(TFCItems.SUPPORTS);
@@ -824,6 +821,13 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         copy(TFCTags.Blocks.ANVILS, ANVILS);
         copy(TFCTags.Blocks.WORKBENCHES, WORKBENCHES);
         copy(TFCTags.Blocks.AQUEDUCTS, AQUEDUCTS);
+        copy(TFCTags.Blocks.LAMPS, LAMPS);
+        copy(TFCTags.Blocks.BARS, BARS);
+        copy(TFCTags.Blocks.TOOL_RACKS, TOOL_RACKS);
+        copy(TFCTags.Blocks.SLUICES, SLUICES);
+        copy(TFCTags.Blocks.LOOMS, LOOMS);
+        copy(TFCTags.Blocks.SHELVES, SHELVES);
+        copy(TFCTags.Blocks.BARRELS, BARRELS);
 
         copy(TFCTags.Blocks.FALLEN_LEAVES, FALLEN_LEAVES);
         copy(TFCTags.Blocks.CLAY_INDICATORS, CLAY_INDICATORS);

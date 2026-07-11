@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:metal/bars/bismuth_bronze",
+    "tfc:metal/bars/black_bronze",
+    "tfc:metal/bars/bronze",
+    "tfc:metal/bars/copper",
+    "tfc:metal/bars/wrought_iron",
+    "tfc:metal/bars/steel",
+    "tfc:metal/bars/black_steel",
+    "tfc:metal/bars/blue_steel",
+    "tfc:metal/bars/red_steel"
+  ]
+}

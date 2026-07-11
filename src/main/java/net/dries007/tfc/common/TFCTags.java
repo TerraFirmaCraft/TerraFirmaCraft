@@ -76,13 +76,21 @@ public class TFCTags
         public static final TagKey<Block> EXTRA_CAVE_CARVER_REPLACEABLE = tag("extra_cave_carver_replaceable");
 
         public static final TagKey<Block> LAMPS = tag("lamps");
+        public static final TagKey<Block> BARS = tag("bars");
         public static final TagKey<Block> ANVILS = tag("anvils");
 
         /** Logs that can be cut down in entire trees via axes */
         public static final TagKey<Block> LOGS_THAT_LOG = tag("logs_that_log");
         public static final TagKey<Block> WORKBENCHES = tag("workbenches");
+        public static final TagKey<Block> TOOL_RACKS = tag("tool_racks");
+        public static final TagKey<Block> SLUICES = tag("sluices");
+        public static final TagKey<Block> LOOMS = tag("looms");
+        public static final TagKey<Block> SHELVES = tag("shelves");
+        /** Tag for only TFC barrels, unlike {@link Tags.Blocks#BARRELS} which includes vanilla type barrels */
+        public static final TagKey<Block> BARRELS = tag("barrels");
         public static final TagKey<Block> SUPPORT_BEAMS = tag("support_beams");
         public static final TagKey<Block> AQUEDUCTS = tag("aqueducts");
+        public static final TagKey<Block> LARGE_VESSELS = tag("large_vessels");
 
         /** Blocks that are valid for covering a charcoal pit, in addition to the default non-flammable solid blocks */
         public static final TagKey<Block> CHARCOAL_PIT_INSULATION = tag("charcoal_pit_insulation");
@@ -438,13 +446,14 @@ public class TFCTags
         public static final TagKey<Item> COLORED_LARGE_VESSELS = tag("colored_large_vessels");
 
         // Collections of blocks / items
-        public static final TagKey<Item> TOOL_RACKS = tag("tool_racks");
+        public static final TagKey<Item> TOOL_RACKS = tag(Blocks.TOOL_RACKS);
         public static final TagKey<Item> SCRIBING_TABLES = tag("scribing_tables");
         public static final TagKey<Item> SEWING_TABLES = tag("sewing_tables");
-        public static final TagKey<Item> SLUICES = tag("sluices");
-        public static final TagKey<Item> LOOMS = tag("looms");
+        public static final TagKey<Item> SLUICES = tag(Blocks.SLUICES);
+        public static final TagKey<Item> LOOMS = tag(Blocks.LOOMS);
+        public static final TagKey<Item> SHELVES = tag(Blocks.SHELVES);
         /** Tag for only TFC barrels, unlike {@link Tags.Items#BARRELS} which includes vanilla type barrels */
-        public static final TagKey<Item> BARRELS = tag("barrels");
+        public static final TagKey<Item> BARRELS = tag(Blocks.BARRELS);
         public static final TagKey<Item> TWIGS = tag("twigs");
         public static final TagKey<Item> VESSELS = tag("vessels");
         public static final TagKey<Item> UNFIRED_VESSELS = tag("unfired_vessels");
@@ -456,6 +465,7 @@ public class TFCTags
         public static final TagKey<Item> UNFIRED_MOLDS = tag("unfired_molds");
         public static final TagKey<Item> FIRED_MOLDS = tag("fired_molds");
         public static final TagKey<Item> LAMPS = tag(Blocks.LAMPS);
+        public static final TagKey<Item> BARS = tag(Blocks.BARS);
         public static final TagKey<Item> MINECARTS = commonTag("minecarts");
         public static final TagKey<Item> ORE_PIECES = tag("ore_pieces");
         public static final TagKey<Item> SMALL_ORE_PIECES = tag("small_ore_pieces");
@@ -465,9 +475,11 @@ public class TFCTags
          */
         public static final TagKey<Item> WINDMILL_BLADES = tag("windmill_blades");
         public static final TagKey<Item> AXLES = tag("axles");
+        public static final TagKey<Item> BLADED_AXLES = tag("bladed_axles");
+        public static final TagKey<Item> ENCASED_AXLES = tag("encased_axles");
         public static final TagKey<Item> GEAR_BOXES = tag("gear_boxes");
         public static final TagKey<Item> CLUTCHES = tag("clutches");
-        public static final TagKey<Item> SUPPORT_BEAMS = tag("support_beams");
+        public static final TagKey<Item> SUPPORT_BEAMS = tag(Blocks.SUPPORT_BEAMS);
         public static final TagKey<Item> LUMBER = tag("lumber");
 
         // Common Tags

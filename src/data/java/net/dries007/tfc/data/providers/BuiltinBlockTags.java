@@ -465,14 +465,23 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.FIRE_BRICKS);
 
         tag(LAMPS).add(TFCBlocks.METALS, Metal.BlockType.LAMP);
+        tag(BARS).add(TFCBlocks.METALS, Metal.BlockType.BARS);
         tag(ANVILS).add(TFCBlocks.METALS, Metal.BlockType.ANVIL).add(TFCBlocks.ROCK_ANVILS);
 
         tag(LOGS_THAT_LOG).addTag(BlockTags.LOGS);
         tag(WORKBENCHES).add(TFCBlocks.WOODS, Wood.BlockType.WORKBENCH);
+        tag(TOOL_RACKS).add(TFCBlocks.WOODS, Wood.BlockType.TOOL_RACK);
+        tag(SLUICES).add(TFCBlocks.WOODS, Wood.BlockType.SLUICE);
+        tag(LOOMS).add(TFCBlocks.WOODS, Wood.BlockType.LOOM);
+        tag(SHELVES).add(TFCBlocks.WOODS, Wood.BlockType.SHELF);
+        tag(BARRELS).add(TFCBlocks.WOODS, Wood.BlockType.BARREL);
         tag(SUPPORT_BEAMS)
             .add(TFCBlocks.WOODS, Wood.BlockType.HORIZONTAL_SUPPORT)
             .add(TFCBlocks.WOODS, Wood.BlockType.VERTICAL_SUPPORT);
         tag(AQUEDUCTS).add(TFCBlocks.ROCK_BLOCKS, Rock.BlockType.AQUEDUCT);
+        tag(LARGE_VESSELS)
+            .add(TFCBlocks.LARGE_VESSEL)
+            .add(TFCBlocks.GLAZED_LARGE_VESSELS);
 
         tag(CHARCOAL_PIT_INSULATION).add(
             TFCBlocks.LOG_PILE,
