@@ -127,7 +127,8 @@ public class Dog extends TamableMammal implements VariantHolder<Holder<WolfVaria
         super.createGenes(tag, male);
         if (male instanceof Dog maleDog)
         {
-            this.getVariant().unwrapKey().ifPresent(variant -> tag.putString("variant", variant.location().toString()));
+            Optional<ResourceKey<WolfVariant>> variant = (this.random.nextBoolean() ? maleDog.getVariant() : this.getVariant()).unwrapKey();
+            variant.ifPresent(key -> tag.putString("variant", key.location().toString()));
         }
     }
 

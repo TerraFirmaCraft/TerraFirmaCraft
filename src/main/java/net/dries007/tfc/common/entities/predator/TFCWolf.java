@@ -30,9 +30,13 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ForestType;
 
 import static net.minecraft.world.entity.animal.WolfVariants.*;
 
@@ -89,13 +93,38 @@ public class TFCWolf extends PackPredator implements VariantHolder<Holder<WolfVa
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        // TODO: setup more variants
+        // TODO: setup more variants, replace registry with enum to avoid dealing with registry access, etc?
         Registry<WolfVariant> registry = registryAccess().registryOrThrow(Registries.WOLF_VARIANT);
         final BlockPos pos = blockPosition();
         final ChunkData data = ChunkData.get(level, pos);
+        final ForestType forestType = data.getForestType();
         final float temp = data.getAverageSeaLevelTemp(pos);
+        final float rainfall = data.getAverageRainfall(pos);
+        final float rainVar = data.getRainVariance(pos);
+        final float hemisphereScale = Climate.get(level()).hemisphereScale();
 
-        this.setVariant(registry.getHolderOrThrow(temp < 0 ? SNOWY : temp > 18 ? SPOTTED : PALE));
+        final boolean isInForest = switch (forestType)
+        {
+            case SPARSE, GRASSLAND, SHRUBLAND -> false;
+            default -> true;
+        };
+
+        final KoppenClimateClassification climate = KoppenClimateClassification.classify(temp, rainfall, rainVar, SolarCalculator.getInNorthernHemisphere(pos.getZ(), hemisphereScale));
+
+        ResourceKey<WolfVariant> variant = switch (climate)
+        {
+            case AF, AM -> RUSTY;
+            case AW, AS -> SPOTTED;
+            case BSH, BSK, BWH, BWK -> STRIPED;
+            case CSA, CSB, CSC -> WOODS;
+            case CFA, CFB, CFC -> isInForest ? WOODS : PALE;
+            case CWA, CWB, CWC -> isInForest ? WOODS : PALE;
+            case DFA, DWA, DSA, DFB, DWB, DSB -> isInForest ? BLACK : CHESTNUT;
+            case DFC, DWC, DSC, DFD, DWD, DSD -> isInForest ? ASHEN : SNOWY;
+            case ET, EF -> SNOWY;
+        };
+
+        this.setVariant(registry.getHolderOrThrow(variant));
         return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
     }
 
