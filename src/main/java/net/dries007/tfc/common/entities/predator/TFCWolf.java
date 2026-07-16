@@ -30,7 +30,6 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.minecraft.world.entity.animal.WolfVariants.*;
 
-// TODO: NEED DOG VARIANTS?
 public class TFCWolf extends PackPredator implements VariantHolder<Holder<WolfVariant>>
 {
     private static final EntityDataAccessor<Holder<WolfVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(TFCWolf.class, EntityDataSerializers.WOLF_VARIANT);
