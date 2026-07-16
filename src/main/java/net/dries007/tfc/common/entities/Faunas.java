@@ -46,6 +46,7 @@ import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
 import net.dries007.tfc.common.entities.predator.AmphibiousPredator;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.predator.TFCWolf;
 import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.RammingPrey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
@@ -86,7 +87,7 @@ public class Faunas
     public static final Id<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
     public static final Id<FelinePredator> TIGER = registerAnimal(TFCEntities.TIGER);
     public static final Id<AmphibiousPredator> CROCODILE = registerAmphibiousPredator(TFCEntities.CROCODILE);
-    public static final Id<PackPredator> WOLF = registerAnimal(TFCEntities.WOLF);
+    public static final Id<TFCWolf> WOLF = registerAnimal(TFCEntities.WOLF);
     public static final Id<PackPredator> HYENA = registerAnimal(TFCEntities.HYENA);
     public static final Id<PackPredator> DIREWOLF = registerAnimal(TFCEntities.DIREWOLF);
     public static final Id<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);

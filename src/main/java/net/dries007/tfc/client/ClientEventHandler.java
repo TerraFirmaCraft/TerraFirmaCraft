@@ -236,6 +236,7 @@ import net.dries007.tfc.client.render.entity.TFCPufferfishRenderer;
 import net.dries007.tfc.client.render.entity.TFCSalmonRenderer;
 import net.dries007.tfc.client.render.entity.TFCSquidRenderer;
 import net.dries007.tfc.client.render.entity.TFCTropicalFishRenderer;
+import net.dries007.tfc.client.render.entity.TFCWolfRenderer;
 import net.dries007.tfc.client.render.entity.ThrownJavelinRenderer;
 import net.dries007.tfc.client.screen.AnvilPlanScreen;
 import net.dries007.tfc.client.screen.AnvilScreen;
@@ -638,7 +639,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, SabertoothModel::new, "sabertooth").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.TIGER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TigerModel::new, "tiger").shadow(0.8f).build());
         event.registerEntityRenderer(TFCEntities.CROCODILE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, CrocodileModel::new, "crocodile").shadow(0.8f).build());
-        event.registerEntityRenderer(TFCEntities.WOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCWolfModel::new, "wolf").shadow(0.5f).scale(1.1f).build());
+        event.registerEntityRenderer(TFCEntities.WOLF.get(), ctx -> new TFCWolfRenderer(ctx, new TFCWolfModel(RenderHelpers.bakeSimple(ctx, "wolf"))));
         event.registerEntityRenderer(TFCEntities.HYENA.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, HyenaModel::new, "hyena").shadow(0.5f).scale(1.1f).build());
         event.registerEntityRenderer(TFCEntities.DIREWOLF.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DirewolfModel::new, "direwolf").shadow(0.9f).build());
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
