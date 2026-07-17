@@ -93,25 +93,31 @@ public class TFCWolf extends PackPredator implements VariantHolder<Holder<WolfVa
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        Registry<WolfVariant> registry = registryAccess().registryOrThrow(Registries.WOLF_VARIANT);
-        final BlockPos pos = blockPosition();
+        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+        BlockPos pos = blockPosition();
+        setVariant(getWolfVariantFromClimate(level, pos));
+        return spawnData;
+    }
+
+    private Holder<WolfVariant> getWolfVariantFromClimate(ServerLevelAccessor level, BlockPos pos)
+    {
         final ChunkData data = ChunkData.get(level, pos);
+
         final ForestType forestType = data.getForestType();
         final float temp = data.getAverageSeaLevelTemp(pos);
         final float rainfall = data.getAverageRainfall(pos);
-        final float rainVar = data.getRainVariance(pos);
+        final float rainVariance = data.getRainVariance(pos);
         final float hemisphereScale = Climate.get(level()).hemisphereScale();
 
         final boolean isForested = forestType.getDensity() > 1;
 
-        final KoppenClimateClassification climate = KoppenClimateClassification.classify(temp, rainfall, rainVar, SolarCalculator.getInNorthernHemisphere(pos.getZ(), hemisphereScale));
+        final KoppenClimateClassification climate = KoppenClimateClassification.classify(temp, rainfall, rainVariance, SolarCalculator.getInNorthernHemisphere(pos.getZ(), hemisphereScale));
 
-        ResourceKey<WolfVariant> variant = switch (climate)
+        ResourceKey<WolfVariant> variantKey = switch (climate)
         {
-            // No STRIPED variant
-            case CFA, CFB, CFC -> isForested ? WOODS : PALE; // Subtropical/Oceanic Climates
+            // Missing STRIPED variant
+            case CFA, CFB, CFC, CSA, CSB, CSC -> isForested ? WOODS : PALE; // Subtropical/Oceanic Climates + Mediterranean Climates
             case CWA, CWB, CWC -> isForested ? RUSTY : SPOTTED; // Monsoon-influenced Subtropical Climates
-            case CSA, CSB, CSC -> isForested ? WOODS : PALE; // Mediterranean Climates
             case DFA, DWA, DSA, DFB, DWB, DSB -> isForested ? BLACK : CHESTNUT; // Humid Continental Climates
             case DFC, DWC, DSC, DFD, DWD, DSD -> isForested ? ASHEN : SNOWY; // Subarctic Continental Climates
 
@@ -122,8 +128,7 @@ public class TFCWolf extends PackPredator implements VariantHolder<Holder<WolfVa
             case ET, EF -> SNOWY; // Polar Climates
         };
 
-        this.setVariant(registry.getHolderOrThrow(variant));
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+        return registryAccess().registryOrThrow(Registries.WOLF_VARIANT).getHolderOrThrow(variantKey);
     }
 
     @Override
