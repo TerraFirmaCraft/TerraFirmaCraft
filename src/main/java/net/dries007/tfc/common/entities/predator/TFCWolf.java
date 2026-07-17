@@ -93,7 +93,6 @@ public class TFCWolf extends PackPredator implements VariantHolder<Holder<WolfVa
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        // TODO: setup more variants, replace registry with enum to avoid dealing with registry access, etc?
         Registry<WolfVariant> registry = registryAccess().registryOrThrow(Registries.WOLF_VARIANT);
         final BlockPos pos = blockPosition();
         final ChunkData data = ChunkData.get(level, pos);
@@ -103,25 +102,24 @@ public class TFCWolf extends PackPredator implements VariantHolder<Holder<WolfVa
         final float rainVar = data.getRainVariance(pos);
         final float hemisphereScale = Climate.get(level()).hemisphereScale();
 
-        final boolean isInForest = switch (forestType)
-        {
-            case SPARSE, GRASSLAND, SHRUBLAND -> false;
-            default -> true;
-        };
+        final boolean isForested = forestType.getDensity() > 1;
 
         final KoppenClimateClassification climate = KoppenClimateClassification.classify(temp, rainfall, rainVar, SolarCalculator.getInNorthernHemisphere(pos.getZ(), hemisphereScale));
 
         ResourceKey<WolfVariant> variant = switch (climate)
         {
-            case AF, AM -> RUSTY;
-            case AW, AS -> SPOTTED;
-            case BSH, BSK, BWH, BWK -> STRIPED;
-            case CSA, CSB, CSC -> WOODS;
-            case CFA, CFB, CFC -> isInForest ? WOODS : PALE;
-            case CWA, CWB, CWC -> isInForest ? WOODS : PALE;
-            case DFA, DWA, DSA, DFB, DWB, DSB -> isInForest ? BLACK : CHESTNUT;
-            case DFC, DWC, DSC, DFD, DWD, DSD -> isInForest ? ASHEN : SNOWY;
-            case ET, EF -> SNOWY;
+            // No STRIPED variant
+            case CFA, CFB, CFC -> isForested ? WOODS : PALE; // Subtropical/Oceanic Climates
+            case CWA, CWB, CWC -> isForested ? RUSTY : SPOTTED; // Monsoon-influenced Subtropical Climates
+            case CSA, CSB, CSC -> isForested ? WOODS : PALE; // Mediterranean Climates
+            case DFA, DWA, DSA, DFB, DWB, DSB -> isForested ? BLACK : CHESTNUT; // Humid Continental Climates
+            case DFC, DWC, DSC, DFD, DWD, DSD -> isForested ? ASHEN : SNOWY; // Subarctic Continental Climates
+
+            /* Groups A, B, and E are generally outside the climate range in the fauna definition */
+            case AF, AM -> RUSTY; // Tropical Rainforest/Monsoon Climates
+            case AW, AS -> SPOTTED; // Tropical Savanna Climates
+            case BSH, BSK, BWH, BWK -> STRIPED; // Arid/Semi-arid Climates
+            case ET, EF -> SNOWY; // Polar Climates
         };
 
         this.setVariant(registry.getHolderOrThrow(variant));
