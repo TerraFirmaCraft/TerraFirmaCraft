@@ -481,18 +481,19 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
     protected void updateRecipe()
     {
-        assert level != null;
-
-        final SealedBarrelRecipe oldRecipe = recipe;
-        if (inventory.excess.isEmpty())
+        if (level != null)
         {
-            // Will only work on a recipe as long as the 'excess' is empty
-            recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), inventory, level).orElse(null);
-            if (recipe != null && oldRecipe != recipe && (oldRecipe == null || !oldRecipe.getId().equals(recipe.getId())))
+            final SealedBarrelRecipe oldRecipe = recipe;
+            if (inventory.excess.isEmpty())
             {
-                // The recipe has changed to a new one, so update the recipe ticks
-                recipeTick = Calendars.get(level).getTicks();
-                markForSync();
+                // Will only work on a recipe as long as the 'excess' is empty
+                recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), inventory, level).orElse(null);
+                if (recipe != null && oldRecipe != recipe && (oldRecipe == null || !oldRecipe.getId().equals(recipe.getId())))
+                {
+                    // The recipe has changed to a new one, so update the recipe ticks
+                    recipeTick = Calendars.get(level).getTicks();
+                    markForSync();
+                }
             }
         }
     }
