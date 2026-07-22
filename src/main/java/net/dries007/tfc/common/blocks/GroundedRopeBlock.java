@@ -14,21 +14,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
 
-public class GroundedRopeBlock extends AbstractRopeBlock implements IFluidLoggable, IForgeBlockExtension
+public class GroundedRopeBlock extends AbstractRopeBlock
 {
     public static final BooleanProperty ASCENDING = TFCBlockStateProperties.ASCENDING;
 
@@ -47,7 +44,7 @@ public class GroundedRopeBlock extends AbstractRopeBlock implements IFluidLoggab
     public GroundedRopeBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)).setValue(ASCENDING, false));
+        registerDefaultState(getStateDefinition().any().setValue(ASCENDING, false));
     }
 
     @Override
@@ -109,19 +106,14 @@ public class GroundedRopeBlock extends AbstractRopeBlock implements IFluidLoggab
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
-        BlockState state = super.getStateForPlacement(context);
-        if (state == null)
-            return null;
-
-        state = state.setValue(FACING, context.getHorizontalDirection());
+        final BlockState state = defaultBlockState().setValue(FACING, context.getHorizontalDirection());
         if (isAttached(context.getLevel(), context.getClickedPos(), state.setValue(ASCENDING, false)))
         {
-            return FluidHelpers.fillWithFluid(state.setValue(ASCENDING, false), fluid.getType());
+            return state.setValue(ASCENDING, false);
         }
         if (isAttached(context.getLevel(), context.getClickedPos(), state.setValue(ASCENDING, true)))
         {
-            return FluidHelpers.fillWithFluid(state.setValue(ASCENDING, true), fluid.getType());
+            return state.setValue(ASCENDING, true);
         }
         return null;
     }
@@ -129,10 +121,9 @@ public class GroundedRopeBlock extends AbstractRopeBlock implements IFluidLoggab
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos)
     {
-        FluidHelpers.tickFluid(level, pos, state);
         if (!isAttached(level, pos, state))
         {
-            return level.getFluidState(pos).createLegacyBlock();
+            return Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }

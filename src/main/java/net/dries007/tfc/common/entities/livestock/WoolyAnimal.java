@@ -41,6 +41,12 @@ public abstract class WoolyAnimal extends ProducingMammal implements IShearable
     }
 
     @Override
+    public boolean isReadyForAnimalProduct()
+    {
+        return super.isReadyForAnimalProduct() && getAgeType() == Age.ADULT;
+    }
+
+    @Override
     public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos)
     {
         setProductsCooldown();
@@ -57,7 +63,7 @@ public abstract class WoolyAnimal extends ProducingMammal implements IShearable
     @Override
     public boolean hasProduct()
     {
-        return getProducedTick() <= 0 || getProductsCooldown() <= 0 && getAgeType() == Age.ADULT;
+        return getProducedTick() <= 0 || getProductsCooldown() <= 0;
     }
 
     public ItemStack getWoolItem()

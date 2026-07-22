@@ -82,6 +82,7 @@ import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -328,6 +329,11 @@ public final class Helpers
                         cursor.set(x, y, z);
 
                         final BlockState state = level.getBlockState(cursor);
+
+                        if (state.getBlock() instanceof SnowLayerBlock && Helpers.isEntity(entity, TFCTags.Entities.IGNORES_SNOW))
+                        {
+                            return;
+                        }
 
                         if (state.getBlock() instanceof ISlowEntities slow)
                         {

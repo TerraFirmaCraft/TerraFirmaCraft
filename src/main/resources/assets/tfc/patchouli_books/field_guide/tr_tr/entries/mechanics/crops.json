@@ -1041,7 +1041,7 @@
       "type": "patchouli:text",
       "anchor": "green_bean",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): -2 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 25 - 90 %$(br)$(bold)Kategori$(): Baklagil$(br)$(br)$(bold)$(3)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Taze fasulye, tırmanıcı ve iki blok yüksekliğinde bir ekindir. Taze fasulye tohumları tarım arazisine ekilebilir, bir çubuk mevcutsa iki blok yüksekliğe kadar büyür ve ürün olarak $(thing)Taze Fasulye$() ve $(thing)Taze Fasulye Tohumu$() verir.",
-      "title": "Taze Fasulye"
+      "title": "Green Beans"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1221,7 +1221,7 @@
       "type": "patchouli:text",
       "anchor": "lentil",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): -5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 15 - 50 %$(br)$(bold)Kategori$(): Baklagil$(br)$(br)$(bold)$(3)N: +80 $(bold)$(6)P: 20 $(bold)$(d)K: 20$()$(br)Mercimek, tek blokluk bir ekindir. Mercimek tohumları tarım arazisine ekilebilir ve ürün olarak $(thing)Mercimek$() ve $(thing)Mercimek Tohumu$() verir.",
-      "title": "Mercimek"
+      "title": "Lentils"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1335,7 +1335,7 @@
       "type": "patchouli:text",
       "anchor": "peanut",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): 11 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 20 - 80 %$(br)$(bold)Kategori$(): Baklagil$(br)$(br)$(bold)$(3)N: +90 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Yer fıstığı, tek blokluk bir ekindir. Yer fıstığı tohumları tarım arazisine ekilebilir ve ürün olarak $(thing)Yer Fıstığı$() ve $(thing)Yer Fıstığı Tohumu$() verir.",
-      "title": "Yer Fıstığı"
+      "title": "Peanuts"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2002,7 +2002,7 @@
       "type": "patchouli:text",
       "anchor": "potato",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): -7 - 22 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 35 - 90 %$(br)$(bold)Kategori$(): Sebze$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Patates, tek blokluk bir ekindir. Patates tohumları tarım arazisine ekilebilir ve ürün olarak $(thing)Patates$() ve $(thing)Patates Tohumu$() verir.",
-      "title": "Patates"
+      "title": "Potatoes"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2133,7 +2133,7 @@
       "type": "patchouli:text",
       "anchor": "pumpkin",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): -7 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 20 - 85 %$(br)$(bold)Kategori$(): Yayılan Sebze$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Balkabağı, yayılan bir ekindir. Balkabağı tohumları tarım arazisine ekilebilir ve olgunlaştığında yanındaki zemine iki adede kadar $(thing)Balkabağı Bloğu$() yerleştirir. Balkabağı blokları hasat edilirse ve bitki tekrar olgunlaşırsa, daha fazla balkabağı büyütebilir. Balkabakları $(l:mechanics/lighting#jack_o_lanterns)Cadılar Bayramı Feneri$() yapımında kullanılabilir.",
-      "title": "Balkabakları"
+      "title": "Pumpkins"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2305,7 +2305,7 @@
       "type": "patchouli:text",
       "anchor": "melon",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): 5 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 35 - 100 %$(br)$(bold)Kategori$(): Yayılan Sebze$(br)$(br)$(bold)$(3)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Kavun, yayılan bir ekindir. Kavun tohumları tarım arazisine ekilebilir ve olgunlaştığında yanındaki zemine iki adede kadar $(thing)Kavun Bloğu$() yerleştirir. Kavun blokları hasat edilirse ve bitki tekrar olgunlaşırsa, daha fazla kavun büyütebilir.",
-      "title": "Kavunlar"
+      "title": "Melons"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2477,7 +2477,7 @@
       "type": "patchouli:text",
       "anchor": "tomatoes",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): 2 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 20 - 85 %$(br)$(bold)Kategori$(): Sebze$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 50 $(bold)$(d)K: 60$()$(br)Domates, tırmanıcı ve iki blok yüksekliğinde bir ekindir. Domates tohumları tarım arazisine ekilebilir, bir çubuk mevcutsa iki blok yüksekliğe kadar büyür ve ürün olarak $(thing)Domates$() ve $(thing)Domates Tohumu$() verir.",
-      "title": "Domatesler"
+      "title": "Tomatoes"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2919,7 +2919,7 @@
       "type": "patchouli:text",
       "anchor": "onion",
       "text": "$(bold)$(l:the_world/climate#temperature)Sıcaklık$(): -5 - 26 °C$(br)$(bold)$(l:mechanics/hydration)Hidrasyon$(): 15 - 85 %$(br)$(bold)Kategori$(): Sebze$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Soğan, tek blokluk bir ekindir. Soğan tohumları tarım arazisine ekilebilir ve ürün olarak $(thing)Soğan$() ve $(thing)Soğan Tohumu$() verir.",
-      "title": "Soğan"
+      "title": "Onions"
     },
     {
       "type": "tfc:multimultiblock",

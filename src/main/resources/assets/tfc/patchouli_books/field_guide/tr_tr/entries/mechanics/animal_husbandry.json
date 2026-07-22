@@ -200,6 +200,19 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "bactrian_camel",
+      "text": "$(thing)Bactrian Camels$() spawn in cold deserts, with $(l:the_world/climate#temperature)temperature$() of at most -5°C, and at most 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$() and can be ridden. They are slower than horses, but faster on sand and snow. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 24 days, and become adults in 80 days. They can have children 8 times if they are never sheared, or be sheared 80 times if they are never bred. They grow wool every 7 days.",
+      "title": "Bactrian Camel"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bactrian_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A bactrian camel."
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "chicken",
       "text": "$(thing)Tavuklar$(), en az 14°C $(l:the_world/climate#temperature)sıcaklığa$() ve en az 225mm $(l:the_world/climate#rainfall)yağışa$() sahip ılıman ormanlarda ortaya çıkarlar. $(l:mechanics/animal_husbandry#oviparous_animals)Yumurta ile Çoğalan Hayvanlardır$(). Çürümüş de olabilen $(thing)tahılları$(), $(thing)meyveleri$(), $(thing)sebzeleri$() ve $(thing)tohumları$() yerler. Yumurtaları 8 günde çatlar ve 24 günde yetişkinliğe ulaşırlar. 100 kez yumurtlayabilirler. Her 30 saatte bir yumurta üretirler.",
       "title": "Tavuklar"
@@ -275,6 +288,19 @@
       "scale": 0.6,
       "name": " ",
       "text": "Bir at."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dromedary_camel",
+      "text": "$(thing)Dromedary Camels$() spawn in drier climates, with $(l:the_world/climate#temperature)temperature$() of at least -5°C, and at most 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden. They are slower than horses, but are immune to cacti and run fast on sand. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "title": "Dromedary Camels"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dromedary_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A dromedary camel."
     },
     {
       "type": "patchouli:text",

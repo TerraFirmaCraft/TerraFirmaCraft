@@ -195,6 +195,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(DONKEY_FOOD).addTag(HORSE_FOOD);
         tag(MULE_FOOD).addTag(HORSE_FOOD);
         tag(HORSE_FOOD).addTags(GRAINS, FRUITS);
+        tag(CAMEL_FOOD).addTags(GRAINS, FRUITS);
         tag(CAT_FOOD).addTags(GRAINS, COOKED_MEATS, DAIRY, COOKED_FISH);
         tag(OCELOT_FOOD).addTags(RAW_FISH);
         tag(DOG_FOOD).addTag(MEATS);
@@ -399,12 +400,13 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(Tags.Items.TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
         tag(Tags.Items.TOOLS_SPEAR)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
+            .add(TFCItems.OBSIDIAN_JAVELIN);
         tag(Tags.Items.TOOLS_SHEAR).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHEARS);
         tag(Tags.Items.TOOLS_IGNITER).add(TFCItems.FIRESTARTER);
         tag(Tags.Items.TOOLS_MACE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE);
         tag(Tags.Items.MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
-        tag(Tags.Items.RANGED_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
+        tag(Tags.Items.RANGED_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN).add(TFCItems.OBSIDIAN_JAVELIN);
         tag(Tags.Items.MELEE_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD).add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
         // N.B.
         // melee_weapons, ranged_weapons, and mining_tool are all poorly defined, their use case is not clear,
@@ -419,7 +421,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(TOOLS_PROPICK).add(TFCItems.METAL_ITEMS, Metal.ItemType.PROPICK);
         tag(TOOLS_KNIFE)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.KNIFE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE)
+            .add(TFCItems.OBSIDIAN_KNIFE);
         tag(TOOLS_CHISEL).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL);
         tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
         tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
@@ -435,7 +438,9 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL)
+            .add(TFCItems.OBSIDIAN_KNIFE)
+            .add(TFCItems.OBSIDIAN_JAVELIN);
         tag(TOOLS_COPPER)
             .add(TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.TUYERE))
             .add(TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD))
@@ -787,6 +792,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(SKELETON_WEAPONS)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
+            .add(TFCItems.OBSIDIAN_JAVELIN)
             .add(Items.BOW);
 
         for (Ore ore : Ore.values())

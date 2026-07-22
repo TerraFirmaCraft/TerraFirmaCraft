@@ -38,6 +38,7 @@
     "accessor.BiomeAccessor",
     "accessor.BlockBehaviourAccessor",
     "accessor.BlockStateBaseAccessor",
+    "accessor.CamelAccessor",
     "accessor.ChunkAccessAccessor",
     "accessor.ChunkGeneratorAccessor",
     "accessor.ChunkMapAccessor",

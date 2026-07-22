@@ -219,14 +219,14 @@
       "entity": "tfc:penguin",
       "scale": 0.7,
       "name": "Пингвин",
-      "text": "Пингвин обитает только на самых холодных пляжах, краях ледяных щитов и морском льде, где $(l:the_world/climate#temperature)температура$() ниже -14°C и $(l:the_world/climate#rainfall)осадки$() более 75 мм."
+      "text": "Пингвин обитает только на самых холодных пляжах, краях ледяных щитов и морском льде, где $(l:the_world/climate#temperature)температура$() ниже −14°C и $(l:the_world/climate#rainfall)осадки$() более 75 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:leopard_seal",
       "scale": 0.7,
       "name": "Морской леопард",
-      "text": "Морской леопард обитает на холодных пляжах, краях ледяных щитов и морском льде, где $(l:the_world/climate#temperature)температура$() ниже -9°C и $(l:the_world/climate#rainfall)осадки$() более 105 мм."
+      "text": "Морской леопард обитает на холодных пляжах, краях ледяных щитов и морском льде, где $(l:the_world/climate#temperature)температура$() ниже −9°C и $(l:the_world/climate#rainfall)осадки$() более 105 мм."
     },
     {
       "type": "patchouli:entity",
@@ -248,140 +248,140 @@
       "entity": "tfc:cod",
       "scale": 0.7,
       "name": "Треска",
-      "text": "Треска предпочитает холодные океаны с $(l:the_world/climate#temperature)температурой$() ниже 18°C."
+      "text": "Треска обитает в холодных океанах с $(l:the_world/climate#temperature)температурой$() ниже 18°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
       "name": "Иглобрюх",
-      "text": "Иглобрюхи живут в любом океане с $(l:the_world/climate#temperature)температурой$() выше 10°C."
+      "text": "Иглобрюхи обитают в океанах с $(l:the_world/climate#temperature)температурой$() выше 10°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
       "name": "Медуза",
-      "text": "Медузы живут в теплых океанах с $(l:the_world/climate#temperature)температурой$() выше 18°C."
+      "text": "Медузы обитают в теплых океанах с $(l:the_world/climate#temperature)температурой$() выше 18°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
       "name": "Тропическая рыба",
-      "text": "Тропические рыбы предпочитают теплые океаны с $(l:the_world/climate#temperature)температурой$() выше 18°C."
+      "text": "Тропические рыбы обитают в теплых океанах с $(l:the_world/climate#temperature)температурой$() выше 18°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "Лосось",
-      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
+      "text": "Лосось обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −8°C до 12°C и $(l:the_world/climate#rainfall)осадками$() более 250 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rainbow_trout",
       "scale": 0.7,
-      "name": "Rainbow Trout",
-      "text": "Rainbow Trout spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
+      "name": "Микижа",
+      "text": "Микижа обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −12°C до 10°C и $(l:the_world/climate#rainfall)осадками$() более 150 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lake_trout",
       "scale": 0.7,
-      "name": "Lake Trout",
-      "text": "Lake Trout spawn in any lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
+      "name": "Форель",
+      "text": "Форель обитает в озёрах с $(l:the_world/climate#temperature)температурой$() от −5°C до 15°C и $(l:the_world/climate#rainfall)осадками$() более 250 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:largemouth_bass",
       "scale": 0.7,
-      "name": "Largemouth Bass",
-      "text": "Largemouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
+      "name": "Большеротый окунь",
+      "text": "Большеротый окунь обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −14°C до 16°C и $(l:the_world/climate#rainfall)осадками$() более 200 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:smallmouth_bass",
       "scale": 0.7,
-      "name": "Smallmouth Bass",
-      "text": "Smallmouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
+      "name": "Малоротый окунь",
+      "text": "Малоротый окунь обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −14°C до 16°C и $(l:the_world/climate#rainfall)осадками$() менее 300 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crappie",
       "scale": 0.7,
-      "name": "Crappie",
-      "text": "Солнечник обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от -10 до 26°C."
+      "name": "Краппи",
+      "text": "Краппи обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −10 до 20°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
       "name": "Солнечник",
-      "text": "Солнечник обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от -10 до 26°C."
+      "text": "Солнечник обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −10 до 26°C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:northern_pike",
       "scale": 0.7,
-      "name": "Northern Pike",
-      "text": "Northern Pike spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
+      "name": "Щука",
+      "text": "Щука обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −10°C до 26°C и $(l:the_world/climate#rainfall)осадками$() от 150 до 400 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peacock_bass",
       "scale": 0.7,
-      "name": "Peacock Bass",
-      "text": "Peacock Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
+      "name": "Павлиний окунь",
+      "text": "Павлиний окунь обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от 12°C до 25°C и $(l:the_world/climate#rainfall)осадками$() от 200 до 400 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:arctic_char",
       "scale": 0.7,
-      "name": "Arctic Char",
-      "text": "Arctic Char spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
+      "name": "Арктический голец",
+      "text": "Арктический голец обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −20°C до −8°C и $(l:the_world/climate#rainfall)осадками$() от 150 до 400 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:muksun",
       "scale": 0.7,
-      "name": "Muksun",
-      "text": "Muksun spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
+      "name": "Муксун",
+      "text": "Муксун обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −20°C до −10°C и $(l:the_world/climate#rainfall)осадками$() более 250 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:burbot",
       "scale": 0.7,
-      "name": "Burbot",
-      "text": "Burbot spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
+      "name": "Налим",
+      "text": "Налим обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от −16°C до −9°C и $(l:the_world/climate#rainfall)осадками$() менее 350 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tilapia",
       "scale": 0.7,
-      "name": "Tilapia",
-      "text": "Tilapia spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
+      "name": "Тиляпия",
+      "text": "Тиляпия обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от 10°C до 32°C и $(l:the_world/climate#rainfall)осадками$() менее 300 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:spotted_gudgeon",
       "scale": 0.7,
-      "name": "Spotted Gudgeon",
-      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
+      "name": "Пятнистый пескарь",
+      "text": "Пятнистый пескарь обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от 6°C до 24°C и $(l:the_world/climate#rainfall)осадками$() менее 250 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pacu",
       "scale": 0.7,
-      "name": "Pacu",
-      "text": "Pacu spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
+      "name": "Паку",
+      "text": "Паку обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от 20°C до 35°C и $(l:the_world/climate#rainfall)осадками$() более 200 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:red_piranha",
       "scale": 0.7,
-      "name": "Red Piranha",
-      "text": "Red Piranha spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
+      "name": "Красная пиранья",
+      "text": "Красная пиранья обитает в реках и озёрах с $(l:the_world/climate#temperature)температурой$() от 22°C до 35°C и $(l:the_world/climate#rainfall)осадками$() более 300 мм."
     },
     {
       "type": "patchouli:text",

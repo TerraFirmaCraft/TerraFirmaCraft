@@ -23,6 +23,10 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.util.MetalItem;
 
+
+// TODO: Log and ingot piles should share a unified "pile" block entity, since at this point the only differences are the model, and the stacking behavior
+//  and ingots piles could benefit from using the log stacking behavior. However, this change would break existing ingot piles, unless we take additional
+//  steps to avoid that, so let's remember this for porting time
 public class IngotPileBlockEntity extends TFCBlockEntity
 {
     private final List<Entry> entries;
@@ -122,7 +126,7 @@ public class IngotPileBlockEntity extends TFCBlockEntity
             final ItemStack stack;
             int count = 0;
 
-            Counter(ItemStack stack) { this.stack = stack; }
+            Counter(ItemStack stack) {this.stack = stack;}
         }
 
         final Map<MetalItem, Counter> counts = new LinkedHashMap<>(); // Deterministic iteration order

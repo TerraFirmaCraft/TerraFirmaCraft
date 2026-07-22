@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -67,14 +66,16 @@ public class RopeItem extends Item
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        else if (state.getBlock() instanceof MetalRopeAnchorBlock && !state.getValue(TFCBlockStateProperties.HAS_ROPE))
+        else
         {
-            // A freestanding anchor is already placed; just hand the player a knot to throw from it.
-            if (!level.isClientSide && player != null)
+            if (state.getBlock() instanceof MetalRopeAnchorBlock&& !state.getValue(TFCBlockStateProperties.HAS_ROPE) && state.getFluidState().isEmpty())
             {
-                bindToAnchor(player, level, blockpos);
+                if (!level.isClientSide && player != null)
+                {
+                    bindToAnchor(player, level, blockpos);
+                }
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
     }
@@ -137,7 +138,7 @@ public class RopeItem extends Item
 
     public static boolean canPlaceRopeOn(Level level, BlockPos pos, BlockState state)
     {
-        return state.getBlock() instanceof RockSpikeBlock && state.getValue(RockSpikeBlock.PART) == RockSpikeBlock.Part.TIP && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP, SupportType.CENTER);
+        return state.getBlock() instanceof RockSpikeBlock && state.getValue(RockSpikeBlock.PART) == RockSpikeBlock.Part.TIP && level.getFluidState(pos).isEmpty() && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP, SupportType.CENTER);
     }
 
     public static void placeRopes(Level level, Player player, ItemStack stack, BlockPos origin)
@@ -161,6 +162,7 @@ public class RopeItem extends Item
             if (anchorState.hasProperty(TFCBlockStateProperties.HAS_ROPE))
             {
                 anchorState = anchorState.setValue(TFCBlockStateProperties.HAS_ROPE, true);
+                level.scheduleTick(origin, anchorState.getBlock(), 1);
             }
             level.setBlockAndUpdate(cursor, anchorState);
         }
@@ -247,7 +249,7 @@ public class RopeItem extends Item
 
     private static boolean canRopeReplace(BlockState state)
     {
-        return state.canBeReplaced() && (state.getFluidState().isEmpty() || Helpers.isFluid(state.getFluidState(), FluidTags.WATER));
+        return state.canBeReplaced() && state.getFluidState().isEmpty();
     }
 
     private enum RopeState

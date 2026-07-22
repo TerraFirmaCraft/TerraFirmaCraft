@@ -12,6 +12,7 @@
     "tfc:stone/javelin/igneous_intrusive",
     "tfc:stone/javelin/metamorphic",
     "tfc:stone/javelin/sedimentary",
+    "tfc:obsidian_javelin",
     "minecraft:bow"
   ]
 }

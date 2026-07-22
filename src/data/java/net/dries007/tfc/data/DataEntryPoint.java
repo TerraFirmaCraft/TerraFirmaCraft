@@ -31,6 +31,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.dries007.tfc.common.TFCDamageTypes;
+import net.dries007.tfc.data.providers.BuiltinBiomeTags;
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinClimateRanges;
 import net.dries007.tfc.data.providers.BuiltinDamageTypes;
@@ -90,6 +91,7 @@ public final class DataEntryPoint
         add(event, new BuiltinItemTags(event, lookup, blockTags));
         add(event, new BuiltinFluidTags(event, lookup, drinkables));
         add(event, new BuiltinEntityTags(event, lookup));
+        add(event, new BuiltinBiomeTags(event, lookup));
         tags(event, Registries.PAINTING_VARIANT, lookup, (provider, tags) -> tags.tag(PaintingVariantTags.PLACEABLE).add(
             BuiltinPaintings.GOLDEN_FIELD,
             BuiltinPaintings.HOT_SPRING,

@@ -92,6 +92,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
             if (level.getBlockEntity(topPos) instanceof IngotPileBlockEntity pile)
             {
                 final ItemStack ingot = pile.removeIngot();
+
                 if (!player.isCreative())
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, ingot);

@@ -44,7 +44,7 @@ public enum NotPredatedCondition implements LootItemCondition
             return true;
         }
         final Entity killer = context.getParam(LootContextParams.ATTACKING_ENTITY);
-        return killer instanceof Player || (!Helpers.isEntity(killer, TFCTags.Entities.HUNTS_LAND_PREY) && !Helpers.isEntity(killer, TFCTags.Entities.OCEAN_PREDATORS));
+        return killer instanceof Player || (!Helpers.isEntity(killer, TFCTags.Entities.LAND_PREDATORS) && !Helpers.isEntity(killer, TFCTags.Entities.OCEAN_PREDATORS));
     }
 
     @Contract(pure = true)

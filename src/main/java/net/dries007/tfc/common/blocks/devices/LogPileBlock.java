@@ -35,7 +35,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -44,6 +43,7 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
@@ -140,14 +140,12 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     {
         if (!player.isShiftKeyDown() && level.getBlockEntity(pos) instanceof LogPileBlockEntity logPile)
         {
-            if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
-            {
-                insertAndPushUp(stack, state, level, pos, logPile, false);
-            }
-            else if (stack.isEmpty())
-            {
-                extractFromTop(level, pos, player, false);
-            }
+            long currentTick = Calendars.get().getTicks();
+
+            extractFromTop(level, pos, player, !logPile.isLastClickPlacement() && logPile.checkDoubleClick(currentTick));
+            logPile.setLastClickTick(currentTick);
+            logPile.setLastClickPlacement(false);
+
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -179,6 +177,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     public static void insertAndPushUp(ItemStack stack, BlockState state, Level level, BlockPos pos, LogPileBlockEntity logPile, boolean all)
     {
+        // Insert into the pile clicked on, and return if only adding a single log
         if (dumbInsert(stack, state, level, pos, logPile, all) && !all)
         {
             return;

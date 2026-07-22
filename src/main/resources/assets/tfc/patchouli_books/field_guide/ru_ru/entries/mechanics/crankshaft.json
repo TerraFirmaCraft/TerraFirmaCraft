@@ -12,7 +12,7 @@
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:crankshaft",
       "name": "",
-      "text": "$(thing)Коленчатый вал$(), приводимый в действие $(l:mechanics/mechanical_power#axle)осью$()",
+      "text": "$(thing)Коленчатый вал$(), приводимый в действие $(l:mechanics/mechanical_power#axle)осью$().",
       "enable_visualize": false
     },
     {

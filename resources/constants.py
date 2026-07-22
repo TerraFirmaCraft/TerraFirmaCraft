@@ -477,7 +477,7 @@ KAOLIN_CLAY_TYPES = ('red', 'pink', 'white')
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
-MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
+MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'feather', 'flint', 'guano', 'humus', 'obsidian_shard', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 NON_WHITE_COLORS = COLORS[1:]
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'canola_oil', 'canola_oil_water', 'tallow', 'tannin', 'vinegar', 'beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
@@ -926,7 +926,7 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'bison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs', 'fox')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'leopard_seal', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'bison', 'peafowl', 'jerboa', 'lemming', 'mongoose', *SIMPLE_FRESHWATER_FISH)
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'leopard_seal', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'dromedary_camel', 'bactrian_camel', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'bison', 'peafowl', 'jerboa', 'lemming', 'mongoose', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'crate', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox', 'mold_table', 'channel', 'power_loom')
@@ -954,7 +954,8 @@ TFC_BIOMES = ['badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'platea
 KAOLIN_BIOMES = ['rolling_hills', 'highlands', 'plateau', 'plateau_wide', 'old_mountains', 'tower_karst_hills', 'tower_karst_highlands', 'extreme_doline_plateau', 'extreme_doline_mountains', 'doline_rolling_hills', 'doline_highlands', 'doline_plateau', 'cenote_rolling_hills', 'cenote_highlands', 'cenote_plateau', 'shilin_hills', 'shilin_highlands', 'shilin_plateau', 'buttes', 'mesas', 'stair_step_canyons', 'dormant_shield_volcano', 'extinct_shield_volcano', 'ancient_shield_volcano', 'badlands', 'canyons', 'volcanic_mountain_islands', 'rift_valley', 'rift_lake']
 VANILLA_TRIMS = ('coast', 'sentry', 'dune', 'wild', 'ward', 'eye', 'vex', 'tide', 'snout', 'rib', 'spire', 'wayfinder', 'shaper', 'silence', 'raiser', 'host', 'flow', 'bolt')
 
-BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'moth_diaphora', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashed_fritillary', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
+BUTTERFLIES = ('golden_birdwing', 'papilio_rumanzovia', 'papilio_palinurus', 'peacock', 'sericinus', 'papilio_blumei', 'adonis_blue', 'silverwashed_fritillary')
+MOTHS = ('moth_diaphora', 'moth_saturnia', 'moth_argema', 'moth_attacus', 'moth_luna', 'moth_trosia')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
     'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
@@ -1548,6 +1549,7 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.frog': 'Frog',
     'config.jade.plugin_tfc.horse': 'Horse',
     'config.jade.plugin_tfc.chested_horse': 'Chested Horse',
+    'config.jade.plugin_tfc.camel': 'Camel',
     'config.jade.plugin_tfc.wild_animal': 'Wild Animal',
     'config.jade.plugin_tfc.squid': 'Squid',
     'config.jade.plugin_tfc.fish': 'Fish',
@@ -1722,6 +1724,8 @@ DEFAULT_LANG = {
     'entity.tfc.horse': 'Horse',
     'entity.tfc.horse.male': 'Stallion',
     'entity.tfc.horse.female': 'Mare',
+    'entity.tfc.dromedary_camel': 'Dromedary Camel',
+    'entity.tfc.bactrian_camel': 'Bactrian Camel',
     'entity.tfc.rope_knot': 'Rope',
     **{'entity.tfc.boat.%s' % wood: lang('%s boat', wood) for wood in WOODS.keys()},
     **{'entity.tfc.chest_boat.%s' % wood: lang('%s boat with chest', wood) for wood in WOODS.keys()},
@@ -1979,6 +1983,8 @@ DEFAULT_LANG = {
     'tfc.configuration.bloomery': 'Bloomery',
     'tfc.configuration.bubbleColumn': 'Bubble Column',
     'tfc.configuration.calendar': 'Calendar',
+    'tfc.configuration.dromedaryCamel': 'Dromedary Camel',
+    'tfc.configuration.bactrianCamel': 'Bactrian Camel',
     'tfc.configuration.candle': 'Candle',
     'tfc.configuration.cat': 'Cat',
     'tfc.configuration.charcoal': 'Charcoal',
@@ -2129,6 +2135,20 @@ DEFAULT_LANG = {
     'tfc.config.server.bloomeryCapacity': 'Capacity',
     'tfc.config.server.bloomeryMaxChimneyHeight': 'Max Chimney Height',
     'tfc.config.server.bubbleColumnProvidesAir': 'Bubble Column Provides Air',
+    'tfc.config.server.dromedaryCamelAdulthoodDays': 'Adulthood Days',
+    'tfc.config.server.dromedaryCamelChildCount': 'Child Count',
+    'tfc.config.server.dromedaryCamelEatsRottenFood': 'Eats Rotten Food',
+    'tfc.config.server.dromedaryCamelFamiliarityCap': 'Familiarity Cap',
+    'tfc.config.server.dromedaryCamelGestationDays': 'Gestation Days',
+    'tfc.config.server.dromedaryCamelUses': 'Uses',
+    'tfc.config.server.bactrianCamelAdulthoodDays': 'Adulthood Days',
+    'tfc.config.server.bactrianCamelChildCount': 'Child Count',
+    'tfc.config.server.bactrianCamelEatsRottenFood': 'Eats Rotten Food',
+    'tfc.config.server.bactrianCamelFamiliarityCap': 'Familiarity Cap',
+    'tfc.config.server.bactrianCamelGestationDays': 'Gestation Days',
+    'tfc.config.server.bactrianCamelUses': 'Uses',
+    'tfc.config.server.bactrianCamelMinProduceFamiliarity': 'Min Produce Familiarity',
+    'tfc.config.server.bactrianCamelProduceTicks': 'Produce Ticks',
     'tfc.config.server.candleTicks': 'Ticks',
     'tfc.config.server.catAdulthoodDays': 'Adulthood Days',
     'tfc.config.server.catChildCount': 'Child Count',

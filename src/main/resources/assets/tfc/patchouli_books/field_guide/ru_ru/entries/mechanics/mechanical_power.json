@@ -149,7 +149,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/weaving#power_loom)Weaving$() can be automated through the use of a $(l:mechanics/weaving#power_loom)Power Loom$(). Read that chapter for more information."
+      "text": "$(l:mechanics/weaving#power_loom)Ткачество$() можно автоматизировать, используя $(l:mechanics/weaving#power_loom)механический ткацкий станок$(). Больше информации в соответствующей главе."
     }
   ],
   "read_by_default": true,

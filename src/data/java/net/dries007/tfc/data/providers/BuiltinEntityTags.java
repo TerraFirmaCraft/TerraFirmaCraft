@@ -32,6 +32,32 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
     protected void addTags(HolderLookup.Provider provider)
     {
         // ===== Vanilla Tags ===== //
+        tag(EntityTypeTags.IMPACT_PROJECTILES)
+            .add(TFCEntities.THROWN_JAVELIN.get());
+        tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS)
+            .add(TFCEntities.POLAR_BEAR.get())
+            .add(TFCEntities.PENGUIN.get());
+        tag(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+            .addTag(WATER_AMBIENT)
+            .add(
+                TFCEntities.MANATEE.get(),
+                TFCEntities.SQUID.get(),
+                TFCEntities.OCTOPOTEUTHIS.get(),
+                TFCEntities.TURTLE.get()
+            );
+        tag(EntityTypeTags.AQUATIC)
+            .addTags(WATER_AMBIENT, WATER_CREATURES)
+            .add(TFCEntities.TURTLE.get());
+        tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
+            .addTag(OVIPAROUS_ANIMALS)
+            .add(
+                TFCEntities.GROUSE.get(),
+                TFCEntities.PHEASANT.get(),
+                TFCEntities.TURKEY.get(),
+                TFCEntities.PEAFOWL.get(),
+                TFCEntities.CAT.get(),
+                TFCEntities.OCELOT.get()
+            );
 
         // ===== Common Tags ===== //
         final var boatsTag = tag(Tags.EntityTypes.BOATS);
@@ -178,12 +204,15 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
         tag(SHEARABLE_ANIMALS)
             .add(TFCEntities.SHEEP.get())
             .add(TFCEntities.ALPACA.get())
-            .add(TFCEntities.MUSK_OX.get());
+            .add(TFCEntities.MUSK_OX.get())
+            .add(TFCEntities.BACTRIAN_CAMEL.get());
 
         tag(RIDEABLE_ANIMALS)
             .add(TFCEntities.HORSE.get())
             .add(TFCEntities.DONKEY.get())
-            .add(TFCEntities.MULE.get());
+            .add(TFCEntities.MULE.get())
+            .add(TFCEntities.DROMEDARY_CAMEL.get())
+            .add(TFCEntities.BACTRIAN_CAMEL.get());
 
         tag(FARM_ANIMALS)
             .addTag(DAIRY_ANIMALS)
@@ -266,7 +295,9 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.HORSE.get(),
                 TFCEntities.MULE.get(),
                 TFCEntities.DONKEY.get(),
-                TFCEntities.GOAT.get()
+                TFCEntities.GOAT.get(),
+                TFCEntities.DROMEDARY_CAMEL.get(),
+                TFCEntities.BACTRIAN_CAMEL.get()
             );
 
         tag(HUNTED_BY_LAND_PREDATORS)
@@ -303,6 +334,9 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
         tag(NOT_RAMMED_BY_RAMMERS)
             .addTags(BUBBLE_COLUMN_IMMUNE, PESTS, BIRD_PREY)
             .add(TFCEntities.FROG.get());
+
+        tag(IGNORES_SNOW)
+            .add(TFCEntities.BACTRIAN_CAMEL.get());
 
     }
 }

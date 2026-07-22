@@ -300,6 +300,18 @@
         "maxCount": 3
       },
       {
+        "type": "tfc:dromedary_camel",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:bactrian_camel",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
         "type": "tfc:ocelot",
         "weight": 1,
         "minCount": 1,

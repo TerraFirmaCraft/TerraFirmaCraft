@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "neoforge:separate_transforms",
+  "gui_light": "front",
+  "base": {
+    "parent": "tfc:item/obsidian_javelin_throwing_base"
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    },
+    "fixed": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    },
+    "ground": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    },
+    "gui": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    }
+  }
+}

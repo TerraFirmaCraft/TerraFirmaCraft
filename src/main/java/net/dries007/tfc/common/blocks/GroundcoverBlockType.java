@@ -31,6 +31,7 @@ public enum GroundcoverBlockType
     HUMUS(GroundcoverBlock.PIXEL_HIGH),
     MOLLUSK(GroundcoverBlock.SMALL),
     MUSSEL(GroundcoverBlock.SMALL),
+    OBSIDIAN_SHARD(GroundcoverBlock.SMALL),
     PINECONE(GroundcoverBlock.SMALL),
     PUMICE(GroundcoverBlock.SMALL),
     ROTTEN_FLESH(GroundcoverBlock.FLAT, Items.ROTTEN_FLESH),

@@ -1,0 +1,8 @@
+{
+  "values": [
+    "tfc:lowlands",
+    "tfc:salt_marsh",
+    "tfc:tidal_flats",
+    "#tfc:is_karst"
+  ]
+}

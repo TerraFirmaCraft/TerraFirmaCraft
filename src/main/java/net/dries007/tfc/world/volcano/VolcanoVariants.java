@@ -35,6 +35,7 @@ public class VolcanoVariants
     {
         final Noise2D ridgeWarpNoise = new OpenSimplex2D(seed.seed() + 23L).octaves(2).scaled(-0.4f, 0.4f).spread(0.09f);
         final Noise2D skirtTextureNoise = new OpenSimplex2D(seed.seed() + 2982L).octaves(3).spread(0.09).scaled(-0.05, 0.05);
+        final Noise2D footprintNoise = new OpenSimplex2D(seed.seed() + 6143L).octaves(2).spread(0.0028).scaled(-0.06, 0.06);
         final double maxRadiusScale = 0.45;
 
         return new VolcanoVariant()
@@ -57,7 +58,8 @@ public class VolcanoVariants
                 final double noise = cell.noise();
 
                 // Simple cone
-                final double r = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double baseR = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double r = distortOceanicFootprint(baseR, heightIn, x, z, cell, footprintNoise, 0.58, 0.94);
                 final double craterSize = 0.04 + 0.1 * Helpers.hashDouble(noise, 10);
                 double shape = maxDiam * calculateSimpleRadialShapeWithSkirt(r, craterSize, 0.9, cell.f1(), cell.f2(), 2);
                 shape = shape * (1 - 0.1 * calculateCircumferentialErosion(cell, craterSize, 0.2, 0.9, 1, r, 3, (int) (maxDiam * 16), ridgeWarpNoise.noise(x, z)));
@@ -97,7 +99,8 @@ public class VolcanoVariants
                 final BiomeExtension biome = context.stratovolcanoBiome();
                 final int unerodedHeight = (int) getUnerodedHeight(maxDiam, biome.getCenteredFeatureScaleHeight(), biome.getCenteredFeatureBaseHeight(), cell);
 
-                final double r = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double baseR = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double r = distortOceanicFootprint(baseR, preVolcanicHeight, x, z, cell, footprintNoise, 0.58, 0.94);
 
                 if (r > 1.2)
                 {
@@ -140,6 +143,7 @@ public class VolcanoVariants
         final Noise2D rimWarpNoise = new OpenSimplex2D(seed.seed() + 1431L).octaves(2).scaled(-0.08f, 0.08f).spread(0.03f);
         final Noise2D textureNoise = new OpenSimplex2D(seed.seed() + 24482L).octaves(3).spread(0.06).scaled(0.85, 1.08);
         final Noise2D skirtTextureNoise = new OpenSimplex2D(seed.seed() + 2982L).octaves(3).spread(0.09).scaled(-0.09, 0.09);
+        final Noise2D footprintNoise = new OpenSimplex2D(seed.seed() + 26143L).octaves(2).spread(0.0028).scaled(-0.05, 0.05);
         final double maxRadiusScale = 0.45;
 
         return new VolcanoVariant()
@@ -164,7 +168,8 @@ public class VolcanoVariants
             {
                 // Simple cone
                 final double f1 = cell.f1();
-                final double r = Mth.map(Mth.sqrt((float) f1), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double baseR = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double r = distortOceanicFootprint(baseR, heightIn, x, z, cell, footprintNoise, 0.68, 0.97);
                 final double craterSize = 0.5 + rimWarpNoise.noise(x, z); // Domain warp the rim to get a wavy shape
                 final double rimHeight = 0.42;
                 double shape = rimHeight * calculateSimpleRadialShapeWithSkirt(r, craterSize, 2, f1, cell.f2(), 5);
@@ -331,6 +336,7 @@ public class VolcanoVariants
     {
         final Noise2D ridgeWarpNoise = new OpenSimplex2D(seed.seed() + 23L).octaves(2).scaled(-0.5f, 0.5f).spread(0.03f);
         final Noise2D skirtTextureNoise = new OpenSimplex2D(seed.seed() + 2982L).octaves(3).spread(0.09).scaled(-0.05, 0.05);
+        final Noise2D footprintNoise = new OpenSimplex2D(seed.seed() + 16143L).octaves(2).spread(0.0035).scaled(-0.06, 0.06);
         final Noise2D textureNoise = new OpenSimplex2D(seed.seed() + 248582L).octaves(3).spread(0.06).scaled(0.94, 1.06);
         final double maxRadiusScale = 0.45;
 
@@ -363,7 +369,8 @@ public class VolcanoVariants
                 final double outerTransition = transitionCenter + transitionLength;
 
                 // Simple cone
-                final double r = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double baseR = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); //Radius, range [0, 1]
+                final double r = distortOceanicFootprint(baseR, heightIn, x, z, cell, footprintNoise, 0.60, 0.95);
                 double shape = maxDiam * calculateSimpleRadialShapeWithSkirt(r, craterSize, 0.9, cell.f1(), cell.f2(), 2);
 
                 // Transition to different number of ridges farther from center
@@ -419,7 +426,8 @@ public class VolcanoVariants
                 final int unerodedHeight = (int) getUnerodedHeight(maxDiam, biome.getCenteredFeatureScaleHeight(), biome.getCenteredFeatureBaseHeight(), cell);
 
                 final double craterSize = 0.7 * (0.20 + 0.25 * Helpers.hashDouble(noise, 1013));
-                final double r = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double baseR = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double r = distortOceanicFootprint(baseR, preVolcanicHeight, x, z, cell, footprintNoise, 0.60, 0.95);
 
                 if (r > 1.2)
                 {
@@ -552,6 +560,7 @@ public class VolcanoVariants
         final Noise2D ridgeWarpNoise = new OpenSimplex2D(seed.seed() + 23L).octaves(2).scaled(-0.4f, 0.4f).spread(0.09f);
         final Noise2D textureNoise = new OpenSimplex2D(seed.seed() + 24482L).octaves(3).spread(0.06).scaled(0.85, 1.08);
         final Noise2D skirtTextureNoise = new OpenSimplex2D(seed.seed() + 2982L).octaves(3).spread(0.09).scaled(-0.05, 0.05);
+        final Noise2D footprintNoise = new OpenSimplex2D(seed.seed() + 36143L).octaves(2).spread(0.003).scaled(-0.06, 0.06);
         final double maxRadiusScale = 0.45;
 
         return new VolcanoVariant()
@@ -579,7 +588,8 @@ public class VolcanoVariants
                 // Start by generating 3 truncated cones:
                 // Main Cone
                 final double f1 = cell.f1();
-                final double r = Mth.map(Mth.sqrt((float) f1), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double baseR = Mth.map(Mth.sqrt((float) f1), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double r = distortOceanicFootprint(baseR, heightIn, x, z, cell, footprintNoise, 0.60, 0.92);
                 final double crater0Size = 0.06 + 0.06 * Helpers.hashDouble(noise, 67); // Domain warp the rim to get a wavy shape
                 final double rimHeight0 = 0.65;
                 double shape = rimHeight0 * calculateTruncatedCone(r, crater0Size);
@@ -709,8 +719,9 @@ public class VolcanoVariants
                 final Cellular2D.Cell cell = cellNoise.cell(x, z);
                 final double noise = cell.noise();
                 final double maxDiam = Math.min(1, Math.sqrt(CenteredFeatureNoise.maxSafeDiameterSquared(cell, cellNoise)));
-                final double r = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
-                if (r > 1.2)
+                final double baseR = Mth.map(Mth.sqrt((float) cell.f1()), 0, maxDiam * maxRadiusScale, 0, 1); // Radius, range [0, 1]
+                final double surfaceR = distortOceanicFootprint(baseR, preVolcanicHeight, x, z, cell, footprintNoise, 0.60, 0.92);
+                if (surfaceR > 1.2)
                 {
                     // Surface building failed because far from volcano, fall back to default
                     return false;
@@ -722,12 +733,12 @@ public class VolcanoVariants
                 // Main crater
                 final double crater0Size = 0.06 + 0.06 * Helpers.hashDouble(noise, 67);
                 boolean insideCrater = false;
-                if (r < 2 * crater0Size)
+                if (baseR < 2 * crater0Size)
                 {
-                    insideCrater = r < crater0Size;
+                    insideCrater = baseR < crater0Size;
 
                     // Shenanigans to make sure that the surface gets built inside the crater even if the base terrain would be taller than the crater
-                    preVolcanicHeight = Math.min(preVolcanicHeight, (int) Mth.clampedMap(r, 2 * crater0Size, 1.6 * crater0Size, oceanFloorHeight - 1, oceanFloorHeight - 15));
+                    preVolcanicHeight = Math.min(preVolcanicHeight, (int) Mth.clampedMap(baseR, 2 * crater0Size, 1.6 * crater0Size, oceanFloorHeight - 1, oceanFloorHeight - 15));
                 }
 
                 // Second crater
@@ -1156,5 +1167,41 @@ public class VolcanoVariants
                 }
             }
         }
+    }
+
+    private static double distortOceanicFootprint(double r, double terrainHeight, int x, int z, Cellular2D.Cell cell, Noise2D footprintNoise, double warpStart, double warpFull)
+    {
+        final double underwaterStrength = Mth.clampedMap(SEA_LEVEL_Y - terrainHeight, 0, 18, 0, 1);
+
+        if (underwaterStrength <= 0)
+        {
+            return r;
+        }
+
+        double lowerSlopeStrength = Mth.clampedMap(r, warpStart, warpFull, 0, 1);
+
+        lowerSlopeStrength = lowerSlopeStrength * lowerSlopeStrength * (3 - 2 * lowerSlopeStrength);
+
+        if (lowerSlopeStrength <= 0)
+        {
+            return r;
+        }
+
+        final double angle = Math.atan2(z - cell.y(), x - cell.x());
+        final double cellNoise = cell.noise();
+        final double phase2 = 2 * Math.PI * Helpers.hashDouble(cellNoise, 6101);
+        final double phase3 = 2 * Math.PI * Helpers.hashDouble(cellNoise, 6102);
+        final double phase5 = 2 * Math.PI * Helpers.hashDouble(cellNoise, 6103);
+        final double elongation = 0.02 + 0.015 * Helpers.hashDouble(cellNoise, 6104);
+        final double threeLobeStrength = 0.035 + 0.02 * Helpers.hashDouble(cellNoise, 6105);
+        final double fiveLobeStrength = 0.01 + 0.01 * Helpers.hashDouble(cellNoise, 6106);
+
+        double radiusScale = 1 + elongation * Math.cos(2 * (angle - phase2)) + threeLobeStrength * Math.cos(3 * (angle - phase3)) + fiveLobeStrength * Math.cos(5 * (angle - phase5)) + footprintNoise.noise(x, z);
+
+        radiusScale = Mth.clamp(radiusScale, 0.86, 1.18);
+
+        final double distortedR = r / radiusScale;
+
+        return Mth.lerp(underwaterStrength * lowerSlopeStrength, r, distortedR);
     }
 }

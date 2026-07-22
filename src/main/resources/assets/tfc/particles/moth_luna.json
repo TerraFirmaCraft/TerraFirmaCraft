@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "textures": [
-    "tfc:butterfly/moth_luna_1",
-    "tfc:butterfly/moth_luna_2",
-    "tfc:butterfly/moth_luna_3",
-    "tfc:butterfly/moth_luna_4"
+    "tfc:moth/moth_luna_1",
+    "tfc:moth/moth_luna_2",
+    "tfc:moth/moth_luna_3",
+    "tfc:moth/moth_luna_4"
   ]
 }

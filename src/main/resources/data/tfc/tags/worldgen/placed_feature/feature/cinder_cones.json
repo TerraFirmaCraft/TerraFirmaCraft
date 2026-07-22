@@ -5,6 +5,7 @@
     "tfc:volcano_rivulet",
     "tfc:volcano_caldera",
     "tfc:random_volcano_fissure",
-    "tfc:cinder_cone_pumice"
+    "tfc:cinder_cone_pumice_patch",
+    "tfc:cinder_cone_obsidian_shard_patch"
   ]
 }

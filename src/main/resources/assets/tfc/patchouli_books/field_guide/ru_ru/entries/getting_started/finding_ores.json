@@ -65,7 +65,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Вам понадобится: $(br)$(li)$(l:getting_started/pottery#vessel)малый сосуд$()$(li)Достаточно материалов для $(l:getting_started/pit_kiln)земляной печи$().$(li)Одна или несколько $(l:getting_started/pottery#mold)форм$() для заливки расплавленного металла.$(li)И, наконец, как минимум 100 мБ металла, подходящего для литья: та же $(thing)медь$(), в одной из её рудных форм.$(br2)$(br)$(italic)Примечание: $(thing)лить$() также можно некоторые $(l:getting_started/primitive_alloys)сплавы$()"
+      "text": "Вам понадобится: $(br)$(li)$(l:getting_started/pottery#vessel)малый сосуд$()$(li)Достаточно материалов для $(l:getting_started/pit_kiln)земляной печи$().$(li)Одна или несколько $(l:getting_started/pottery#mold)форм$() для заливки расплавленного металла.$(li)И, наконец, как минимум 100 мБ металла, подходящего для литья: та же $(thing)медь$(), в одной из её рудных форм.$(br2)$(br)Примечание: $(thing)лить$() также можно некоторые $(l:getting_started/primitive_alloys)сплавы$()."
     },
     {
       "type": "patchouli:text",

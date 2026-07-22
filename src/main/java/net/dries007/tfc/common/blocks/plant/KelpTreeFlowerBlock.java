@@ -291,13 +291,16 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         for (int j = 0; j < i; ++j)
         {
             BlockPos blockpos = branchPos.above(j + 1);
-            if (!allNeighborsEmpty(level, blockpos, null) || blockpos.getY() >= seaLevel - 2)
+            if (!isEmptyWaterBlock(level, blockpos) || !allNeighborsEmpty(level, blockpos, null) || blockpos.getY() >= seaLevel - 2)
             {
                 return any;
             }
             if (blockpos.getY() == seaLevel - 3)
             {
-                placeGrownFlower(level, blockpos, 5, Direction.UP);
+                if (!placeGrownFlower(level, blockpos, 5, Direction.UP))
+                {
+                    return any;
+                }
             }
             else
             {
@@ -352,14 +355,20 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         return true;
     }
 
-    protected void placeGrownFlower(LevelAccessor level, BlockPos pos, int age, Direction facing)
+    protected boolean placeGrownFlower(LevelAccessor level, BlockPos pos, int age, Direction facing)
     {
         Fluid fluid = level.getFluidState(pos).getType();
+        if (!getFluidProperty().canContain(fluid))
+        {
+            return false;
+        }
         final BlockState state = defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, age).setValue(FACING, facing);
         if (state.canSurvive(level, pos))
         {
             level.setBlock(pos, state, 2);
+            return true;
         }
+        return false;
     }
 
     protected void placeDeadFlower(LevelAccessor level, BlockPos pos, Direction facing)

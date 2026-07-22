@@ -77,7 +77,7 @@ public class TFCPanda extends Panda
 
         public PandaAvoidGoal(Panda panda)
         {
-            super(panda, PathfinderMob.class, 8f, 2, 2, TFCTags.Entities.HUNTS_LAND_PREY);
+            super(panda, PathfinderMob.class, 8f, 2, 2, TFCTags.Entities.LAND_PREDATORS);
             this.panda = panda;
         }
 

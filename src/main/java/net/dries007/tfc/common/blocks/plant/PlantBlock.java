@@ -33,7 +33,9 @@ import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.ClimateRenderCache;
+import net.dries007.tfc.client.overworld.SolarCalculator;
 import net.dries007.tfc.client.particle.Butterfly;
+import net.dries007.tfc.client.particle.Moth;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -248,12 +250,27 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
-        if (random.nextInt(400) == 0 && Helpers.isBlock(state, BlockTags.FLOWERS) && Calendars.CLIENT.getHemispheralCalendarMonthOfYear(ClientHelpers.inNorthernHemisphere()).getSeason() == Season.SPRING)
+
+        if (random.nextInt(120) == 0 && Helpers.isBlock(state, BlockTags.FLOWERS))
         {
-            final Butterfly but = Butterfly.getRandomButterfly(ClimateRenderCache.INSTANCE.getInstantTemperature(), ClimateRenderCache.INSTANCE.getAverageGroundwater(), random);
-            if (but != null)
+            final int dayTime = SolarCalculator.getSunBasedDayTime(pos.getZ(), ClimateRenderCache.INSTANCE.getHemisphereScale(), Calendars.CLIENT.getCalendarFractionOfYear(), Calendars.CLIENT.getCalendarFractionOfDay());
+            if (dayTime < 12_000)
             {
-                level.addParticle(TFCParticles.BUTTERFLIES.get(but).get(), pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0, 0, 0);
+                // During the day, spawn butterflies
+                final Butterfly but = Butterfly.getRandomButterfly(ClimateRenderCache.INSTANCE.getInstantTemperature(), ClimateRenderCache.INSTANCE.getAverageGroundwater(), random);
+                if (but != null)
+                {
+                    level.addParticle(TFCParticles.BUTTERFLIES.get(but).get(), pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0, 0, 0);
+                }
+            }
+            else
+            {
+                // During the night, spawn moths
+                final Moth moth = Moth.getRandomMoth(ClimateRenderCache.INSTANCE.getInstantTemperature(), ClimateRenderCache.INSTANCE.getAverageGroundwater(), random);
+                if (moth != null)
+                {
+                    level.addParticle(TFCParticles.MOTHS.get(moth).get(), pos.getX() + random.nextFloat(), pos.getY() + random.nextFloat(), pos.getZ() + random.nextFloat(), 0, 0, 0);
+                }
             }
         }
     }

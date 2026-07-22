@@ -488,7 +488,7 @@ public final class TFCBlocks
 
     public static final Id<Block> ROPE = registerNoItem("rope", () -> new GroundedRopeBlock(ExtendedProperties.of().mapColor(DyeColor.BROWN).noOcclusion().strength(1f).sound(SoundType.WOOL)));
     public static final Id<Block> HANGING_ROPE = registerNoItem("hanging_rope", () -> new HangingRopeBlock(ExtendedProperties.of().mapColor(DyeColor.BROWN).noOcclusion().strength(1f).sound(SoundType.WOOL)));
-    public static final Id<Block> STEEL_ROPE_ANCHOR = register("steel_rope_anchor", () -> new MetalRopeAnchorBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().strength(4f, 10f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+    public static final Id<Block> STEEL_ROPE_ANCHOR = register("steel_rope_anchor", () -> new MetalRopeAnchorBlock(ExtendedProperties.of().mapColor(MapColor.METAL).noOcclusion().randomTicks().strength(4f, 10f).requiresCorrectToolForDrops().sound(SoundType.METAL)));
 
     public static final Id<Block> CRANKSHAFT = register("crankshaft", () -> new CrankshaftBlock(ExtendedProperties.of().sound(SoundType.METAL).strength(3f).noOcclusion().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.CRANKSHAFT)));
     public static final Id<Block> TRIP_HAMMER = register("trip_hammer", () -> new TripHammerBlock(ExtendedProperties.of().sound(SoundType.METAL).strength(3f).noOcclusion().pushReaction(PushReaction.DESTROY).blockEntity(TFCBlockEntities.TRIP_HAMMER).serverTicks(TripHammerBlockEntity::serverTick)));

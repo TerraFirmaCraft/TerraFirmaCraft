@@ -732,6 +732,13 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.LARGE_VESSEL)
             .add(TFCBlocks.GLAZED_LARGE_VESSELS)
             .add(TFCBlocks.QUERN);
+        tag(CAMEL_FASTER_ON)
+            .addTags(
+                COARSE_DIRT,
+                Tags.Blocks.GRAVELS,
+                Tags.Blocks.SANDS
+            )
+            .add(TFCBlocks.SANDSTONE, SandstoneBlockType.RAW);
         tag(MONSTER_SPAWNS_ON)
             .addTags(
                 BlockTags.DIRT,

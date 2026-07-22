@@ -1,16 +1,24 @@
-### Warning
-This update is expected to break any addons which add trees, including ArborFirmaCraft. If all goes well, I will have time tomorrow to release an AFC version that at a minimum won't crash, and at a maximum will take full advantage of the new rendering behavior for leaf blocks.
-
--Therighthon
+### Additions
+- Added Dromedary and Bactrian Camels
+    - These are based on the Vanilla camel, and ported into TFC by @strangelyng
+    - Camels are slower than the average horse, but get a speed bonus on all dry blocks
+    - Dromedaries can carry two riders and are immune to cactus damage
+    - Bactrians may be sheared, and are not slowed by snow
+- Added obsidian shards which can be used to craft arrowheads, knives, and javelins
+- Allow bones to be used as handles for stone tools again
+- Common tags for TFC Biomes
 
 ### Changes
-- Reworked how leaf blocks render when fancy graphics are enabled
-  - Rotate between 4 different seasonal models: bare branches, blooming, dense leaves, and sparse leaves
-  - Conifers, and deciduous trees grown in the wet tropics only rotate between dense leaves and blooming
-  - Deciduous leaf colors now vary by time of year, with brighter greens in spring
-  - Color changing/autumn colors are no longer tied to elevation in any way
-  - Borders between areas with different seasons are less harsh (for example, an area that is just barely cold enough to lose leaves in winter)
-- Improved the texture for flower cuttings
+- Log piles now require double-clicking to insert/retrieve entire stacks. This means that retrieving entire stacks no longer requires an empty hand.
+- Allow butterfly particles to appear more often, and at any time of year that it is warm enough
+- Restricted butterflies to daytime, and moths to nighttime
+- Changed noises for seals
+- Increased wool output of sheep to not be substantially worse than all over woolly animals
+- New driftwood models
+- Made prey animals avoid predators like they were supposed to
+- Made lakes get placed more consistently in worldgen
 
 ### Fixes
-- Fixed leaf blocks etc. requiring a restart to update between fast/fancy graphics
+- Fixed being able to shear baby animals
+- Made the bases of stratovolcanoes less circular, particularly when they form islands
+- Fixed plants/leaves not correctly animating with the seasons

@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "loader": "neoforge:separate_transforms",
+  "textures": {
+    "particle": "tfc:item/obsidian_javelin"
+  },
+  "gui_light": "front",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:throwing": 1
+      },
+      "model": "tfc:item/obsidian_javelin_throwing"
+    }
+  ],
+  "base": {
+    "parent": "tfc:item/obsidian_javelin_in_hand"
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    },
+    "fixed": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    },
+    "ground": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    },
+    "gui": {
+      "parent": "tfc:item/obsidian_javelin_gui"
+    }
+  }
+}

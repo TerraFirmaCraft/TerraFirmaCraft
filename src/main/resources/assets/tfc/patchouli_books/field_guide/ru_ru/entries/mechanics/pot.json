@@ -55,14 +55,14 @@
       "item": "tfc:food/fruit_soup",
       "title": "Рецепты супов",
       "link_recipes": false,
-      "text": "Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(item)$(k:key.use)$() with a $(l:mechanics/bowls)bowl$() to retrieve it. Soup combines multiple nutrients into a number of output meals depending on how much food is added. They are cheaper, but not as nutrition-dense as other meals."
+      "text": "Суп готовится из 3-5 $(thing)фруктов$(), $(thing)овощей$() или $(thing)мяса$() в котелке с $(thing)водой$(). Когда суп готов, вода в котелке станет красной. Заберите суп, используя $(item)$(k:key.use)$() с $(l:mechanics/bowls)миской$() в руке. Суп объединяет питательные вещества ингредиентов. Число блюд зависит от числа ингридиентов. Супы дешевле, но менее питательны, чем другие блюда."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
       "title": "Простые рецепты",
       "link_recipes": false,
-      "text": "Другие рецепты в котелке превращают предметы и жидкость во что-то другое. Например, кипячение пяти кучек $(thing)золы$() в $(thing)воде$() делает $(thing)щелочь$()."
+      "text": "Другие рецепты в котелке превращают предметы и жидкость во что-то другое. Например, кипячение пяти кучек $(thing)золы$() в $(thing)воде$() дает $(thing)щелочь$()."
     }
   ],
   "read_by_default": true,

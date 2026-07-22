@@ -354,7 +354,7 @@ public class TFCLayers
             && value != ICE_SHEET_MOUNTAINS_EDGE && value != ICE_SHEET_OCEANIC_MOUNTAINS && value != ICE_SHEET_OCEANIC_MOUNTAINS_EDGE
             && value != ICE_SHEET_SHIELD_VOLCANO && value != ICE_SHEET_SHORE && value != GLACIATED_SHIELD_VOLCANO
             && value != GLACIATED_MOUNTAINS && value != GLACIATED_OCEANIC_MOUNTAINS && value != GLACIALLY_CARVED_MOUNTAINS
-            && value != GLACIALLY_CARVED_OCEANIC_MOUNTAINS);
+            && value != GLACIALLY_CARVED_OCEANIC_MOUNTAINS && value != SALT_FLATS && value != MUD_FLATS);
     }
 
     public static int lakeFor(int value)
@@ -367,7 +367,7 @@ public class TFCLayers
         {
             return VOLCANIC_MOUNTAIN_LAKE;
         }
-        if (value == OLD_MOUNTAINS)
+        if (value == OLD_MOUNTAINS || value == EXTREME_DOLINE_MOUNTAINS)
         {
             return OLD_MOUNTAIN_LAKE;
         }
@@ -379,7 +379,7 @@ public class TFCLayers
         {
             return VOLCANIC_OCEANIC_MOUNTAIN_LAKE;
         }
-        if (value == PLATEAU)
+        if (value == PLATEAU || value == PLATEAU_WIDE || value == ROCKY_PLATEAU || value == BURREN_PLATEAU || value == SHILIN_PLATEAU || value == DOLINE_PLATEAU || value == CENOTE_PLATEAU || value == EXTREME_DOLINE_PLATEAU)
         {
             return PLATEAU_LAKE;
         }
@@ -390,6 +390,9 @@ public class TFCLayers
         if (value == ICE_SHEET_EDGE)
         {
             return MELTWATER_LAKE;
+        }
+        if (value == TOWER_KARST_CANYONS || value == TOWER_KARST_HIGHLANDS || value == TOWER_KARST_HILLS || value == TOWER_KARST_PLAINS) {
+            return TOWER_KARST_LAKE;
         }
         return LAKE;
     }

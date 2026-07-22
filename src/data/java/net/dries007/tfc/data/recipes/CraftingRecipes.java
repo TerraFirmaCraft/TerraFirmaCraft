@@ -24,6 +24,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.Ore;
@@ -37,7 +39,6 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.HideItemType;
 import net.dries007.tfc.common.items.Powder;
-import net.dries007.tfc.common.items.TFCBundleItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingCraftingRecipe;
 import net.dries007.tfc.common.recipes.FoodCombiningCraftingRecipe;
@@ -70,6 +71,7 @@ public interface CraftingRecipes extends Recipes
             "bricks",
             "bucket",
             "campfire",
+            "chiseled_bookshelf",
             "copper_door",
             "chest",
             "minecart",
@@ -95,6 +97,7 @@ public interface CraftingRecipes extends Recipes
             "jack_o_lantern",
             "lantern",
             "leather_boots",
+            "leather_helmet",
             "leather_chestplate",
             "leather_horse_armor",
             "leather_leggings",
@@ -121,6 +124,7 @@ public interface CraftingRecipes extends Recipes
             "soul_torch",
             "spire_armor_trim_smithing_template",
             "stone_axe",
+            "stone_pickaxe",
             "stone_hoe",
             "stone_shovel",
             "stone_sword",
@@ -171,8 +175,6 @@ public interface CraftingRecipes extends Recipes
         add("food_combining", FoodCombiningCraftingRecipe.INSTANCE);
 
         // ===== Crafting Recipes =====
-
-        // todo: pass over new recipes from 1.21, are there any we need to nuke / replace easily?
 
         recipe("small")
             .input(TFCBlocks.HARDENED_CLAY)
@@ -419,6 +421,24 @@ public interface CraftingRecipes extends Recipes
         addTools(RockCategory.ItemType.KNIFE_HEAD, RockCategory.ItemType.KNIFE);
         addTools(RockCategory.ItemType.SHOVEL_HEAD, RockCategory.ItemType.SHOVEL);
 
+        final Ingredient handle = CompoundIngredient.of(Ingredient.of(Tags.Items.RODS_WOODEN), Ingredient.of(Items.BONE));
+        recipe()
+            .input('S', handle)
+            .input('X', TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD))
+            .pattern("X", "S")
+            .shaped(TFCItems.OBSIDIAN_KNIFE);
+        recipe()
+            .input('S', handle)
+            .input('X', TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD))
+            .pattern("X", "S")
+            .shaped(TFCItems.OBSIDIAN_JAVELIN);
+        recipe()
+            .input('X', TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD))
+            .input('S', Tags.Items.RODS_WOODEN)
+            .input('F', Tags.Items.FEATHERS)
+            .pattern("X", "S", "F")
+            .shaped(Items.ARROW, 4);
+
         for (Wood wood : Wood.values())
         {
             final var blocks = TFCBlocks.WOODS.get(wood);
@@ -654,7 +674,7 @@ public interface CraftingRecipes extends Recipes
 
         TFCItems.JAM.forEach((food, item) ->
             recipe()
-                .input(TFCItems.UNSEALED_FRUIT_PRESERVES.get(food))
+                .input(notRotten(Ingredient.of(TFCItems.UNSEALED_FRUIT_PRESERVES.get(food))))
                 .shapeless(item));
 
         replace("activator_rail")
@@ -1049,7 +1069,7 @@ public interface CraftingRecipes extends Recipes
             .input('M', FluidContentIngredient.of(Fluids.WATER, 100))
             .input('S', TFCTags.Items.SWEETENERS)
             .input('E', notRotten(Ingredient.of(Items.EGG)))
-            .input('F', TFCTags.Items.FLOUR)
+            .input('F', notRotten(Ingredient.of(TFCTags.Items.FLOUR)))
             .pattern(" M ", "SES", "FFF")
             .shaped(TFCBlocks.CAKE);
         recipe()
@@ -1506,7 +1526,7 @@ public interface CraftingRecipes extends Recipes
     {
         for (RockCategory type : RockCategory.values())
             recipe()
-                .input('S', Tags.Items.RODS_WOODEN)
+                .input('S', CompoundIngredient.of(Ingredient.of(Tags.Items.RODS_WOODEN), Ingredient.of(Items.BONE)))
                 .input('X', TFCItems.ROCK_TOOLS.get(type).get(input))
                 .pattern("X", "S")
                 .shaped(TFCItems.ROCK_TOOLS.get(type).get(output));

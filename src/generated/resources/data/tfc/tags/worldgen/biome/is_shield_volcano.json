@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:active_shield_volcano",
+    "tfc:ancient_shield_volcano",
+    "tfc:dormant_shield_volcano",
+    "tfc:extinct_shield_volcano",
+    "tfc:glaciated_shield_volcano",
+    "tfc:ice_sheet_shield_volcano",
+    "tfc:old_shield_volcano_shore",
+    "tfc:shield_volcano_shore",
+    "tfc:sunken_shield_volcano"
+  ]
+}
