@@ -919,6 +919,7 @@ public class TFCTags
         public static final TagKey<Biome> IS_SHILIN = create("is_shilin");
         public static final TagKey<Biome> IS_TOWER_KARST = create("is_tower_karst");
 
+
         private static TagKey<Biome> create(String id)
         {
             return TagKey.create(Registries.BIOME, Helpers.identifier(id));

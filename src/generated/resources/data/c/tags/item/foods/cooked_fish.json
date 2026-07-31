@@ -11,6 +11,15 @@
     "tfc:food/cooked_largemouth_bass",
     "tfc:food/cooked_rainbow_trout",
     "tfc:food/cooked_salmon",
-    "tfc:food/cooked_smallmouth_bass"
+    "tfc:food/cooked_smallmouth_bass",
+    "tfc:food/cooked_tilapia",
+    "tfc:food/cooked_spotted_gudgeon",
+    "tfc:food/cooked_red_piranha",
+    "tfc:food/cooked_peacock_bass",
+    "tfc:food/cooked_pacu",
+    "tfc:food/cooked_northern_pike",
+    "tfc:food/cooked_muksun",
+    "tfc:food/cooked_burbot",
+    "tfc:food/cooked_arctic_char"
   ]
 }

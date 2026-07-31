@@ -252,6 +252,72 @@ public class BuiltinBiomeTags extends BiomeTagsProvider implements Accessors
 
         //=====TFC Tags=====//
 
+        tag(tfcTagOf(Registries.BIOME, "is_coastal_cliffs")).add(
+            TFCBiomes.EMBAYMENTS.key(), TFCBiomes.ICE_SHEET_SHORE.key(),
+            TFCBiomes.ROCKY_SHORES.key(), TFCBiomes.SEA_STACKS.key(),
+            TFCBiomes.SETBACK_CLIFFS.key(), TFCBiomes.SHIELD_VOLCANO_SHORE.key(),
+            TFCBiomes.TERRACE_LOWER.key(), TFCBiomes.TERRACE_UPPER.key(),
+            TFCBiomes.GUANO_ISLAND.key()
+        );
+
+        tag(tfcTagOf(Registries.BIOME, "is_isolated_island")).add(
+            TFCBiomes.GUANO_ISLAND.key(), TFCBiomes.SUNKEN_SHIELD_VOLCANO.key(),
+            TFCBiomes.VOLCANIC_MOUNTAIN_ISLANDS.key(), TFCBiomes.DEEP_OCEAN_ATOLLS.key(),
+            TFCBiomes.OCEAN_ATOLLS.key()
+        );
+
+        tag(tfcTagOf(Registries.BIOME, "is_oceanic_mountains")).add(
+            TFCBiomes.GLACIALLY_CARVED_OCEANIC_MOUNTAINS.key(), TFCBiomes.GLACIATED_OCEANIC_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_OCEANIC_MOUNTAINS.key(), TFCBiomes.ICE_SHEET_OCEANIC_MOUNTAINS_EDGE.key(),
+            TFCBiomes.GLACIALLY_CARVED_VOLCANIC_OCEANIC_MOUNTAINS.key(), TFCBiomes.GLACIATED_VOLCANIC_OCEANIC_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_VOLCANIC_OCEANIC_MOUNTAINS.key(), TFCBiomes.OCEANIC_MOUNTAINS.key(),
+            TFCBiomes.OCEANIC_MOUNTAIN_LAKE.key(), TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE.key()
+        );
+
+        tag(tfcTagOf(Registries.BIOME, "is_continental_mountains")).add(
+            TFCBiomes.GLACIALLY_CARVED_MOUNTAINS.key(), TFCBiomes.GLACIATED_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_MOUNTAINS.key(), TFCBiomes.ICE_SHEET_MOUNTAINS_EDGE.key(),
+            TFCBiomes.GLACIALLY_CARVED_VOLCANIC_MOUNTAINS.key(), TFCBiomes.GLACIATED_VOLCANIC_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_VOLCANIC_MOUNTAINS.key(), TFCBiomes.MOUNTAINS.key(),
+            TFCBiomes.MOUNTAIN_LAKE.key(), TFCBiomes.VOLCANIC_MOUNTAIN_LAKE.key(),
+            TFCBiomes.OLD_MOUNTAINS.key(), TFCBiomes.OLD_MOUNTAIN_LAKE.key(),
+            TFCBiomes.EXTREME_DOLINE_MOUNTAINS.key()
+        );
+
+        tag(tfcTagOf(Registries.BIOME, "is_volcanic_mountains")).add(
+            TFCBiomes.GLACIALLY_CARVED_VOLCANIC_MOUNTAINS.key(), TFCBiomes.GLACIATED_VOLCANIC_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_VOLCANIC_MOUNTAINS.key(), TFCBiomes.VOLCANIC_MOUNTAIN_LAKE.key(),
+            TFCBiomes.GLACIALLY_CARVED_VOLCANIC_OCEANIC_MOUNTAINS.key(), TFCBiomes.GLACIATED_VOLCANIC_OCEANIC_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_VOLCANIC_OCEANIC_MOUNTAINS.key(), TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE.key()
+        );
+
+        tag(tfcTagOf(Registries.BIOME, "is_nonvolcanic_mountains")).add(
+            TFCBiomes.GLACIALLY_CARVED_OCEANIC_MOUNTAINS.key(), TFCBiomes.GLACIATED_OCEANIC_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_OCEANIC_MOUNTAINS.key(), TFCBiomes.ICE_SHEET_OCEANIC_MOUNTAINS_EDGE.key(),
+            TFCBiomes.OCEANIC_MOUNTAINS.key(), TFCBiomes.MOUNTAINS.key(),
+            TFCBiomes.GLACIALLY_CARVED_OCEANIC_MOUNTAINS.key(), TFCBiomes.GLACIATED_OCEANIC_MOUNTAINS.key(),
+            TFCBiomes.ICE_SHEET_OCEANIC_MOUNTAINS.key(), TFCBiomes.ICE_SHEET_OCEANIC_MOUNTAINS_EDGE.key(),
+            TFCBiomes.OCEANIC_MOUNTAIN_LAKE.key(), TFCBiomes.MOUNTAIN_LAKE.key(),
+            TFCBiomes.OLD_MOUNTAINS.key(), TFCBiomes.OLD_MOUNTAIN_LAKE.key(),
+            TFCBiomes.EXTREME_DOLINE_MOUNTAINS.key()
+        );
+
+        tag(tfcTagOf(Registries.BIOME, "is_salt_marsh")).add(
+            TFCBiomes.SALT_MARSH.key()
+        );
+
+        tag(commonTagOf(Registries.BIOME, "is_surface_lake")).add(
+            TFCBiomes.LAKE.key(), TFCBiomes.MELTWATER_LAKE.key(),
+            TFCBiomes.RIFT_LAKE.key(), TFCBiomes.TOWER_KARST_LAKE.key()
+        );
+
+        tag(commonTagOf(Registries.BIOME, "is_cave_lake")).add(
+            TFCBiomes.MOUNTAIN_LAKE.key(), TFCBiomes.OCEANIC_MOUNTAIN_LAKE.key(),
+            TFCBiomes.OLD_MOUNTAIN_LAKE.key(), TFCBiomes.PLATEAU_LAKE.key(),
+            TFCBiomes.SUBGLACIAL_LAKE.key(), TFCBiomes.VOLCANIC_MOUNTAIN_LAKE.key(),
+            TFCBiomes.VOLCANIC_OCEANIC_MOUNTAIN_LAKE.key()
+        );
+
         tag(HAS_ATOLLS).add(
             TFCBiomes.DEEP_OCEAN_ATOLLS.key(), TFCBiomes.OCEAN_ATOLLS.key()
         );

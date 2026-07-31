@@ -54,6 +54,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.data.Accessors;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.registry.IdHolder;
+import net.dries007.tfc.world.biome.TFCBiomes;
 
 import static net.dries007.tfc.common.TFCTags.Blocks.*;
 
@@ -320,23 +321,6 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             );
         // Sword Efficient in vanilla is 'mines faster with sword', so we don't include anything extra in there,
         // since again, we typically want to refer to sharp tools instead
-        // Requires >= Black Steel
-        tag(Tags.Blocks.NEEDS_NETHERITE_TOOL)
-            .add(TFCBlocks.ORES, Ore.DIAMOND)
-            .add(TFCBlocks.ORES, Ore.RUBY)
-            .add(TFCBlocks.ORES, Ore.SAPPHIRE);
-        // Requires >= Steel
-        tag(BlockTags.NEEDS_DIAMOND_TOOL)
-            .add(TFCBlocks.ORES, Ore.AMETHYST)
-            .add(TFCBlocks.ORES, Ore.EMERALD)
-            .add(TFCBlocks.ORES, Ore.TOPAZ);
-        // Requires >=bronze
-        tag(BlockTags.NEEDS_IRON_TOOL)
-            .add2(pivot(TFCBlocks.GRADED_ORES, Ore.GARNIERITE))
-            .add(TFCBlocks.ORES, Ore.CINNABAR)
-            .add(TFCBlocks.ORES, Ore.CRYOLITE)
-            .add(TFCBlocks.ORES, Ore.LAPIS_LAZULI)
-            .add(TFCBlocks.ORES, Ore.OPAL);
         // Needs Stone Tool is ~ Copper, which is every TFC pickaxe, so we don't bother here
         // "Incorrect For Tool" includes the "Needs For Tool", so we don't touch, since we don't add levels
         tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(TFCBlocks.SEA_ICE, TFCBlocks.ICE_PILE).add(TFCBlocks.MAGMA_BLOCKS);
@@ -762,6 +746,141 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             TFCBlocks.PLANTS.get(Plant.PAMPAS_GRASS),
             TFCBlocks.PLANTS.get(Plant.PEROVSKIA),
             TFCBlocks.PLANTS.get(Plant.WATER_CANNA));
+
+        tag(tfcTagOf(Registries.BLOCK, "fresh_underwater_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.COONTAIL),
+            TFCBlocks.PLANTS.get(Plant.EEL_GRASS),
+            TFCBlocks.PLANTS.get(Plant.MILFOIL),
+            TFCBlocks.PLANTS.get(Plant.SAGO)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "salty_underwater_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.BADDERLOCKS),
+            TFCBlocks.PLANTS.get(Plant.TURTLE_GRASS),
+            TFCBlocks.PLANTS.get(Plant.STAR_GRASS),
+            TFCBlocks.PLANTS.get(Plant.MANATEE_GRASS),
+            TFCBlocks.PLANTS.get(Plant.GUTWEED),
+            TFCBlocks.PLANTS.get(Plant.LAMINARIA),
+            TFCBlocks.PLANTS.get(Plant.WINGED_KELP),
+            TFCBlocks.PLANTS.get(Plant.WINGED_KELP_PLANT),
+            TFCBlocks.PLANTS.get(Plant.LEAFY_KELP),
+            TFCBlocks.PLANTS.get(Plant.LEAFY_KELP_PLANT),
+            TFCBlocks.PLANTS.get(Plant.GIANT_KELP_FLOWER),
+            TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "fresh_emergent_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.ARROWHEAD),
+            TFCBlocks.PLANTS.get(Plant.BUR_REED),
+            TFCBlocks.PLANTS.get(Plant.CATTAIL),
+            TFCBlocks.PLANTS.get(Plant.MARIGOLD),
+            TFCBlocks.PLANTS.get(Plant.PHRAGMITE),
+            TFCBlocks.PLANTS.get(Plant.PICKERELWEED),
+            TFCBlocks.PLANTS.get(Plant.WATER_TARO)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "salty_emergent_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.CORDGRASS),
+            TFCBlocks.PLANTS.get(Plant.SEA_LAVENDER)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "fresh_floating_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.PURPLE_WATER_LILY),
+            TFCBlocks.PLANTS.get(Plant.YELLOW_WATER_LILY),
+            TFCBlocks.PLANTS.get(Plant.WHITE_WATER_LILY),
+            TFCBlocks.PLANTS.get(Plant.LOTUS),
+            TFCBlocks.PLANTS.get(Plant.GREEN_ALGAE),
+            TFCBlocks.PLANTS.get(Plant.DUCKWEED),
+            TFCBlocks.PLANTS.get(Plant.PISTIA),
+            TFCBlocks.PLANTS.get(Plant.WATER_CANNA)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "salty_floating_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.SARGASSUM),
+            TFCBlocks.PLANTS.get(Plant.RED_ALGAE)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "tall_grasses")).add(
+            TFCBlocks.PLANTS.get(Plant.BEACHGRASS),
+            TFCBlocks.PLANTS.get(Plant.BLUEGRASS),
+            TFCBlocks.PLANTS.get(Plant.BROMEGRASS),
+            TFCBlocks.PLANTS.get(Plant.PAMPAS_GRASS),
+            TFCBlocks.PLANTS.get(Plant.FOUNTAIN_GRASS),
+            TFCBlocks.PLANTS.get(Plant.ORCHARD_GRASS),
+            TFCBlocks.PLANTS.get(Plant.RYEGRASS),
+            TFCBlocks.PLANTS.get(Plant.SCUTCH_GRASS),
+            TFCBlocks.PLANTS.get(Plant.TIMOTHY_GRASS),
+            TFCBlocks.PLANTS.get(Plant.RADDIA_GRASS),
+            TFCBlocks.PLANTS.get(Plant.RED_OAT_GRASS),
+            TFCBlocks.PLANTS.get(Plant.DRY_GRASS),
+            TFCBlocks.PLANTS.get(Plant.TALL_FESCUE_GRASS),
+            TFCBlocks.PLANTS.get(Plant.SWITCHGRASS)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "cacti")).add(
+            TFCBlocks.PLANTS.get(Plant.BARREL_CACTUS),
+            TFCBlocks.PLANTS.get(Plant.SAGUARO_FRUIT),
+            TFCBlocks.PLANTS.get(Plant.SAGUARO_PLANT),
+            TFCBlocks.PLANTS.get(Plant.SAGUARO),
+            TFCBlocks.PLANTS.get(Plant.SILKEN_PINCUSHION_CACTUS),
+            TFCBlocks.PLANTS.get(Plant.PRICKLY_PEAR),
+            TFCBlocks.PLANTS.get(Plant.PRICKLY_PEAR_PURPLE)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "ferns")).add(
+            TFCBlocks.PLANTS.get(Plant.ATHYRIUM_FERN),
+            TFCBlocks.PLANTS.get(Plant.BIRD_NEST_FERN),
+            TFCBlocks.PLANTS.get(Plant.KING_FERN),
+            TFCBlocks.PLANTS.get(Plant.LADY_FERN),
+            TFCBlocks.PLANTS.get(Plant.LICORICE_FERN),
+            TFCBlocks.PLANTS.get(Plant.OSTRICH_FERN),
+            TFCBlocks.PLANTS.get(Plant.SWORD_FERN)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "shrubs")).add(
+            TFCBlocks.PLANTS.get(Plant.AZALEA),
+            TFCBlocks.PLANTS.get(Plant.HIBISCUS),
+            TFCBlocks.PLANTS.get(Plant.KINNIKINNICK),
+            TFCBlocks.PLANTS.get(Plant.MOUNTAIN_HULLWORT),
+            TFCBlocks.PLANTS.get(Plant.PALASH),
+            TFCBlocks.PLANTS.get(Plant.PENWORTEL),
+            TFCBlocks.PLANTS.get(Plant.QANTU),
+            TFCBlocks.PLANTS.get(Plant.SHAWIASH)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "epiphytes")).add(
+            TFCBlocks.PLANTS.get(Plant.GUZMANIA),
+            TFCBlocks.PLANTS.get(Plant.LICORICE_FERN),
+            TFCBlocks.PLANTS.get(Plant.ARTISTS_CONK),
+            TFCBlocks.PLANTS.get(Plant.RAMIREZELLA),
+            TFCBlocks.PLANTS.get(Plant.SILVER_BROMELIAD),
+            TFCBlocks.PLANTS.get(Plant.TANK_BROMELIAD),
+            TFCBlocks.PLANTS.get(Plant.VRIESEA)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "mosses")).add(
+            TFCBlocks.PLANTS.get(Plant.COBBLESTONE_LICHEN),
+            TFCBlocks.PLANTS.get(Plant.MOSS),
+            TFCBlocks.PLANTS.get(Plant.REINDEER_LICHEN),
+            TFCBlocks.PLANTS.get(Plant.ELEGANT_SUNBURST_LICHEN)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "dead_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.DRY_GRASS),
+            TFCBlocks.PLANTS.get(Plant.DEAD_BUSH)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "shore_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.SEA_PALM),
+            TFCBlocks.PLANTS.get(Plant.BEACHGRASS)
+        );
+
+        tag(tfcTagOf(Registries.BLOCK, "dry_plants")).add(
+            TFCBlocks.PLANTS.get(Plant.DEAD_BUSH),
+            TFCBlocks.PLANTS.get(Plant.DRY_GRASS),
+            TFCBlocks.PLANTS.get(Plant.SAGEBRUSH),
+            TFCBlocks.PLANTS.get(Plant.YUCCA)
+        );
 
         tag(BEAR_CRAWLS_ON).add(TFCBlocks.SEA_ICE).add(Blocks.ICE).add(Blocks.POWDER_SNOW);
 

@@ -1555,6 +1555,7 @@ public final class Helpers
 
     /**
      * Returns a new random double in the range [0, 1)
+     *
      * @param input a double in the range [-1, 1]
      * @param index an index for getting multiple values from one double
      */
@@ -1565,7 +1566,8 @@ public final class Helpers
         return (x >>> 11) * 0x1.0p-53;
     }
 
-    public static long mix64(long x) {
+    public static long mix64(long x)
+    {
         x ^= x >>> 33;
         x *= 0xff51afd7ed558ccdL;
         x ^= x >>> 33;

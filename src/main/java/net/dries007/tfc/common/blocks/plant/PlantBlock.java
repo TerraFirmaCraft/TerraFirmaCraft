@@ -251,7 +251,7 @@ public abstract class PlantBlock extends TFCBushBlock
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
     {
 
-        if (random.nextInt(120) == 0 && Helpers.isBlock(state, BlockTags.FLOWERS))
+        if (random.nextInt(180) == 0 && Helpers.isBlock(state, BlockTags.FLOWERS))
         {
             final int dayTime = SolarCalculator.getSunBasedDayTime(pos.getZ(), ClimateRenderCache.INSTANCE.getHemisphereScale(), Calendars.CLIENT.getCalendarFractionOfYear(), Calendars.CLIENT.getCalendarFractionOfDay());
             if (dayTime < 12_000)

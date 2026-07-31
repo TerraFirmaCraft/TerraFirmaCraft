@@ -1,0 +1,12 @@
+{
+  "values": [
+    "tfc:glacially_carved_volcanic_mountains",
+    "tfc:glaciated_volcanic_mountains",
+    "tfc:ice_sheet_volcanic_mountains",
+    "tfc:volcanic_mountain_lake",
+    "tfc:glacially_carved_volcanic_oceanic_mountains",
+    "tfc:glaciated_volcanic_oceanic_mountains",
+    "tfc:ice_sheet_volcanic_oceanic_mountains",
+    "tfc:volcanic_oceanic_mountain_lake"
+  ]
+}
