@@ -229,6 +229,9 @@ if (modIsInCI) {
 tasks {
     test {
         useJUnitPlatform()
+        minHeapSize = "1G"
+        maxHeapSize = "4G"
+        maxParallelForks = 1
         testLogging {
             events("failed", "standardError")
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
