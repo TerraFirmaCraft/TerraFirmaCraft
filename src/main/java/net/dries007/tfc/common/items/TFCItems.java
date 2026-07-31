@@ -211,6 +211,8 @@ public final class TFCItems
     public static final ItemId JAR_LID = register("jar_lid");
     public static final ItemId BASKET = register("basket", () -> new TFCBundleItem(new Properties().component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY)));
     public static final ItemId BONE_NEEDLE = register("bone_needle", () -> new Item(new Properties().durability(64)));
+    public static final ItemId OBSIDIAN_KNIFE = register("obsidian_knife", () -> new ToolItem(TFCTiers.OBSIDIAN, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Properties().attributes(ToolItem.productAttributes(TFCTiers.IGNEOUS_EXTRUSIVE, 0.6f, -2.0f))));
+    public static final ItemId OBSIDIAN_JAVELIN = register("obsidian_javelin", () -> new JavelinItem(TFCTiers.OBSIDIAN, new Properties().attributes(ToolItem.productAttributes(TFCTiers.IGNEOUS_EXTRUSIVE, 0.7f, -2.2f))));
     public static final ItemId BLANK_DISC = register("blank_disc");
     public static final ItemId BLUBBER = register("blubber");
     public static final ItemId BRASS_MECHANISMS = register("brass_mechanisms");
@@ -332,6 +334,8 @@ public final class TFCItems
     public static final ItemId DONKEY_EGG = registerSpawnEgg(TFCEntities.DONKEY);
     public static final ItemId MULE_EGG = registerSpawnEgg(TFCEntities.MULE);
     public static final ItemId HORSE_EGG = registerSpawnEgg(TFCEntities.HORSE);
+    public static final ItemId DROMEDARY_CAMEL_EGG = registerSpawnEgg(TFCEntities.DROMEDARY_CAMEL);
+    public static final ItemId BACTRIAN_CAMEL_EGG = registerSpawnEgg(TFCEntities.BACTRIAN_CAMEL);
     public static final ItemId CAT_EGG = registerSpawnEgg(TFCEntities.CAT);
     public static final ItemId DOG_EGG = registerSpawnEgg(TFCEntities.DOG);
     public static final ItemId PANDA_EGG = registerSpawnEgg(TFCEntities.PANDA);

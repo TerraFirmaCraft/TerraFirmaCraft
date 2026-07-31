@@ -2397,22 +2397,21 @@
       "tfc:entity/penguin/death1"
     ]
   },
-  
+
   "entity.seal.ambient": {
     "subtitle": "subtitles.entity.tfc.seal.ambient",
     "sounds": [
-      {
-        "name": "minecraft:entity.wolf.ambient",
-        "type": "event"
-      }
+      "tfc:entity/seal/ambient0",
+      "tfc:entity/seal/ambient1"
     ]
   },
   "entity.seal.hurt": {
     "subtitle": "subtitles.entity.tfc.seal.hurt",
     "sounds": [
       {
-        "name": "minecraft:entity.wolf.hurt",
-        "type": "event"
+        "name": "minecraft:entity.seal.ambient",
+        "type": "event",
+        "pitch": 1.5
       }
     ]
   },
@@ -2430,8 +2429,9 @@
     "subtitle": "subtitles.entity.tfc.seal.death",
     "sounds": [
       {
-        "name": "minecraft:entity.wolf.death",
-        "type": "event"
+        "name": "minecraft:entity.seal.ambient",
+        "type": "event",
+        "pitch": 0.7
       }
     ]
   },

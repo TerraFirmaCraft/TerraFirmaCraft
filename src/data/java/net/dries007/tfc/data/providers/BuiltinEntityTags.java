@@ -10,7 +10,6 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -205,12 +204,15 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
         tag(SHEARABLE_ANIMALS)
             .add(TFCEntities.SHEEP.get())
             .add(TFCEntities.ALPACA.get())
-            .add(TFCEntities.MUSK_OX.get());
+            .add(TFCEntities.MUSK_OX.get())
+            .add(TFCEntities.BACTRIAN_CAMEL.get());
 
         tag(RIDEABLE_ANIMALS)
             .add(TFCEntities.HORSE.get())
             .add(TFCEntities.DONKEY.get())
-            .add(TFCEntities.MULE.get());
+            .add(TFCEntities.MULE.get())
+            .add(TFCEntities.DROMEDARY_CAMEL.get())
+            .add(TFCEntities.BACTRIAN_CAMEL.get());
 
         tag(FARM_ANIMALS)
             .addTag(DAIRY_ANIMALS)
@@ -293,7 +295,9 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.HORSE.get(),
                 TFCEntities.MULE.get(),
                 TFCEntities.DONKEY.get(),
-                TFCEntities.GOAT.get()
+                TFCEntities.GOAT.get(),
+                TFCEntities.DROMEDARY_CAMEL.get(),
+                TFCEntities.BACTRIAN_CAMEL.get()
             );
 
         tag(HUNTED_BY_LAND_PREDATORS)
@@ -330,6 +334,9 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
         tag(NOT_RAMMED_BY_RAMMERS)
             .addTags(BUBBLE_COLUMN_IMMUNE, PESTS, BIRD_PREY)
             .add(TFCEntities.FROG.get());
+
+        tag(IGNORES_SNOW)
+            .add(TFCEntities.BACTRIAN_CAMEL.get());
 
     }
 }

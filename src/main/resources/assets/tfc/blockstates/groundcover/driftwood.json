@@ -3,18 +3,93 @@
   "variants": {
     "": [
       {
-        "model": "tfc:block/groundcover/driftwood",
+        "model": "tfc:block/groundcover/driftwood_0",
         "y": 90
       },
       {
-        "model": "tfc:block/groundcover/driftwood"
+        "model": "tfc:block/groundcover/driftwood_0"
       },
       {
-        "model": "tfc:block/groundcover/driftwood",
+        "model": "tfc:block/groundcover/driftwood_0",
         "y": 180
       },
       {
-        "model": "tfc:block/groundcover/driftwood",
+        "model": "tfc:block/groundcover/driftwood_0",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_1",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_1"
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_1",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_1",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_2",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_2"
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_2",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_2",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_3",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_3"
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_3",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_3",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_4",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_4"
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_4",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_4",
+        "y": 270
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_5",
+        "y": 90
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_5"
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_5",
+        "y": 180
+      },
+      {
+        "model": "tfc:block/groundcover/driftwood_5",
         "y": 270
       }
     ]

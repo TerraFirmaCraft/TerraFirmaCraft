@@ -124,7 +124,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         super.registerGoals();
         EntityHelpers.removeGoalOfPriority(goalSelector, 3);
         goalSelector.addGoal(3, new TemptGoal(this, 1.25f, Ingredient.of(getFoodTag()), false));
-        goalSelector.addGoal(5, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.HUNTS_LAND_PREY));
+        goalSelector.addGoal(5, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.LAND_PREDATORS));
     }
 
     @Override

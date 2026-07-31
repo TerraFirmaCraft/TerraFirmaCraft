@@ -81,7 +81,7 @@ public class TFCFox extends Fox
         super.registerGoals();
         EntityHelpers.removeGoalOfPriority(goalSelector, 3); // breed goal
         EntityHelpers.removeGoalOfClass(goalSelector, FoxEatBerriesGoal.class);
-        goalSelector.addGoal(4, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.HUNTS_LAND_PREY));
+        goalSelector.addGoal(4, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.LAND_PREDATORS));
         goalSelector.addGoal(10, new TFCFoxEatBerriesGoal());
     }
 

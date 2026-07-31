@@ -23,6 +23,8 @@
     "tfc:stone/shovel/igneous_extrusive",
     "tfc:stone/shovel/igneous_intrusive",
     "tfc:stone/shovel/metamorphic",
-    "tfc:stone/shovel/sedimentary"
+    "tfc:stone/shovel/sedimentary",
+    "tfc:obsidian_knife",
+    "tfc:obsidian_javelin"
   ]
 }

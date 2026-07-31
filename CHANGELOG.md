@@ -1,24 +1,24 @@
+### Additions
+- Added Dromedary and Bactrian Camels
+    - These are based on the Vanilla camel, and ported into TFC by @strangelyng
+    - Camels are slower than the average horse, but get a speed bonus on all dry blocks
+    - Dromedaries can carry two riders and are immune to cactus damage
+    - Bactrians may be sheared, and are not slowed by snow
+- Added obsidian shards which can be used to craft arrowheads, knives, and javelins
+- Allow bones to be used as handles for stone tools again
+- Common tags for TFC Biomes
+
 ### Changes
-- Added Crates. These can store 36 stacks of a single item and are interacted with using no GUI.
-- Added Baskets, our version of vanilla bundles.
-- Fixed Cougars and Panthers not spawning.
-- Updated the visual look of Chestnuts.
-- Double-clicking a crate inserts all matching items
-- Javelins are now able to break the same blocks that tridents can.
-- Rope QOL changes:
-  - Rope items no longer consumed in creative.
-  - Ropes disappear at a distance or when their holder disappears.
-  - Fixed several random bugs with ropes.
-  - Ropes can no longer be waterlogged.
-- Bowl parity (#3634)
-- Updated Turkish translations (#3635)
+- Log piles now require double-clicking to insert/retrieve entire stacks. This means that retrieving entire stacks no longer requires an empty hand.
+- Allow butterfly particles to appear more often, and at any time of year that it is warm enough
+- Restricted butterflies to daytime, and moths to nighttime
+- Changed noises for seals
+- Increased wool output of sheep to not be substantially worse than all over woolly animals
+- New driftwood models
+- Made prey animals avoid predators like they were supposed to
+- Made lakes get placed more consistently in worldgen
 
 ### Fixes
-- Fixed kelp placement issues (#3633) (#2776)
-- Fixed various rope bugs. Ropes can no longer be waterlogged.
-- Fixed random dynamic block models (#3637)
-- Fixed a bug with the thirst debuff.
-- Restored the missing palm crate texture (#3638)
-- Steel rope anchors can now be melted
-- Prevented more recipes from working with rotten food.
-- Fix stove melting recipe.
+- Fixed being able to shear baby animals
+- Made the bases of stratovolcanoes less circular, particularly when they form islands
+- Fixed plants/leaves not correctly animating with the seasons

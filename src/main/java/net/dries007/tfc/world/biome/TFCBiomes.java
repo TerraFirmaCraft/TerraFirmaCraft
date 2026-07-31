@@ -158,7 +158,7 @@ public final class TFCBiomes
     public static final BiomeExtension TOWER_KARST_HIGHLANDS = register("tower_karst_highlands", builder().heightmap(seed -> BiomeNoise.mogotes(seed, 6, 110)).surface(NormalSurfaceBuilder.ROCKY).spawnable().type(RiverBlendType.CAVE).noSandyRiverShores());
 
     // Tower karsts in shallow water
-    public static final BiomeExtension TOWER_KARST_LAKE = register("tower_karst_lake", builder().heightmap(seed -> BiomeNoise.fenglinPlains(seed, -8, 98)).surface(NormalSurfaceBuilder.ROCKY).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Shallow fresh water, fenglin karsts
+    public static final BiomeExtension TOWER_KARST_LAKE = register("tower_karst_lake", builder().heightmap(seed -> BiomeNoise.fenglinPlains(seed, -8, 98)).surface(NormalSurfaceBuilder.ROCKY).aquiferHeightOffset(-16).spawnable().type(RiverBlendType.TALL_CANYON).type(BiomeBlendType.LAKE).noSandyRiverShores()); // Shallow fresh water, fenglin karsts
     public static final BiomeExtension TOWER_KARST_BAY = register("tower_karst_bay", builder().heightmap(seed -> BiomeNoise.fenglinPlains(seed, -12, 102)).surface(NormalSurfaceBuilder.ROCKY).aquiferHeightOffset(-16).spawnable().salty().type(RiverBlendType.TALL_CANYON).noSandyRiverShores()); // Salt water, fenglin karsts
 
     // Karren Karsts

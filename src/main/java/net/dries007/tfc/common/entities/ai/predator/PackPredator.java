@@ -47,29 +47,31 @@ public class PackPredator extends Predator implements Temptable
 {
     public static PackPredator createWolf(EntityType<? extends Predator> type, Level level)
     {
-        return new PackPredator(type, level, false, TFCSounds.TFC_WOLF, true);
+        return new PackPredator(type, level, false, TFCSounds.TFC_WOLF, true, true);
     }
     public static PackPredator createHyena(EntityType<? extends Predator> type, Level level)
     {
-        return new PackPredator(type, level, false, TFCSounds.HYENA, false);
+        return new PackPredator(type, level, false, TFCSounds.HYENA, false, false);
     }
     public static PackPredator createDirewolf(EntityType<? extends Predator> type, Level level)
     {
-        return new PackPredator(type, level, false, TFCSounds.DOG, false);
+        return new PackPredator(type, level, false, TFCSounds.DOG, false, true);
     }
 
     public static final EntityDataAccessor<Integer> DATA_RESPECT = SynchedEntityData.defineId(PackPredator.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Float> DATA_FAMILIARITY = SynchedEntityData.defineId(PackPredator.class, EntityDataSerializers.FLOAT);
 
     private boolean howled;
+    private boolean isHowlingWolf;
     private long nextFeedTime = Long.MIN_VALUE;
 
     private final boolean tamable;
 
-    public PackPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntityId sounds, boolean tamable)
+    public PackPredator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntityId sounds, boolean tamable, boolean isHowlingWolf)
     {
         super(type, level, diurnal, sounds);
         this.tamable = tamable;
+        this.isHowlingWolf = isHowlingWolf;
     }
 
     @Nullable
@@ -182,7 +184,7 @@ public class PackPredator extends Predator implements Temptable
     {
         super.tick();
         final long time = level().getDayTime() % 24000;
-        if (!howled && time > 18000 && time < 19000 && random.nextInt(10) == 0)
+        if (!howled && isHowlingWolf && time > 18000 && time < 19000 && random.nextInt(10) == 0)
         {
             playSound(SoundEvents.WOLF_HOWL, getSoundVolume() * 1.2f, getVoicePitch());
             howled = true;

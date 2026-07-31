@@ -65,11 +65,11 @@
       "type": "patchouli:crafting",
       "anchor": "power_loom",
       "recipe": "tfc:crafting/power_loom",
-      "text": "Weaving can be automated using $(l:mechanics/mechanical_power#quern)Mechanical Power$() with the use of a $(thing)Power Loom$()."
+      "text": "Ткачество можно автоматизировать используя $(l:mechanics/mechanical_power#quern)механическую энергию$() с помощью $(thing)механического ткацкого станка$()."
     },
     {
       "type": "patchouli:text",
-      "text": "The Power Loom, like the regular Loom, can take input from hoppers on the side and extraction from hoppers on the bottom. On the right side of the loom, it can take power input from an $(thing)Axle$(). Fill the loom as normal, and it will slowly weave together the final product for you. Power looms cannot be operated manually."
+      "text": "В механический ткацкий станок, как и в обычный, можно положить предметы, используя воронку сбоку, и забрать продукт воронкой под станком. С правой стороны к станку  можно присоединить $(thing)ось$() для снабжения его механической энергией. Заполните станок нитями, и он медленно соткет конечный продукт. На механическом ткацком станке нельзя работать вручную."
     }
   ],
   "read_by_default": true,

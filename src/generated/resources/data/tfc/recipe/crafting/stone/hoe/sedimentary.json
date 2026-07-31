@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "S": {
-      "tag": "c:rods/wooden"
-    },
+    "S": [
+      {
+        "tag": "c:rods/wooden"
+      },
+      {
+        "item": "minecraft:bone"
+      }
+    ],
     "X": {
       "item": "tfc:stone/hoe_head/sedimentary"
     }

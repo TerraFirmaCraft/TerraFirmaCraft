@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:glacially_carved_mountains",
+    "tfc:glaciated_mountains",
+    "tfc:ice_sheet_mountains",
+    "tfc:ice_sheet_mountains_edge",
+    "tfc:glacially_carved_volcanic_mountains",
+    "tfc:glaciated_volcanic_mountains",
+    "tfc:ice_sheet_volcanic_mountains",
+    "tfc:mountains",
+    "tfc:mountain_lake",
+    "tfc:volcanic_mountain_lake",
+    "tfc:old_mountains",
+    "tfc:old_mountain_lake",
+    "tfc:extreme_doline_mountains"
+  ]
+}

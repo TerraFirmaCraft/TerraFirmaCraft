@@ -106,6 +106,15 @@ public interface HeatRecipes extends Recipes
         addFood(Food.RAINBOW_TROUT, Food.COOKED_RAINBOW_TROUT);
         addFood(Food.SALMON, Food.COOKED_SALMON);
         addFood(Food.SMALLMOUTH_BASS, Food.COOKED_SMALLMOUTH_BASS);
+        addFood(Food.TILAPIA, Food.COOKED_TILAPIA);
+        addFood(Food.SPOTTED_GUDGEON, Food.COOKED_SPOTTED_GUDGEON);
+        addFood(Food.RED_PIRANHA, Food.COOKED_RED_PIRANHA);
+        addFood(Food.PEACOCK_BASS, Food.COOKED_PEACOCK_BASS);
+        addFood(Food.PACU, Food.COOKED_PACU);
+        addFood(Food.NORTHERN_PIKE, Food.COOKED_NORTHERN_PIKE);
+        addFood(Food.MUKSUN, Food.COOKED_MUKSUN);
+        addFood(Food.BURBOT, Food.COOKED_BURBOT);
+        addFood(Food.ARCTIC_CHAR, Food.COOKED_ARCTIC_CHAR);
         addFood(Food.FROG_LEGS, Food.COOKED_FROG_LEGS);
         addFood(Food.FOX, Food.COOKED_FOX);
 
@@ -139,12 +148,6 @@ public interface HeatRecipes extends Recipes
             ItemStackProvider.empty(),
             new FluidStack(meltFluidFor(metal), units(type)),
             temperatureOf(metal), new ItemStack(item).isDamageableItem()))));
-
-        add(nameOf(TFCBlocks.STEEL_ROPE_ANCHOR), new HeatingRecipe(
-            Ingredient.of(TFCBlocks.STEEL_ROPE_ANCHOR),
-            ItemStackProvider.empty(),
-            new FluidStack(meltFluidFor(Metal.STEEL), units(Metal.ItemType.ROD) * 2),
-            temperatureOf(Metal.STEEL), new ItemStack(TFCBlocks.STEEL_ROPE_ANCHOR).isDamageableItem()));
 
         Helpers.mapOf(Metal.class, Metal::allParts, metal ->
             Helpers.mapOf(Wood.class, wood -> TFCItems.HANGING_SIGNS.get(wood).get(metal)).values()

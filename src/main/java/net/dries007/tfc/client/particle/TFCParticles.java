@@ -49,6 +49,7 @@ public final class TFCParticles
     public static final Id<SimpleParticleType> FEATHER = register("feather");
     public static final Id<SimpleParticleType> SPARK = register("spark");
     public static final Map<Butterfly, Id<SimpleParticleType>> BUTTERFLIES = Helpers.mapOf(Butterfly.class, b -> register(b.name().toLowerCase(Locale.ROOT)));
+    public static final Map<Moth, Id<SimpleParticleType>> MOTHS = Helpers.mapOf(Moth.class, b -> register(b.name().toLowerCase(Locale.ROOT)));
     public static final Id<SimpleParticleType> SMOKE_0 = register("smoke_0");
     public static final Id<SimpleParticleType> SMOKE_1 = register("smoke_1");
     public static final Id<SimpleParticleType> SMOKE_2 = register("smoke_2");

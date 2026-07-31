@@ -716,7 +716,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 2...23 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 250–450 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 0.8...24.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 22–95 %$(br2)Оливковые деревья растут с марта по июль, начинают цвести в августе и сентябре, приносят плоды в октябре.$(br)Оливки можно использовать для производства $(l:mechanics/lamps#olives)оливкового масла$(), которое используется в качестве топлива для ламп.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 2...23 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 250–450 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 0.8...24.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 22–95 %$(br2)Оливковые деревья растут с марта по июль, начинают цвести в августе и сентябре, приносят плоды в октябре. Оливки можно использовать для производства $(l:mechanics/lamps#olives)оливкового масла$(), которое используется в качестве топлива для ламп.",
       "title": "Оливковое дерево"
     },
     {
@@ -1948,127 +1948,43 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "Янв"
         },
         {
-          "text": "Feb"
+          "text": "Фев"
         },
         {
-          "text": "Mar"
+          "text": "Мар"
         },
         {
-          "text": "Apr"
+          "text": "Апр"
         },
         {
-          "text": "May"
+          "text": "Май"
         },
         {
-          "text": "Jun"
+          "text": "Июн"
         },
         {
-          "text": "Jul"
+          "text": "Июл"
         },
         {
-          "text": "Aug"
+          "text": "Авг"
         },
         {
-          "text": "Sep"
+          "text": "Сен"
         },
         {
-          "text": "Oct"
+          "text": "Окт"
         },
         {
-          "text": "Nov"
+          "text": "Ноя"
         },
         {
-          "text": "Dec"
+          "text": "Дек"
         },
         {
-          "text": "Cherry"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Apple"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Lemon"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
+          "text": "Вишня"
         },
         {
           "fill": "0x6ab553"
@@ -2101,7 +2017,13 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Olive"
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Яблоко"
         },
         {
           "fill": "0xa8986a"
@@ -2140,7 +2062,85 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Orange"
+          "text": "Лимон"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Оливки"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Апельсин"
         },
         {
           "fill": "0xa8986a"
@@ -2179,7 +2179,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Peach"
+          "text": "Персик"
         },
         {
           "fill": "0x6ab553"
@@ -2218,7 +2218,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Plum"
+          "text": "Слива"
         },
         {
           "fill": "0x6ab553"
@@ -2257,7 +2257,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Banana"
+          "text": "Банан"
         },
         {
           "fill": "0xa8986a"
@@ -2300,19 +2300,19 @@
       "title": "Фруктовые деревья",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "Спит",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "Растёт",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "Цветёт",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "Плодоносит",
           "color": "0xa217ff"
         }
       ],
@@ -2348,7 +2348,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Кусты, как и фруктовые деревья, учитывают блок в основе растения при определении $(l:mechanics/hydration)влажности() и $(l:the_world/climate#temperature)температуры$(), и растут, пока среднегодовые осадки и температура соответствуют требованиям. $(br)Любой полноценный блок куста может дать ягоды, которые собираются с помощью $(item)$(k:key.use)$()."
+      "text": "Кусты, как и фруктовые деревья, учитывают блок в основе растения при определении $(l:mechanics/hydration)влажности$() и $(l:the_world/climate#temperature)температуры$(), и растут, пока среднегодовые осадки и температура соответствуют требованиям. $(br)Любой полноценный блок куста может дать ягоды, которые собираются с помощью $(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:text",
@@ -2757,121 +2757,43 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "Янв"
         },
         {
-          "text": "Feb"
+          "text": "Фев"
         },
         {
-          "text": "Mar"
+          "text": "Мар"
         },
         {
-          "text": "Apr"
+          "text": "Апр"
         },
         {
-          "text": "May"
+          "text": "Май"
         },
         {
-          "text": "Jun"
+          "text": "Июн"
         },
         {
-          "text": "Jul"
+          "text": "Июл"
         },
         {
-          "text": "Aug"
+          "text": "Авг"
         },
         {
-          "text": "Sep"
+          "text": "Сен"
         },
         {
-          "text": "Oct"
+          "text": "Окт"
         },
         {
-          "text": "Nov"
+          "text": "Ноя"
         },
         {
-          "text": "Dec"
+          "text": "Дек"
         },
         {
-          "text": "Blackberry"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Raspberry"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Blueberry"
+          "text": "Ежевика"
         },
         {
           "fill": "0xa8986a"
@@ -2910,7 +2832,85 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Elderberry"
+          "text": "Малина"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Черника"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Бузина"
         },
         {
           "fill": "0xa8986a"
@@ -2953,19 +2953,19 @@
       "title": "Высокие ягодные кусты",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "Спит",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "Растёт",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "Цветёт",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "Плодоносит",
           "color": "0xa217ff"
         }
       ],
@@ -3035,12 +3035,12 @@
     {
       "type": "patchouli:text",
       "anchor": "bunchberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -14.2...1.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 280–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -15.4...2.6 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 25–100 %$(br2)Кусты брусники растут с мая по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в лесах.",
-      "title": "Куст брусники"
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -14.2...1.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 280–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -15.4...2.6 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 25–100 %$(br2)Кусты кизила растут с мая по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в лесах.",
+      "title": "Куст кизила"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Стадии роста куста брусники по месяцам.",
+      "text": "Стадии роста куста кизила по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -3487,43 +3487,43 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "Янв"
         },
         {
-          "text": "Feb"
+          "text": "Фев"
         },
         {
-          "text": "Mar"
+          "text": "Мар"
         },
         {
-          "text": "Apr"
+          "text": "Апр"
         },
         {
-          "text": "May"
+          "text": "Май"
         },
         {
-          "text": "Jun"
+          "text": "Июн"
         },
         {
-          "text": "Jul"
+          "text": "Июл"
         },
         {
-          "text": "Aug"
+          "text": "Авг"
         },
         {
-          "text": "Sep"
+          "text": "Сен"
         },
         {
-          "text": "Oct"
+          "text": "Окт"
         },
         {
-          "text": "Nov"
+          "text": "Ноя"
         },
         {
-          "text": "Dec"
+          "text": "Дек"
         },
         {
-          "text": "Bunchberry"
+          "text": "Кизил"
         },
         {
           "fill": "0xa8986a"
@@ -3562,7 +3562,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Gooseberry"
+          "text": "Крыжовник"
         },
         {
           "fill": "0xa8986a"
@@ -3601,7 +3601,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Snowberry"
+          "text": "Волчья"
         },
         {
           "fill": "0xa8986a"
@@ -3640,7 +3640,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Cloudberry"
+          "text": "Морошка"
         },
         {
           "fill": "0xa8986a"
@@ -3679,7 +3679,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Strawberry"
+          "text": "Клубника"
         },
         {
           "fill": "0xcca0db"
@@ -3718,7 +3718,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Wintergreen"
+          "text": "Брусника"
         },
         {
           "fill": "0xa8986a"
@@ -3757,7 +3757,7 @@
           "fill": "0xa217ff"
         },
         {
-          "text": "Cranberry"
+          "text": "Клюква"
         },
         {
           "fill": "0xa8986a"
@@ -3800,19 +3800,19 @@
       "title": "Низкие ягодные кусты",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "Спит",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "Растёт",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "Цветёт",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "Плодоносит",
           "color": "0xa217ff"
         }
       ],

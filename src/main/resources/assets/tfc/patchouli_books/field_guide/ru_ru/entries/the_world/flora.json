@@ -71,7 +71,7 @@
         }
       },
       "name": "Кактусы",
-      "text": "Кактусы могут вырасти до двух блоков в высоту и причинябт урон при контакте!",
+      "text": "Кактусы могут вырасти до двух блоков в высоту. Осторожно, колючие!",
       "enable_visualize": false
     },
     {
@@ -357,5 +357,8 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 3
+  "sortnum": 3,
+  "extra_recipe_mappings": {
+    "tfc:flower_cutting": 1
+  }
 }

@@ -110,7 +110,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rabbit",
-      "text": "$(thing)Rabbits$() spawn in $(l:the_world/climate#temperature)temperatures$() above -16°C, and at least 15mm of $(l:the_world/climate#rainfall)rainfall$(), changing their coat based on climate. They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities, aside from being known for chewing on carrots and cabbage. They will eat any food, even if it is rotten. They have 1-6 children, are pregnant for just 19 days, and reach adulthood in 20 days. They can have children 6 times.",
+      "text": "$(thing)Кролики$() обитают во всём мире при $(l:the_world/climate#temperature)температурах$() выше -16°C и при $(l:the_world/climate#rainfall)осадках$() более 15 мм, меняя свой окрас в зависимости от климата. Они — $(l:mechanics/animal_husbandry#mammals)млекопитающие$() без особых способностей, кроме любви пожевать морковь или капусту. Кролики едят любую пищу, даже если она испорчена. Крольчихи могут родить от 1 до 6 крольчат за беременность, она длится всего 19 дней, и крольчата становятся взрослыми уже через 20 дней. Крольчихи могут рожать до 6 раз.",
       "title": "Кролики"
     },
     {
@@ -200,6 +200,19 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "bactrian_camel",
+      "text": "$(thing)Bactrian Camels$() spawn in cold deserts, with $(l:the_world/climate#temperature)temperature$() of at most -5°C, and at most 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$() and can be ridden. They are slower than horses, but faster on sand and snow. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 24 days, and become adults in 80 days. They can have children 8 times if they are never sheared, or be sheared 80 times if they are never bred. They grow wool every 7 days.",
+      "title": "Bactrian Camel"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bactrian_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A bactrian camel."
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "chicken",
       "text": "$(thing)Куры$() обитают в теплых лесах при $(l:the_world/climate#temperature)температуре$() выше 14°C и $(l:the_world/climate#rainfall)осадках$() более 225 мм. Куры — $(l:mechanics/animal_husbandry#oviparous_animals)яйцекладущими животными$(). Они питаются $(thing)крупами$(), $(thing)фруктами$(), $(thing)овощами$() и $(thing)семенами$(), в том числе испорченными. Куриные яйца вылупляются за 8 дней, и цыплята становятся взрослыми за 24 дня. Куры могут нести яйца 100 раз и несутся каждые 30 часов.",
       "title": "Куры"
@@ -275,6 +288,19 @@
       "scale": 0.6,
       "name": " ",
       "text": "Лошадь."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dromedary_camel",
+      "text": "$(thing)Dromedary Camels$() spawn in drier climates, with $(l:the_world/climate#temperature)temperature$() of at least -5°C, and at most 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden. They are slower than horses, but are immune to cacti and run fast on sand. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "title": "Dromedary Camels"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dromedary_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A dromedary camel."
     },
     {
       "type": "patchouli:text",

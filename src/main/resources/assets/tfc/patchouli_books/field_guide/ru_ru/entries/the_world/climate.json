@@ -42,30 +42,30 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the elevation will influence the temperature - it will be coldest at the tops of mountains.$(li)Next, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can be different day to day as well as varying from hour to hour.",
-      "title": "Temperature"
+      "text": "Температура в TerraFirmaCraft зависит от множества факторов.$(li)Во-первых, наиболее сильно влияет местоположение, а именно широта (координата Z).$(li)Во-вторых, влияет высота — на вершинах гор будет самая низкая температура.$(li)В-третьих, влияет текущий сезон — летом будет самая высокая температура, а зимой — самая низкая.$(li)И наконец, температура может отличаться от дня к дню и меняться с течением времени.",
+      "title": "Температура"
     },
     {
       "type": "patchouli:text",
-      "text": "Последняя строка показывает текущую температуру, включая все вышеупомянутые факторы.$(br2)Температура может влиять на многие вещи: будут ли расти культуры и растения, будет ли формироваться или таять снег и лёд, и многое другое."
+      "text": "Последняя строка показывает текущую температуру, включая все вышеупомянутые факторы.$(br2)Температура может влиять на многие вещи: будут ли расти культуры и растения, будет ли формироваться или таять снег и лёд и многое другое."
     },
     {
       "type": "patchouli:text",
       "anchor": "rainfall",
-      "text": "Rainfall is influenced by a number of factors:$(br2)The region, especially the longitude (X coordinate) will play the largest role, with wetter climates generally to the east of spawn. Distance from the coast also plays a role, with drier climates farther inland.",
+      "text": "Количество осадков зависит от множества факторов:$(br2)Регион, а именно долгота (координата X) играет главную роль: более влажный климат расположен восточнее нулевых координат. Расстояние от берега тоже влияет: чем дальше, тем более сухой климат.",
       "title": "Осадки"
     },
     {
       "type": "patchouli:text",
-      "text": "The current season and local climate will also influence rainfall levels. These effects are also determined by the region: west coasts generally have dry summers, whereas the east sides of large continents have dramatic summer monsoons. The centers of continents and oceanic islands tend to have less seasonal variance."
+      "text": "Текущий сезон и местный климат тоже влияют на количество осадков. Эти факторы также зависят от региона: на западных побережьях лето обычно сухое, в то время как на восточных побережьях больших континентов наблюдаются сильные летние муссоны. Центры континентов и океанические острова характеризуются меньшими сезонными колебаниями."
     },
     {
       "type": "patchouli:text",
-      "text": "The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm, though the instantaneous rainfall can reach 1000mm in highly seasonal climates. Rainfall affects the types of flora and fauna that are found in an area, as well as how often rain and snow occur.$(br)"
+      "text": "Среднегодовые соадки исчисляются в миллиметрах (мм) и принимают значения от 0 мм до 500 мм, однако в климатах с выраженной сезонностью кратковремнные осадки могут достигать 1000 мм. Количество осадков влияет на флору и фауну, обитающую в регионе, и определяет частоту выпадения дождя и снега.$(br)"
     },
     {
       "type": "patchouli:text",
-      "text": "Осадки также важны, поскольку от них зависит, что может быть выращено в данной местности. Осадки — это основной фактор, задающий $(l:mechanics/hydration)влажность$() местной почвы и используется $(l:mechanics/crops)культурами$(), $(l:the_world/wild_fruits#fruit_trees)фруктовыми деревьями$() и $(l:the_world/wild_fruits#tall_bushes)ягодными кустами$() для определения возможности их роста."
+      "text": "От осадков зависит, что может быть выращено в данной местности. Осадки — это основной фактор, задающий $(l:mechanics/hydration)влажность$() местной почвы. Он используется $(l:mechanics/crops)культурами$(), $(l:the_world/wild_fruits#fruit_trees)фруктовыми деревьями$() и $(l:the_world/wild_fruits#tall_bushes)ягодными кустами$() для определения возможности роста."
     }
   ],
   "read_by_default": true,

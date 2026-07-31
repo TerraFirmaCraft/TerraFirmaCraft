@@ -1,0 +1,32 @@
+{
+  "values": [
+    "tfc:drumlins",
+    "tfc:glacially_carved_mountains",
+    "tfc:glacially_carved_oceanic_mountains",
+    "tfc:glaciated_mountains",
+    "tfc:glaciated_oceanic_mountains",
+    "tfc:glaciated_shield_volcano",
+    "tfc:glaciated_volcanic_mountains",
+    "tfc:glaciated_volcanic_oceanic_mountains",
+    "tfc:ice_sheet",
+    "tfc:ice_sheet_edge",
+    "tfc:ice_sheet_mountains",
+    "tfc:ice_sheet_mountains_edge",
+    "tfc:ice_sheet_oceanic",
+    "tfc:ice_sheet_oceanic_mountains",
+    "tfc:ice_sheet_oceanic_mountains_edge",
+    "tfc:ice_sheet_shield_volcano",
+    "tfc:ice_sheet_shore",
+    "tfc:ice_sheet_tuyas",
+    "tfc:ice_sheet_tuyas_edge",
+    "tfc:ice_sheet_volcanic_mountains",
+    "tfc:ice_sheet_volcanic_oceanic_mountains",
+    "tfc:inverted_patterned_ground",
+    "tfc:knob_and_kettle",
+    "tfc:meltwater_lake",
+    "tfc:patterned_ground",
+    "tfc:stone_circles",
+    "tfc:subglacial_lake",
+    "tfc:tuyas"
+  ]
+}

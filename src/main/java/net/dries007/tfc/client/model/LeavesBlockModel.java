@@ -72,7 +72,7 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
     @Override
     public ModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, ModelData data)
     {
-        return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(getModelFromBlockState(state, pos))).build();
+        return data.derive().with(BakedModelData.PROPERTY, new BakedModelData(getModelFromBlockState(state, pos), pos)).build();
     }
 
     /**
@@ -262,7 +262,18 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random, ModelData modelData, @Nullable RenderType renderType)
     {
-        return getModelFromBlockState(state, null).getQuads(state, direction, random, modelData, renderType);
+        final BakedModelData bakedData = modelData.get(BakedModelData.PROPERTY);
+        final BlockPos pos;
+        if (bakedData != null)
+        {
+            pos = bakedData.pos;
+        }
+        else
+        {
+            pos = null;
+        }
+
+        return getModelFromBlockState(state, pos).getQuads(state, direction, random, modelData, renderType);
     }
 
     @Override
@@ -318,7 +329,7 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
         return ItemOverrides.EMPTY;
     }
 
-    record BakedModelData(BakedModel toRender)
+    record BakedModelData(BakedModel toRender, BlockPos pos)
     {
         public static final ModelProperty<BakedModelData> PROPERTY = new ModelProperty<>();
     }

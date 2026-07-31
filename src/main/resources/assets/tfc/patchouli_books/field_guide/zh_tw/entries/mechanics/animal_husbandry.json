@@ -188,7 +188,7 @@
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared, or be sheared 160 times if they are never bred. They grow wool every 96 hours.",
+      "text": "$(thing)Musk Oxen$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() between -25 and 0°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared, or be sheared 160 times if they are never bred. They grow wool every 3 days.",
       "title": "麝牛"
     },
     {
@@ -197,6 +197,19 @@
       "scale": 0.75,
       "name": " ",
       "text": "一隻麝牛."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bactrian_camel",
+      "text": "$(thing)Bactrian Camels$() spawn in cold deserts, with $(l:the_world/climate#temperature)temperature$() of at most -5°C, and at most 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$() and can be ridden. They are slower than horses, but faster on sand and snow. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 24 days, and become adults in 80 days. They can have children 8 times if they are never sheared, or be sheared 80 times if they are never bred. They grow wool every 7 days.",
+      "title": "Bactrian Camel"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bactrian_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A bactrian camel."
     },
     {
       "type": "patchouli:text",
@@ -275,6 +288,19 @@
       "scale": 0.6,
       "name": " ",
       "text": "一隻馬."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dromedary_camel",
+      "text": "$(thing)Dromedary Camels$() spawn in drier climates, with $(l:the_world/climate#temperature)temperature$() of at least -5°C, and at most 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden. They are slower than horses, but are immune to cacti and run fast on sand. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "title": "Dromedary Camels"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dromedary_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A dromedary camel."
     },
     {
       "type": "patchouli:text",

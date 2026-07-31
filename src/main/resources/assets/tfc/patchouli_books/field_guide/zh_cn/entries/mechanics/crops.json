@@ -1041,7 +1041,7 @@
       "type": "patchouli:text",
       "anchor": "green_bean",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -2 - 25 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 25 - 90 %$(br)$(bold)类别$(): 豆类$(br)$(br)$(bold)$(3)氮$(): +80 $(bold)$(6)磷$(): 50 $(bold)$(d)钾$(): 40$()$(br)四季豆是攀爬作物，两格高。四季豆种子可以种植在耕地上，如果有木棍，会长到两格高，产出$(thing)四季豆$()和$(thing)四季豆种子$()。",
-      "title": "四季豆"
+      "title": "Green Beans"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1221,7 +1221,7 @@
       "type": "patchouli:text",
       "anchor": "lentil",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 15 - 50 %$(br)$(bold)类别$(): 豆类$(br)$(br)$(bold)$(3)氮$(): +80 $(bold)$(6)磷$(): 20 $(bold)$(d)钾$(): 20$()$(br)扁豆是单格作物。扁豆种子可以种植在耕地上，产出$(thing)扁豆$()和$(thing)扁豆种子$()。",
-      "title": "扁豆"
+      "title": "Lentils"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1335,7 +1335,7 @@
       "type": "patchouli:text",
       "anchor": "peanut",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 11 - 31 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 20 - 80 %$(br)$(bold)类别$(): 豆类$(br)$(br)$(bold)$(3)氮$(): +90 $(bold)$(6)磷$(): 50 $(bold)$(d)钾$(): 50$()$(br)花生是单格作物。花生种子可以种植在耕地上，产出$(thing)花生$()和$(thing)花生种子$()。",
-      "title": "花生"
+      "title": "Peanuts"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2002,7 +2002,7 @@
       "type": "patchouli:text",
       "anchor": "potato",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -7 - 22 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 35 - 90 %$(br)$(bold)类别$(): 蔬菜类$(br)$(br)$(bold)$(3)氮$(): 40 $(bold)$(6)磷$(): 20 $(bold)$(d)钾$(): 60$()$(br)马铃薯是单格作物。马铃薯种子可以种植在耕地上，产出$(thing)马铃薯$()和$(thing)马铃薯种子$()。",
-      "title": "马铃薯"
+      "title": "Potatoes"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2133,7 +2133,7 @@
       "type": "patchouli:text",
       "anchor": "pumpkin",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -7 - 27 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 20 - 85 %$(br)$(bold)类别$(): 蔓延性蔬菜$(br)$(br)$(bold)$(3)氮$(): 40 $(bold)$(6)磷$(): 30 $(bold)$(d)钾$(): 60$()$(br)南瓜是蔓延性作物。南瓜种子可以种植在耕地上，成熟时会在旁边地上放置最多两个$(thing)南瓜块$()。如果收获南瓜块，植株再次成熟时可以长出更多南瓜。南瓜可以做成$(l:mechanics/lighting#jack_o_lanterns)南瓜灯$()。",
-      "title": "南瓜"
+      "title": "Pumpkins"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2305,7 +2305,7 @@
       "type": "patchouli:text",
       "anchor": "melon",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 5 - 31 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 35 - 100 %$(br)$(bold)类别$(): 蔓延性蔬菜$(br)$(br)$(bold)$(3)氮$(): 30 $(bold)$(6)磷$(): 40 $(bold)$(d)钾$(): 65$()$(br)西瓜是蔓延性作物。西瓜种子可以种植在耕地上，成熟时会在旁边地上放置最多两个$(thing)西瓜块$()。如果收获西瓜块，植株再次成熟时可以长出更多西瓜。",
-      "title": "西瓜"
+      "title": "Melons"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2477,7 +2477,7 @@
       "type": "patchouli:text",
       "anchor": "tomatoes",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): 2 - 31 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 20 - 85 %$(br)$(bold)类别$(): 蔬菜类$(br)$(br)$(bold)$(3)氮$(): 40 $(bold)$(6)磷$(): 50 $(bold)$(d)钾$(): 60$()$(br)番茄是攀爬作物，两格高。番茄种子可以种植在耕地上，如果有木棍，会长到两格高，产出$(thing)番茄$()和$(thing)番茄种子$()。",
-      "title": "番茄"
+      "title": "Tomatoes"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2919,7 +2919,7 @@
       "type": "patchouli:text",
       "anchor": "onion",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$(): -5 - 26 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 15 - 85 %$(br)$(bold)类别$(): 蔬菜类$(br)$(br)$(bold)$(3)氮$(): 40 $(bold)$(6)磷$(): 40 $(bold)$(d)钾$(): 40$()$(br)洋葱是单格作物。洋葱种子可以种植在耕地上，产出$(thing)洋葱$()和$(thing)洋葱种子$()。",
-      "title": "洋葱"
+      "title": "Onions"
     },
     {
       "type": "tfc:multimultiblock",

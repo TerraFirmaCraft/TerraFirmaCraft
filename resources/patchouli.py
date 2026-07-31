@@ -65,6 +65,12 @@ class Page(NamedTuple):
                         self.data[key] = i18n.translate(value.value).format(*value.params)
                     except IndexError as e:
                         raise ValueError('Error performing replacement for lang %s\n  \'%s\' -> \'%s\'' % (i18n.lang, value.value, i18n.translate(value.value))) from e
+                elif isinstance(value, list):
+                    for i, subValue in enumerate(value):
+                        text = subValue.get('text')
+                        # Only translate cells that contain translatable characters
+                        if text is not None and any(c.isalpha() for c in text):
+                            self.data[key][i]['text'] = i18n.translate(text)
                 else:
                     self.data[key] = i18n.translate(value)
 
@@ -489,7 +495,7 @@ def table(strings: List[str | Dict], text_content: TranslatableStr, title: Trans
         'left_buffer': left_buffer,
         'top_buffer': top_buffer,
         'draw_background': draw_background
-    }, custom=True, translation_keys=('text', 'title'))
+    }, custom=True, translation_keys=('text', 'title', 'strings', 'legend'))
 
 
 def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:

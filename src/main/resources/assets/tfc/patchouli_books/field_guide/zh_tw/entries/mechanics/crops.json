@@ -1041,7 +1041,7 @@
       "type": "patchouli:text",
       "anchor": "green_bean",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -2 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Category$(): Legume$(br)$(br)$(bold)$(3)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
-      "title": "青豆"
+      "title": "Green Beans"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2002,7 +2002,7 @@
       "type": "patchouli:text",
       "anchor": "potato",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 22 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 90 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Potatoes are a single block crop. Potato seeds can be planted on farmland and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
-      "title": "馬鈴薯"
+      "title": "Potatoes"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2133,7 +2133,7 @@
       "type": "patchouli:text",
       "anchor": "pumpkin",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -7 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)Category$(): Spreading Vegetable$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$().",
-      "title": "南瓜"
+      "title": "Pumpkins"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2305,7 +2305,7 @@
       "type": "patchouli:text",
       "anchor": "melon",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)Category$(): Spreading Vegetable$(br)$(br)$(bold)$(3)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Melons are a spreading crop. Melon seeds can be planted on farmland and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, and the plant matures again, it can grow more melon.",
-      "title": "西瓜"
+      "title": "Melons"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2477,7 +2477,7 @@
       "type": "patchouli:text",
       "anchor": "tomatoes",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 2 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 20 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 50 $(bold)$(d)K: 60$()$(br)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
-      "title": "西紅柿"
+      "title": "Tomatoes"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2919,7 +2919,7 @@
       "type": "patchouli:text",
       "anchor": "onion",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 26 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 85 %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Onions are a single block crop. Onion seeds can be planted on farmland and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
-      "title": "洋蔥"
+      "title": "Onions"
     },
     {
       "type": "tfc:multimultiblock",

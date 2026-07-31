@@ -26,6 +26,7 @@ import net.dries007.tfc.common.entities.livestock.Gender;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.camel.AbstractCamel;
 import net.dries007.tfc.common.entities.livestock.horse.HorseProperties;
 import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
@@ -50,6 +51,7 @@ public final class EntityTooltips
         registry.register("animal", ANIMAL, TFCAnimal.class);
         registry.register("horse", ANIMAL, TFCHorse.class);
         registry.register("chested_horse", ANIMAL, TFCChestedHorse.class);
+        registry.register("camel", ANIMAL, AbstractCamel.class);
         registry.register("rabbit", ANIMAL, TFCRabbit.class);
         registry.register("wild_animal", ANIMAL, WildAnimal.class);
         registry.register("frog", FROG, TFCFrog.class);

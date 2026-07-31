@@ -82,6 +82,7 @@ import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -328,6 +329,11 @@ public final class Helpers
                         cursor.set(x, y, z);
 
                         final BlockState state = level.getBlockState(cursor);
+
+                        if (state.getBlock() instanceof SnowLayerBlock && Helpers.isEntity(entity, TFCTags.Entities.IGNORES_SNOW))
+                        {
+                            return;
+                        }
 
                         if (state.getBlock() instanceof ISlowEntities slow)
                         {
@@ -1549,6 +1555,7 @@ public final class Helpers
 
     /**
      * Returns a new random double in the range [0, 1)
+     *
      * @param input a double in the range [-1, 1]
      * @param index an index for getting multiple values from one double
      */
@@ -1559,7 +1566,8 @@ public final class Helpers
         return (x >>> 11) * 0x1.0p-53;
     }
 
-    public static long mix64(long x) {
+    public static long mix64(long x)
+    {
         x ^= x >>> 33;
         x *= 0xff51afd7ed558ccdL;
         x ^= x >>> 33;
