@@ -12,7 +12,6 @@
     "tfc:stone/javelin/igneous_extrusive",
     "tfc:stone/javelin/igneous_intrusive",
     "tfc:stone/javelin/metamorphic",
-    "tfc:stone/javelin/sedimentary",
-    "tfc:obsidian_javelin"
+    "tfc:stone/javelin/sedimentary"
   ]
 }
