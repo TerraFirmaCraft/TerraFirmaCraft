@@ -68,10 +68,10 @@
           "text": ""
         },
         {
-          "text": "C"
+          "text": "透明"
         },
         {
-          "text": "T"
+          "text": "遮光"
         },
         {
           "fill": "0xff42f2"
@@ -122,7 +122,7 @@
           "fill": "0x000000"
         },
         {
-          "text": "Silica"
+          "text": "二氧化硅"
         },
         {
           "fill": "0x3d42a8"
@@ -179,7 +179,7 @@
           "fill": "0x3eb340"
         },
         {
-          "text": "Hematitic"
+          "text": "赤铁质"
         },
         {
           "fill": "0xb33e3e"
@@ -236,7 +236,7 @@
           "fill": "0x3eb340"
         },
         {
-          "text": "Olivine"
+          "text": "橄榄石"
         },
         {
           "fill": "0xb33e3e"
@@ -293,7 +293,7 @@
           "fill": "0x3eb340"
         },
         {
-          "text": "Volcanic"
+          "text": "火山岩"
         },
         {
           "fill": "0xb33e3e"
@@ -354,15 +354,15 @@
       "title": "玻璃颜色可用性",
       "legend": [
         {
-          "text": "Can be Crafted",
+          "text": "可以制作",
           "color": "0x3eb340"
         },
         {
-          "text": "Cannot be Crafted",
+          "text": "无法制作",
           "color": "0xb33e3e"
         },
         {
-          "text": "Default Color",
+          "text": "默认颜色",
           "color": "0x3d42a8"
         }
       ],

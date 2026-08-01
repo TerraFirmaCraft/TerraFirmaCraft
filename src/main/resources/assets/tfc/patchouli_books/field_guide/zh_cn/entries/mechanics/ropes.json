@@ -1,21 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Ropes",
+  "name": "绳索",
   "category": "tfc:mechanics",
   "icon": "tfc:rope",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Rope$() can be strung up to climb down cliffs and shafts. To hang a rope, $(item)$(k:key.use)$() it on the tip of a $(thing)Rock Spike$(), or on a $(thing)Steel Rope Anchor$(). This ties off the rope and turns the block into an anchor."
+      "text": "$(thing)绳索$()可以挂起来，用于攀下悬崖和竖井。要挂绳索，对$(thing)石锥$()的尖端或$(thing)钢绳锚$()按$(item)$(k:key.use)$()。这会把绳索系紧，并把该方块变成一个锚点。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(item)$(k:key.use)$() the rope again to throw it out in the direction you are facing, laying down rope that you can climb. To recall the rope, $(item)$(k:key.use)$() the anchor with an empty hand. The rope will be destroyed, the spike will turn back into an anchor, and the items returned to you."
+      "text": "再次对绳索按$(item)$(k:key.use)$()会把它向你面朝的方向抛出，铺出一条可以攀爬的绳索。要收回绳索，空手对锚点按$(item)$(k:key.use)$()。绳索会被破坏，石锥会重新变回锚点，物品会归还给你。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/steel_rope_anchor",
-      "text": "$(thing)Rock Spikes$() cannot be picked up, so the $(thing)Steel Rope Anchor$() can be crafted and placed wherever you need an anchor instead."
+      "text": "$(thing)石锥$()无法被拾取，因此$(thing)钢绳锚$()可以制作并放置在任何你需要锚点的地方。"
     }
   ],
   "read_by_default": true,

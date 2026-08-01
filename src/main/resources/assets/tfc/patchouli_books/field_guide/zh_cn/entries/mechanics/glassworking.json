@@ -11,13 +11,13 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/silica_glass_batch",
-      "text": "然后，使用上述颜色的沙子之一，加上$(l:mechanics/glassworking#lime)石灰$()和一种$(l:mechanics/glassworking#potash)钾碱$()即可制作玻璃配料。"
+      "text": "然后，使用上述颜色的沙子之一，加上$(l:mechanics/glassworking#lime)生石灰$()和一种$(l:mechanics/glassworking#potash)钾碱$()即可制作玻璃配料。"
     },
     {
       "type": "tfc:heat_recipe",
       "anchor": "lime",
       "recipe": "tfc:heating/powder/lime",
-      "text": "$(thing)石灰$()是制作玻璃配料的原料之一。它是一种粉末，通过$(l:mechanics/heating)加热$()$(l:mechanics/flux)助焊剂$()获得。"
+      "text": "$(thing)生石灰$()是制作玻璃配料的原料之一。它是一种粉末，通过$(l:mechanics/heating)加热$()$(l:mechanics/flux)助焊剂$()获得。"
     },
     {
       "type": "tfc:heat_recipe",
