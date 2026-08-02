@@ -421,17 +421,20 @@ public interface CraftingRecipes extends Recipes
         addTools(RockCategory.ItemType.KNIFE_HEAD, RockCategory.ItemType.KNIFE);
         addTools(RockCategory.ItemType.SHOVEL_HEAD, RockCategory.ItemType.SHOVEL);
 
+        addBoneHandledTool(TFCItems.OBSIDIAN_AXE_HEAD, TFCItems.OBSIDIAN_AXE);
+        addBoneHandledTool(TFCItems.OBSIDIAN_HAMMER_HEAD, TFCItems.OBSIDIAN_HAMMER);
+        addBoneHandledTool(TFCItems.OBSIDIAN_HOE_HEAD, TFCItems.OBSIDIAN_HOE);
+        addBoneHandledTool(TFCItems.OBSIDIAN_JAVELIN_HEAD, TFCItems.OBSIDIAN_JAVELIN);
+        addBoneHandledTool(TFCItems.OBSIDIAN_KNIFE_HEAD, TFCItems.OBSIDIAN_KNIFE);
+        addBoneHandledTool(TFCItems.OBSIDIAN_SHOVEL_HEAD, TFCItems.OBSIDIAN_SHOVEL);
+
         final Ingredient handle = CompoundIngredient.of(Ingredient.of(Tags.Items.RODS_WOODEN), Ingredient.of(Items.BONE));
         recipe()
             .input('S', handle)
             .input('X', TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD))
-            .pattern("X", "S")
-            .shaped(TFCItems.OBSIDIAN_KNIFE);
-        recipe()
-            .input('S', handle)
-            .input('X', TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD))
-            .pattern("X", "S")
-            .shaped(TFCItems.OBSIDIAN_JAVELIN);
+            .pattern("XS", "SX")
+            .shaped(TFCItems.OBSIDIAN_MACUAHUITL);
+
         recipe()
             .input('X', TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD))
             .input('S', Tags.Items.RODS_WOODEN)
@@ -1530,6 +1533,15 @@ public interface CraftingRecipes extends Recipes
                 .input('X', TFCItems.ROCK_TOOLS.get(type).get(input))
                 .pattern("X", "S")
                 .shaped(TFCItems.ROCK_TOOLS.get(type).get(output));
+    }
+
+    private void addBoneHandledTool(ItemLike input, ItemLike output)
+    {
+        recipe()
+            .input('S', CompoundIngredient.of(Ingredient.of(Tags.Items.RODS_WOODEN), Ingredient.of(Items.BONE)))
+            .input('X', input)
+            .pattern("X", "S")
+            .shaped(output);
     }
 
     private Ingredient notRotten(Food food)

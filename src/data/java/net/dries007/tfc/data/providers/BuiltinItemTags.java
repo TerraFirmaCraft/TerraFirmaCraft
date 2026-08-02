@@ -383,17 +383,21 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(ItemTags.FOOT_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.BOOTS);
 
         // Vanilla Tool Tags
-        tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD);
+        tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD)
+            .add(TFCItems.OBSIDIAN_MACUAHUITL);;
         tag(ItemTags.AXES)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE)
+            .add(TFCItems.OBSIDIAN_AXE);
         tag(ItemTags.HOES)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.HOE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE)
+            .add(TFCItems.OBSIDIAN_HOE);;
         tag(ItemTags.PICKAXES).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
         tag(ItemTags.SHOVELS)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL)
+            .add(TFCItems.OBSIDIAN_SHOVEL);;
 
         // Common `#c:tools/???`
         tag(Tags.Items.TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
@@ -415,7 +419,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         // TFC Added `#c:tools/`
         tag(TOOLS_HAMMER)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER)
+            .add(TFCItems.OBSIDIAN_HAMMER);;
         tag(TOOLS_SAW).add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
         tag(TOOLS_SCYTHE).add(TFCItems.METAL_ITEMS, Metal.ItemType.SCYTHE);
         tag(TOOLS_PROPICK).add(TFCItems.METAL_ITEMS, Metal.ItemType.PROPICK);
@@ -439,8 +444,12 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL)
+            .add(TFCItems.OBSIDIAN_AXE)
+            .add(TFCItems.OBSIDIAN_HAMMER)
+            .add(TFCItems.OBSIDIAN_HOE)
+            .add(TFCItems.OBSIDIAN_JAVELIN)
             .add(TFCItems.OBSIDIAN_KNIFE)
-            .add(TFCItems.OBSIDIAN_JAVELIN);
+            .add(TFCItems.OBSIDIAN_SHOVEL);
         tag(TOOLS_COPPER)
             .add(TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.TUYERE))
             .add(TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD))
@@ -695,7 +704,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(PIT_KILN_LOGS).addTags(ItemTags.LOGS_THAT_BURN);
         tag(INEFFICIENT_LOGGING_AXES).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
         tag(CAN_BE_LIT_ON_TORCH).addTag(Tags.Items.RODS_WOODEN);
-        tag(ROCK_KNAPPING).addTag(STONES_LOOSE);
+        tag(ROCK_KNAPPING).addTag(STONES_LOOSE).add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD));
         tag(CLAY_KNAPPING).add(Items.CLAY_BALL);
         tag(FIRE_CLAY_KNAPPING).add(TFCItems.FIRE_CLAY);
         tag(LEATHER_KNAPPING).add(Items.LEATHER);

@@ -40,7 +40,7 @@
         }
       },
       "name": "蜡烛",
-      "text": "蜡烛可以燃烧 11 天, 并且同样可以重新点燃。",
+      "text": "蜡烛可以燃烧 11 天， 并且同样可以重新点燃。",
       "enable_visualize": false
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "用$(thing)剪刀$()或$(thing)刀$()$(item)$(k:key.use)$()键点击新鲜的$(l:mechanics/crops#pumpkin)南瓜$()可以得到$(thing)雕刻过的南瓜$()。雕刻过的南瓜不会腐败，并且可以戴在头上。"
+      "text": "用$(thing)剪刀$()或$(thing)小刀$()$(item)$(k:key.use)$()键点击新鲜的$(l:mechanics/crops#pumpkin)南瓜$()可以得到$(thing)雕刻过的南瓜$()。雕刻过的南瓜不会腐败，并且可以戴在头上。"
     }
   ],
   "read_by_default": true,

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)突刺伤害$()是由尖利的武器（例如$(thing)刀$()）、投掷物（例如$(thing)箭$()和$(thing)标枪$()）、带尖牙的怪物（例如$(thing)蜘蛛$()）和$(l:the_world/flora#cacti)仙人掌$()造成的。$(thing)骷髅$()完全免疫突刺伤害，而$(thing)僵尸$()则对其抗性较低。",
+      "text": "$(thing)突刺伤害$()是由尖利的武器（例如$(thing)小刀$()）、投掷物（例如$(thing)箭$()和$(thing)标枪$()）、带尖牙的怪物（例如$(thing)蜘蛛$()）和$(l:the_world/flora#cacti)仙人掌$()造成的。$(thing)骷髅$()完全免疫突刺伤害，而$(thing)僵尸$()则对其抗性较低。",
       "title": "突刺"
     },
     {

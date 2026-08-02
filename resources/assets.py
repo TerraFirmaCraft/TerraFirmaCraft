@@ -1003,6 +1003,18 @@ def generate(rm: ResourceManager):
 
     make_javelin(rm, 'obsidian_javelin', 'tfc:item/obsidian_javelin').with_lang(lang('obsidian javelin'))
     rm.item_model('obsidian_knife', 'tfc:item/obsidian_knife', parent='tfc:item/handheld_flipped').with_lang(lang('obsidian knife'))
+    rm.item_model('obsidian_hoe', 'tfc:item/obsidian_hoe', parent='minecraft:item/handheld').with_lang(lang('obsidian hoe'))
+    rm.item_model('obsidian_axe', 'tfc:item/obsidian_axe', parent='minecraft:item/handheld').with_lang(lang('obsidian axe'))
+    rm.item_model('obsidian_shovel', 'tfc:item/obsidian_shovel', parent='minecraft:item/handheld').with_lang(lang('obsidian shovel'))
+    rm.item_model('obsidian_hammer', 'tfc:item/obsidian_hammer', parent='minecraft:item/handheld').with_lang(lang('obsidian hammer'))
+    rm.item_model('obsidian_macuahuitl', 'tfc:item/obsidian_macuahuitl', parent='minecraft:item/handheld').with_lang(lang('obsidian macuahuitl'))
+
+    rm.item_model('obsidian_javelin_head', 'tfc:item/obsidian_javelin_head', parent='minecraft:item/handheld').with_lang(lang('obsidian javelin head'))
+    rm.item_model('obsidian_knife_head', 'tfc:item/obsidian_knife_head', parent='minecraft:item/handheld').with_lang(lang('obsidian knife head'))
+    rm.item_model('obsidian_hoe_head', 'tfc:item/obsidian_hoe_head', parent='minecraft:item/handheld').with_lang(lang('obsidian hoe head'))
+    rm.item_model('obsidian_axe_head', 'tfc:item/obsidian_axe_head', parent='minecraft:item/handheld').with_lang(lang('obsidian axe head'))
+    rm.item_model('obsidian_shovel_head', 'tfc:item/obsidian_shovel_head', parent='minecraft:item/handheld').with_lang(lang('obsidian shovel head'))
+    rm.item_model('obsidian_hammer_head', 'tfc:item/obsidian_hammer_head', parent='minecraft:item/handheld').with_lang(lang('obsidian hammer head'))
 
     # Rock Items
     for rock, rock_data in ROCKS.items():

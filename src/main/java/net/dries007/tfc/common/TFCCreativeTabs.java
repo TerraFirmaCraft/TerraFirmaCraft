@@ -347,8 +347,19 @@ public final class TFCCreativeTabs
                 accept(out, TFCItems.ROCK_TOOLS, category, type);
             }
         }
-        out.accept(TFCItems.OBSIDIAN_KNIFE);
+        out.accept(TFCItems.OBSIDIAN_MACUAHUITL);
+        out.accept(TFCItems.OBSIDIAN_AXE);
+        out.accept(TFCItems.OBSIDIAN_AXE_HEAD);
+        out.accept(TFCItems.OBSIDIAN_HAMMER);
+        out.accept(TFCItems.OBSIDIAN_HAMMER_HEAD);
+        out.accept(TFCItems.OBSIDIAN_HOE);
+        out.accept(TFCItems.OBSIDIAN_HOE_HEAD);
         out.accept(TFCItems.OBSIDIAN_JAVELIN);
+        out.accept(TFCItems.OBSIDIAN_JAVELIN_HEAD);
+        out.accept(TFCItems.OBSIDIAN_KNIFE);
+        out.accept(TFCItems.OBSIDIAN_KNIFE_HEAD);
+        out.accept(TFCItems.OBSIDIAN_SHOVEL);
+        out.accept(TFCItems.OBSIDIAN_SHOVEL_HEAD);
     }
 
     private static void fillFoodTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)

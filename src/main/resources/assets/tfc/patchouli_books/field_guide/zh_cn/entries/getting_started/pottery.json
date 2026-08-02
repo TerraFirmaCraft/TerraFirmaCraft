@@ -139,7 +139,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
-      "text": "$(thing)刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块。"
+      "text": "$(thing)小刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块。"
     },
     {
       "type": "tfc:knapping_recipe",
