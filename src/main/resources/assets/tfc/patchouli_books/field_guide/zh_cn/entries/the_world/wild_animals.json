@@ -276,112 +276,112 @@
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "三文鱼",
-      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
+      "text": "三文鱼生活在$(l:the_world/climate#temperature)温度$()在 -8 到 12°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 250mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rainbow_trout",
       "scale": 0.7,
-      "name": "Rainbow Trout",
-      "text": "Rainbow Trout spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
+      "name": "虹鳟",
+      "text": "虹鳟生活在$(l:the_world/climate#temperature)温度$()在 -12 到 10°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 150mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lake_trout",
       "scale": 0.7,
-      "name": "Lake Trout",
-      "text": "Lake Trout spawn in any lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
+      "name": "湖鳟",
+      "text": "湖鳟生活在$(l:the_world/climate#temperature)温度$()在 -5 到 15°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 250mm 的湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:largemouth_bass",
       "scale": 0.7,
-      "name": "Largemouth Bass",
-      "text": "Largemouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
+      "name": "大口黑鲈",
+      "text": "大口黑鲈生活在$(l:the_world/climate#temperature)温度$()在 -14 到 16°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 200mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:smallmouth_bass",
       "scale": 0.7,
-      "name": "Smallmouth Bass",
-      "text": "Smallmouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
+      "name": "小口黑鲈",
+      "text": "小口黑鲈生活在$(l:the_world/climate#temperature)温度$()在 -14 到 16°C 之间、$(l:the_world/climate#rainfall)降雨量$()低于 300mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crappie",
       "scale": 0.7,
-      "name": "Crappie",
-      "text": "蓝鳃鱼生活在$(l:the_world/climate#temperature)温度$()在 -10 到 26°C 的河流或湖泊中。"
+      "name": "莓鲈",
+      "text": "莓鲈生活在$(l:the_world/climate#temperature)温度$()在 -10 到 20°C 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
       "name": "蓝鳃鱼",
-      "text": "蓝鳃鱼生活在$(l:the_world/climate#temperature)温度$()在 -10 到 26°C 的河流或湖泊中。"
+      "text": "蓝鳃鱼生活在$(l:the_world/climate#temperature)温度$()在 -10 到 15°C 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:northern_pike",
       "scale": 0.7,
-      "name": "Northern Pike",
-      "text": "Northern Pike spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
+      "name": "白斑狗鱼",
+      "text": "白斑狗鱼生活在$(l:the_world/climate#temperature)温度$()在 -10 到 26°C 之间、$(l:the_world/climate#rainfall)降雨量$()在 150 到 400mm 之间的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peacock_bass",
       "scale": 0.7,
-      "name": "Peacock Bass",
-      "text": "Peacock Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
+      "name": "眼斑孔雀鲈",
+      "text": "眼斑孔雀鲈生活在$(l:the_world/climate#temperature)温度$()在 12 到 25°C 之间、$(l:the_world/climate#rainfall)降雨量$()在 200 到 400mm 之间的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:arctic_char",
       "scale": 0.7,
-      "name": "Arctic Char",
-      "text": "Arctic Char spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
+      "name": "北极红点鲑",
+      "text": "北极红点鲑生活在$(l:the_world/climate#temperature)温度$()在 -20 到 -8°C 之间、$(l:the_world/climate#rainfall)降雨量$()在 150 到 400mm 之间的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:muksun",
       "scale": 0.7,
-      "name": "Muksun",
-      "text": "Muksun spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
+      "name": "宽鼻白鲑",
+      "text": "宽鼻白鲑生活在$(l:the_world/climate#temperature)温度$()在 -20 到 -10°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 250mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:burbot",
       "scale": 0.7,
-      "name": "Burbot",
-      "text": "Burbot spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
+      "name": "江鳕",
+      "text": "江鳕生活在$(l:the_world/climate#temperature)温度$()在 -16 到 -9°C 之间、$(l:the_world/climate#rainfall)降雨量$()低于 350mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tilapia",
       "scale": 0.7,
-      "name": "Tilapia",
-      "text": "Tilapia spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
+      "name": "罗非鱼",
+      "text": "罗非鱼生活在$(l:the_world/climate#temperature)温度$()在 10 到 32°C 之间、$(l:the_world/climate#rainfall)降雨量$()低于 300mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:spotted_gudgeon",
       "scale": 0.7,
-      "name": "Spotted Gudgeon",
-      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
+      "name": "斑点鮈",
+      "text": "斑点鮈生活在$(l:the_world/climate#temperature)温度$()在 6 到 24°C 之间、$(l:the_world/climate#rainfall)降雨量$()低于 250mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pacu",
       "scale": 0.7,
-      "name": "Pacu",
-      "text": "Pacu spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
+      "name": "巨脂鲤",
+      "text": "巨脂鲤生活在$(l:the_world/climate#temperature)温度$()在 20 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$()高于 200mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:red_piranha",
       "scale": 0.7,
-      "name": "Red Piranha",
-      "text": "Red Piranha spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
+      "name": "红腹食人鱼",
+      "text": "红腹食人鱼生活在$(l:the_world/climate#temperature)温度$()在 22 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$()高于 300mm 的河流或湖泊中。"
     },
     {
       "type": "patchouli:text",

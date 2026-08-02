@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "世界各地都能找到小团的$(thing)野生作物$()。$(br2)用手就可以收获野生作物，当然$(thing)刀$()或其他锋利的工具也行。它们会掉落$(thing)种子$()和一些$(thing)农产品$()。再次种植这些种子就可以种出人工栽培版本的作物。"
+      "text": "世界各地都能找到小团的$(thing)野生作物$()。$(br2)用手就可以收获野生作物，当然$(thing)小刀$()或其他锋利的工具也行。它们会掉落$(thing)种子$()和一些$(thing)农产品$()。再次种植这些种子就可以种出人工栽培版本的作物。"
     },
     {
       "type": "patchouli:multiblock",
@@ -330,15 +330,15 @@
       "type": "tfc:table",
       "strings": [
         {
-          "text": "Crop",
+          "text": "作物",
           "bold": true
         },
         {
-          "text": "Temperature (°C)",
+          "text": "温度（°C）",
           "bold": true
         },
         {
-          "text": "Rainfall (mm)",
+          "text": "降雨量（mm）",
           "bold": true
         },
         {
@@ -351,7 +351,7 @@
           "text": "260 - 500"
         },
         {
-          "text": "Green Bean"
+          "text": "绿豆"
         },
         {
           "text": " -4 - 19.4"
@@ -360,7 +360,7 @@
           "text": "150 - 410"
         },
         {
-          "text": "Lentil"
+          "text": "小扁豆"
         },
         {
           "text": "-7.6 - 19.4"
@@ -369,7 +369,7 @@
           "text": " 75 - 190"
         },
         {
-          "text": "Peanut"
+          "text": "花生"
         },
         {
           "text": "12.2 - 40"
@@ -469,15 +469,15 @@
       "type": "tfc:table",
       "strings": [
         {
-          "text": "Crop",
+          "text": "作物",
           "bold": true
         },
         {
-          "text": "Temperature (°C)",
+          "text": "温度（°C）",
           "bold": true
         },
         {
-          "text": "Rainfall (mm)",
+          "text": "降雨量（mm）",
           "bold": true
         },
         {
@@ -508,7 +508,7 @@
           "text": " 60 - 310"
         },
         {
-          "text": "Onion"
+          "text": "洋葱"
         },
         {
           "text": "-7.6 - 21.2"
@@ -517,7 +517,7 @@
           "text": "100 - 390"
         },
         {
-          "text": "Potato"
+          "text": "马铃薯"
         },
         {
           "text": "-9.4 - 15.8"
@@ -535,7 +535,7 @@
           "text": " 90 - 390"
         },
         {
-          "text": "Tomato"
+          "text": "番茄"
         },
         {
           "text": "1.4 - 40"
@@ -562,7 +562,7 @@
           "text": "190 - 450"
         },
         {
-          "text": "Pumpkin"
+          "text": "南瓜"
         },
         {
           "text": "-9.4 - 23.0"
@@ -571,7 +571,7 @@
           "text": "120 - 390"
         },
         {
-          "text": "Melon"
+          "text": "西瓜"
         },
         {
           "text": "  5 - 40"
@@ -608,15 +608,15 @@
       "type": "tfc:table",
       "strings": [
         {
-          "text": "Crop",
+          "text": "作物",
           "bold": true
         },
         {
-          "text": "Temperature (°C)",
+          "text": "温度（°C）",
           "bold": true
         },
         {
-          "text": "Rainfall (mm)",
+          "text": "降雨量（mm）",
           "bold": true
         },
         {

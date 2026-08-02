@@ -19,7 +19,7 @@ public final class TFCTiers
     public static final LevelTier IGNEOUS_EXTRUSIVE = create("igneous_extrusive", BlockTags.INCORRECT_FOR_WOODEN_TOOL, 0, 70, 4.7f, 2.0f, 5);
     public static final LevelTier SEDIMENTARY = create("sedimentary", BlockTags.INCORRECT_FOR_WOODEN_TOOL, 0, 50, 4.0f, 2.0f, 5);
     public static final LevelTier METAMORPHIC = create("metamorphic", BlockTags.INCORRECT_FOR_WOODEN_TOOL, 0, 55, 4.35f, 2.0f, 5);
-    public static final LevelTier OBSIDIAN = create("obsidian", BlockTags.INCORRECT_FOR_WOODEN_TOOL, 0, 40, 5.0f, 2.5f, 8);
+    public static final LevelTier OBSIDIAN = create("obsidian", BlockTags.INCORRECT_FOR_WOODEN_TOOL, 0, 60, 5.0f, 2.5f, 8);
     // Copper ~ Vanilla Stone
     public static final LevelTier COPPER = create("copper", BlockTags.INCORRECT_FOR_STONE_TOOL, 1, 600, 5.25f, 3.25f, 8);
     // Bronze ~ Vanilla Iron

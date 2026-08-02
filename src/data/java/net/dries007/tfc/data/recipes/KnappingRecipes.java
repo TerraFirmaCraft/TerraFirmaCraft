@@ -20,6 +20,8 @@ import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
@@ -45,6 +47,18 @@ public interface KnappingRecipes extends Recipes
         rockKnapping("3", RockCategory.ItemType.KNIFE_HEAD, 2, " X X ", "XX XX", "XX XX", "XX XX", "XX XX");
         rockKnapping(RockCategory.ItemType.JAVELIN_HEAD, "XXX  ", "XXXX ", "XXXXX", " XXX ", "  X  ");
         rockKnapping(RockCategory.ItemType.HAMMER_HEAD, "XXXXX", "XXXXX", "  X  ");
+
+        obsidianKnapping(TFCItems.OBSIDIAN_AXE_HEAD, " X   ", "XXXX ", "XXXXX", "XXXX ", " X   ");
+        obsidianKnapping(TFCItems.OBSIDIAN_SHOVEL_HEAD, "XXX", "XXX", "XXX", "XXX", " X ");
+        obsidianKnapping(TFCItems.OBSIDIAN_HOE_HEAD, "XXXXX", "   XX");
+        obsidianKnapping("1", TFCItems.OBSIDIAN_HOE_HEAD, 2, "XXXXX", "XX   ", "     ", "XXXXX", "XX   ");
+        obsidianKnapping("2", TFCItems.OBSIDIAN_HOE_HEAD, 2, "XXXXX", "XX   ", "     ", "XXXXX", "   XX");
+        obsidianKnapping(TFCItems.OBSIDIAN_KNIFE_HEAD, "X ", "XX", "XX", "XX", "XX");
+        obsidianKnapping("1", TFCItems.OBSIDIAN_KNIFE_HEAD, 2, "X  X ", "XX XX", "XX XX", "XX XX", "XX XX");
+        obsidianKnapping("2", TFCItems.OBSIDIAN_KNIFE_HEAD, 2, "X   X", "XX XX", "XX XX", "XX XX", "XX XX");
+        obsidianKnapping("3", TFCItems.OBSIDIAN_KNIFE_HEAD, 2, " X X ", "XX XX", "XX XX", "XX XX", "XX XX");
+        obsidianKnapping(TFCItems.OBSIDIAN_JAVELIN_HEAD, "XXX  ", "XXXX ", "XXXXX", " XXX ", "  X  ");
+        obsidianKnapping(TFCItems.OBSIDIAN_HAMMER_HEAD, "XXXXX", "XXXXX", "  X  ");
 
         clayKnapping(TFCItems.UNFIRED_VESSEL, " XXX ", "XXXXX", "XXXXX", "XXXXX", " XXX ");
         clayKnapping(TFCItems.UNFIRED_LARGE_VESSEL, "X   X", "X   X", "X   X", "X   X", "XXXXX");
@@ -112,6 +126,21 @@ public interface KnappingRecipes extends Recipes
                 Optional.of(Ingredient.of(TFCTags.Items.STONES_LOOSE_CATEGORY.get(type))),
                 new ItemStack(TFCItems.ROCK_TOOLS.get(type).get(output), count)
             ));
+    }
+
+    private void obsidianKnapping(ItemLike output, String... pattern)
+    {
+        obsidianKnapping("", output, 1, pattern);
+    }
+
+    private void obsidianKnapping(String suffix, ItemLike output, int count, String... pattern)
+    {
+        add(nameOf(output) + (suffix.isEmpty() ? "" : "_" + suffix), new KnappingRecipe(
+            KnappingType.MANAGER.getCheckedReference(BuiltinKnappingTypes.ROCK),
+            KnappingPattern.from(false, pattern),
+            Optional.of(Ingredient.of(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD))),
+            new ItemStack(output, count)
+        ));
     }
 
     private void clayKnapping(Metal.ItemType output, String... pattern)

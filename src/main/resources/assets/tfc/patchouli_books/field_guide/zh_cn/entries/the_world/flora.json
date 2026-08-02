@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Flowers can be $(thing)propagated$() by $(item)$(k:key.use)$() them with shears. This drops a $(thing)Flower Cutting$(). Crafting a Flower Cutting with Compost will give you two of the original flower back, thus duplicating it."
+      "text": "用剪刀对花朵按$(item)$(k:key.use)$()可以$(thing)繁殖$()花朵，这会掉落一个$(thing)花卉插枝$()。将花卉插枝与堆肥合成，可以拿回两朵原来的花，从而实现复制。"
     },
     {
       "type": "patchouli:multiblock",
@@ -71,7 +71,7 @@
         }
       },
       "name": "仙人掌",
-      "text": "仙人掌可以长到两个方块的高度，而且会对你造成伤害!",
+      "text": "仙人掌可以长到两个方块的高度，而且会对你造成伤害！",
       "enable_visualize": false
     },
     {
@@ -241,7 +241,7 @@
         }
       },
       "name": "普通水生植物",
-      "text": "用$(thing)刀$()割普通水生植物可以获得$(thing)海草$()。",
+      "text": "用$(thing)小刀$()割普通水生植物可以获得$(thing)海草$()。",
       "enable_visualize": false
     },
     {
@@ -283,7 +283,7 @@
         }
       },
       "name": "高大水生植物",
-      "text": "只要下面那格有水就可以活。用$(thing)刀$()割$(thing)水生芋头$()和$()阔叶香蒲$()可以获得它们的$(thing)根$()。",
+      "text": "只要下面那格有水就可以活。用$(thing)小刀$()割$(thing)水生芋头$()和$()阔叶香蒲$()可以获得它们的$(thing)根$()。",
       "enable_visualize": false
     },
     {
@@ -352,7 +352,7 @@
         }
       },
       "name": "树海带",
-      "text": "树海带在水下长成错综复杂的树。用$(thing)刀$()可以收获它们的花朵。",
+      "text": "树海带在水下长成错综复杂的树。用$(thing)小刀$()可以收获它们的花朵。",
       "enable_visualize": false
     }
   ],

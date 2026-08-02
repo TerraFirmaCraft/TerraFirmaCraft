@@ -13,12 +13,12 @@
       "item": "tfc:bucket/red_dye",
       "title": "液体染料",
       "link_recipes": false,
-      "text": "染料也可以制成液体。一份染料物品与 1000mB $(item)水$()在$(l:mechanics/pot)锅$()中煮沸，可以得到等量的$(thing)液体染料$()。液体染料用于在$(l:mechanics/barrels)大桶$()中给物品染色。"
+      "text": "染料也可以制成液体。一份染料物品与 1000 mB $(item)水$()在$(l:mechanics/pot)锅$()中煮沸，可以得到等量的$(thing)液体染料$()。液体染料用于在$(l:mechanics/barrels)大桶$()中给物品染色。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/red_concrete_powder",
-      "text": "在大桶中给物品染色比使用染料物品更便宜，只需 25mB 液体染料。"
+      "text": "在大桶中给物品染色比使用染料物品更便宜，只需 25 mB 液体染料。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -34,7 +34,7 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
       "recipe": "tfc:barrel/bleach_bed",
-      "text": "五份$(item)草木灰$()与 1000mB $(item)水$()在$(l:mechanics/pot)锅$()中煮沸可以得到碱液。25mB 碱液可以去除彩色物品的颜色。"
+      "text": "五份$(item)草木灰$()与 1000 mB $(item)水$()在$(l:mechanics/pot)锅$()中煮沸可以得到碱液。25 mB 碱液可以去除彩色物品的颜色。"
     },
     {
       "type": "patchouli:text",

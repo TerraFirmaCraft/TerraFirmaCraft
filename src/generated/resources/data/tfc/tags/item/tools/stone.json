@@ -24,7 +24,11 @@
     "tfc:stone/shovel/igneous_intrusive",
     "tfc:stone/shovel/metamorphic",
     "tfc:stone/shovel/sedimentary",
+    "tfc:obsidian_axe",
+    "tfc:obsidian_hammer",
+    "tfc:obsidian_hoe",
+    "tfc:obsidian_javelin",
     "tfc:obsidian_knife",
-    "tfc:obsidian_javelin"
+    "tfc:obsidian_shovel"
   ]
 }

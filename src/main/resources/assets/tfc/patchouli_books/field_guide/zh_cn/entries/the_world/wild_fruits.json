@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "果树始于$(thing)树苗$()。只有当该果树的非休眠季节且满足其气候要求时，树苗才会开始生长，种下第一段树干。最终树的大小大致由原始树苗方块中包含的树苗数量决定。树苗越多，树就越大。$(br)可以通过$(thing)嫁接$()在同一方块中添加更多树苗。要嫁接树苗，只需手持树苗，副手拿着$(thing)刀$()，然后对着已有的树苗$(item)$(k:key.use)$()。"
+      "text": "果树始于$(thing)树苗$()。只有当该果树的非休眠季节且满足其气候要求时，树苗才会开始生长，种下第一段树干。最终树的大小大致由原始树苗方块中包含的树苗数量决定。树苗越多，树就越大。$(br)可以通过$(thing)嫁接$()在同一方块中添加更多树苗。要嫁接树苗，只需手持树苗，副手拿着$(thing)小刀$()，然后对着已有的树苗$(item)$(k:key.use)$()。"
     },
     {
       "type": "patchouli:text",
@@ -1984,7 +1984,7 @@
           "text": "Dec"
         },
         {
-          "text": "Cherry"
+          "text": "樱桃"
         },
         {
           "fill": "0x6ab553"
@@ -2023,7 +2023,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Apple"
+          "text": "苹果"
         },
         {
           "fill": "0xa8986a"
@@ -2062,7 +2062,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Lemon"
+          "text": "柠檬"
         },
         {
           "fill": "0xa8986a"
@@ -2101,7 +2101,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Olive"
+          "text": "橄榄"
         },
         {
           "fill": "0xa8986a"
@@ -2140,7 +2140,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Orange"
+          "text": "橙子"
         },
         {
           "fill": "0xa8986a"
@@ -2179,7 +2179,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Peach"
+          "text": "桃子"
         },
         {
           "fill": "0x6ab553"
@@ -2218,7 +2218,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Plum"
+          "text": "李子"
         },
         {
           "fill": "0x6ab553"
@@ -2257,7 +2257,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Banana"
+          "text": "香蕉"
         },
         {
           "fill": "0xa8986a"
@@ -2300,19 +2300,19 @@
       "title": "果树",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "休眠",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "健康",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "开花",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "结果",
           "color": "0xa217ff"
         }
       ],
@@ -2793,7 +2793,7 @@
           "text": "Dec"
         },
         {
-          "text": "Blackberry"
+          "text": "黑莓"
         },
         {
           "fill": "0xa8986a"
@@ -2832,7 +2832,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Raspberry"
+          "text": "树莓"
         },
         {
           "fill": "0xa8986a"
@@ -2871,7 +2871,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Blueberry"
+          "text": "蓝莓"
         },
         {
           "fill": "0xa8986a"
@@ -2910,7 +2910,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Elderberry"
+          "text": "接骨木莓"
         },
         {
           "fill": "0xa8986a"
@@ -2953,19 +2953,19 @@
       "title": "大型浆果灌木",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "休眠",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "健康",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "开花",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "结果",
           "color": "0xa217ff"
         }
       ],
@@ -3523,7 +3523,7 @@
           "text": "Dec"
         },
         {
-          "text": "Bunchberry"
+          "text": "御膳橘"
         },
         {
           "fill": "0xa8986a"
@@ -3562,7 +3562,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Gooseberry"
+          "text": "鹅莓"
         },
         {
           "fill": "0xa8986a"
@@ -3601,7 +3601,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Snowberry"
+          "text": "雪莓"
         },
         {
           "fill": "0xa8986a"
@@ -3640,7 +3640,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Cloudberry"
+          "text": "云莓"
         },
         {
           "fill": "0xa8986a"
@@ -3679,7 +3679,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Strawberry"
+          "text": "草莓"
         },
         {
           "fill": "0xcca0db"
@@ -3718,7 +3718,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Wintergreen"
+          "text": "冬青莓"
         },
         {
           "fill": "0xa8986a"
@@ -3757,7 +3757,7 @@
           "fill": "0xa217ff"
         },
         {
-          "text": "Cranberry"
+          "text": "蔓越莓"
         },
         {
           "fill": "0xa8986a"
@@ -3800,19 +3800,19 @@
       "title": "小型浆果灌木",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "休眠",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "健康",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "开花",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "结果",
           "color": "0xa217ff"
         }
       ],
