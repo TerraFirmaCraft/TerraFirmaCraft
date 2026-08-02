@@ -128,7 +128,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         // Vanilla Tool Tags
         tag(ItemTags.SWORDS)
-            .add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD)
+                .add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD)
             .add(TFCItems.OBSIDIAN_MACUAHUITL);
         tag(ItemTags.AXES)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE)
@@ -137,7 +137,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(ItemTags.HOES)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.HOE)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE)
-            .add(TFCItems.OBSIDIAN_HOE);;
+            .add(TFCItems.OBSIDIAN_HOE);
         tag(ItemTags.PICKAXES).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
         tag(ItemTags.SHOVELS)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL)
@@ -710,58 +710,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         // Ores
 
-        final Set<String> oreTagsToCopy = new LinkedHashSet<>();
-
-        for (OreDeposit deposit : OreDeposit.values())
-        {
-            final String metalName = switch (deposit)
-            {
-                case CASSITERITE -> "tin";
-                case NATIVE_COPPER -> "copper";
-                case NATIVE_GOLD -> "gold";
-                case NATIVE_SILVER -> "silver";
-                default -> deposit.name().toLowerCase(Locale.ROOT);
-            };
-
-            oreTagsToCopy.add("ores/" + metalName + "/small");
-            oreTagsToCopy.add("ores/" + metalName);
-        }
-
-        for (Ore ore : Ore.values())
-        {
-            if (ore.isGraded())
-            {
-                final Metal metal = ore.metal();
-                final String metalName =
-                    metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
-
-                for (Ore.Grade grade : Ore.Grade.values())
-                {
-                    oreTagsToCopy.add(
-                        "ores/" + metalName + "/" +
-                            grade.name().toLowerCase(Locale.ROOT)
-                    );
-                }
-
-                oreTagsToCopy.add("ores/" + metalName);
-            }
-            else if (ore.hasBlock())
-            {
-                oreTagsToCopy.add(
-                    "ores/" + ore.name().toLowerCase(Locale.ROOT)
-                );
-            }
-        }
-
-        for (Ore ore : TFCBlocks.SMALL_ORES.keySet())
-        {
-            final Metal metal = ore.metal();
-            final String metalName =
-                metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
-
-            oreTagsToCopy.add("ores/" + metalName + "/small");
-            oreTagsToCopy.add("ores/" + metalName);
-        }
+        final Set<String> oreTagsToCopy = getStrings();
 
         oreTagsToCopy.forEach(this::copyCommon);
 
@@ -1686,12 +1635,16 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ORES.get(Ore.GYPSUM).key());
         tag(c.apply("raw_materials/flux"))
             .addTag(FLUXSTONE);
+        tag(c.apply("raw_materials/obsidian"))
+            .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD));
         tag(Tags.Items.RAW_MATERIALS).addTags(
             c.apply("raw_materials/salt"),
             c.apply("raw_materials/redstone"),
             c.apply("raw_materials/plaster"),
-            c.apply("raw_materials/flux")
+            c.apply("raw_materials/flux"),
+            c.apply("raw_materials/obsiadian")
         );
+
 
         for (var entry : TFCItems.GRADED_ORES.entrySet())
         {
@@ -1779,7 +1732,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(TOOLS_HAMMER)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER)
-            .add(TFCItems.OBSIDIAN_HAMMER);
+ .add(TFCItems.OBSIDIAN_HAMMER);
         tag(TOOLS_SAW)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
         tag(TOOLS_SCYTHE)
@@ -2460,6 +2413,62 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         copy(TFCTags.Blocks.FALLEN_LEAVES, FALLEN_LEAVES);
         copy(TFCTags.Blocks.CLAY_INDICATORS, CLAY_INDICATORS);
         copy(TFCTags.Blocks.BAMBOO, BAMBOO);
+    }
+
+    private static Set<String> getStrings()
+    {
+        final Set<String> oreTagsToCopy = new LinkedHashSet<>();
+
+        for (OreDeposit deposit : OreDeposit.values())
+        {
+            final String metalName = switch (deposit)
+            {
+                case CASSITERITE -> "tin";
+                case NATIVE_COPPER -> "copper";
+                case NATIVE_GOLD -> "gold";
+                case NATIVE_SILVER -> "silver";
+            };
+
+            oreTagsToCopy.add("ores/" + metalName + "/small");
+            oreTagsToCopy.add("ores/" + metalName);
+        }
+
+        for (Ore ore : Ore.values())
+        {
+            if (ore.isGraded())
+            {
+                final Metal metal = ore.metal();
+                final String metalName =
+                    metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
+
+                for (Ore.Grade grade : Ore.Grade.values())
+                {
+                    oreTagsToCopy.add(
+                        "ores/" + metalName + "/" +
+                            grade.name().toLowerCase(Locale.ROOT)
+                    );
+                }
+
+                oreTagsToCopy.add("ores/" + metalName);
+            }
+            else if (ore.hasBlock())
+            {
+                oreTagsToCopy.add(
+                    "ores/" + ore.name().toLowerCase(Locale.ROOT)
+                );
+            }
+        }
+
+        for (Ore ore : TFCBlocks.SMALL_ORES.keySet())
+        {
+            final Metal metal = ore.metal();
+            final String metalName =
+                metal == Metal.CAST_IRON ? "iron" : metal.getSerializedName();
+
+            oreTagsToCopy.add("ores/" + metalName + "/small");
+            oreTagsToCopy.add("ores/" + metalName);
+        }
+        return oreTagsToCopy;
     }
 
     @Override
