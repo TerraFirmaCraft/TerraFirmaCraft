@@ -30,6 +30,8 @@
     "tfc:stone/axe/igneous_extrusive",
     "tfc:stone/axe/igneous_intrusive",
     "tfc:stone/axe/metamorphic",
-    "tfc:stone/axe/sedimentary"
+    "tfc:stone/axe/sedimentary",
+    "tfc:obsidian_axe",
+    "tfc:obsidian_macuahuitl"
   ]
 }

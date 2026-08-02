@@ -1642,7 +1642,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             c.apply("raw_materials/redstone"),
             c.apply("raw_materials/plaster"),
             c.apply("raw_materials/flux"),
-            c.apply("raw_materials/obsiadian")
+            c.apply("raw_materials/obsidian")
         );
 
 
