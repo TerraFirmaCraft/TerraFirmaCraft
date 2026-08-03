@@ -87,7 +87,9 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
     {
         if (pos == null)
         {
-            pos = BlockPos.ZERO;
+            // No world context (Patchouli field guide renders), always show the blooming stage
+            assert bloomingBakedModel != null;
+            return bloomingBakedModel;
         }
         if (state == null)
         {
@@ -95,21 +97,11 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         }
         final Block block = state.getBlock();
         final RegistryPlant plant;
-        if (block instanceof PlantBlock)
-        {
-            plant = ((PlantBlock) block).getPlant();
-        }
-        else if (block instanceof BodyPlantBlock)
-        {
-            plant = ((BodyPlantBlock) block).getPlant();
-        }
-        else if (block instanceof TopPlantBlock)
-        {
-            plant = ((TopPlantBlock) block).getPlant();
-        }
-        else
-        {
-            return getModelFromCalendar();
+        switch (block) {
+            case PlantBlock plantBlock -> plant = plantBlock.getPlant();
+            case BodyPlantBlock bodyPlantBlock -> plant = bodyPlantBlock.getPlant();
+            case TopPlantBlock topPlantBlock -> plant = topPlantBlock.getPlant();
+            default -> { return getModelFromCalendar(); }
         }
         float start = plant.getBloomOffset();
         final Random random = new Random();
