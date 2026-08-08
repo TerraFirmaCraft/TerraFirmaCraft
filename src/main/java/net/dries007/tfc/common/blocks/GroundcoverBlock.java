@@ -98,7 +98,7 @@ public class GroundcoverBlock extends ExtendedBlock implements IFluidLoggable
     {
         if (fluidStateIn.getType() instanceof FlowingFluid && !getFluidProperty().canContain(fluidStateIn.getType()))
         {
-            level.destroyBlock(pos, true);
+            level.destroyBlock(pos, false);
             level.setBlock(pos, fluidStateIn.createLegacyBlock(), 2);
             return true;
         }
