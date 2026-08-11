@@ -1,0 +1,18 @@
+{
+  "values": [
+    "tfc:rock/bricks/marble",
+    "tfc:rock/mossy_bricks/marble",
+    "tfc:rock/cracked_bricks/marble",
+    "tfc:rock/chiseled/marble",
+    "tfc:rock/aqueduct/marble",
+    "tfc:rock/bricks/marble_slab",
+    "tfc:rock/bricks/marble_stairs",
+    "tfc:rock/bricks/marble_wall",
+    "tfc:rock/mossy_bricks/marble_slab",
+    "tfc:rock/mossy_bricks/marble_stairs",
+    "tfc:rock/mossy_bricks/marble_wall",
+    "tfc:rock/cracked_bricks/marble_slab",
+    "tfc:rock/cracked_bricks/marble_stairs",
+    "tfc:rock/cracked_bricks/marble_wall"
+  ]
+}

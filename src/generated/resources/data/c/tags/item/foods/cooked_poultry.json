@@ -1,0 +1,11 @@
+{
+  "values": [
+    "#c:foods/cooked_chicken",
+    "#c:foods/cooked_quail",
+    "#c:foods/cooked_pheasant",
+    "#c:foods/cooked_grouse",
+    "#c:foods/cooked_turkey",
+    "#c:foods/cooked_peafowl",
+    "#c:foods/cooked_duck"
+  ]
+}

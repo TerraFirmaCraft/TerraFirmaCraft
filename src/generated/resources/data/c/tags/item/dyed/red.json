@@ -1,0 +1,23 @@
+{
+  "values": [
+    "tfc:candle/red",
+    "tfc:alabaster/raw/red",
+    "tfc:alabaster/polished/red",
+    "tfc:alabaster/bricks/red_slab",
+    "tfc:alabaster/bricks/red_stairs",
+    "tfc:alabaster/bricks/red_wall",
+    "tfc:alabaster/polished/red_slab",
+    "tfc:alabaster/polished/red_stairs",
+    "tfc:alabaster/polished/red_wall",
+    "tfc:ceramic/large_vessel/red",
+    "tfc:wattle/red",
+    "tfc:ceramic/red_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/red",
+    "tfc:ceramic/red_unfired_vessel",
+    "tfc:windmill_blade/red",
+    "tfc:ceramic/red_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/red",
+    "tfc:ceramic/red_unfired_vessel",
+    "tfc:windmill_blade/red"
+  ]
+}

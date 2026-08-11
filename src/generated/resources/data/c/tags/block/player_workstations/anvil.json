@@ -1,0 +1,20 @@
+{
+  "values": [
+    "tfc:metal/anvil/bismuth_bronze",
+    "tfc:metal/anvil/black_bronze",
+    "tfc:metal/anvil/bronze",
+    "tfc:metal/anvil/copper",
+    "tfc:metal/anvil/wrought_iron",
+    "tfc:metal/anvil/steel",
+    "tfc:metal/anvil/black_steel",
+    "tfc:metal/anvil/blue_steel",
+    "tfc:metal/anvil/red_steel",
+    "tfc:rock/anvil/granite",
+    "tfc:rock/anvil/diorite",
+    "tfc:rock/anvil/gabbro",
+    "tfc:rock/anvil/rhyolite",
+    "tfc:rock/anvil/basalt",
+    "tfc:rock/anvil/andesite",
+    "tfc:rock/anvil/dacite"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "values": [
+    "tfc:crop/canola",
+    "tfc:dead_crop/canola",
+    "tfc:wild_crop/canola"
+  ]
+}

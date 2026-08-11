@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/diorite",
+    "tfc:rock/loose/diorite",
+    "tfc:rock/mossy_loose/diorite",
+    "tfc:rock/raw/diorite",
+    "tfc:rock/smooth/diorite",
+    "tfc:rock/spike/diorite",
+    "tfc:rock/raw/diorite_slab",
+    "tfc:rock/raw/diorite_stairs",
+    "tfc:rock/raw/diorite_wall",
+    "tfc:rock/smooth/diorite_slab",
+    "tfc:rock/smooth/diorite_stairs",
+    "tfc:rock/smooth/diorite_wall"
+  ]
+}

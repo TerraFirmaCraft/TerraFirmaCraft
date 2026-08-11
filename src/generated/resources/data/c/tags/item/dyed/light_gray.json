@@ -1,0 +1,23 @@
+{
+  "values": [
+    "tfc:candle/light_gray",
+    "tfc:alabaster/raw/light_gray",
+    "tfc:alabaster/polished/light_gray",
+    "tfc:alabaster/bricks/light_gray_slab",
+    "tfc:alabaster/bricks/light_gray_stairs",
+    "tfc:alabaster/bricks/light_gray_wall",
+    "tfc:alabaster/polished/light_gray_slab",
+    "tfc:alabaster/polished/light_gray_stairs",
+    "tfc:alabaster/polished/light_gray_wall",
+    "tfc:ceramic/large_vessel/light_gray",
+    "tfc:wattle/light_gray",
+    "tfc:ceramic/light_gray_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/light_gray",
+    "tfc:ceramic/light_gray_unfired_vessel",
+    "tfc:windmill_blade/light_gray",
+    "tfc:ceramic/light_gray_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/light_gray",
+    "tfc:ceramic/light_gray_unfired_vessel",
+    "tfc:windmill_blade/light_gray"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "values": [
+    "tfc:bucket/bluegill",
+    "tfc:bucket/crappie",
+    "tfc:bucket/lake_trout",
+    "tfc:bucket/largemouth_bass",
+    "tfc:bucket/rainbow_trout",
+    "tfc:bucket/salmon",
+    "tfc:bucket/smallmouth_bass",
+    "tfc:bucket/northern_pike",
+    "tfc:bucket/burbot",
+    "tfc:bucket/arctic_char",
+    "tfc:bucket/muksun",
+    "tfc:bucket/tilapia",
+    "tfc:bucket/spotted_gudgeon",
+    "tfc:bucket/peacock_bass",
+    "tfc:bucket/pacu",
+    "tfc:bucket/red_piranha",
+    "tfc:bucket/jellyfish",
+    "tfc:bucket/tropical_fish",
+    "tfc:bucket/pufferfish",
+    "tfc:bucket/cod"
+  ]
+}

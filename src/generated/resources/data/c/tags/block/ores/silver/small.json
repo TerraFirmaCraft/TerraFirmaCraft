@@ -1,0 +1,26 @@
+{
+  "values": [
+    "tfc:deposit/native_silver/granite",
+    "tfc:deposit/native_silver/diorite",
+    "tfc:deposit/native_silver/gabbro",
+    "tfc:deposit/native_silver/shale",
+    "tfc:deposit/native_silver/claystone",
+    "tfc:deposit/native_silver/limestone",
+    "tfc:deposit/native_silver/conglomerate",
+    "tfc:deposit/native_silver/dolomite",
+    "tfc:deposit/native_silver/chert",
+    "tfc:deposit/native_silver/chalk",
+    "tfc:deposit/native_silver/tuff",
+    "tfc:deposit/native_silver/rhyolite",
+    "tfc:deposit/native_silver/basalt",
+    "tfc:deposit/native_silver/andesite",
+    "tfc:deposit/native_silver/dacite",
+    "tfc:deposit/native_silver/quartzite",
+    "tfc:deposit/native_silver/slate",
+    "tfc:deposit/native_silver/phyllite",
+    "tfc:deposit/native_silver/schist",
+    "tfc:deposit/native_silver/gneiss",
+    "tfc:deposit/native_silver/marble",
+    "tfc:ore/small_native_silver"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "values": [
+    "tfc:rock/bricks/granite",
+    "tfc:rock/mossy_bricks/granite",
+    "tfc:rock/cracked_bricks/granite",
+    "tfc:rock/chiseled/granite",
+    "tfc:rock/aqueduct/granite",
+    "tfc:rock/bricks/granite_slab",
+    "tfc:rock/bricks/granite_stairs",
+    "tfc:rock/bricks/granite_wall",
+    "tfc:rock/mossy_bricks/granite_slab",
+    "tfc:rock/mossy_bricks/granite_stairs",
+    "tfc:rock/mossy_bricks/granite_wall",
+    "tfc:rock/cracked_bricks/granite_slab",
+    "tfc:rock/cracked_bricks/granite_stairs",
+    "tfc:rock/cracked_bricks/granite_wall"
+  ]
+}

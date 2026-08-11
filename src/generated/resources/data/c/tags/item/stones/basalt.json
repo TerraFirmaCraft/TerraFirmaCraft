@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/basalt",
+    "tfc:rock/loose/basalt",
+    "tfc:rock/mossy_loose/basalt",
+    "tfc:rock/raw/basalt",
+    "tfc:rock/smooth/basalt",
+    "tfc:rock/spike/basalt",
+    "tfc:rock/raw/basalt_slab",
+    "tfc:rock/raw/basalt_stairs",
+    "tfc:rock/raw/basalt_wall",
+    "tfc:rock/smooth/basalt_slab",
+    "tfc:rock/smooth/basalt_stairs",
+    "tfc:rock/smooth/basalt_wall"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "values": [
+    "#c:rods/bismuth",
+    "#c:rods/bismuth_bronze",
+    "#c:rods/black_bronze",
+    "#c:rods/bronze",
+    "#c:rods/brass",
+    "#c:rods/copper",
+    "#c:rods/gold",
+    "#c:rods/nickel",
+    "#c:rods/rose_gold",
+    "#c:rods/silver",
+    "#c:rods/tin",
+    "#c:rods/zinc",
+    "#c:rods/sterling_silver",
+    "#c:rods/wrought_iron",
+    "#c:rods/cast_iron",
+    "#c:rods/steel",
+    "#c:rods/black_steel",
+    "#c:rods/blue_steel",
+    "#c:rods/red_steel"
+  ]
+}

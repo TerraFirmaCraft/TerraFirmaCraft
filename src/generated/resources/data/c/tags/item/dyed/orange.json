@@ -1,0 +1,23 @@
+{
+  "values": [
+    "tfc:candle/orange",
+    "tfc:alabaster/raw/orange",
+    "tfc:alabaster/polished/orange",
+    "tfc:alabaster/bricks/orange_slab",
+    "tfc:alabaster/bricks/orange_stairs",
+    "tfc:alabaster/bricks/orange_wall",
+    "tfc:alabaster/polished/orange_slab",
+    "tfc:alabaster/polished/orange_stairs",
+    "tfc:alabaster/polished/orange_wall",
+    "tfc:ceramic/large_vessel/orange",
+    "tfc:wattle/orange",
+    "tfc:ceramic/orange_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/orange",
+    "tfc:ceramic/orange_unfired_vessel",
+    "tfc:windmill_blade/orange",
+    "tfc:ceramic/orange_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/orange",
+    "tfc:ceramic/orange_unfired_vessel",
+    "tfc:windmill_blade/orange"
+  ]
+}

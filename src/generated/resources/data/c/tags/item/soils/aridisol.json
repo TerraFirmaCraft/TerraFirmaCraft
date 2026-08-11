@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:clay_duff/aridisol",
+    "tfc:clay_grass/aridisol",
+    "tfc:coarse_dirt/aridisol",
+    "tfc:drying_bricks/aridisol",
+    "tfc:dirt/aridisol",
+    "tfc:duff/aridisol",
+    "tfc:farmland/aridisol",
+    "tfc:grass/aridisol",
+    "tfc:grass_path/aridisol",
+    "tfc:mud/aridisol",
+    "tfc:muddy_roots/aridisol",
+    "tfc:rooted_dirt/aridisol"
+  ]
+}

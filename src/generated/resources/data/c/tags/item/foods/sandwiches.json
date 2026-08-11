@@ -1,16 +1,16 @@
 {
   "values": [
-    "tfc:food/barley_bread_jam_sandwich",
-    "tfc:food/barley_bread_sandwich",
-    "tfc:food/maize_bread_jam_sandwich",
-    "tfc:food/maize_bread_sandwich",
-    "tfc:food/oat_bread_jam_sandwich",
-    "tfc:food/oat_bread_sandwich",
-    "tfc:food/rye_bread_jam_sandwich",
-    "tfc:food/rye_bread_sandwich",
-    "tfc:food/rice_bread_jam_sandwich",
-    "tfc:food/rice_bread_sandwich",
-    "tfc:food/wheat_bread_sandwich",
-    "tfc:food/wheat_bread"
+    "#c:foods/barley_bread_sandwich",
+    "#c:foods/barley_bread_jam_sandwich",
+    "#c:foods/maize_bread_sandwich",
+    "#c:foods/maize_bread_jam_sandwich",
+    "#c:foods/oat_bread_sandwich",
+    "#c:foods/oat_bread_jam_sandwich",
+    "#c:foods/rye_bread_sandwich",
+    "#c:foods/rye_bread_jam_sandwich",
+    "#c:foods/rice_bread_sandwich",
+    "#c:foods/rice_bread_jam_sandwich",
+    "#c:foods/wheat_bread_sandwich",
+    "#c:foods/wheat_bread_jam_sandwich"
   ]
 }

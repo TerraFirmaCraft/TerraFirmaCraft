@@ -2,6 +2,7 @@
   "values": [
     "#c:foods/grain",
     "#c:foods/fruit",
-    "#c:foods/vegetable"
+    "#c:foods/vegetable",
+    "#c:grains"
   ]
 }

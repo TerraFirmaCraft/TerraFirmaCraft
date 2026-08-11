@@ -4,6 +4,6 @@
     "#c:foods/cooked_fish",
     "#c:foods/dairy",
     "#tfc:foods/preserves",
-    "#tfc:foods/jam"
+    "#c:foods/jam"
   ]
 }

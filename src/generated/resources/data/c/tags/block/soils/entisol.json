@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:clay_duff/entisol",
+    "tfc:clay_grass/entisol",
+    "tfc:coarse_dirt/entisol",
+    "tfc:drying_bricks/entisol",
+    "tfc:dirt/entisol",
+    "tfc:duff/entisol",
+    "tfc:farmland/entisol",
+    "tfc:grass/entisol",
+    "tfc:grass_path/entisol",
+    "tfc:mud/entisol",
+    "tfc:muddy_roots/entisol",
+    "tfc:rooted_dirt/entisol"
+  ]
+}

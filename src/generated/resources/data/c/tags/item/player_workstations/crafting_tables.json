@@ -19,7 +19,6 @@
     "tfc:wood/workbench/spruce",
     "tfc:wood/workbench/sycamore",
     "tfc:wood/workbench/white_cedar",
-    "tfc:wood/workbench/willow",
-    "#tfc:workbenches"
+    "tfc:wood/workbench/willow"
   ]
 }

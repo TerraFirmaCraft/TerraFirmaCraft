@@ -1,0 +1,23 @@
+{
+  "values": [
+    "tfc:candle/green",
+    "tfc:alabaster/raw/green",
+    "tfc:alabaster/polished/green",
+    "tfc:alabaster/bricks/green_slab",
+    "tfc:alabaster/bricks/green_stairs",
+    "tfc:alabaster/bricks/green_wall",
+    "tfc:alabaster/polished/green_slab",
+    "tfc:alabaster/polished/green_stairs",
+    "tfc:alabaster/polished/green_wall",
+    "tfc:ceramic/large_vessel/green",
+    "tfc:wattle/green",
+    "tfc:ceramic/green_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/green",
+    "tfc:ceramic/green_unfired_vessel",
+    "tfc:windmill_blade/green",
+    "tfc:ceramic/green_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/green",
+    "tfc:ceramic/green_unfired_vessel",
+    "tfc:windmill_blade/green"
+  ]
+}

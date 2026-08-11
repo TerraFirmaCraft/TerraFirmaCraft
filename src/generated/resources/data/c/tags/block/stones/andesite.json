@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/andesite",
+    "tfc:rock/loose/andesite",
+    "tfc:rock/mossy_loose/andesite",
+    "tfc:rock/raw/andesite",
+    "tfc:rock/smooth/andesite",
+    "tfc:rock/spike/andesite",
+    "tfc:rock/raw/andesite_slab",
+    "tfc:rock/raw/andesite_stairs",
+    "tfc:rock/raw/andesite_wall",
+    "tfc:rock/smooth/andesite_slab",
+    "tfc:rock/smooth/andesite_stairs",
+    "tfc:rock/smooth/andesite_wall"
+  ]
+}

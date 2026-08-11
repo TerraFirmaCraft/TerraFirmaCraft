@@ -1,0 +1,17 @@
+{
+  "values": [
+    "tfc:metal/hoe_head/bismuth_bronze",
+    "tfc:metal/hoe_head/black_bronze",
+    "tfc:metal/hoe_head/bronze",
+    "tfc:metal/hoe_head/copper",
+    "tfc:metal/hoe_head/wrought_iron",
+    "tfc:metal/hoe_head/steel",
+    "tfc:metal/hoe_head/black_steel",
+    "tfc:metal/hoe_head/blue_steel",
+    "tfc:metal/hoe_head/red_steel",
+    "tfc:stone/hoe_head/igneous_extrusive",
+    "tfc:stone/hoe_head/igneous_intrusive",
+    "tfc:stone/hoe_head/metamorphic",
+    "tfc:stone/hoe_head/sedimentary"
+  ]
+}

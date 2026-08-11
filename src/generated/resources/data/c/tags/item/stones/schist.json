@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/schist",
+    "tfc:rock/loose/schist",
+    "tfc:rock/mossy_loose/schist",
+    "tfc:rock/raw/schist",
+    "tfc:rock/smooth/schist",
+    "tfc:rock/spike/schist",
+    "tfc:rock/raw/schist_slab",
+    "tfc:rock/raw/schist_stairs",
+    "tfc:rock/raw/schist_wall",
+    "tfc:rock/smooth/schist_slab",
+    "tfc:rock/smooth/schist_stairs",
+    "tfc:rock/smooth/schist_wall"
+  ]
+}

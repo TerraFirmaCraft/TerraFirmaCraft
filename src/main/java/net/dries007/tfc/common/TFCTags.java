@@ -309,7 +309,6 @@ public class TFCTags
         public static final TagKey<Block> CONSUMES_TOOL_DURABILITY = tag("consumes_tool_durability");
         /**
          * Blocks that will prevent natural growth nearby. This is used to prevent an area from overpopulating itself with plants.
-         *
          * @see PlantRegrowth
          */
         public static final TagKey<Block> NATURAL_REGROWING_PLANTS = tag("natural_regrowing_plants");
@@ -330,7 +329,6 @@ public class TFCTags
 
         /**
          * Used in world generation to select random coral blocks. Separate from the vanilla tags because we don't want to include vanilla coral blocks
-         *
          * @see BlockTags#CORALS
          * @see BlockTags#WALL_CORALS
          */
@@ -609,6 +607,8 @@ public class TFCTags
         public static final TagKey<Item> DOUBLE_INGOTS = commonTag("double_ingots");
         public static final TagKey<Item> SHEETS = commonTag("sheets");
         public static final TagKey<Item> DOUBLE_SHEETS = commonTag("double_sheets");
+        public static final TagKey<Item> PLATES = commonTag("plates");
+        public static final TagKey<Item> DOUBLE_PLATES = commonTag("double_plates");
         public static final TagKey<Item> DOUBLE_SHEETS_ANY_BRONZE = tag("double_sheets/any_bronze");
 
         /**
@@ -683,10 +683,8 @@ public class TFCTags
         public static final TagKey<Item> HIGH_QUALITY_CLOTH = tag("high_quality_cloth");
         public static final TagKey<Item> GEM_POWDERS = tag("gem_powders");
         public static final TagKey<Item> BOOKS = commonTag("books");
-        public static final TagKey<Item> SULFUR_POWDER = commonTag("powders/sulfur");
-        /**
-         * Used by patchouli
-         */
+        public static final TagKey<Item> SULFUR_DUSTS = commonTag("dusts/sulfur");
+        /** Used by patchouli */
         public static final TagKey<Item> ORE_DEPOSITS = tag("ore_deposits");
         public static final TagKey<Item> TANNIN_LOGS = tag("tannin_logs");
         public static final TagKey<Item> FLUXSTONE = tag("fluxstone");
@@ -764,7 +762,6 @@ public class TFCTags
         public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = tag("fluid_item_ingredient_empty_containers");
         /**
          * Items that mobs will not spawn with in hand.
-         *
          * @see ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
          */
         public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = tag("disabled_monster_held_items");
@@ -786,7 +783,6 @@ public class TFCTags
 
         /**
          * Armor that mobs may randomly spawn with. This replaces vanilla armors if present, and will replace armor if not present
-         *
          * @see MobMixin
          */
         public static final TagKey<Item> MOB_FEET_ARMOR = tag("mob_feet_armor");

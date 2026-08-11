@@ -155,7 +155,7 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         addAndMelt(TFCBlocks.STEEL_PIPE, Metal.STEEL, 25);
         addAndMelt(TFCBlocks.ANEMOMETER, Metal.BRASS, 200);
         addAndMelt(TFCBlocks.CRANKSHAFT, Metal.BRASS, 250);
-        addAndMelt(TFCBlocks.CALENDAR_CLOCK, Metal.BRASS,500);
+        addAndMelt(TFCBlocks.CALENDAR_CLOCK, Metal.BRASS, 500);
         addAndMelt(TFCBlocks.THERMOMETER, Metal.BRASS, 200);
         addAndMelt(TFCItems.BLOWPIPE, Metal.BRASS, 50);
         addAndMelt(Items.COPPER_DOOR, Metal.COPPER, 200);
@@ -189,8 +189,9 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
         ), 0.5f);
         add(TFCTags.Items.DOUGH, 1.0f);
         add(TFCTags.Items.BREAD, 1.0f);
-        add(TFCTags.Items.MEATS, 1.0f);
-        add(TFCTags.Items.FISH, 1.0f);
+        add(TFCTags.Items.RAW_MEATS, 1.0f);
+        add(TFCTags.Items.COOKED_MEATS, 1.0f);
+        add(TFCTags.Items.FISH, 1.0f); //Will need changing if dropping Fish Tag in favor of cooked_fish, raw_fish
         add(Ingredient.of(
             TFCItems.FOOD.get(Food.FRESH_SEAWEED),
             TFCItems.FOOD.get(Food.DRIED_SEAWEED),

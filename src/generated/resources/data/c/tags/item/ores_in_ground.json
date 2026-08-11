@@ -1,0 +1,26 @@
+{
+  "values": [
+    "#c:ores_in_ground/gravel",
+    "#c:ores_in_ground/granite",
+    "#c:ores_in_ground/diorite",
+    "#c:ores_in_ground/gabbro",
+    "#c:ores_in_ground/shale",
+    "#c:ores_in_ground/claystone",
+    "#c:ores_in_ground/limestone",
+    "#c:ores_in_ground/conglomerate",
+    "#c:ores_in_ground/dolomite",
+    "#c:ores_in_ground/chert",
+    "#c:ores_in_ground/chalk",
+    "#c:ores_in_ground/tuff",
+    "#c:ores_in_ground/rhyolite",
+    "#c:ores_in_ground/basalt",
+    "#c:ores_in_ground/andesite",
+    "#c:ores_in_ground/dacite",
+    "#c:ores_in_ground/quartzite",
+    "#c:ores_in_ground/slate",
+    "#c:ores_in_ground/phyllite",
+    "#c:ores_in_ground/schist",
+    "#c:ores_in_ground/gneiss",
+    "#c:ores_in_ground/marble"
+  ]
+}

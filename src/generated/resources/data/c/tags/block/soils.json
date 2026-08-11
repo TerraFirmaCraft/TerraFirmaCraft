@@ -1,0 +1,12 @@
+{
+  "values": [
+    "#c:soils/entisol",
+    "#c:soils/aridisol",
+    "#c:soils/oxisol",
+    "#c:soils/fluvisol",
+    "#c:soils/andisol",
+    "#c:soils/podzol",
+    "#c:soils/alfisol",
+    "#c:soils/mollisol"
+  ]
+}

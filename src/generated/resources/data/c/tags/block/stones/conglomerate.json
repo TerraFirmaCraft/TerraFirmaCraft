@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/conglomerate",
+    "tfc:rock/loose/conglomerate",
+    "tfc:rock/mossy_loose/conglomerate",
+    "tfc:rock/raw/conglomerate",
+    "tfc:rock/smooth/conglomerate",
+    "tfc:rock/spike/conglomerate",
+    "tfc:rock/raw/conglomerate_slab",
+    "tfc:rock/raw/conglomerate_stairs",
+    "tfc:rock/raw/conglomerate_wall",
+    "tfc:rock/smooth/conglomerate_slab",
+    "tfc:rock/smooth/conglomerate_stairs",
+    "tfc:rock/smooth/conglomerate_wall"
+  ]
+}

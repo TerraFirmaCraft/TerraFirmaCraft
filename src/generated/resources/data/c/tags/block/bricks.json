@@ -1,0 +1,32 @@
+{
+  "values": [
+    "#c:bricks/granite",
+    "#c:bricks/diorite",
+    "#c:bricks/gabbro",
+    "#c:bricks/shale",
+    "#c:bricks/claystone",
+    "#c:bricks/limestone",
+    "#c:bricks/conglomerate",
+    "#c:bricks/dolomite",
+    "#c:bricks/chert",
+    "#c:bricks/chalk",
+    "#c:bricks/tuff",
+    "#c:bricks/rhyolite",
+    "#c:bricks/basalt",
+    "#c:bricks/andesite",
+    "#c:bricks/dacite",
+    "#c:bricks/quartzite",
+    "#c:bricks/slate",
+    "#c:bricks/phyllite",
+    "#c:bricks/schist",
+    "#c:bricks/gneiss",
+    "#c:bricks/marble",
+    "#c:bricks/plaster",
+    "#c:bricks/fire",
+    "#c:bricks/mud",
+    "#c:bricks/mossy",
+    "#c:bricks/cracked",
+    "#c:bricks/chiseled",
+    "#c:bricks/aqueduct"
+  ]
+}

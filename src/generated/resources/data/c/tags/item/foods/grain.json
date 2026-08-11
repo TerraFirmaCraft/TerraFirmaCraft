@@ -1,10 +1,10 @@
 {
   "values": [
-    "tfc:food/barley_grain",
-    "tfc:food/maize_grain",
-    "tfc:food/oat_grain",
-    "tfc:food/rye_grain",
-    "tfc:food/rice_grain",
-    "tfc:food/wheat_grain"
+    "#c:foods/barley_grain",
+    "#c:foods/maize_grain",
+    "#c:foods/oat_grain",
+    "#c:foods/rye_grain",
+    "#c:foods/rice_grain",
+    "#c:foods/wheat_grain"
   ]
 }

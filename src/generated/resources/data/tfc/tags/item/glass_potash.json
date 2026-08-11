@@ -1,6 +1,12 @@
 {
   "values": [
     "tfc:powder/soda_ash",
-    "tfc:powder/saltpeter"
+    "tfc:powder/saltpeter",
+    "#c:dusts/soda_ash",
+    "#c:dusts/saltpeter",
+    {
+      "id": "#c:dusts/potash",
+      "required": false
+    }
   ]
 }

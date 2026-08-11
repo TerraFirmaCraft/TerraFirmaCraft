@@ -1,0 +1,18 @@
+{
+  "values": [
+    "tfc:rock/bricks/gabbro",
+    "tfc:rock/mossy_bricks/gabbro",
+    "tfc:rock/cracked_bricks/gabbro",
+    "tfc:rock/chiseled/gabbro",
+    "tfc:rock/aqueduct/gabbro",
+    "tfc:rock/bricks/gabbro_slab",
+    "tfc:rock/bricks/gabbro_stairs",
+    "tfc:rock/bricks/gabbro_wall",
+    "tfc:rock/mossy_bricks/gabbro_slab",
+    "tfc:rock/mossy_bricks/gabbro_stairs",
+    "tfc:rock/mossy_bricks/gabbro_wall",
+    "tfc:rock/cracked_bricks/gabbro_slab",
+    "tfc:rock/cracked_bricks/gabbro_stairs",
+    "tfc:rock/cracked_bricks/gabbro_wall"
+  ]
+}

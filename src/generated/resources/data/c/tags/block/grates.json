@@ -1,0 +1,8 @@
+{
+  "values": [
+    "#c:grates/normal",
+    "#c:grates/exposed",
+    "#c:grates/oxidized",
+    "#c:grates/weathered"
+  ]
+}

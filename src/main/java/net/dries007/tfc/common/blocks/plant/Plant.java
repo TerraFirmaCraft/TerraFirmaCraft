@@ -416,6 +416,41 @@ public enum Plant implements RegistryPlant
         return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.CACTUS_FLOWER || type == BlockType.BAMBOO || SPECIAL_POTTED_PLANTS.contains(this);
     }
 
+    public boolean isTallPlant()
+    {
+        return type == BlockType.TALL_GRASS || type == BlockType.TALL_SHRUB || type == BlockType.TALL_WATER || type == BlockType.TALL_WATER_FRESH || type == BlockType.TWISTING || type == BlockType.TWISTING_TOP || type == BlockType.TWISTING_TOP_SHORT || type == BlockType.TWISTING_SOLID || type == BlockType.TWISTING_SOLID_TOP || type == BlockType.BRANCHING_CACTUS || type == BlockType.BRANCHING_CACTUS_TOP || type == BlockType.KELP || type == BlockType.KELP_TOP || type == BlockType.KELP_TREE || type == BlockType.KELP_TREE_FLOWER || type == BlockType.BAMBOO;
+    }
+
+    public boolean isSmallPlant()
+    {
+        return type == BlockType.STANDARD || type == BlockType.SHORT_SHRUB || type == BlockType.SHRUB || type == BlockType.FLOWERBED || type == BlockType.CACTUSBED || type == BlockType.CACTUS_FLOWER || type == BlockType.CACTUS || type == BlockType.PASSABLE_CACTUS || type == BlockType.DRY || type == BlockType.CREEPING || type == BlockType.CREEPING_STONE || type == BlockType.SHORT_GRASS || type == BlockType.BEACH_GRASS || type == BlockType.PERCHED_EPIPHYTE || type == BlockType.BAMBOO_SAPLING;
+    }
+
+    public boolean isHangingPlant()
+    {
+        return type == BlockType.WEEPING || type == BlockType.WEEPING_TOP;
+    }
+
+    public boolean isWallPlant()
+    {
+        return type == BlockType.EPIPHYTE || type == BlockType.PERCHED_EPIPHYTE || type == BlockType.VINE;
+    }
+
+    public boolean isSurfaceWaterPlant()
+    {
+        return type == BlockType.FLOATING || type == BlockType.FLOATING_FRESH;
+    }
+
+    public boolean isFreshWaterPlant()
+    {
+        return type == BlockType.FLOATING_FRESH || type == BlockType.TALL_WATER_FRESH || type == BlockType.WATER_FRESH || type == BlockType.GRASS_WATER_FRESH;
+    }
+
+    public boolean isSaltWaterPlant()
+    {
+        return type == BlockType.OCEAN_ROCK_CREEPING || type == BlockType.OCEAN_CREEPING || type == BlockType.OCEAN_ROTATABLE || type == BlockType.KELP || type == BlockType.KELP_TOP || type == BlockType.KELP_TREE || type == BlockType.KELP_TREE_FLOWER || type == BlockType.FLOATING || type == BlockType.TALL_WATER || type == BlockType.WATER || type == BlockType.GRASS_WATER;
+    }
+
     @Nullable
     public IntegerProperty getAgeProperty()
     {

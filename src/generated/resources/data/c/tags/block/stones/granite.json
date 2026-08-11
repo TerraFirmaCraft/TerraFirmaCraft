@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/granite",
+    "tfc:rock/loose/granite",
+    "tfc:rock/mossy_loose/granite",
+    "tfc:rock/raw/granite",
+    "tfc:rock/smooth/granite",
+    "tfc:rock/spike/granite",
+    "tfc:rock/raw/granite_slab",
+    "tfc:rock/raw/granite_stairs",
+    "tfc:rock/raw/granite_wall",
+    "tfc:rock/smooth/granite_slab",
+    "tfc:rock/smooth/granite_stairs",
+    "tfc:rock/smooth/granite_wall"
+  ]
+}

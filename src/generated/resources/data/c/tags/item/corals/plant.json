@@ -1,0 +1,14 @@
+{
+  "values": [
+    "tfc:coral/tube_coral",
+    "tfc:coral/brain_coral",
+    "tfc:coral/bubble_coral",
+    "tfc:coral/fire_coral",
+    "tfc:coral/horn_coral",
+    "tfc:coral/tube_dead_coral",
+    "tfc:coral/brain_dead_coral",
+    "tfc:coral/bubble_dead_coral",
+    "tfc:coral/fire_dead_coral",
+    "tfc:coral/horn_dead_coral"
+  ]
+}

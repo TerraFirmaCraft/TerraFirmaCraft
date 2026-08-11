@@ -1,0 +1,14 @@
+{
+  "values": [
+    "minecraft:brain_coral_block",
+    "minecraft:bubble_coral_block",
+    "minecraft:fire_coral_block",
+    "minecraft:horn_coral_block",
+    "minecraft:tube_coral_block",
+    "tfc:coral/tube_coral",
+    "tfc:coral/brain_coral",
+    "tfc:coral/bubble_coral",
+    "tfc:coral/fire_coral",
+    "tfc:coral/horn_coral"
+  ]
+}

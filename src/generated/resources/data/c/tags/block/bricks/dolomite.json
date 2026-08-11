@@ -1,0 +1,18 @@
+{
+  "values": [
+    "tfc:rock/bricks/dolomite",
+    "tfc:rock/mossy_bricks/dolomite",
+    "tfc:rock/cracked_bricks/dolomite",
+    "tfc:rock/chiseled/dolomite",
+    "tfc:rock/aqueduct/dolomite",
+    "tfc:rock/bricks/dolomite_slab",
+    "tfc:rock/bricks/dolomite_stairs",
+    "tfc:rock/bricks/dolomite_wall",
+    "tfc:rock/mossy_bricks/dolomite_slab",
+    "tfc:rock/mossy_bricks/dolomite_stairs",
+    "tfc:rock/mossy_bricks/dolomite_wall",
+    "tfc:rock/cracked_bricks/dolomite_slab",
+    "tfc:rock/cracked_bricks/dolomite_stairs",
+    "tfc:rock/cracked_bricks/dolomite_wall"
+  ]
+}

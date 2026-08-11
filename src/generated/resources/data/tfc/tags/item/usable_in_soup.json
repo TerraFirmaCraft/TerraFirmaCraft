@@ -2,8 +2,10 @@
   "values": [
     "#c:foods/fruit",
     "#c:foods/vegetable",
-    "#c:foods/meat",
+    "#c:foods/raw_meat",
     "#c:foods/cooked_meat",
+    "#c:foods/raw_fish",
+    "#c:foods/cooked_fish",
     "tfc:food/cooked_rice"
   ]
 }

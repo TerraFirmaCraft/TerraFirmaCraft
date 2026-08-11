@@ -1,0 +1,16 @@
+{
+  "values": [
+    "tfc:rock/hardened/gneiss",
+    "tfc:rock/loose/gneiss",
+    "tfc:rock/mossy_loose/gneiss",
+    "tfc:rock/raw/gneiss",
+    "tfc:rock/smooth/gneiss",
+    "tfc:rock/spike/gneiss",
+    "tfc:rock/raw/gneiss_slab",
+    "tfc:rock/raw/gneiss_stairs",
+    "tfc:rock/raw/gneiss_wall",
+    "tfc:rock/smooth/gneiss_slab",
+    "tfc:rock/smooth/gneiss_stairs",
+    "tfc:rock/smooth/gneiss_wall"
+  ]
+}

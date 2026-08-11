@@ -1,0 +1,23 @@
+{
+  "values": [
+    "tfc:candle/lime",
+    "tfc:alabaster/raw/lime",
+    "tfc:alabaster/polished/lime",
+    "tfc:alabaster/bricks/lime_slab",
+    "tfc:alabaster/bricks/lime_stairs",
+    "tfc:alabaster/bricks/lime_wall",
+    "tfc:alabaster/polished/lime_slab",
+    "tfc:alabaster/polished/lime_stairs",
+    "tfc:alabaster/polished/lime_wall",
+    "tfc:ceramic/large_vessel/lime",
+    "tfc:wattle/lime",
+    "tfc:ceramic/lime_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/lime",
+    "tfc:ceramic/lime_unfired_vessel",
+    "tfc:windmill_blade/lime",
+    "tfc:ceramic/lime_glazed_vessel",
+    "tfc:ceramic/unfired_large_vessel/lime",
+    "tfc:ceramic/lime_unfired_vessel",
+    "tfc:windmill_blade/lime"
+  ]
+}

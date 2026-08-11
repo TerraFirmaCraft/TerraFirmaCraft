@@ -1,0 +1,18 @@
+{
+  "values": [
+    "tfc:rock/bricks/andesite",
+    "tfc:rock/mossy_bricks/andesite",
+    "tfc:rock/cracked_bricks/andesite",
+    "tfc:rock/chiseled/andesite",
+    "tfc:rock/aqueduct/andesite",
+    "tfc:rock/bricks/andesite_slab",
+    "tfc:rock/bricks/andesite_stairs",
+    "tfc:rock/bricks/andesite_wall",
+    "tfc:rock/mossy_bricks/andesite_slab",
+    "tfc:rock/mossy_bricks/andesite_stairs",
+    "tfc:rock/mossy_bricks/andesite_wall",
+    "tfc:rock/cracked_bricks/andesite_slab",
+    "tfc:rock/cracked_bricks/andesite_stairs",
+    "tfc:rock/cracked_bricks/andesite_wall"
+  ]
+}

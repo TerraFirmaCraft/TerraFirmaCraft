@@ -142,7 +142,8 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
         this.output = output;
 
         // Invoke vanilla's recipe building, just to get the list of all vanilla recipes, so we know which ones we can legally remove
-        super.buildRecipes(new RecipeOutput() {
+        super.buildRecipes(new RecipeOutput()
+        {
             @Override
             public Advancement.Builder advancement()
             {
@@ -271,7 +272,7 @@ public final class BuiltinRecipes extends VanillaRecipeProvider implements
                 blocks.get(SoilBlockType.ROOTED_DIRT).get()
             ), blocks.get(SoilBlockType.DIRT).get().defaultBlockState()));
         }
-        List.of(Blocks.DIRT, Blocks.GRAVEL, Blocks.SAND, Blocks.COBBLESTONE).forEach(b ->{
+        List.of(Blocks.DIRT, Blocks.GRAVEL, Blocks.SAND, Blocks.COBBLESTONE).forEach(b -> {
             add(new LandslideRecipe(BlockIngredient.of(b), b.defaultBlockState()));
         });
         add(new LandslideRecipe(BlockIngredient.of(TFCBlocks.KAOLIN_CLAY_GRASS.get()), TFCBlocks.RED_KAOLIN_CLAY.get().defaultBlockState()));
