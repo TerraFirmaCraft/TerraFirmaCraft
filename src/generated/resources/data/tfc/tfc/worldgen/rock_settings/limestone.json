@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/limestone",
+  "gravel": "tfc:rock/gravel/limestone",
+  "hardened": "tfc:rock/hardened/limestone",
+  "karst": true,
+  "loose": "tfc:rock/loose/limestone",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/limestone",
+  "raw": "tfc:rock/raw/limestone",
+  "sand": "tfc:sand/white",
+  "sandstone": "tfc:raw_sandstone/white",
+  "spike": "tfc:rock/spike/limestone"
+}

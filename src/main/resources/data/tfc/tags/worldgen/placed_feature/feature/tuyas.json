@@ -5,6 +5,7 @@
     "tfc:tuya_rivulet",
     "tfc:tuya_caldera",
     "tfc:random_tuya_fissure",
-    "tfc:tuya_pumice"
+    "tfc:tuya_pumice_patch",
+    "tfc:tuya_obsidian_shard_patch"
   ]
 }

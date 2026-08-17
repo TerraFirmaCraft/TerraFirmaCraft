@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "textures": [
-    "tfc:butterfly/moth_trosia_1",
-    "tfc:butterfly/moth_trosia_2",
-    "tfc:butterfly/moth_trosia_3",
-    "tfc:butterfly/moth_trosia_4"
+    "tfc:moth/moth_trosia_1",
+    "tfc:moth/moth_trosia_2",
+    "tfc:moth/moth_trosia_3",
+    "tfc:moth/moth_trosia_4"
   ]
 }

@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Бутерброды",
+  "category": "tfc:food",
+  "icon": "tfc:textures/item/food/barley_bread_sandwich.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Бутерброды$() — это блюдо, позволяющее сочетать два разных $(l:food/bread)хлеба$() и до трех ингредиентов, которые могут быть любой комбинацией $(thing)овощей$(), $(thing)приготовленного мяса$() и $(l:food/dairy)сыров$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/food/wheat_bread_sandwich_sss",
+      "text": "Рецепт бутерброда, выложенный на верстаке."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Питательные вещества, вода и насыщение ингредиентов объединяются в бутерброде. Хлеб учитывается на 50 % от его значений питательности, тогда как ингредиенты — на 80 %. Ингредиенты не могут быть испорченными, но как только бутерброд создан, он считается свежим и портится без учёта свежести ингредиентов."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 10,
+  "extra_recipe_mappings": {
+    "tfc:food/barley_bread_sandwich": 0,
+    "tfc:food/maize_bread_sandwich": 0,
+    "tfc:food/oat_bread_sandwich": 0,
+    "tfc:food/rice_bread_sandwich": 0,
+    "tfc:food/rye_bread_sandwich": 0,
+    "tfc:food/wheat_bread_sandwich": 0
+  }
+}

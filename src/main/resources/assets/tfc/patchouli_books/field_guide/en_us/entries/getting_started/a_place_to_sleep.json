@@ -28,7 +28,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 8,
+  "sortnum": 9,
   "extra_recipe_mappings": {
     "tfc:thatch_bed": 0
   }

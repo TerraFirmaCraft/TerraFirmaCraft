@@ -24,7 +24,7 @@
         }
       },
       "name": "Barut Fıçısı",
-      "text": "$(l:mechanics/barrels)Fıçı$()'ya benzer şekilde barut fıçısı, $(item)$(k:key.use)$() ile mühürlenebilen ve mührü açılabilen bir cihazdır. Sadece mühürlü barut fıçıları ateşlenebilir.",
+      "text": "$(l:crafting/barrels)Fıçı$()'ya benzer şekilde barut fıçısı, $(item)$(k:key.use)$() ile mühürlenebilen ve mührü açılabilen bir cihazdır. Sadece mühürlü barut fıçıları ateşlenebilir.",
       "enable_visualize": false
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barut iki şekilde yapılabilir: ilk formül $(l:the_world/ores_and_minerals#saltpeter)Güherçile$(), $(l:the_world/ores_and_minerals#saltpeter)Kükürt$() ve $(l:mechanics/charcoal_pit)Odun Kömürü$() tozundan oluşur. Toz, $(l:mechanics/quern)El Değirmeni$() kullanılarak elde edilir. Eğer $(l:the_world/ores_and_minerals#graphite)Grafit$()'e erişiminiz varsa, daha verimli bir tarif kullanılabilir."
+      "text": "Barut iki şekilde yapılabilir: ilk formül $(l:the_world/ores_and_minerals#saltpeter)Güherçile$(), $(l:the_world/ores_and_minerals#saltpeter)Kükürt$() ve $(l:metalworking/charcoal_pit)Odun Kömürü$() tozundan oluşur. Toz, $(l:crafting/quern)El Değirmeni$() kullanılarak elde edilir. Eğer $(l:the_world/ores_and_minerals#graphite)Grafit$()'e erişiminiz varsa, daha verimli bir tarif kullanılabilir."
     }
   ],
   "read_by_default": true

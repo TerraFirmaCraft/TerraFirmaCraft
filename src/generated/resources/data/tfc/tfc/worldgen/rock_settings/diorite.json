@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/diorite",
+  "gravel": "tfc:rock/gravel/diorite",
+  "hardened": "tfc:rock/hardened/diorite",
+  "karst": false,
+  "loose": "tfc:rock/loose/diorite",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/diorite",
+  "raw": "tfc:rock/raw/diorite",
+  "sand": "tfc:sand/red",
+  "sandstone": "tfc:raw_sandstone/red",
+  "spike": "tfc:rock/spike/diorite"
+}

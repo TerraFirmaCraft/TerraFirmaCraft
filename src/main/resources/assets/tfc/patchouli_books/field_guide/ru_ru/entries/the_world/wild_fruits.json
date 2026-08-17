@@ -36,7 +36,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Плодовым деревьям необходимы подходящие $(l:the_world/climate#temperature)температура$() и $(l:mechanics/hydration)влажность$(). Плодовые деревья будут расти и плодоносить только в том случае, если среднегодовая температура у основания дерева, где посажен саженец, находится в пределах допустимого диапазона для этого вида. Аналогично, влажность определяется среднегодовым количеством осадков и водными источниками, расположенными поблизости от основания дерева."
+      "text": "Плодовым деревьям необходимы подходящие $(l:core_mechanics/climate#temperature)температура$() и $(l:food/hydration)влажность$(). Плодовые деревья будут расти и плодоносить только в том случае, если среднегодовая температура у основания дерева, где посажен саженец, находится в пределах допустимого диапазона для этого вида. Аналогично, влажность определяется среднегодовым количеством осадков и водными источниками, расположенными поблизости от основания дерева."
     },
     {
       "type": "patchouli:empty"
@@ -44,7 +44,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cherry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -5.2...14 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 100–350 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -6.4...15.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 7–80 %$(br2)Вишнёвые деревья растут с января по март, начинают цвести в апреле и мае, приносят плоды в июне.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -5.2...14 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 100–350 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -6.4...15.2 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 7–80 %$(br2)Вишнёвые деревья растут с января по март, начинают цвести в апреле и мае, приносят плоды в июне.",
       "title": "Вишнёвое дерево"
     },
     {
@@ -268,7 +268,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_apple",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -10.6...10.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 130–280 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -11.8...11.6 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 10–75 %$(br2)Зелёные яблони растут с марта по июль, начинают цвести в августе и сентябре, приносят плоды в октябре.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -10.6...10.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 130–280 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -11.8...11.6 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 10–75 %$(br2)Зелёные яблони растут с марта по июль, начинают цвести в августе и сентябре, приносят плоды в октябре.",
       "title": "Зелёная яблоня"
     },
     {
@@ -492,7 +492,7 @@
     {
       "type": "patchouli:text",
       "anchor": "lemon",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 7.4...24.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 220–440 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 6.2...26 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 19–95 %$(br2)Лимонные деревья растут с февраля по май, начинают цвести в июне и июле, приносят плоды в августе.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 7.4...24.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 220–440 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 6.2...26 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 19–95 %$(br2)Лимонные деревья растут с февраля по май, начинают цвести в июне и июле, приносят плоды в августе.",
       "title": "Лимонное дерево"
     },
     {
@@ -716,7 +716,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 2...23 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 250–450 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 0.8...24.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 22–95 %$(br2)Оливковые деревья растут с марта по июль, начинают цвести в августе и сентябре, приносят плоды в октябре.$(br)Оливки можно использовать для производства $(l:mechanics/lamps#olives)оливкового масла$(), которое используется в качестве топлива для ламп.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 2...23 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 250–450 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 0.8...24.2 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 22–95 %$(br2)Оливковые деревья растут с марта по июль, начинают цвести в августе и сентябре, приносят плоды в октябре. Оливки можно использовать для производства $(l:mechanics/lamps#olives)оливкового масла$(), которое используется в качестве топлива для ламп.",
       "title": "Оливковое дерево"
     },
     {
@@ -940,7 +940,7 @@
     {
       "type": "patchouli:text",
       "anchor": "orange",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 9.2...40 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 300–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 8...41.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 27–100 %$(br2)Апельсиновые деревья растут с марта по июнь, начинают цвести в июле и августе, приносят плоды в сентябре.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 9.2...40 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 300–500 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 8...41.2 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 27–100 %$(br2)Апельсиновые деревья растут с марта по июнь, начинают цвести в июле и августе, приносят плоды в сентябре.",
       "title": "Апельсиновое дерево"
     },
     {
@@ -1164,7 +1164,7 @@
     {
       "type": "patchouli:text",
       "anchor": "peach",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -3.4...15.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 180–470 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -4.6...17 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 15–95 %$(br2)Персиковые деревья растут с декабря по март, начинают цвести в апреле и мае, приносят плоды в июне.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -3.4...15.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 180–470 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -4.6...17 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 15–95 %$(br2)Персиковые деревья растут с декабря по март, начинают цвести в апреле и мае, приносят плоды в июне.",
       "title": "Персиковое дерево"
     },
     {
@@ -1388,7 +1388,7 @@
     {
       "type": "patchouli:text",
       "anchor": "plum",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -7...12.2 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 120–300 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -8.2...13.4 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 9–75 %$(br2)Сливовые деревья растут с января по апрель, начинают цветение в мае и июне, приносят плоды в июле.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -7...12.2 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 120–300 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -8.2...13.4 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 9–75 %$(br2)Сливовые деревья растут с января по апрель, начинают цветение в мае и июне, приносят плоды в июле.",
       "title": "Сливовое дерево"
     },
     {
@@ -1612,7 +1612,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_apple",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -10.6...10.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 190–310 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -11.8...11.6 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 16–75 %$(br2)Красные яблони растут с марта по июль, начинают цветение в августе и сентябре, приносят плоды в октябре.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -10.6...10.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 190–310 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -11.8...11.6 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 16–75 %$(br2)Красные яблони растут с марта по июль, начинают цветение в августе и сентябре, приносят плоды в октябре.",
       "title": "Красная яблоня"
     },
     {
@@ -1836,7 +1836,7 @@
     {
       "type": "patchouli:text",
       "anchor": "banana",
-      "text": "Встречается в регионах с климатом:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 11...40 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 280–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): 9.8...41.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 25–100 %$(br2)Бананы — особый вид фруктовых деревьев. Их ствол растёт только вертикально, они не имеют листьев и плодоносят только на самом верхнем блоке. Саженцы падают с цветущей части растения. После сбора урожая с бананового растения оно погибает и больше не приносит плодов. Его необходимо пересаживать весной.",
+      "text": "Встречается в регионах с климатом:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 11...40 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 280–500 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): 9.8...41.2 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 25–100 %$(br2)Бананы — особый вид фруктовых деревьев. Их ствол растёт только вертикально, они не имеют листьев и плодоносят только на самом верхнем блоке. Саженцы падают с цветущей части растения. После сбора урожая с бананового растения оно погибает и больше не приносит плодов. Его необходимо пересаживать весной.",
       "title": "Банановое дерево"
     },
     {
@@ -1948,127 +1948,43 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "Янв"
         },
         {
-          "text": "Feb"
+          "text": "Фев"
         },
         {
-          "text": "Mar"
+          "text": "Мар"
         },
         {
-          "text": "Apr"
+          "text": "Апр"
         },
         {
-          "text": "May"
+          "text": "Май"
         },
         {
-          "text": "Jun"
+          "text": "Июн"
         },
         {
-          "text": "Jul"
+          "text": "Июл"
         },
         {
-          "text": "Aug"
+          "text": "Авг"
         },
         {
-          "text": "Sep"
+          "text": "Сен"
         },
         {
-          "text": "Oct"
+          "text": "Окт"
         },
         {
-          "text": "Nov"
+          "text": "Ноя"
         },
         {
-          "text": "Dec"
+          "text": "Дек"
         },
         {
-          "text": "Cherry"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Apple"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Lemon"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
+          "text": "Вишня"
         },
         {
           "fill": "0x6ab553"
@@ -2101,7 +2017,13 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Olive"
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Яблоко"
         },
         {
           "fill": "0xa8986a"
@@ -2140,7 +2062,85 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Orange"
+          "text": "Лимон"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Оливки"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Апельсин"
         },
         {
           "fill": "0xa8986a"
@@ -2179,7 +2179,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Peach"
+          "text": "Персик"
         },
         {
           "fill": "0x6ab553"
@@ -2218,7 +2218,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Plum"
+          "text": "Слива"
         },
         {
           "fill": "0x6ab553"
@@ -2257,7 +2257,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Banana"
+          "text": "Банан"
         },
         {
           "fill": "0xa8986a"
@@ -2300,19 +2300,19 @@
       "title": "Фруктовые деревья",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "Спит",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "Растёт",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "Цветёт",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "Плодоносит",
           "color": "0xa217ff"
         }
       ],
@@ -2348,12 +2348,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Кусты, как и фруктовые деревья, учитывают блок в основе растения при определении $(l:mechanics/hydration)влажности() и $(l:the_world/climate#temperature)температуры$(), и растут, пока среднегодовые осадки и температура соответствуют требованиям. $(br)Любой полноценный блок куста может дать ягоды, которые собираются с помощью $(item)$(k:key.use)$()."
+      "text": "Кусты, как и фруктовые деревья, учитывают блок в основе растения при определении $(l:food/hydration)влажности$() и $(l:core_mechanics/climate#temperature)температуры$(), и растут, пока среднегодовые осадки и температура соответствуют требованиям. $(br)Любой полноценный блок куста может дать ягоды, которые собираются с помощью $(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -5.2...19.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 200–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -6.4...20.6 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 17–100 %$(br2)Кусты ежевики растут с февраля по май, цветут в июне и июле, плодоносят в августе.$(br)Их можно найти в местах с небольшим количеством деревьев.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -5.2...19.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 200–500 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -6.4...20.6 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 17–100 %$(br2)Кусты ежевики растут с февраля по май, цветут в июне и июле, плодоносят в августе.$(br)Их можно найти в местах с небольшим количеством деревьев.",
       "title": "Куст ежевики"
     },
     {
@@ -2453,7 +2453,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -10.6...14 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 180–450 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -11.8...15.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 15–95 %$(br2)Кусты малины растут с апреля по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в местах с небольшим количеством деревьев.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -10.6...14 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 180–450 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -11.8...15.2 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 15–95 %$(br2)Кусты малины растут с апреля по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в местах с небольшим количеством деревьев.",
       "title": "Куст малины"
     },
     {
@@ -2553,7 +2553,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -8.8...8.6 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 150–400 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -10...9.8 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 12–90 %$(br2)Кусты черники растут с февраля по май, цветут в июне и июле, плодоносят в августе.$(br)Их можно найти в местах с небольшим количеством деревьев.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -8.8...8.6 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 150–400 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -10...9.8 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 12–90 %$(br2)Кусты черники растут с февраля по май, цветут в июне и июле, плодоносят в августе.$(br)Их можно найти в местах с небольшим количеством деревьев.",
       "title": "Куст черники"
     },
     {
@@ -2653,7 +2653,7 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -5.2...15.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 120–380 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -6.4...17 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 9–85 %$(br2)Кусты бузины растут с февраля по май, цветут в июне и июле, и плодоносят в августе.$(br)Их можно найти в местах с небольшим количеством деревьев.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -5.2...15.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 120–380 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -6.4...17 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 9–85 %$(br2)Кусты бузины растут с февраля по май, цветут в июне и июле, и плодоносят в августе.$(br)Их можно найти в местах с небольшим количеством деревьев.",
       "title": "Куст бузины"
     },
     {
@@ -2757,121 +2757,43 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "Янв"
         },
         {
-          "text": "Feb"
+          "text": "Фев"
         },
         {
-          "text": "Mar"
+          "text": "Мар"
         },
         {
-          "text": "Apr"
+          "text": "Апр"
         },
         {
-          "text": "May"
+          "text": "Май"
         },
         {
-          "text": "Jun"
+          "text": "Июн"
         },
         {
-          "text": "Jul"
+          "text": "Июл"
         },
         {
-          "text": "Aug"
+          "text": "Авг"
         },
         {
-          "text": "Sep"
+          "text": "Сен"
         },
         {
-          "text": "Oct"
+          "text": "Окт"
         },
         {
-          "text": "Nov"
+          "text": "Ноя"
         },
         {
-          "text": "Dec"
+          "text": "Дек"
         },
         {
-          "text": "Blackberry"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Raspberry"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0x6ab553"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xcca0db"
-        },
-        {
-          "fill": "0xa217ff"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "fill": "0xa8986a"
-        },
-        {
-          "text": "Blueberry"
+          "text": "Ежевика"
         },
         {
           "fill": "0xa8986a"
@@ -2910,7 +2832,85 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Elderberry"
+          "text": "Малина"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Черника"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0x6ab553"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xcca0db"
+        },
+        {
+          "fill": "0xa217ff"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "fill": "0xa8986a"
+        },
+        {
+          "text": "Бузина"
         },
         {
           "fill": "0xa8986a"
@@ -2953,19 +2953,19 @@
       "title": "Высокие ягодные кусты",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "Спит",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "Растёт",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "Цветёт",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "Плодоносит",
           "color": "0xa217ff"
         }
       ],
@@ -3035,12 +3035,12 @@
     {
       "type": "patchouli:text",
       "anchor": "bunchberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -14.2...1.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 280–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -15.4...2.6 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 25–100 %$(br2)Кусты брусники растут с мая по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в лесах.",
-      "title": "Куст брусники"
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -14.2...1.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 280–500 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -15.4...2.6 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 25–100 %$(br2)Кусты кизила растут с мая по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в лесах.",
+      "title": "Куст кизила"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Стадии роста куста брусники по месяцам.",
+      "text": "Стадии роста куста кизила по месяцам.",
       "multiblocks": [
         {
           "pattern": [
@@ -3099,7 +3099,7 @@
     {
       "type": "patchouli:text",
       "anchor": "gooseberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -7...12.2 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 200–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -8.2...13.4 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 17–100 %$(br2)Кусты крыжовника растут с апреля по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в лесах.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -7...12.2 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 200–500 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -8.2...13.4 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 17–100 %$(br2)Кусты крыжовника растут с апреля по июль, цветут в августе и сентябре, плодоносят в октябре.$(br)Их можно найти в лесах.",
       "title": "Куст крыжовника"
     },
     {
@@ -3163,7 +3163,7 @@
     {
       "type": "patchouli:text",
       "anchor": "snowberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -10.6...5 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 200–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -11.8...6.2 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 17–100 %$(br2)Кусты волчьей ягоды растут с марта по июнь, цветут в июле и августе, плодоносят в сентябре.$(br)Их можно найти в лесах.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -10.6...5 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 200–500 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -11.8...6.2 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 17–100 %$(br2)Кусты волчьей ягоды растут с марта по июнь, цветут в июле и августе, плодоносят в сентябре.$(br)Их можно найти в лесах.",
       "title": "Куст волчьей ягоды"
     },
     {
@@ -3227,7 +3227,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cloudberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -14.2...6.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 80–320 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -15.4...8 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 5–80 %$(br2)Кусты морошки растут с февраля по май, цветут в июне и августе, плодоносят в сентябре.$(br)Их можно найти в лесах.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -14.2...6.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 80–320 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -15.4...8 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 5–80 %$(br2)Кусты морошки растут с февраля по май, цветут в июне и августе, плодоносят в сентябре.$(br)Их можно найти в лесах.",
       "title": "Куст морошки"
     },
     {
@@ -3291,7 +3291,7 @@
     {
       "type": "patchouli:text",
       "anchor": "strawberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -1.6...17.6 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 140–400 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -2.8...18.8 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 11–90 %$(br)Кусты клубники растут с октября по декабрь, цветут в январе и феврале, плодоносят в марте.$(br2)Их можно найти в лесах.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -1.6...17.6 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 140–400 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -2.8...18.8 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 11–90 %$(br)Кусты клубники растут с октября по декабрь, цветут в январе и феврале, плодоносят в марте.$(br2)Их можно найти в лесах.",
       "title": "Куст клубники"
     },
     {
@@ -3355,7 +3355,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wintergreen_berry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -8.8...6.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 100–370 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -10...8 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 7–85 %$(br2)Кусты брусники растут с мая по сентябрь, цветут в октябре и ноябре, плодоносят в декабре.$(br)Их можно найти в лесах.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -8.8...6.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 100–370 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -10...8 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 7–85 %$(br2)Кусты брусники растут с мая по сентябрь, цветут в октябре и ноябре, плодоносят в декабре.$(br)Их можно найти в лесах.",
       "title": "Куст брусники"
     },
     {
@@ -3419,7 +3419,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cranberry",
-      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -14.2...8.6 °C$(br)$(bold)$(l:the_world/climate#rainfall)Осадки$(): 250–500 мм$(br2)Условия роста:$(br)$(bold)$(l:the_world/climate#temperature)Температура$(): -15.4...9.8 °C$(br)$(bold)$(l:mechanics/hydration)Влажность$(): 25–100 %$(br2)Кусты клюквы растут с марта по июнь, цветут в июле и августе, плодоносят в сентябре.$(br)Их можно найти в лесах. В отличие от большинства низких кустов, кусты клюквы выращиваются под водой.",
+      "text": "Встречается в регионах с климатом: $(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -14.2...8.6 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)Осадки$(): 250–500 мм$(br2)Условия роста:$(br)$(bold)$(l:core_mechanics/climate#temperature)Температура$(): -15.4...9.8 °C$(br)$(bold)$(l:food/hydration)Влажность$(): 25–100 %$(br2)Кусты клюквы растут с марта по июнь, цветут в июле и августе, плодоносят в сентябре.$(br)Их можно найти в лесах. В отличие от большинства низких кустов, кусты клюквы выращиваются под водой.",
       "title": "Куст клюквы"
     },
     {
@@ -3487,43 +3487,43 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "Янв"
         },
         {
-          "text": "Feb"
+          "text": "Фев"
         },
         {
-          "text": "Mar"
+          "text": "Мар"
         },
         {
-          "text": "Apr"
+          "text": "Апр"
         },
         {
-          "text": "May"
+          "text": "Май"
         },
         {
-          "text": "Jun"
+          "text": "Июн"
         },
         {
-          "text": "Jul"
+          "text": "Июл"
         },
         {
-          "text": "Aug"
+          "text": "Авг"
         },
         {
-          "text": "Sep"
+          "text": "Сен"
         },
         {
-          "text": "Oct"
+          "text": "Окт"
         },
         {
-          "text": "Nov"
+          "text": "Ноя"
         },
         {
-          "text": "Dec"
+          "text": "Дек"
         },
         {
-          "text": "Bunchberry"
+          "text": "Кизил"
         },
         {
           "fill": "0xa8986a"
@@ -3562,7 +3562,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Gooseberry"
+          "text": "Крыжовник"
         },
         {
           "fill": "0xa8986a"
@@ -3601,7 +3601,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Snowberry"
+          "text": "Волчья"
         },
         {
           "fill": "0xa8986a"
@@ -3640,7 +3640,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Cloudberry"
+          "text": "Морошка"
         },
         {
           "fill": "0xa8986a"
@@ -3679,7 +3679,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Strawberry"
+          "text": "Клубника"
         },
         {
           "fill": "0xcca0db"
@@ -3718,7 +3718,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Wintergreen"
+          "text": "Брусника"
         },
         {
           "fill": "0xa8986a"
@@ -3757,7 +3757,7 @@
           "fill": "0xa217ff"
         },
         {
-          "text": "Cranberry"
+          "text": "Клюква"
         },
         {
           "fill": "0xa8986a"
@@ -3800,19 +3800,19 @@
       "title": "Низкие ягодные кусты",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "Спит",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "Растёт",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "Цветёт",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "Плодоносит",
           "color": "0xa217ff"
         }
       ],
@@ -3830,7 +3830,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 5,
+  "sortnum": 4,
   "extra_recipe_mappings": {
     "tfc:food/cherry": 8,
     "tfc:plant/cherry_sapling": 8,

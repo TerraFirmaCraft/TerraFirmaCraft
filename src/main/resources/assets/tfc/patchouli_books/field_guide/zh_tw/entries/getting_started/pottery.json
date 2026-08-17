@@ -49,7 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "粘土可以用來做成小缸。你捏出來的小缸還需要燒製才能使用。燒製是指將粘土置於 1200°C（$(e)$(bold)$(t:Yellow)黃色$()）以上的高溫中$(l:mechanics/heating)加熱$()，直到它變成$(thing)瓷$()。$(br2)篝火的溫度並不足以燒製瓷器，你得使用$(l:getting_started/pit_kiln)坑窯$()才行。",
+      "text": "粘土可以用來做成小缸。你捏出來的小缸還需要燒製才能使用。燒製是指將粘土置於 1200°C（$(e)$(bold)$(t:Yellow)黃色$()）以上的高溫中$(l:core_mechanics/heating)加熱$()，直到它變成$(thing)瓷$()。$(br2)篝火的溫度並不足以燒製瓷器，你得使用$(l:getting_started/pit_kiln)坑窯$()才行。",
       "title": "小缸"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The $(l:mechanics/decay#large_vessels)Large Vessel$() is created in a similar way. It can be placed, and has nine slots for items. View the linked chapter for more information.",
+      "text": "The $(l:food/decay#large_vessels)Large Vessel$() is created in a similar way. It can be placed, and has nine slots for items. View the linked chapter for more information.",
       "title": "Large Vessel"
     },
     {
@@ -104,7 +104,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
-      "text": "$(l:mechanics/prospecting#propick)勘礦鎬$()本身並不能挖掘，但卻是尋找礦脈必不可少的工具。"
+      "text": "$(l:metalworking/prospecting#propick)勘礦鎬$()本身並不能挖掘，但卻是尋找礦脈必不可少的工具。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -114,7 +114,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
-      "text": "$(thing)鋸$()可以將原木切割成木板或$(l:mechanics/support_beams)支撐柱$()等高階木工物品。只有有了鋸子你才能製作$(thing)工作臺$()！"
+      "text": "$(thing)鋸$()可以將原木切割成木板或$(l:core_mechanics/support_beams)支撐柱$()等高階木工物品。只有有了鋸子你才能製作$(thing)工作臺$()！"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -124,7 +124,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
-      "text": "$(l:mechanics/chisel)鑿$()可以用來將普通方塊轉變為平滑方塊，還可以用來製作多種裝飾性方塊。"
+      "text": "$(l:metalworking/chisel)鑿$()可以用來將普通方塊轉變為平滑方塊，還可以用來製作多種裝飾性方塊。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -134,7 +134,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
-      "text": "$(thing)錘$()是在$(l:mechanics/anvils)砧$()上製作物品不可或缺的工具。"
+      "text": "$(thing)錘$()是在$(l:metalworking/anvils)砧$()上製作物品不可或缺的工具。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -144,7 +144,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "$(thing)鋤$()可以用來種植和管理$(l:mechanics/crops)農作物$()。"
+      "text": "$(thing)鋤$()可以用來種植和管理$(l:food/crops)農作物$()。"
     },
     {
       "type": "tfc:knapping_recipe",

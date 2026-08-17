@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)矿车$()是一种运输玩家、实体和大型方块的手段。那些通常会让玩家$(l:getting_started/size_and_weight#overburdening)负担过重$()的方块可以用矿车运输。$(l:mechanics/decay#large_vessels)大缸$()、$(l:mechanics/barrels)大桶$()、$(l:mechanics/powderkegs)火药桶$()、$(l:mechanics/anvils)砧$()和$(l:mechanics/crucible)坩埚$()可以通过同时按住$(item)$(k:key.sneak)$()和$(item)$(k:key.use)$()添加到矿车上。空手按住$(item)$(k:key.sneak)$()右键点击可以移除方块。矿车相关物品可以用$(thing)铁$()或$(thing)钢$()锻造，用钢的配方更便宜。"
+      "text": "$(thing)矿车$()是一种运输玩家、实体和大型方块的手段。那些通常会让玩家$(l:core_mechanics/size_and_weight#overburdening)负担过重$()的方块可以用矿车运输。$(l:food/decay#large_vessels)大缸$()、$(l:crafting/barrels)大桶$()、$(l:mechanics/powderkegs)火药桶$()、$(l:metalworking/anvils)砧$()和$(l:metalworking/crucible)坩埚$()可以通过同时按住$(item)$(k:key.sneak)$()和$(item)$(k:key.use)$()添加到矿车上。空手按住$(item)$(k:key.sneak)$()右键点击可以移除方块。矿车相关物品可以用$(thing)铁$()或$(thing)钢$()锻造，用钢的配方更便宜。"
     },
     {
       "type": "patchouli:crafting",

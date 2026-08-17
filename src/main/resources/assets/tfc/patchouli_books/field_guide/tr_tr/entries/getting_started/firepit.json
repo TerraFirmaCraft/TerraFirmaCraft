@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Ateş çukurunu kullanmak artık ateş çukuru ekranını açacaktır. Solda dört adet $(thing)yakıt$() yuvası bulunur. Kütükler, Turba ve Çubuk Demetleri, en üstteki yuvaya yerleştirilerek ateş çukuru yakıtı olarak kullanılabilir. Yakıt, en alttaki yuvadan tüketilmeye başlanır. Ateş çukurunun mevcut $(thing)Sıcaklığını$() gösteren bir gösterge ve sağ tarafta $(l:mechanics/heating)ısıtılacak$() eşyalar için bir yuva bulunur."
+      "text": "Ateş çukurunu kullanmak artık ateş çukuru ekranını açacaktır. Solda dört adet $(thing)yakıt$() yuvası bulunur. Kütükler, Turba ve Çubuk Demetleri, en üstteki yuvaya yerleştirilerek ateş çukuru yakıtı olarak kullanılabilir. Yakıt, en alttaki yuvadan tüketilmeye başlanır. Ateş çukurunun mevcut $(thing)Sıcaklığını$() gösteren bir gösterge ve sağ tarafta $(l:core_mechanics/heating)ısıtılacak$() eşyalar için bir yuva bulunur."
     },
     {
       "type": "patchouli:image",
@@ -58,11 +58,11 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/food/cooked_cod",
-      "text": "Ateş çukuru aynı zamanda $(thing)yemek pişirmek$() için de iyi bir araçtır. Tüm çiğ etler ve hamurlar, raf ömürlerini uzatacak şekilde ateş çukurunda pişirilebilir. (Bu konuda daha fazla bilgi $(l:mechanics/decay)burada$() bulunabilir)"
+      "text": "Ateş çukuru aynı zamanda $(thing)yemek pişirmek$() için de iyi bir araçtır. Tüm çiğ etler ve hamurlar, raf ömürlerini uzatacak şekilde ateş çukurunda pişirilebilir. (Bu konuda daha fazla bilgi $(l:food/decay)burada$() bulunabilir)"
     },
     {
       "type": "patchouli:text",
-      "text": "Ateş çukuru, üzerine bir $(thing)Kürek$() kullanılarak her an söndürülebilir.$(br2)Ateş çukuruna işlevselliğini genişletmek için başka cihazlar da eklenebilir. $(thing)Dövme Demir Izgara$() kullanmak ateş çukurunu bir $(l:mechanics/grill)Izgaraya$() dönüştürürken, $(thing)Seramik Tencere$() kullanmak ateş çukurunu bir $(l:mechanics/pot)Tencereye$() dönüştürecektir. Her iki cihazı da kaldırmak için $(item)$(k:key.sneak)$() tuşunu basılı tutarken $(item)$(k:key.use)$() tuşunu kullanın. Sıcak bir ızgarayı veya tencereyi çıkarmaya çalışırken dikkatli olun!"
+      "text": "Ateş çukuru, üzerine bir $(thing)Kürek$() kullanılarak her an söndürülebilir.$(br2)Ateş çukuruna işlevselliğini genişletmek için başka cihazlar da eklenebilir. $(thing)Dövme Demir Izgara$() kullanmak ateş çukurunu bir $(l:food/grill)Izgaraya$() dönüştürürken, $(thing)Seramik Tencere$() kullanmak ateş çukurunu bir $(l:food/pot)Tencereye$() dönüştürecektir. Her iki cihazı da kaldırmak için $(item)$(k:key.sneak)$() tuşunu basılı tutarken $(item)$(k:key.use)$() tuşunu kullanın. Sıcak bir ızgarayı veya tencereyi çıkarmaya çalışırken dikkatli olun!"
     },
     {
       "type": "tfc:multimultiblock",

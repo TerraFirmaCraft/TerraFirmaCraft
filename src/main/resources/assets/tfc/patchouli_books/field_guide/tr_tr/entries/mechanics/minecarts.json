@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Maden Arabaları$(), oyuncuları, varlıkları ve büyük blokları taşımanın bir yoludur. Normalde oyuncuya $(l:getting_started/size_and_weight#overburdening)aşırı yük$() bindirecek bloklar maden arabalarında taşınabilir. $(l:mechanics/decay#large_vessels)Büyük Kaplar$(), $(l:mechanics/barrels)Fıçılar$(), $(l:mechanics/powderkegs)Barut Fıçıları$(), $(l:mechanics/anvils)Örsler$() ve $(l:mechanics/crucible)Potalar$(), hem $(item)$(k:key.use)$() hem de $(item)$(k:key.sneak)$() tuşlarına basılarak arabalara eklenebilir. Boş elle $(item)$(k:key.sneak)$() kullanmak bloğu kaldırır. Maden arabası eşyalarını dövmek $(thing)Demir$() veya $(thing)Çelik$() ile yapılabilir; çelik bazlı tarifler daha az maliyetlidir."
+      "text": "$(thing)Maden Arabaları$(), oyuncuları, varlıkları ve büyük blokları taşımanın bir yoludur. Normalde oyuncuya $(l:core_mechanics/size_and_weight#overburdening)aşırı yük$() bindirecek bloklar maden arabalarında taşınabilir. $(l:food/decay#large_vessels)Büyük Kaplar$(), $(l:crafting/barrels)Fıçılar$(), $(l:mechanics/powderkegs)Barut Fıçıları$(), $(l:metalworking/anvils)Örsler$() ve $(l:metalworking/crucible)Potalar$(), hem $(item)$(k:key.use)$() hem de $(item)$(k:key.sneak)$() tuşlarına basılarak arabalara eklenebilir. Boş elle $(item)$(k:key.sneak)$() kullanmak bloğu kaldırır. Maden arabası eşyalarını dövmek $(thing)Demir$() veya $(thing)Çelik$() ile yapılabilir; çelik bazlı tarifler daha az maliyetlidir."
     },
     {
       "type": "patchouli:crafting",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Krank mili$(), $(l:mechanics/mechanical_power)Dönme Gücü$()'nü $(thing)İleri-Geri Hareket Gücü$()'ne dönüştürmenin bir yoludur. Bu, $(l:mechanics/bellows)Körük$() veya $(l:mechanics/pumps)Su Pompaları$() gibi cihazlara güç sağlamak için yararlı olabilir.$(br2)$(thing)Krank mili$() iki parçadan oluşur: taban ve mil. Taban bir $(l:mechanics/mechanical_power#axle)Aks$()'a bağlanmalıdır ve cihazlar milin ucuna bağlanabilir."
+      "text": "$(thing)Krank mili$(), $(l:mechanics/mechanical_power)Dönme Gücü$()'nü $(thing)İleri-Geri Hareket Gücü$()'ne dönüştürmenin bir yoludur. Bu, $(l:metalworking/bellows)Körük$() veya $(l:mechanics/pumps)Su Pompaları$() gibi cihazlara güç sağlamak için yararlı olabilir.$(br2)$(thing)Krank mili$() iki parçadan oluşur: taban ve mil. Taban bir $(l:mechanics/mechanical_power#axle)Aks$()'a bağlanmalıdır ve cihazlar milin ucuna bağlanabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Krank mili, milin yanına bir $(l:mechanics/bellows)Körük$() yerleştirilerek ona bağlanabilir. Bu, mil her uzayıp kısaldığında otomatik olarak itme yapacaktır. Bir krank miline bağlandığında manuel olarak çalıştırılamaz.$(br2)Krank mili ayrıca sıvıları taşımak için kullanılabilen bir $(l:mechanics/pumps)Pompa$()'ya da bağlanabilir."
+      "text": "Krank mili, milin yanına bir $(l:metalworking/bellows)Körük$() yerleştirilerek ona bağlanabilir. Bu, mil her uzayıp kısaldığında otomatik olarak itme yapacaktır. Bir krank miline bağlandığında manuel olarak çalıştırılamaz.$(br2)Krank mili ayrıca sıvıları taşımak için kullanılabilen bir $(l:mechanics/pumps)Pompa$()'ya da bağlanabilir."
     }
   ],
   "read_by_default": true

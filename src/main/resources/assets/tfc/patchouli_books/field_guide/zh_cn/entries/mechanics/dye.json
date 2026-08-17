@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "所有 16 种原版$(thing)染料颜色$()都可以作为物品获得。大多数花和其他彩色植物可以用$(l:mechanics/quern)手推磨$()研磨成染料。$(l:the_world/ores_and_minerals)金属矿石$()的粉末可以直接合成染料。$(l:the_world/ores_and_minerals#graphite)石墨$()、$(l:the_world/ores_and_minerals#kaolinite)高岭石$()、$(l:the_world/ores_and_minerals#sylvite)钾石盐$()、$(l:the_world/ores_and_minerals#lapis_lazuli)青金石$()、焦炭粉和木炭粉也可以合成染料。"
+      "text": "所有 16 种原版$(thing)染料颜色$()都可以作为物品获得。大多数花和其他彩色植物可以用$(l:crafting/quern)手推磨$()研磨成染料。$(l:the_world/ores_and_minerals)金属矿石$()的粉末可以直接合成染料。$(l:the_world/ores_and_minerals#graphite)石墨$()、$(l:the_world/ores_and_minerals#kaolinite)高岭石$()、$(l:the_world/ores_and_minerals#sylvite)钾石盐$()、$(l:the_world/ores_and_minerals#lapis_lazuli)青金石$()、焦炭粉和木炭粉也可以合成染料。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
       "title": "液体染料",
       "link_recipes": false,
-      "text": "染料也可以制成液体。一份染料物品与 1000mB $(item)水$()在$(l:mechanics/pot)锅$()中煮沸，可以得到等量的$(thing)液体染料$()。液体染料用于在$(l:mechanics/barrels)大桶$()中给物品染色。"
+      "text": "染料也可以制成液体。一份染料物品与 1000 mB $(item)水$()在$(l:food/pot)锅$()中煮沸，可以得到等量的$(thing)液体染料$()。液体染料用于在$(l:crafting/barrels)大桶$()中给物品染色。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/red_concrete_powder",
-      "text": "在大桶中给物品染色比使用染料物品更便宜，只需 25mB 液体染料。"
+      "text": "在大桶中给物品染色比使用染料物品更便宜，只需 25 mB 液体染料。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -34,11 +34,11 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
       "recipe": "tfc:barrel/bleach_bed",
-      "text": "五份$(item)草木灰$()与 1000mB $(item)水$()在$(l:mechanics/pot)锅$()中煮沸可以得到碱液。25mB 碱液可以去除彩色物品的颜色。"
+      "text": "五份$(item)草木灰$()与 1000 mB $(item)水$()在$(l:food/pot)锅$()中煮沸可以得到碱液。25 mB 碱液可以去除彩色物品的颜色。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(item)黑色染料$()用于$(l:mechanics/scribing_table)命名台$()。$(li)$(item)红色染料$()用于$(l:mechanics/powderkegs)火药桶$()。$(li)未烧制的$(l:mechanics/decay#small_vessels)小缸$()和$(l:mechanics/decay#large_vessels)大缸$()可以染色。",
+      "text": "$(li)$(item)黑色染料$()用于$(l:crafting/scribing_table)命名台$()。$(li)$(item)红色染料$()用于$(l:mechanics/powderkegs)火药桶$()。$(li)未烧制的$(l:food/decay#small_vessels)小缸$()和$(l:food/decay#large_vessels)大缸$()可以染色。",
       "title": "杂项"
     }
   ],

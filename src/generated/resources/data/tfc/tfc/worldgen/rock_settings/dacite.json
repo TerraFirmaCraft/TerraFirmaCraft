@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/dacite",
+  "gravel": "tfc:rock/gravel/dacite",
+  "hardened": "tfc:rock/hardened/dacite",
+  "karst": false,
+  "loose": "tfc:rock/loose/dacite",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/dacite",
+  "raw": "tfc:rock/raw/dacite",
+  "sand": "tfc:sand/red",
+  "sandstone": "tfc:raw_sandstone/red",
+  "spike": "tfc:rock/spike/dacite"
+}

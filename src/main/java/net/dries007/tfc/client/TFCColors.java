@@ -126,11 +126,15 @@ public final class TFCColors
         return TFCBiomes.hasExtension(level, biome) ? getClimateColor(WATER_FOG_COLORS_CACHE, pos) : biome.getWaterFogColor();
     }
 
-    public static int getSeasonalFoliageColor(BlockPos pos, int tintIndex, int autumnIndex)
+    public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex, int autumnIndex)
     {
         if (tintIndex == 0)
         {
-            return getSeasonalFoliageColor(pos, autumnIndex);
+            if (pos != null)
+            {
+                return getSeasonalFoliageColor(pos, autumnIndex);
+            }
+            return getClimateColor(FOLIAGE_COLORS_CACHE, 10f, 250f); // Default values
         }
         return -1;
     }

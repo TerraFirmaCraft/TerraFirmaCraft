@@ -49,7 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "小さな壺は粘土で作れる多様なアイテムのひとつです。 すべての陶器アイテムと同様、使用する前に $(l:https://en.wikipedia.org/wiki/Pottery)焼成$() する必要があります。 焼成は、粘土が硬い $(thing)セラミック$() になるまでアイテムを $(l:mechanics/heating)加熱$() するプロセスです。これには 1400 °C 、 $(e)$(bold)$(t:Yellow White)黄白$()$までの加熱が必要です。(br2)ゲーム序盤でこれを行うには、$(l:getting_started/pit_kiln)穴窯$()を使用する必要があります。",
+      "text": "小さな壺は粘土で作れる多様なアイテムのひとつです。 すべての陶器アイテムと同様、使用する前に $(l:https://en.wikipedia.org/wiki/Pottery)焼成$() する必要があります。 焼成は、粘土が硬い $(thing)セラミック$() になるまでアイテムを $(l:core_mechanics/heating)加熱$() するプロセスです。これには 1400 °C 、 $(e)$(bold)$(t:Yellow White)黄白$()$までの加熱が必要です。(br2)ゲーム序盤でこれを行うには、$(l:getting_started/pit_kiln)穴窯$()を使用する必要があります。",
       "title": "小さな壺"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The $(l:mechanics/decay#large_vessels)Large Vessel$() is created in a similar way. It can be placed, and has nine slots for items. View the linked chapter for more information.",
+      "text": "The $(l:food/decay#large_vessels)Large Vessel$() is created in a similar way. It can be placed, and has nine slots for items. View the linked chapter for more information.",
       "title": "Large Vessel"
     },
     {
@@ -104,7 +104,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
-      "text": "$(l:mechanics/prospecting#propick)探鉱槌$() は、大量の鉱石を見つけるために不可欠なツールです。"
+      "text": "$(l:metalworking/prospecting#propick)探鉱槌$() は、大量の鉱石を見つけるために不可欠なツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -114,7 +114,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
-      "text": "$(thing)ノコギリ$()は原木を木材に加工でき、$(thing)作業台$() のような高度な木製コンポーネントや、$(l:mechanics/support_beams)梁$() のような他の多くの木製アイテムを作成するために必要なツールです。"
+      "text": "$(thing)ノコギリ$()は原木を木材に加工でき、$(thing)作業台$() のような高度な木製コンポーネントや、$(l:core_mechanics/support_beams)梁$() のような他の多くの木製アイテムを作成するために必要なツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -124,7 +124,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
-      "text": "$(l:mechanics/chisel)ノミ$()は、ブロックを滑らかにしたり、多数の装飾ブロックを作成したりするために使用されるツールです。石臼の作成に必須です。"
+      "text": "$(l:metalworking/chisel)ノミ$()は、ブロックを滑らかにしたり、多数の装飾ブロックを作成したりするために使用されるツールです。石臼の作成に必須です。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -134,7 +134,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
-      "text": "$(thing)ハンマー$()は$(l:mechanics/anvils)金床$()を作成して作業するために不可欠なツールです。"
+      "text": "$(thing)ハンマー$()は$(l:metalworking/anvils)金床$()を作成して作業するために不可欠なツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -144,7 +144,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "A $(thing)クワ$()は$(l:mechanics/crops)作物$() の植え付けと維持に使用されます。"
+      "text": "A $(thing)Hoe$() used for planting and maintaining $(l:food/crops)Crops$()."
     },
     {
       "type": "tfc:knapping_recipe",

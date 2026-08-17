@@ -1,0 +1,81 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "玻璃加工",
+  "category": "tfc:crafting",
+  "icon": "tfc:silica_glass_bottle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "玻璃加工是将沙子转化为玻璃的过程。首先，你必须制作$(thing)玻璃配料$()，共有四种类型：$(br)$(br) 1. $(thing)二氧化硅$()，来自白沙。$(br) 2. $(thing)赤铁质$()，来自黄沙、红沙或粉红沙。$(br) 3. $(thing)橄榄石质$()，来自绿沙或棕沙。$(br) 4. $(thing)火山质$()，来自黑沙。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/silica_glass_batch",
+      "text": "然后，使用上述颜色的沙子之一，加上$(l:crafting/glassworking#lime)生石灰$()和一种$(l:crafting/glassworking#potash)钾碱$()即可制作玻璃配料。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "lime",
+      "recipe": "tfc:heating/powder/lime",
+      "text": "$(thing)生石灰$()是制作玻璃配料的原料之一。它是一种粉末，通过$(l:core_mechanics/heating)加热$()$(l:metalworking/flux)助焊剂$()获得。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "anchor": "potash",
+      "recipe": "tfc:heating/powder/soda_ash_from_seaweed",
+      "text": "玻璃配料还需要一种$(thing)钾碱$()或等效物。可以使用$(thing)苏打粉$()，这是一种由加热$(thing)干海草$()或$(thing)海带$()制成的粉末。$(l:the_world/ores_and_minerals#saltpeter)硝石$()也可以使用。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "玻璃加工从玻璃配料开始，然后完成一系列步骤。这些步骤可能需要特定工具：$(br)$(li)$(l:crafting/glassworking#blowpipe)吹管$()，用于$(thing)吹$()和$(thing)拉伸$()$(li)$(l:crafting/glassworking#paddle)玻璃压板$()，用于$(thing)平整$()$(li)$(l:crafting/glassworking#jacks)夹钳$()，用于$(thing)挤压$()$(li)$(l:crafting/glassworking#saw)宝石锯$()，用于$(thing)锯割$()",
+      "title": "专业工具"
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "anchor": "blowpipe",
+      "recipe": "tfc:knapping/ceramic/unfired_blowpipe",
+      "text": "最重要的工具是$(thing)吹管$()。它可以用黏土$(thing)塑形$()，然后烧制成$(thing)陶瓷吹管$()。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/blowpipe",
+      "text": "陶瓷吹管很脆，使用时有可能破裂。更坚固的吹管可以用$(thing)黄铜棒$()在砧上$(l:metalworking/anvils#working)锻造$()而成。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "paddle",
+      "recipe": "tfc:crafting/paddle",
+      "text": "$(thing)玻璃压板$()可以用来将玻璃$(thing)压平$()，可用木材制作。"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "anchor": "jacks",
+      "recipe": "tfc:welding/jacks",
+      "text": "$(thing)玻璃夹钳$()可进行$(thing)挤压$()，需要将两根黄铜棒焊接在一起。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "saw",
+      "recipe": "tfc:crafting/gem_saw",
+      "text": "$(thing)宝石锯$()是用来执行$(thing)锯割$()操作的。宝石锯还可以用来挖掘$(thing)玻璃块$()和$(thing)玻璃板$()而不使其损坏。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "首先，吹管上的玻璃必须加热到$(4)$(bold)淡红色$()。然后，手持吹管，按住$(item)$(k:key.use)$()执行每个步骤。$(br2)$(bold)吹$()$(br)面朝正前方使用$(thing)吹管$()。$(br2)$(bold)拉伸$()$(br)面朝正下方使用$(thing)吹管$()。",
+      "title": "如何加工玻璃"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)平整$()$(br)副手持有$(l:crafting/glassworking#paddle)玻璃压板$()时使用$(thing)吹管$()。$(br2)$(bold)挤压$()$(br)副手持有$(l:crafting/glassworking#jacks)玻璃夹钳$()时使用$(thing)吹管$()。$(br2)$(bold)锯割$()$(br)副手持有$(l:crafting/glassworking#saw)宝石锯$()时使用$(thing)吹管$()。$(br2)$(bold)翻转$()$(br)副手持有$(l:crafting/weaving#wool_cloth)羊毛布$()时使用$(thing)吹管$()。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5,
+  "extra_recipe_mappings": {
+    "tfc:powder/lime": 2,
+    "tfc:powder/soda_ash": 3,
+    "tfc:paddle": 7,
+    "tfc:jacks": 8,
+    "tfc:gem_saw": 9
+  }
+}

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "İleri Seviye Mekanikler",
-  "description": "İlk kazmadan renkli çeliğe kadar teknoloji ağacının ileri seviye bölümleri.$(br2)$(br)$(bold)Not:$() herhangi bir yerde yazmaya başlayarak girdileri kolayca arayabilirsiniz!",
-  "icon": "tfc:metal/axe/red_steel",
-  "sortnum": 2
+  "name": "Çeşitli",
+  "description": "Advanced and miscellaneous sections of the tech tree.$(br2)$(br)$(bold)Note:$() you can search entries simply by starting to type anywhere!",
+  "icon": "tfc:metal/helmet/blue_steel",
+  "sortnum": 6
 }

@@ -79,13 +79,13 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         if (recipe != null)
         {
             // progress indicator
-            graphics.blit(texture, guiLeft + 13 + forging.work(), guiTop + 104, 176, 0, 5, 5);
+            graphics.blit(texture, guiLeft + 11 + forging.work(), guiTop + 104, 176, 0, 5, 5);
 
             // target indicator
             if (range < 2)
             {
                 // render the pointer
-                graphics.blit(texture, guiLeft + 13 + target, guiTop + 98, 181, 0, 5, 5);
+                graphics.blit(texture, guiLeft + 11 + target, guiTop + 98, 181, 0, 5, 5);
             }
             else
             {
@@ -94,9 +94,9 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                 final int rightLimit = Math.min(145, target + range);
 
                 // left
-                graphics.blit(texture, guiLeft + 13 + leftLimit, guiTop + 96, 176, 7, 5, 7);
+                graphics.blit(texture, guiLeft + 11 + leftLimit, guiTop + 96, 176, 7, 5, 7);
                 // right
-                graphics.blit(texture, guiLeft + 13 + rightLimit, guiTop + 96, 186, 7, 5, 7);
+                graphics.blit(texture, guiLeft + 11 + rightLimit, guiTop + 96, 186, 7, 5, 7);
 
                 // bar
                 for (int i = leftLimit + 2; i < rightLimit - 1; i++)

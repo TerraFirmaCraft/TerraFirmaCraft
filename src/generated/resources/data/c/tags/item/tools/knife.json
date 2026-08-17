@@ -12,6 +12,7 @@
     "tfc:stone/knife/igneous_extrusive",
     "tfc:stone/knife/igneous_intrusive",
     "tfc:stone/knife/metamorphic",
-    "tfc:stone/knife/sedimentary"
+    "tfc:stone/knife/sedimentary",
+    "tfc:obsidian_knife"
   ]
 }

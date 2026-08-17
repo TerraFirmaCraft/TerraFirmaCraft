@@ -24,12 +24,12 @@
         }
       },
       "name": "Wild Wheat",
-      "text": "An example of a wild crop, in this case $(l:mechanics/crops#wheat)Wheat$().",
+      "text": "An example of a wild crop, in this case $(l:food/crops#wheat)Wheat$().",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Every $(l:mechanics/crops)crop$() that can be cultivated can also be found in the wild. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer."
+      "text": "Every $(l:food/crops)crop$() that can be cultivated can also be found in the wild. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer."
     },
     {
       "type": "tfc:multimultiblock",
@@ -319,7 +319,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:mechanics/crops)Crops$() that the player has planted, wild crops do not require $(l:mechanics/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().",
+      "text": "Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:food/crops)Crops$() that the player has planted, wild crops do not require $(l:food/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().",
       "title": "Finding Wild Crops"
     },
     {
@@ -569,6 +569,24 @@
         },
         {
           "text": "120 - 390"
+        },
+        {
+          "text": "Melon"
+        },
+        {
+          "text": "  5 - 40"
+        },
+        {
+          "text": "200 - 500"
+        },
+        {
+          "text": "Canola"
+        },
+        {
+          "text": "-13 - 3.2"
+        },
+        {
+          "text": "120 - 320"
         }
       ],
       "text": "",
@@ -600,24 +618,6 @@
         {
           "text": "Rainfall (mm)",
           "bold": true
-        },
-        {
-          "text": "Melon"
-        },
-        {
-          "text": "  5 - 40"
-        },
-        {
-          "text": "200 - 500"
-        },
-        {
-          "text": "Canola"
-        },
-        {
-          "text": "-13 - 3.2"
-        },
-        {
-          "text": "120 - 320"
         },
         {
           "text": "Radish"
@@ -682,7 +682,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 4,
+  "sortnum": 3,
   "extra_recipe_mappings": {
     "tag:tfc:wild_crops": 0
   }

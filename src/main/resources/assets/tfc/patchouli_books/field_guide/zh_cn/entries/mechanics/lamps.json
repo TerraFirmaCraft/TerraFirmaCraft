@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "灯在$(l:mechanics/anvils)砧$()上锻造，并与$(l:mechanics/glassworking_applications#lamp_glass)灯罩$()合成完成制作。"
+      "text": "灯在$(l:metalworking/anvils)砧$()上锻造，并与$(l:crafting/glassworking_applications#lamp_glass)灯罩$()合成完成制作。"
     },
     {
       "type": "tfc:quern_recipe",
@@ -49,12 +49,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "在$(l:mechanics/pot)锅$()里用$(thing)水$()煮$(thing)橄榄糊$()可以得到$(thing)橄榄油水$(). 把它和$(thing)黄麻网$()一起密封在$(l:mechanics/barrels)大桶$()里可以得到$(thing)橄榄油$(). 每单位橄榄油的燃烧时间是 6 游戏内小时。"
+      "text": "在$(l:food/pot)锅$()里用$(thing)水$()煮$(thing)橄榄糊$()可以得到$(thing)橄榄油水$(). 把它和$(thing)黄麻网$()一起密封在$(l:crafting/barrels)大桶$()里可以得到$(thing)橄榄油$(). 每单位橄榄油的燃烧时间是 6 游戏内小时。"
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:mechanics/pot)陶锅$()中用淡水中煮 5 份$(thing)鲸脂$()。每单位蜡脂的燃烧时间为 2 游戏内小时。蜡脂可以用于制作$(l:mechanics/lighting#candles)蜡烛$()。"
+      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:food/pot)陶锅$()中用淡水中煮 5 份$(thing)鲸脂$()。每单位蜡脂的燃烧时间为 2 游戏内小时。蜡脂可以用于制作$(l:core_mechanics/lighting#candles)蜡烛$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -72,13 +72,13 @@
         }
       },
       "name": "熔岩灯",
-      "text": "熔岩灯是一种$(thing)永久光源$()。不过，只有$(l:mechanics/steel#blue_steel)蓝钢$()灯才能盛装熔岩。",
+      "text": "熔岩灯是一种$(thing)永久光源$()。不过，只有$(l:metalworking/steel#blue_steel)蓝钢$()灯才能盛装熔岩。",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)链子$()可以用来挂灯，在$(l:mechanics/anvils)砧$()上就能锻造。"
+      "text": "$(thing)链子$()可以用来挂灯，在$(l:metalworking/anvils)砧$()上就能锻造。"
     }
   ],
   "read_by_default": true,

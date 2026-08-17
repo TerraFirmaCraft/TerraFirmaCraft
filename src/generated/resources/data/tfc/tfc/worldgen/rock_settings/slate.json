@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/slate",
+  "gravel": "tfc:rock/gravel/slate",
+  "hardened": "tfc:rock/hardened/slate",
+  "karst": false,
+  "loose": "tfc:rock/loose/slate",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/slate",
+  "raw": "tfc:rock/raw/slate",
+  "sand": "tfc:sand/yellow",
+  "sandstone": "tfc:raw_sandstone/yellow",
+  "spike": "tfc:rock/spike/slate"
+}

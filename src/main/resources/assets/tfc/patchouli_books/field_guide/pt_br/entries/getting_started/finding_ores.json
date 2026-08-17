@@ -50,7 +50,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Essas pequenas peças de minério podem servir a dois propósitos: eles podem fornecer uma fonte de metal e, mais importante, indicam a presença de uma veia maior de minério em algum lugar nas proximidades, provavelmente subterrâneo e próximo à superfície. Certifique -se de observar onde você encontra minérios pequenos, pois a localização das veias de minério será útil mais tarde durante $(l:mechanics/prospecting)Prospecting$().$(br2)Os doze tipos de minérios pequenos e o metal em que podem ser derretidos estão listados na próxima página."
+      "text": "Essas pequenas peças de minério podem servir a dois propósitos: eles podem fornecer uma fonte de metal e, mais importante, indicam a presença de uma veia maior de minério em algum lugar nas proximidades, provavelmente subterrâneo e próximo à superfície. Certifique -se de observar onde você encontra minérios pequenos, pois a localização das veias de minério será útil mais tarde durante $(l:metalworking/prospecting)Prospecting$().$(br2)Os doze tipos de minérios pequenos e o metal em que podem ser derretidos estão listados na próxima página."
     },
     {
       "type": "patchouli:text",

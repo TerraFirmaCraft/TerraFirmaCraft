@@ -15,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HangingSignItem;
@@ -22,8 +23,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluids;
@@ -211,6 +214,19 @@ public final class TFCItems
     public static final ItemId JAR_LID = register("jar_lid");
     public static final ItemId BASKET = register("basket", () -> new TFCBundleItem(new Properties().component(DataComponents.BUNDLE_CONTENTS, BundleContents.EMPTY)));
     public static final ItemId BONE_NEEDLE = register("bone_needle", () -> new Item(new Properties().durability(64)));
+    public static final ItemId OBSIDIAN_MACUAHUITL = register("obsidian_macuahuitl", () -> new SwordItem(TFCTiers.OBSIDIAN, new Properties().attributes(ToolItem.productAttributes(TFCTiers.OBSIDIAN, 1f, -2.4f))));
+    public static final ItemId OBSIDIAN_AXE_HEAD = register("obsidian_axe_head");
+    public static final ItemId OBSIDIAN_AXE = register("obsidian_axe", () -> new AxeItem(TFCTiers.OBSIDIAN, new Properties().attributes(ToolItem.productAttributes(TFCTiers.OBSIDIAN, 1.5f, -3.2f))));
+    public static final ItemId OBSIDIAN_HAMMER_HEAD = register("obsidian_hammer_head");
+    public static final ItemId OBSIDIAN_HAMMER = register("obsidian_hammer", () -> new HammerItem(TFCTiers.OBSIDIAN, new Properties().attributes(ToolItem.productAttributes(TFCTiers.OBSIDIAN, 1.0f, -3.0f))));
+    public static final ItemId OBSIDIAN_HOE_HEAD = register("obsidian_hoe_head");
+    public static final ItemId OBSIDIAN_HOE = register("obsidian_hoe", () -> new TFCHoeItem(TFCTiers.OBSIDIAN, new Properties().attributes(ToolItem.productAttributes(TFCTiers.OBSIDIAN, 0.5f, -3.0f))));
+    public static final ItemId OBSIDIAN_JAVELIN_HEAD = register("obsidian_javelin_head");
+    public static final ItemId OBSIDIAN_JAVELIN = register("obsidian_javelin", () -> new JavelinItem(TFCTiers.OBSIDIAN, new Properties().attributes(ToolItem.productAttributes(TFCTiers.OBSIDIAN, 0.7f, -2.2f))));
+    public static final ItemId OBSIDIAN_KNIFE_HEAD = register("obsidian_knife_head");
+    public static final ItemId OBSIDIAN_KNIFE = register("obsidian_knife", () -> new ToolItem(TFCTiers.OBSIDIAN, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Properties().attributes(ToolItem.productAttributes(TFCTiers.OBSIDIAN, 0.6f, -2.0f))));
+    public static final ItemId OBSIDIAN_SHOVEL_HEAD = register("obsidian_shovel_head");
+    public static final ItemId OBSIDIAN_SHOVEL = register("obsidian_shovel", () -> new ShovelItem(TFCTiers.OBSIDIAN, new Properties().attributes(ToolItem.productAttributes(TFCTiers.OBSIDIAN, 0.875f, -3.0f))));
     public static final ItemId BLANK_DISC = register("blank_disc");
     public static final ItemId BLUBBER = register("blubber");
     public static final ItemId BRASS_MECHANISMS = register("brass_mechanisms");
@@ -332,9 +348,12 @@ public final class TFCItems
     public static final ItemId DONKEY_EGG = registerSpawnEgg(TFCEntities.DONKEY);
     public static final ItemId MULE_EGG = registerSpawnEgg(TFCEntities.MULE);
     public static final ItemId HORSE_EGG = registerSpawnEgg(TFCEntities.HORSE);
+    public static final ItemId DROMEDARY_CAMEL_EGG = registerSpawnEgg(TFCEntities.DROMEDARY_CAMEL);
+    public static final ItemId BACTRIAN_CAMEL_EGG = registerSpawnEgg(TFCEntities.BACTRIAN_CAMEL);
     public static final ItemId CAT_EGG = registerSpawnEgg(TFCEntities.CAT);
     public static final ItemId DOG_EGG = registerSpawnEgg(TFCEntities.DOG);
     public static final ItemId PANDA_EGG = registerSpawnEgg(TFCEntities.PANDA);
+    public static final ItemId ARMADILLO_EGG = registerSpawnEgg(TFCEntities.ARMADILLO);
 
     // Pottery
 

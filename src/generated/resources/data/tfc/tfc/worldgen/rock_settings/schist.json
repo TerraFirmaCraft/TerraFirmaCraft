@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/schist",
+  "gravel": "tfc:rock/gravel/schist",
+  "hardened": "tfc:rock/hardened/schist",
+  "karst": false,
+  "loose": "tfc:rock/loose/schist",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/schist",
+  "raw": "tfc:rock/raw/schist",
+  "sand": "tfc:sand/yellow",
+  "sandstone": "tfc:raw_sandstone/yellow",
+  "spike": "tfc:rock/spike/schist"
+}

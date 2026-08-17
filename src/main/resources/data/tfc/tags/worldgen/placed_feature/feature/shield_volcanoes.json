@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:pumice_shield_volcano_patch"
+    "tfc:pumice_shield_volcano_patch",
+    "tfc:obsidian_shard_shield_volcano_patch"
   ]
 }

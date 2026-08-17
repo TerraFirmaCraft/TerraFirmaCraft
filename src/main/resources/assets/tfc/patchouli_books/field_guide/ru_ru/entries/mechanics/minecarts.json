@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Вагонетки$() — это средство транспортировки игроков, существ и крупных блоков. Блоки, которые обычно $(l:getting_started/size_and_weight#overburdening)перегружают$() игрока, можно перевозить в вагонетках. $(l:mechanics/decay#large_vessels)Крупные сосуды$(), $(l:mechanics/barrels)бочки$(), $(l:mechanics/powderkegs)пороховые бочки$(), $(l:mechanics/anvils)наковальни$() и $(l:mechanics/crucible)тигли$() можно добавить в вагонетку, нажав $(item)$(k:key.sneak)$() + $(item)$(k:key.use)$(). Нажатие $(item)$(k:key.sneak)$() с пустыми руками удаляет блок. Ковать вагонетки можно из $(thing)железа$() или $(thing)стали$(), при этом рецепты на основе стали дешевле."
+      "text": "$(thing)Вагонетки$() — это средство транспортировки игроков, существ и крупных блоков. Блоки, которые обычно $(l:core_mechanics/size_and_weight#overburdening)перегружают$() игрока, можно перевозить в вагонетках. $(l:food/decay#large_vessels)Крупные сосуды$(), $(l:crafting/barrels)бочки$(), $(l:mechanics/powderkegs)пороховые бочки$(), $(l:metalworking/anvils)наковальни$() и $(l:metalworking/crucible)тигли$() можно добавить в вагонетку, нажав $(item)$(k:key.sneak)$() + $(item)$(k:key.use)$(). Нажатие $(item)$(k:key.sneak)$() с пустыми руками удаляет блок. Ковать вагонетки можно из $(thing)железа$() или $(thing)стали$(), при этом рецепты на основе стали дешевле."
     },
     {
       "type": "patchouli:crafting",

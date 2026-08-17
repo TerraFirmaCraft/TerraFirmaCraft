@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TFC'deki Cevherler ve Mineraller nadirdir - Vanilla'nın aksine, cevherler bulunması için biraz $(l:mechanics/prospecting)maden arama$() çalışması gerektiren devasa, seyrek ancak nadir damarlar halinde bulunur. Farklı cevherler ayrıca farklı kaya türlerinde ve farklı yüksekliklerde ortaya çıkar; bu da doğru cevheri bulmak için doğru kaya türünü doğru yükseklikte bulmanın anahtar olduğu anlamına gelir."
+      "text": "TFC'deki Cevherler ve Mineraller nadirdir - Vanilla'nın aksine, cevherler bulunması için biraz $(l:metalworking/prospecting)maden arama$() çalışması gerektiren devasa, seyrek ancak nadir damarlar halinde bulunur. Farklı cevherler ayrıca farklı kaya türlerinde ve farklı yüksekliklerde ortaya çıkar; bu da doğru cevheri bulmak için doğru kaya türünü doğru yükseklikte bulmanın anahtar olduğu anlamına gelir."
     },
     {
       "type": "patchouli:text",
@@ -684,7 +684,7 @@
       "item": "tfc:kaolin_clay",
       "title": "Kaolinit",
       "link_recipes": false,
-      "text": "Kaolinit, $(l:mechanics/fire_clay)Ateş Kili$() yapımında kullanılan yumuşak bir $(thing)Mineraldir$(). Platolar, Eski Dağlar, Engebeli Tepeler ve Yüksek Yaylalarda, en az 18°C $(l:the_world/climate#temperature)sıcaklık$() ve en az 300mm $(l:the_world/climate#rainfall)yağış$() değerlerine sahip yüksek rakımlı bölgelerde oluşur. $(thing)Kan Zambağı$() çiçeği Kaolin kili üzerinde yetişir."
+      "text": "Kaolinit, $(l:metalworking/fire_clay)Ateş Kili$() yapımında kullanılan yumuşak bir $(thing)Mineraldir$(). Platolar, Eski Dağlar, Engebeli Tepeler ve Yüksek Yaylalarda, en az 18°C $(l:core_mechanics/climate#temperature)sıcaklık$() ve en az 300mm $(l:core_mechanics/climate#rainfall)yağış$() değerlerine sahip yüksek rakımlı bölgelerde oluşur. $(thing)Kan Zambağı$() çiçeği Kaolin kili üzerinde yetişir."
     },
     {
       "type": "tfc:multimultiblock",
@@ -766,7 +766,7 @@
       "item": "tfc:ore/graphite",
       "title": "Grafit",
       "link_recipes": false,
-      "text": "Grafit, $(l:mechanics/fire_clay)Ateş Kili$() yapımında kullanılan bir $(thing)Mineraldir$(). y=60'ın altındaki rakımlarda, $(thing)Gnays$(), $(thing)Mermer$(), $(thing)Kuvarsit$() ve $(thing)Şist$() kayaları içinde bulunabilir."
+      "text": "Grafit, $(l:metalworking/fire_clay)Ateş Kili$() yapımında kullanılan bir $(thing)Mineraldir$(). y=60'ın altındaki rakımlarda, $(thing)Gnays$(), $(thing)Mermer$(), $(thing)Kuvarsit$() ve $(thing)Şist$() kayaları içinde bulunabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -793,7 +793,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "Zinober",
       "link_recipes": false,
-      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground or high in mountains, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
+      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:crafting/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground or high in mountains, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -820,7 +820,7 @@
       "item": "tfc:ore/cryolite",
       "title": "Kriyolit",
       "link_recipes": false,
-      "text": "Kriyolit, $(thing)Kızıltaş Tozu$() elde etmek için $(l:mechanics/quern)El Değirmeninde$() öğütülebilen bir $(thing)Mineraldir$(). Yerin derinliklerinde; $(thing)Granit$() ve $(thing)Diyorit$() içindeki damarlarda bulunabilir."
+      "text": "Kriyolit, $(thing)Kızıltaş Tozu$() elde etmek için $(l:crafting/quern)El Değirmeninde$() öğütülebilen bir $(thing)Mineraldir$(). Yerin derinliklerinde; $(thing)Granit$() ve $(thing)Diyorit$() içindeki damarlarda bulunabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -847,7 +847,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "Güherçile",
       "link_recipes": false,
-      "text": "Güherçile, $(l:mechanics/quern)El Değirmeninde$() öğütülebilen ve ardından $(thing)Barut$() yapımında kullanılan bir $(thing)Mineraldir$(). Yüzeye yakın $(l:the_world/geology#sedimentary)Tortul$() kayalarda çok geniş ve düz yataklar halinde bulunabilir."
+      "text": "Güherçile, $(l:crafting/quern)El Değirmeninde$() öğütülebilen ve ardından $(thing)Barut$() yapımında kullanılan bir $(thing)Mineraldir$(). Yüzeye yakın $(l:the_world/geology#sedimentary)Tortul$() kayalarda çok geniş ve düz yataklar halinde bulunabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -874,7 +874,7 @@
       "item": "tfc:ore/sulfur",
       "title": "Kükürt",
       "link_recipes": false,
-      "text": "Kükürt, $(l:mechanics/quern)El Değirmeninde$() öğütülebilen ve ardından $(thing)Barut$() yapımında kullanılan bir $(thing)Mineraldir$(). Yerin derinliklerinde, lav seviyesine yakın yerlerde; herhangi bir $(l:the_world/geology#metamorphic)Metamorfik$() veya $(l:the_world/geology#igneous_intrusive)Derinlik Volkanik$() kaya içinde, seyrek ama büyük ve bol damarlar halinde bulunabilir."
+      "text": "Kükürt, $(l:crafting/quern)El Değirmeninde$() öğütülebilen ve ardından $(thing)Barut$() yapımında kullanılan bir $(thing)Mineraldir$(). Yerin derinliklerinde, lav seviyesine yakın yerlerde; herhangi bir $(l:the_world/geology#metamorphic)Metamorfik$() veya $(l:the_world/geology#igneous_intrusive)Derinlik Volkanik$() kaya içinde, seyrek ama büyük ve bol damarlar halinde bulunabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -901,7 +901,7 @@
       "item": "tfc:ore/sylvite",
       "title": "Silvit",
       "link_recipes": false,
-      "text": "Silvit, $(l:mechanics/quern)El Değirmeninde$() öğütülebilen ve ardından $(l:mechanics/fertilizers)Gübre$() olarak kullanılabilen bir $(thing)Mineraldir$(). Yüzeye yakın $(thing)Şeyl$(), $(thing)Kiltaşı$() ve $(thing)Çört$() içinde çok geniş ve düz yataklar halinde bulunabilir."
+      "text": "Silvit, $(l:crafting/quern)El Değirmeninde$() öğütülebilen ve ardından $(l:mechanics/fertilizers)Gübre$() olarak kullanılabilen bir $(thing)Mineraldir$(). Yüzeye yakın $(thing)Şeyl$(), $(thing)Kiltaşı$() ve $(thing)Çört$() içinde çok geniş ve düz yataklar halinde bulunabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -928,7 +928,7 @@
       "item": "tfc:ore/borax",
       "title": "Boraks",
       "link_recipes": false,
-      "text": "Boraks, $(l:mechanics/flux)Akı$() üretmek için $(l:mechanics/quern)El Değirmeninde$() öğütülebilen bir $(thing)Mineraldir$(). Yüzeye yakın $(thing)Kiltaşı$(), $(thing)Kireçtaşı$() ve $(thing)Şeyl$() içinde çok geniş ve düz yataklar halinde bulunabilir."
+      "text": "Boraks, $(l:metalworking/flux)Akı$() üretmek için $(l:crafting/quern)El Değirmeninde$() öğütülebilen bir $(thing)Mineraldir$(). Yüzeye yakın $(thing)Kiltaşı$(), $(thing)Kireçtaşı$() ve $(thing)Şeyl$() içinde çok geniş ve düz yataklar halinde bulunabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -982,7 +982,7 @@
       "item": "tfc:ore/halite",
       "title": "Halit",
       "link_recipes": false,
-      "text": "Halit, $(thing)Tuz$() yapmak için $(l:mechanics/quern)El Değirmeninde$() öğütülebilen ve önemli bir $(l:mechanics/decay#salting)Koruyucu$() olan bir $(thing)Mineraldir$(). Yüzeye yakın $(l:the_world/geology#sedimentary)Tortul$() kayalarda çok geniş ve düz yataklar halinde bulunabilir."
+      "text": "Halit, $(thing)Tuz$() yapmak için $(l:crafting/quern)El Değirmeninde$() öğütülebilen ve önemli bir $(l:food/decay#salting)Koruyucu$() olan bir $(thing)Mineraldir$(). Yüzeye yakın $(l:the_world/geology#sedimentary)Tortul$() kayalarda çok geniş ve düz yataklar halinde bulunabilir."
     },
     {
       "type": "patchouli:multiblock",
@@ -1090,7 +1090,7 @@
       "item": "tfc:ore/amethyst",
       "title": "Ametist",
       "link_recipes": false,
-      "text": "Amethyst is a decorative $(l:mechanics/gems)Gemstone$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40, or in geodes below y=30."
+      "text": "Amethyst is a decorative $(l:mechanics/gems)Gemstone$() which can be used to make $(l:crafting/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40, or in geodes below y=30."
     },
     {
       "type": "patchouli:multiblock",

@@ -24,7 +24,7 @@
         }
       },
       "name": "화약통",
-      "text": "$(l:mechanics/barrels)통$()과 유사하게, 화약통은 $(item)$(k:key.use)$()을 눌러 밀봉할 수 있습니다. 밀봉된 화약통만 점화할 수 있습니다.",
+      "text": "$(l:crafting/barrels)통$()과 유사하게, 화약통은 $(item)$(k:key.use)$()을 눌러 밀봉할 수 있습니다. 밀봉된 화약통만 점화할 수 있습니다.",
       "enable_visualize": false
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "화약은 2가지 방법으로 만들 수 있습니다. 첫 번째 방법은 $(l:the_world/ores_and_minerals#saltpeter)초석$(), $(l:the_world/ores_and_minerals#saltpeter)황$(), $(l:mechanics/charcoal_pit)숯$()가루를 섞는 것입니다. 가루는 $(l:mechanics/quern)맷돌$()로 갈아 만들 수 있습니다. $(l:the_world/ores_and_minerals#graphite)흑연$()이 있다면, 화약을 더 효율적인 레시피로 만들 수 있습니다."
+      "text": "화약은 2가지 방법으로 만들 수 있습니다. 첫 번째 방법은 $(l:the_world/ores_and_minerals#saltpeter)초석$(), $(l:the_world/ores_and_minerals#saltpeter)황$(), $(l:metalworking/charcoal_pit)숯$()가루를 섞는 것입니다. 가루는 $(l:crafting/quern)맷돌$()로 갈아 만들 수 있습니다. $(l:the_world/ores_and_minerals#graphite)흑연$()이 있다면, 화약을 더 효율적인 레시피로 만들 수 있습니다."
     }
   ],
   "read_by_default": true

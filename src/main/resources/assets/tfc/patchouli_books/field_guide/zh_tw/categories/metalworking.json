@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Metalworking",
+  "description": "Processing more advanced types of metals, from bronzes to steels.",
+  "icon": "tfc:metal/anvil/bronze",
+  "sortnum": 3
+}

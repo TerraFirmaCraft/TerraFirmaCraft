@@ -1,0 +1,321 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Hayvancılık",
+  "category": "tfc:food",
+  "icon": "minecraft:textures/item/egg.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Çiftlik Hayvanları$(), oyuncu tarafından evcilleştirilebilen ve yetiştirilebilen hayvanlardır. Çiftlik hayvanları $(thing)erkek$() veya $(thing)dişi$() olabilir. Bazı hayvanların cinsiyetini görsel olarak anlamak mümkündür. Örneğin, erkek domuzların dişleri vardır."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Çiftlik hayvanları $(thing)yaşlanma$() sürecinden geçerler. Daha küçük olan ve oyuncuya bir şey sağlayamayan yavrular olarak doğarlar. Belirli bir gün sayısından sonra, üreme veya süt verme gibi işleri yapabilen $(thing)yetişkin$() hayvanlara dönüşürler. Çiftleştikten veya yeterince kez kullanıldıktan sonra hayvanlar $(thing)yaşlı$() hale gelirler ve artık sadece etleri için işe yararlar."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/old_cow.png"
+      ],
+      "text": "Bu boğa yaşlıdır ve üreyemez, bu yüzden tüyleri solmuştur ve gözleri gri, görmez haldedir.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Çiftlik hayvanları, $(thing)aşinalığı$() artırmak için beslenebilir. Her hayvanın yemeyi tercih ettiği yiyecekler vardır. Bir hayvanı beslemek için elinizde yiyecek varken $(item)$(k:key.sneak)$() tuşuna basın ve $(item)$(k:key.use)$() tuşunu kullanın."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
+      ],
+      "text": "Çiftlik hayvanlarının, size ne kadar aşina olduklarını gösteren bir $(thing)Aşinalık Göstergesi$() vardır. Bunu ortaya çıkarmak için $(item)$(k:key.sneak)$() tuşunu basılı tutun ve hayvana bakın.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
+      ],
+      "text": "Beslenmedikleri takdirde aşinalık her gün biraz azalır. Aşinalığı yeterince artırmak, beyaz çerçeveli kalp ile gösterilen bu azalmayı önler.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
+      ],
+      "text": "Yetişkin çiftlik hayvanları, kırmızı çerçeveli kalp ile gösterildiği üzere tam olarak evcilleştirilemez. Yavrular %100 aşinalığa ulaşabilir.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mammals",
+      "text": "$(thing)Memeliler$(), $(thing)Gebelik$() sürecinden geçen çiftlik hayvanlarıdır. Aşinalığı %30'un üzerinde olan ve o gün beslenmiş yetişkin memeliler, karşı cinsten olmaları ve birbirlerine yakın bulunmaları durumunda çiftleşirler. Dişi hayvan $(thing)gebe$() kalır ve bu durum, döllenmeden belirli bir gün sonra yavru doğurmasını sağlar.$(br)Buna bir örnek $(l:food/animal_husbandry#pig)Domuzlardır$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wooly_animals",
+      "text": "$(thing)Yünlü Hayvanlar$(), yetişkin olduklarında ve size yeterince aşina olduklarında $(thing)Kırkılabilen$() $(l:food/animal_husbandry#mammals)Memelilerdir$(). Bazı örnekler $(l:food/animal_husbandry#sheep)Koyunlar$(), $(l:food/animal_husbandry#alpaca)Alpakalar$() ve $(l:food/animal_husbandry#musk_ox)Misk Sığırlarıdır$()."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/metal/shears/bronze",
+      "text": "Makaslar, iki $(thing)bıçak ağzının$() $(l:metalworking/anvils#welding)kaynaklanmasıyla$() yapılabilir. Hangi bıçak ağzının dövme bonusu daha düşükse, o bonusu (varsa) makasa aktaracaktır."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dairy_animals",
+      "text": "$(thing)Süt Veren Hayvanlar$(), $(thing)Süt$() üreten memelilerdir. Dişi süt hayvanlarına bir kova ile tıklanarak süt elde edilebilir. Bazı örnekler $(l:food/animal_husbandry#goat)Keçiler$(), $(l:food/animal_husbandry#cow)İnekler$() ve $(l:food/animal_husbandry#yak)Yaklardır$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "oviparous_animals",
+      "recipe": "tfc:crafting/nest_box",
+      "title": "Yuva Kutusu",
+      "text": "$(thing)Yumurta ile Çoğalan Hayvanlar$(), $(l:food/animal_husbandry#mammals)Memeliler$() değildir ve bunun yerine $(thing)Yumurta$() bırakarak çoğalırlar. Yumurta bırakmak için kendi başlarına bulabildikleri bir $(thing)Yuva Kutusuna$() ihtiyaç duyarlar.$(br)Bazı örnekler $(l:food/animal_husbandry#duck)Ördekler$(), $(l:food/animal_husbandry#quail)Bıldırcınlar$() ve $(l:food/animal_husbandry#chicken)Tavuklardır$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/food/cooked_egg",
+      "text": "$(thing)Yumurtalar$() yemek için pişirilebilir veya haşlanabilir. Erkek yumurtlayan hayvanlar dişileri dölleyebilir; bu, yuva kutusuna bırakılan bir sonraki yumurtanın döllenmiş olmasını sağlar. Döllenmiş yumurtaların üzerinde, çatlamalarına ne kadar süre kaldığını gösteren bir ipucu metni bulunur."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Atgiller$(), evcilleştirildiklerinde binilebilen $(l:food/animal_husbandry#mammals)Memelilerdir$(). %15 aşinalığa ulaştıktan sonra binilebilir hale gelirler. Atlar; hız, zıplama yüksekliği, sağlık, boyut ve işaretler dahil olmak üzere $(thing)genetik özelliklerini$() yavrularına aktarırlar. Bir at ile bir eşeğin çiftleşmesinden $(thing)katır$() doğar."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "anchor": "horses",
+      "recipe": "tfc:knapping/saddle",
+      "text": "Eyerler deriden yontularak yapılabilir."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Binmek için $(thing)Eyer$() gerekir, bu da $(thing)Yontularak$() yapılabilir. Buna $(l:food/animal_husbandry#mule)Katırlar$(), $(l:food/animal_husbandry#donkey)Eşekler$() ve $(l:food/animal_husbandry#horses)Atlar$() dahildir. Katırlar ve eşekler herhangi bir sandığı veya fıçıyı taşıyabilir. Eğer bir fıçı taşıyorlarsa, $(item)$(k:key.sneak)$() tuşunu basılı tutarken $(item)$(k:key.use)$() tuşunu kullanmak onu çıkarmak için kullanılabilir. Aynı tuşlar elinizde bir kova varken fıçıdaki sıvıyı boşaltmak için de kullanılabilir.$(br2)Sonraki birkaç sayfa tüm çiftlik hayvanı türlerini ele alacaktır."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pig",
+      "text": "$(thing)Domuzlar$(), -10 ile 35°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 200mm $(l:core_mechanics/climate#rainfall)yağış$() alan ılıman ormanlarda ortaya çıkarlar. Özel yetenekleri olmayan $(l:food/animal_husbandry#mammals)Memelilerdir$(). Çürümüş olsa bile her türlü yiyeceği yerler. 1-10 arası yavru yaparlar, sadece 19 gün gebe kalırlar ve 80 günde yetişkinliğe ulaşırlar. 6 kez yavru yapabilirler.",
+      "title": "Domuzlar"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Bir domuz."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rabbit",
+      "text": "$(thing)Rabbits$() spawn in $(l:core_mechanics/climate#temperature)temperatures$() above -16°C, and at least 15mm of $(l:core_mechanics/climate#rainfall)rainfall$(), changing their coat based on climate. They are $(l:food/animal_husbandry#mammals)Mammals$() with no special abilities, aside from being known for chewing on carrots and cabbage. They will eat any food, even if it is rotten. They have 1-6 children, are pregnant for just 19 days, and reach adulthood in 20 days. They can have children 6 times.",
+      "title": "Tavşanlar"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.8,
+      "name": " ",
+      "text": "Bir tavşan."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cow",
+      "text": "$(thing)İnekler$(), çoğu iklimde, -10 ile 35°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 250mm $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(l:food/animal_husbandry#dairy_animals)Süt Veren Hayvanlardır$(). Sadece çürümüş de olabilen $(thing)tahılları$() yerler. 1-2 arası yavru yaparlar, 58 gün gebe kalırlar ve 192 günde yetişkinliğe ulaşırlar. Hiç sağılmazlarsa 13 kez yavru yapabilirler veya hiç çiftleştirilmezlerse 128 kez sağılabilirler. Her gün süt üretirler.",
+      "title": "İnekler"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Bir inek."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "goat",
+      "text": "$(thing)Keçiler$(), ılıman iklimlerde, -12 ile 25°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 300mm $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(l:food/animal_husbandry#dairy_animals)Süt Veren Hayvanlardır$(). Çürümüş de olabilen $(thing)tahılları$(), $(thing)meyveleri$() ve $(thing)sebzeleri$() yerler. 1-2 arası yavru yaparlar, 32 gün gebe kalırlar ve 96 günde yetişkinliğe ulaşırlar. Hiç sağılmazlarsa 6 kez yavru yapabilirler veya hiç çiftleştirilmezlerse 60 kez sağılabilirler. Her 3 günde bir süt üretirler.",
+      "title": "Keçiler"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Bir keçi."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "yak",
+      "text": "$(thing)Yaklar$(), soğuk iklimlerde, en fazla -11°C $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 100mm $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(l:food/animal_husbandry#dairy_animals)Süt Veren Hayvanlardır$(). Sadece taze $(thing)tahılları$() yerler. Her zaman 1 yavru yaparlar, 64 gün gebe kalırlar ve 180 günde yetişkinliğe ulaşırlar. Hiç sağılmazlarsa 23 kez yavru yapabilirler veya hiç çiftleştirilmezlerse 230 kez sağılabilirler. Günde bir kez süt üretirler.",
+      "title": "Yak"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Bir yak."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alpaca",
+      "text": "$(thing)Alpakalar$(), ılıman iklimlerde, -8 ile 20°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 250mm $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(l:food/animal_husbandry#wooly_animals)Yün Veren Hayvanlardır$(). $(thing)Tahılları$() ve $(thing)meyveleri$() yerler. 1-2 arası yavru yaparlar, 36 gün gebe kalırlar ve 98 günde yetişkinliğe ulaşırlar. Hiç kırkılmazlarsa 13 kez yavru yapabilirler veya hiç çiftleştirilmezlerse 128 kez kırkılabilirler. Her 6 günde bir yünleri uzar.",
+      "title": "Alpaka"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Bir alpaka."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sheep",
+      "text": "$(thing)Koyunlar$(), daha kurak iklimlerde, 0 ile 35°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 70 ile 300mm arasında $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(l:food/animal_husbandry#wooly_animals)Yün Veren Hayvanlardır$(). $(thing)Tahılları$() yerler. 1-2 arası yavru yaparlar, 32 gün gebe kalırlar ve 56 günde yetişkinliğe ulaşırlar. Hiç kırkılmazlarsa 6 kez yavru yapabilirler veya hiç çiftleştirilmezlerse 60 kez kırkılabilirler. Her 9 günde bir yünleri uzar.",
+      "title": "Koyun"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Bir koyun."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "musk_ox",
+      "text": "$(thing)Misk Öküzleri$(), soğuk iklimlerde, -25 ile 0°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 100mm $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(l:food/animal_husbandry#wooly_animals)Yün Veren Hayvanlardır$(). $(thing)Tahılları$() yerler. Her zaman 1 yavru yaparlar, 64 gün gebe kalırlar ve 168 günde yetişkinliğe ulaşırlar. Hiç kırkılmazlarsa 16 kez yavru yapabilirler veya hiç çiftleştirilmezlerse 160 kez kırkılabilirler. Her 96 saatte bir yünleri uzar.",
+      "title": "Misk Öküzü"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Bir misk öküzü."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bactrian_camel",
+      "text": "$(thing)Bactrian Camels$() spawn in cold deserts, with $(l:core_mechanics/climate#temperature)temperature$() of at most -5°C, and at most 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#wooly_animals)Wooly Animals$() and can be ridden. They are slower than horses, but faster on sand and snow. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 24 days, and become adults in 80 days. They can have children 8 times if they are never sheared, or be sheared 80 times if they are never bred. They grow wool every 7 days.",
+      "title": "Bactrian Camel"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bactrian_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A bactrian camel."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "chicken",
+      "text": "$(thing)Tavuklar$(), en az 14°C $(l:core_mechanics/climate#temperature)sıcaklığa$() ve en az 225mm $(l:core_mechanics/climate#rainfall)yağışa$() sahip ılıman ormanlarda ortaya çıkarlar. $(l:food/animal_husbandry#oviparous_animals)Yumurta ile Çoğalan Hayvanlardır$(). Çürümüş de olabilen $(thing)tahılları$(), $(thing)meyveleri$(), $(thing)sebzeleri$() ve $(thing)tohumları$() yerler. Yumurtaları 8 günde çatlar ve 24 günde yetişkinliğe ulaşırlar. 100 kez yumurtlayabilirler. Her 30 saatte bir yumurta üretirler.",
+      "title": "Tavuklar"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "Bir tavuk."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "duck",
+      "text": "$(thing)Ördekler$(), -25 ile 30°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 100mm $(l:core_mechanics/climate#rainfall)yağış$() alan çoğu ovada ortaya çıkarlar. $(l:food/animal_husbandry#oviparous_animals)Yumurta ile Çoğalan Hayvanlardır$(). $(thing)Tahılları$(), $(thing)meyveleri$(), $(thing)sebzeleri$(), $(thing)ekmeği$() ve $(thing)tohumları$() yerler. Yumurtaları 8 günde çatlar ve 32 günde yetişkinliğe ulaşırlar. 72 kez yumurtlayabilirler. Her 32 saatte bir yumurta üretirler.",
+      "title": "Ördekler"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "Bir ördek."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "quail",
+      "text": "$(thing)Bıldırcınlar$(), daha soğuk iklimlerde, -15 ile 15°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en az 200mm $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(l:food/animal_husbandry#oviparous_animals)Yumurta ile Çoğalan Hayvanlardır$(). Çürümüş de olabilen $(thing)tahılları$(), $(thing)meyveleri$(), $(thing)sebzeleri$() ve $(thing)tohumları$() yerler. Yumurtaları 8 günde çatlar ve 22 günde yetişkinliğe ulaşırlar. 48 kez yumurtlayabilirler. Her 28 saatte bir yumurta üretirler.",
+      "title": "Bıldırcın"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "Bir bıldırcın."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "donkey",
+      "text": "$(thing)Eşekler$(), daha nemli ovalarda, en az -15°C $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 130 ile 400mm arası $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. $(thing)Sandık$() taşıyabilen bir tür $(l:food/animal_husbandry#horses)Atgildir$(). $(thing)Tahılları$() ve $(thing)meyveleri$() yerler. 1 yavru yaparlar, 19 gün gebe kalırlar ve 80 günde yetişkinliğe ulaşırlar. 6 kez yavru yapabilirler.",
+      "title": "Eşekler"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Bir eşek."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mule",
+      "text": "$(thing)Katırlar$(), en az -15°C $(l:core_mechanics/climate#temperature)sıcaklığa$() ve 130 ile 400mm arası $(l:core_mechanics/climate#rainfall)yağışa$() sahip ovalarda ortaya çıkarlar. $(thing)Sandık$() taşıyabilen bir tür $(l:food/animal_husbandry#horses)Atgildir$() ve $(thing)at$() ile $(thing)eşeğin$() kısır ürünüdürler. $(thing)Tahılları$() ve $(thing)meyveleri$() yerler. 80 günde yetişkinliğe ulaşırlar.",
+      "title": "Katırlar"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Bir katır."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "horse",
+      "text": "$(thing)Atlar$(), en az -15°C $(l:core_mechanics/climate#temperature)sıcaklığa$() ve 130 ile 400mm arası $(l:core_mechanics/climate#rainfall)yağışa$() sahip ovalarda ortaya çıkarlar. Bir tür $(l:food/animal_husbandry#horses)Atgildir$(). $(thing)Tahılları$() ve $(thing)meyveleri$() yerler. 1 yavru yaparlar, 19 gün gebe kalırlar ve 80 günde yetişkinliğe ulaşırlar. 6 kez yavru yapabilirler.",
+      "title": "Atlar"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Bir at."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dromedary_camel",
+      "text": "$(thing)Dromedary Camels$() spawn in drier climates, with $(l:core_mechanics/climate#temperature)temperature$() of at least -5°C, and at most 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#mammals)Mammals$() that can be ridden. They are slower than horses, but are immune to cacti and run fast on sand. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "title": "Dromedary Camels"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dromedary_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A dromedary camel."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "frog",
+      "text": "$(thing)Kurbağalar$(), -13°C üzerindeki $(l:core_mechanics/climate#temperature)sıcaklıklarda$() ve en az 150mm $(l:core_mechanics/climate#rainfall)yağış$() alan yerlerde ortaya çıkarlar. Evcilleştirilebilirler ve çiftleştirildiklerinde tatlı suya yumurta bırakırlar, bu yumurtalar iribaşlara dönüşür. Balık ve örümcek gözü yerler.",
+      "title": "Kurbağalar"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:frog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.8,
+      "name": " ",
+      "text": "Bir kurbağa."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

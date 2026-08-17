@@ -49,7 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "Küçük kap bu tür eşyalardan biridir. Tüm çömlek eşyaları gibi, kullanılmadan önce $(l:https://en.wikipedia.org/wiki/Pottery)pişirilmesi$() gerekir. Pişirme, eşyanın kilin sert bir $(thing)Seramik$() malzemeye dönüşeceği noktaya kadar $(l:mechanics/heating)ısıtılması$() işlemidir; bu da 1400 °C'ye veya $(#FFDF00)$(bold)$(t:Yellow White)Sarı Beyaz$() renge kadar ısıtılmayı gerektirir.$(br2)Bunu oyunun başlarında yapabilmek için bir $(l:getting_started/pit_kiln)Çukur Fırın$() kullanmanız gerekecektir.",
+      "text": "Küçük kap bu tür eşyalardan biridir. Tüm çömlek eşyaları gibi, kullanılmadan önce $(l:https://en.wikipedia.org/wiki/Pottery)pişirilmesi$() gerekir. Pişirme, eşyanın kilin sert bir $(thing)Seramik$() malzemeye dönüşeceği noktaya kadar $(l:core_mechanics/heating)ısıtılması$() işlemidir; bu da 1400 °C'ye veya $(#FFDF00)$(bold)$(t:Yellow White)Sarı Beyaz$() renge kadar ısıtılmayı gerektirir.$(br2)Bunu oyunun başlarında yapabilmek için bir $(l:getting_started/pit_kiln)Çukur Fırın$() kullanmanız gerekecektir.",
       "title": "Küçük Kap"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/decay#large_vessels)Büyük Kap$() da benzer bir şekilde oluşturulur. Yerleştirilebilir ve eşyalar için dokuz yuvaya sahiptir. Daha fazla bilgi için bağlantılı bölüme bakın.",
+      "text": "$(l:food/decay#large_vessels)Büyük Kap$() da benzer bir şekilde oluşturulur. Yerleştirilebilir ve eşyalar için dokuz yuvaya sahiptir. Daha fazla bilgi için bağlantılı bölüme bakın.",
       "title": "Büyük Kap"
     },
     {
@@ -104,7 +104,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
-      "text": "$(l:mechanics/prospecting#propick)Madenci Kazması$(), büyük miktarda cevher bulmak için temel bir alettir."
+      "text": "$(l:metalworking/prospecting#propick)Madenci Kazması$(), büyük miktarda cevher bulmak için temel bir alettir."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -114,7 +114,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
-      "text": "Bir $(thing)Testere$(), $(thing)Çalışma Tezgahı$() gibi gelişmiş ahşap bileşenlerin ve $(l:mechanics/support_beams)Destekler$() gibi diğer birçok düzeneğin üretilmesi için gereken bir alettir."
+      "text": "Bir $(thing)Testere$(), $(thing)Çalışma Tezgahı$() gibi gelişmiş ahşap bileşenlerin ve $(l:core_mechanics/support_beams)Destekler$() gibi diğer birçok düzeneğin üretilmesi için gereken bir alettir."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -124,7 +124,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
-      "text": "Bir $(l:mechanics/chisel)Keski$(), blokları düzleştirmek ve çok sayıda dekoratif blok oluşturmak için kullanılan bir alettir."
+      "text": "Bir $(l:metalworking/chisel)Keski$(), blokları düzleştirmek ve çok sayıda dekoratif blok oluşturmak için kullanılan bir alettir."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -134,7 +134,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
-      "text": "Bir $(thing)Çekiç$(), $(l:mechanics/anvils)Örsler$() oluşturmak ve üzerinde çalışmak için temel bir alettir."
+      "text": "Bir $(thing)Çekiç$(), $(l:metalworking/anvils)Örsler$() oluşturmak ve üzerinde çalışmak için temel bir alettir."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -144,7 +144,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "$(l:mechanics/crops)Ekinler$() dikmek ve bakımını yapmak için kullanılan bir $(thing)Çapa$()."
+      "text": "A $(thing)Hoe$() used for planting and maintaining $(l:food/crops)Crops$()."
     },
     {
       "type": "tfc:knapping_recipe",

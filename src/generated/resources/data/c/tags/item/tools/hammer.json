@@ -12,6 +12,7 @@
     "tfc:stone/hammer/igneous_extrusive",
     "tfc:stone/hammer/igneous_intrusive",
     "tfc:stone/hammer/metamorphic",
-    "tfc:stone/hammer/sedimentary"
+    "tfc:stone/hammer/sedimentary",
+    "tfc:obsidian_hammer"
   ]
 }

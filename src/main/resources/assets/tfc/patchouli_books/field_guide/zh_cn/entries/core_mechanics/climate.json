@@ -1,0 +1,73 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "历法和气候",
+  "category": "tfc:core_mechanics",
+  "icon": "tfc:textures/gui/book/icons/thermometer.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "calendar",
+      "text": "在群峦传说中，气候和时间都是影响生存的非常重要的要素。首先，我们先来谈谈$(thing)日历$()。$(br2)在任何时候，只要打开物品栏并点击$(thing)日历$()选项卡就能查看日历。这里会显示当前的$(thing)季节$()、$(thing)日历日$()和$(thing)日期$()。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/calendar.png"
+      ],
+      "text": "日历界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "群峦传说的世界是有四季的，气象和气候也会随之变化。每个季节根据月份分为$(thing)初期$()、$(thing)仲期$()和$(thing)暮期$()。以下是四季所对应的月份：$(br)$(li)$(bold)春季$()：三月 - 五月$(li)$(bold)夏季$()：六月 - 八月$(li)$(bold)秋季$()：九月 - 十一月$(li)$(bold)冬季$()：十二月 - 次年二月"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "当前季节会影响地区的温度和降水（如果可以下雨或下雪）等。所以一定要经常查看日历，它对你的生存会有很大的帮助！$(br2)接下来，我们来谈谈气候。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "climate",
+      "text": "主物品栏屏幕上的另一个选项卡是$(thing)气候$()屏幕。它显示当前位置的信息。$(br2)从上到下，屏幕依次显示$(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)当地气候$()、$(thing)年平均温度$()、当前温度、$(thing)年平均降雨量$()、当前降雨量、峰值降雨量以及峰值出现的季节。",
+      "title": "气候"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/climate.png"
+      ],
+      "text": "气候界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "在群峦传说中，温度受到多种因素的影响:$(br)$(li)首先，地区，尤其是纬度（Z 坐标）起着最大的作用。$(li)其次，海拔也会影响温度——山顶最为寒冷。$(li)接下来，季节会影响温度——夏季最热，冬季最冷。$(li)最后，温度不仅每天都会不同，每小时也会有所变化。",
+      "title": "温度"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最后一行显示的是当前由上述因素共同决定后的温度。$(br2)温度会影响很多事情：作物和植物是否会生长，冰雪是否会形成或融化等等。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "降雨量受多种因素影响：$(br2)区域，尤其是经度（X 坐标）影响最大，通常出生点以东气候更湿润。距离海岸的远近也有影响，内陆地区气候更干燥。",
+      "title": "降雨量"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "当前季节和当地气候也会影响降雨量。这些影响也取决于区域：西海岸通常夏季干燥，而大型大陆的东侧则有显著的夏季季风。大陆中心和海洋岛屿的季节变化较小。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "年降雨量以毫米（mm）为单位，范围在 0mm 到 500mm 之间，但在季节性强的气候中，瞬时降雨量可达 1000mm。降雨量影响一个地区的动植物种类，以及降雨和降雪的频率。$(br)"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一个区域的降雨量还决定了何种农作物能被种植在这儿。降雨量的多少是影响土地$(l:food/hydration)湿度$()的一个重要因素，而湿度则决定了$(l:food/crops)农作物$()、$(l:the_world/wild_fruits#fruit_trees)果树$()、和$(l:the_world/wild_fruits#tall_bushes)灌木丛$()是否可以生长。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

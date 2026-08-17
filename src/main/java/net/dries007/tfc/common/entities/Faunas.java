@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities;
 
 import java.util.Map;
 import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -40,6 +41,8 @@ import net.dries007.tfc.common.entities.livestock.DairyAnimal;
 import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
+import net.dries007.tfc.common.entities.livestock.camel.BactrianCamel;
+import net.dries007.tfc.common.entities.livestock.camel.DromedaryCamel;
 import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
@@ -49,6 +52,7 @@ import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.predator.TFCWolf;
 import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.RammingPrey;
+import net.dries007.tfc.common.entities.prey.TFCArmadillo;
 import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCFrog;
 import net.dries007.tfc.common.entities.prey.TFCPanda;
@@ -121,6 +125,9 @@ public class Faunas
     public static final Id<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
     public static final Id<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
     public static final Id<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
+    public static final Id<DromedaryCamel> DROMEDARY_CAMEL = registerAnimal(TFCEntities.DROMEDARY_CAMEL);
+    public static final Id<BactrianCamel> BACTRIAN_CAMEL = registerAnimal(TFCEntities.BACTRIAN_CAMEL);
+    public static final Id<TFCArmadillo> ARMADILLO = registerAnimal(TFCEntities.ARMADILLO);
 
     public static void registerSpawnPlacements(RegisterSpawnPlacementsEvent event)
     {
@@ -180,9 +187,12 @@ public class Faunas
         registerSpawnPlacement(event, DONKEY);
         registerSpawnPlacement(event, MULE);
         registerSpawnPlacement(event, HORSE);
+        registerSpawnPlacement(event, DROMEDARY_CAMEL);
+        registerSpawnPlacement(event, BACTRIAN_CAMEL);
         registerSpawnPlacement(event, WOLF);
         registerSpawnPlacement(event, HYENA);
         registerSpawnPlacement(event, DIREWOLF);
+        registerSpawnPlacement(event, ARMADILLO);
     }
 
     private static <E extends Mob> Id<E> registerAnimal(IdHolder<EntityType<E>> entity)

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "더 높은 티어의 금속을 가공하기 위해서는 직접 금형에 주조하는 것이 아니라, $(thing)모루$()를 사용해야 합니다. 모루는 $(l:mechanics/anvils#working)단조$()과 $(l:mechanics/anvils#welding)용접$(), 2가지 종류의 일을 할 수 있는 블록입니다. 이 챕터에서는 최초의 기초적인 돌 모루를 만드는 법을 보여줍니다."
+      "text": "더 높은 티어의 금속을 가공하기 위해서는 직접 금형에 주조하는 것이 아니라, $(thing)모루$()를 사용해야 합니다. 모루는 $(l:metalworking/anvils#working)단조$()과 $(l:metalworking/anvils#welding)용접$(), 2가지 종류의 일을 할 수 있는 블록입니다. 이 챕터에서는 최초의 기초적인 돌 모루를 만드는 법을 보여줍니다."
     },
     {
       "type": "patchouli:text",
@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "모루를 만들기 위해서는 또한 아무 종류의 $(thing)망치$()가 필요합니다. 돌 블록의 $(thing)위쪽$() 면을 $(thing)망치로$() 클릭하면 모루가 만들어집니다!$(br2)모루는 각각 $(l:mechanics/anvils#tiers)티어$()를 가지고 있고, 돌 모루는 가장 낮은 티어인 0티어입니다. 돌 모루로는 1티어 금속들을 $(l:mechanics/anvils#welding)용접$()하는 일 밖에 할 수 없습니다.",
+      "text": "모루를 만들기 위해서는 또한 아무 종류의 $(thing)망치$()가 필요합니다. 돌 블록의 $(thing)위쪽$() 면을 $(thing)망치로$() 클릭하면 모루가 만들어집니다!$(br2)모루는 각각 $(l:metalworking/anvils#tiers)티어$()를 가지고 있고, 돌 모루는 가장 낮은 티어인 0티어입니다. 돌 모루로는 1티어 금속들을 $(l:metalworking/anvils#welding)용접$()하는 일 밖에 할 수 없습니다.",
       "title": "§l돌 모루"
     },
     {
@@ -214,7 +214,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6,
+  "sortnum": 7,
   "extra_recipe_mappings": {
     "tfc:rock/anvil/granite": 0,
     "tfc:rock/anvil/diorite": 0,

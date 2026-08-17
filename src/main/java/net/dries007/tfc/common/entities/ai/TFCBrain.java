@@ -32,6 +32,7 @@ import net.dries007.tfc.common.entities.ai.livestock.DelegatingTemptingSensor;
 import net.dries007.tfc.common.entities.ai.livestock.NearestNestBoxSensor;
 import net.dries007.tfc.common.entities.ai.predator.PackLeaderSensor;
 import net.dries007.tfc.common.entities.ai.predator.PackPredator;
+import net.dries007.tfc.common.entities.ai.prey.ScareSensor;
 
 public class TFCBrain
 {
@@ -59,6 +60,8 @@ public class TFCBrain
     public static final DeferredHolder<SensorType<?>, SensorType<DelegatingTemptingSensor>> TEMPTATION_SENSOR = registerSensorType("tempt", DelegatingTemptingSensor::new);
     public static final DeferredHolder<SensorType<?>, SensorType<NearestNestBoxSensor>> NEST_BOX_SENSOR = registerSensorType("nearest_nest_box", NearestNestBoxSensor::new);
     public static final DeferredHolder<SensorType<?>, SensorType<PackLeaderSensor>> PACK_LEADER_SENSOR = registerSensorType("pack_leader", PackLeaderSensor::new);
+
+    public static final DeferredHolder<SensorType<?>, SensorType<ScareSensor>> SCARE_SENSOR = registerSensorType("scare", () -> new ScareSensor(6, 3, 100));
 
     public static final DeferredHolder<PoiType, PoiType> NEST_BOX_POI = registerPoi("nest_box", () -> new PoiType(getBlockStates(TFCBlocks.NEST_BOX.get()), 1, 1));
 

@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Лампы куются на $(l:mechanics/anvils)наковальне$() и объединяются со $(l:mechanics/glassworking_applications#lamp_glass)стеклом для лампы$()."
+      "text": "Лампы куются на $(l:metalworking/anvils)наковальне$() и объединяются со $(l:crafting/glassworking_applications#lamp_glass)стеклом для лампы$()."
     },
     {
       "type": "tfc:quern_recipe",
@@ -49,12 +49,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Вскипятите $(thing)оливковую пасту$() с $(thing)водой$() в $(l:mechanics/pot)горшке$(), чтобы сделать $(thing)воду с оливковым маслом$(). Запечатайте это в $(l:mechanics/barrels)бочке$() с $(thing)сетью из джута$(), чтобы получить $(thing)оливковое масло$(). Оливковое масло горит 8 игровых часов на каждую единицу жидкости."
+      "text": "Вскипятите $(thing)оливковую пасту$() с $(thing)водой$() в $(l:food/pot)горшке$(), чтобы сделать $(thing)воду с оливковым маслом$(). Запечатайте это в $(l:crafting/barrels)бочке$() с $(thing)сетью из джута$(), чтобы получить $(thing)оливковое масло$(). Единица оливкового масла горит шесть часов."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "Другим видом топлива для ламп является $(thing)жир$(). Чтобы сделать его, растопите 5 $(thing)жира$() в $(l:mechanics/pot)горшке$() с водой. Жир горит меньше 2 игровых часов на единицу. Его можно использовать для приготовления $(l:mechanics/lighting#сandles)свечей$()"
+      "text": "Другим видом топлива для ламп является $(thing)жир$(). Чтобы сделать его, растопите 5 $(thing)жира$() в $(l:food/pot)горшке$() с водой. Единица жира горит два часа. Его можно использовать для приготовления $(l:core_mechanics/lighting#candles)свечей$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -72,13 +72,13 @@
         }
       },
       "name": "Лампы на лаве",
-      "text": "Лава горит вечно, но может содержаться только в лампе из $(l:mechanics/steel#blue_steel)синей стали$().",
+      "text": "Лава горит вечно, но может содержаться только в лампе из $(l:metalworking/steel#blue_steel)синей стали$().",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)Цепи$() — отличный способ повесить ваши лампы, их можно ковать на $(l:mechanics/anvils)наковальне$()."
+      "text": "$(thing)Цепи$() — отличный способ повесить ваши лампы, их можно ковать на $(l:metalworking/anvils)наковальне$()."
     }
   ],
   "read_by_default": true,

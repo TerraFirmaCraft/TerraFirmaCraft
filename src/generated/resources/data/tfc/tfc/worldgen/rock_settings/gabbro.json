@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/gabbro",
+  "gravel": "tfc:rock/gravel/gabbro",
+  "hardened": "tfc:rock/hardened/gabbro",
+  "karst": false,
+  "loose": "tfc:rock/loose/gabbro",
+  "mafic": true,
+  "mossy_loose": "tfc:rock/mossy_loose/gabbro",
+  "raw": "tfc:rock/raw/gabbro",
+  "sand": "tfc:sand/black",
+  "sandstone": "tfc:raw_sandstone/black",
+  "spike": "tfc:rock/spike/gabbro"
+}

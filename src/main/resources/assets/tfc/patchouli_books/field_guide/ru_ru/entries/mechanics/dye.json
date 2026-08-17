@@ -6,14 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Все 16 стандартных $(thing)красителей$() можно получить в виде предметов. Большинство ярко-окрашенных растений можно измельчить в краситель с помощью $(l:mechanics/quern)жёрнова$(). Порошки $(l:the_world/ores_and_minerals)металлических руд$() можно напрямую превратить в краситель. $(l:the_world/ores_and_minerals#graphite)графит$(), $(l:the_world/ores_and_minerals#kaolinite)каолинит$(), $(l:the_world/ores_and_minerals#sylvite)сильвит$(), $(l:the_world/ores_and_minerals#lapis_lazuli)лазурит$(), кокс и порошок древесного угля также можно превратить в краситель."
+      "text": "Все 16 стандартных $(thing)красителей$() можно получить в виде предметов. Большинство ярко-окрашенных растений можно измельчить в краситель с помощью $(l:crafting/quern)жёрнова$(). Порошки $(l:the_world/ores_and_minerals)металлических руд$() можно напрямую превратить в краситель. $(l:the_world/ores_and_minerals#graphite)графит$(), $(l:the_world/ores_and_minerals#kaolinite)каолинит$(), $(l:the_world/ores_and_minerals#sylvite)сильвит$(), $(l:the_world/ores_and_minerals#lapis_lazuli)лазурит$(), кокс и порошок древесного угля также можно превратить в краситель."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
       "title": "Жидкие красители",
       "link_recipes": false,
-      "text": "Красители можно растворить. Красителя и 1000 мБ $(item)воды$(), доведённые до кипения в $(l:mechanics/pot)горшке$(), дают 1000 мБ $(thing)жидкого красителя$(). Жидкие красители используются в $(l:mechanics/barrels)бочках$() для окрашивания предметов."
+      "text": "Красители можно растворить. Красителя и 1000 мБ $(item)воды$(), доведённые до кипения в $(l:food/pot)горшке$(), дают 1000 мБ $(thing)жидкого красителя$(). Жидкие красители используются в $(l:crafting/barrels)бочках$() для окрашивания предметов."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -34,11 +34,11 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
       "recipe": "tfc:barrel/bleach_bed",
-      "text": "Пять кучек $(item)золы$() и 1000 мБ $(item)воды$(), доведённые до кипения в $(l:mechanics/pot)горшке$(), дают щелочь. 25 мБ щёлочи стирают окраску предмета."
+      "text": "Пять кучек $(item)золы$() и 1000 мБ $(item)воды$(), доведённые до кипения в $(l:food/pot)горшке$(), дают щелочь. 25 мБ щёлочи стирают окраску предмета."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(item)Чёрный краситель$() используется в $(l:mechanics/scribing_table)столе для пимсьма$().$(li)$(item)Красный краситель$() используется в $(l:mechanics/powderkegs)пороховых бочках$(). $(li)Необожжённые $(l:mechanics/decay#small_vessels)малые сосуды$() и $(l:mechanics/decay#large_vessels)большие сосуды$() могут быть окрашены$().",
+      "text": "$(li)$(item)Чёрный краситель$() используется в $(l:crafting/scribing_table)столе для пимсьма$().$(li)$(item)Красный краситель$() используется в $(l:mechanics/powderkegs)пороховых бочках$(). $(li)Необожжённые $(l:food/decay#small_vessels)малые сосуды$() и $(l:food/decay#large_vessels)большие сосуды$() могут быть окрашены$().",
       "title": "Разное"
     }
   ],

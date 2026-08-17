@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "石膏可以在装有染料的$(l:mechanics/barrels)大桶$()中$(l:mechanics/dye)染色$()成任何颜色。天然石膏块也可以用$(l:mechanics/chisel)凿子$()在$(thing)平滑$()模式下凿制成$(thing)磨制石膏$()，或者合成为楼梯、台阶或墙。",
+      "text": "石膏可以在装有染料的$(l:crafting/barrels)大桶$()中$(l:mechanics/dye)染色$()成任何颜色。天然石膏块也可以用$(l:metalworking/chisel)凿子$()在$(thing)平滑$()模式下凿制成$(thing)磨制石膏$()，或者合成为楼梯、台阶或墙。",
       "title": "石膏装饰"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "将一些小石子与$(l:mechanics/chisel)凿子$()在合成栏中合成就可以得到这种岩石的$(thing)砖$()。将砖与$(thing)砂浆$()合成就能做成坚固的建筑方块。$(br2)砂浆可以通过将$(thing)沙子$()加入装有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到。",
+      "text": "将一些小石子与$(l:metalworking/chisel)凿子$()在合成栏中合成就可以得到这种岩石的$(thing)砖$()。将砖与$(thing)砂浆$()合成就能做成坚固的建筑方块。$(br2)砂浆可以通过将$(thing)沙子$()加入装有$(l:crafting/barrels#limewater)石灰水$()的大桶得到。",
       "title": "石砖和砂浆"
     },
     {

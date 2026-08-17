@@ -100,7 +100,7 @@
         "tfc:knapping/stone/hoe_head/igneous_extrusive",
         "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
-      "text": "$(thing)クワ$()は$(l:mechanics/crops)農業$()に使用できます。また、葉や他の植物を破壊するためにも使用できます。"
+      "text": "$(thing)クワ$()は$(l:food/crops)農業$()に使用できます。また、葉や他の植物を破壊するためにも使用できます。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:knapping/stone/hammer_head/igneous_extrusive",
         "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
-      "text": "$(thing)ハンマー$()は$(l:mechanics/damage_types)粉砕ダメージ$()を与える武器として使用できます。より重要な用途として$(l:getting_started/primitive_anvils)鍛冶$()にも使用します。"
+      "text": "$(thing)ハンマー$()は$(l:core_mechanics/damage_types)粉砕ダメージ$()を与える武器として使用できます。より重要な用途として$(l:getting_started/primitive_anvils)鍛冶$()にも使用します。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:knapping/stone/javelin_head/igneous_extrusive",
         "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
-      "text": "最後に、$(thing)槍$()はターゲットに投げることができる原始的な武器として使用したり、 $(l:mechanics/damage_types)貫通ダメージ$()を与える近接武器として使用できます。石器時代の狩りの主役です。"
+      "text": "最後に、$(thing)槍$()はターゲットに投げることができる原始的な武器として使用したり、 $(l:core_mechanics/damage_types)貫通ダメージ$()を与える近接武器として使用できます。石器時代の狩りの主役です。"
     }
   ],
   "read_by_default": true,

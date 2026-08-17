@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Alçı, bir $(l:mechanics/barrels)Fıçı$() boya içerisinde istenilen renge $(l:mechanics/dye)boyanabilir$(). Ham Alçı blokları ayrıca $(thing)Pürüzsüz$() keski modu kullanılarak $(thing)Cilalı Alçı$() haline $(l:mechanics/chisel)yontulabilir$() veya merdiven, levha ya da duvar olarak üretilebilir.",
+      "text": "Alçı, bir $(l:crafting/barrels)Fıçı$() boya içerisinde istenilen renge $(l:mechanics/dye)boyanabilir$(). Ham Alçı blokları ayrıca $(thing)Pürüzsüz$() keski modu kullanılarak $(thing)Cilalı Alçı$() haline $(l:metalworking/chisel)yontulabilir$() veya merdiven, levha ya da duvar olarak üretilebilir.",
       "title": "Alçı Süslemeler"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)Taş Tuğlalar$(), bir $(l:mechanics/chisel)Keski$() ve birkaç parça gevşek kaya kullanılarak yapılabilir. Daha sonra güçlü bir yapı bloğu oluşturmak için $(thing)Harç$() gerektirir.$(br2)Harç, bir fıçı $(l:mechanics/barrels#limewater)Kireç Suyu$() içerisine $(thing)Kum$() eklenerek yapılabilir.",
+      "text": "$(thing)Taş Tuğlalar$(), bir $(l:metalworking/chisel)Keski$() ve birkaç parça gevşek kaya kullanılarak yapılabilir. Daha sonra güçlü bir yapı bloğu oluşturmak için $(thing)Harç$() gerektirir.$(br2)Harç, bir fıçı $(l:crafting/barrels#limewater)Kireç Suyu$() içerisine $(thing)Kum$() eklenerek yapılabilir.",
       "title": "Tuğla ve Harç"
     },
     {

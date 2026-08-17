@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Çelik Pompalar$() ve $(thing)Çelik Borular$(), $(thing)Su$(), $(thing)Tuzlu Su$() ve $(thing)Kaynak Suyu$() gibi sıvıları taşımak için yararlı bloklardır. Ayrıca kaynak bloklarını taşımak ve küçük kapalı alanları doldurmak için de kullanılabilirler. $(l:mechanics/aqueducts)Su Kemerleri$()'nin aksine, kaynak bloklarını yukarı doğru taşımak için de kullanılabilirler."
+      "text": "$(thing)Çelik Pompalar$() ve $(thing)Çelik Borular$(), $(thing)Su$(), $(thing)Tuzlu Su$() ve $(thing)Kaynak Suyu$() gibi sıvıları taşımak için yararlı bloklardır. Ayrıca kaynak bloklarını taşımak ve küçük kapalı alanları doldurmak için de kullanılabilirler. $(l:food/aqueducts)Su Kemerleri$()'nin aksine, kaynak bloklarını yukarı doğru taşımak için de kullanılabilirler."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/steel_pipe",
-      "text": "Çelik boru, tahmin edilebileceği gibi, bir $(l:mechanics/anvils)Örs$() üzerinde $(l:mechanics/steel)Çelik$() kullanılarak üretilebilir. $(thing)Çelik Pompa$() ise bazı $(thing)Çelik Borular$() ve $(l:getting_started/primitive_alloys#brass)Pirinç Mekanizmalar$() kullanılarak üretilebilir."
+      "text": "Çelik boru, tahmin edilebileceği gibi, bir $(l:metalworking/anvils)Örs$() üzerinde $(l:metalworking/steel)Çelik$() kullanılarak üretilebilir. $(thing)Çelik Pompa$() ise bazı $(thing)Çelik Borular$() ve $(l:getting_started/primitive_alloys#brass)Pirinç Mekanizmalar$() kullanılarak üretilebilir."
     },
     {
       "type": "patchouli:crafting",

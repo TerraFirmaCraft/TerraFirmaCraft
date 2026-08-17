@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "穴窯はアイテムを$(l:mechanics/heating)加熱$()するTFC序盤の方法です。 たとえば、粘土を $(thing)焼成$() してセラミックにするために使用できます。穴窯は、約8時間(ゲーム内)かけて内容物を1400 °C、つまり$(bold)$(e)$(t:Yellow White)黄白$() まで加熱します。"
+      "text": "穴窯はアイテムを$(l:core_mechanics/heating)加熱$()するTFC序盤の方法です。 たとえば、粘土を $(thing)焼成$() してセラミックにするために使用できます。穴窯は、約8時間(ゲーム内)かけて内容物を1400 °C、つまり$(bold)$(e)$(t:Yellow White)黄白$() まで加熱します。"
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() or two $(thing)Thatch$() blocks on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for six hours, slowly $(l:mechanics/heating)heating$() the items inside up."
+      "text": "In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() or two $(thing)Thatch$() blocks on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for six hours, slowly $(l:core_mechanics/heating)heating$() the items inside up."
     },
     {
       "type": "patchouli:image",

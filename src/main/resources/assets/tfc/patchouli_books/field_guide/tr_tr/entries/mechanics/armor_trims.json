@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Zırh süslemeleri, bir $(thing)Süsleme Malzemesi$() ve bir $(l:mechanics/sewing_table)Demircilik Şablonu$() ile üretilir. TFC'de tüm değerli taşlar; Gümüş, Saf Gümüş, Altın, Gül Altını ve Bizmut ile birlikte süsleme malzemesi olarak kullanılabilir. Zırh süslemeleri tamamen kozmetiktir."
+      "text": "Zırh süslemeleri, bir $(thing)Süsleme Malzemesi$() ve bir $(l:crafting/sewing_table)Demircilik Şablonu$() ile üretilir. TFC'de tüm değerli taşlar; Gümüş, Saf Gümüş, Altın, Gül Altını ve Bizmut ile birlikte süsleme malzemesi olarak kullanılabilir. Zırh süslemeleri tamamen kozmetiktir."
     },
     {
       "type": "patchouli:crafting",

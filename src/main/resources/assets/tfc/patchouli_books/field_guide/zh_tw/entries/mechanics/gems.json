@@ -12,11 +12,11 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$()."
+      "text": "Gems can be ground into powder using a $(l:crafting/quern)Quern$(). Gem powders are particularly useful in $(l:crafting/glassworking_applications#coloring)Coloring Glass$()."
     },
     {
       "type": "patchouli:text",
-      "text": "透過$(l:mechanics/sluices)洗礦$()和$(l:mechanics/panning)淘金$()可以獲得$(thing)寶石$(). 洗礦槽可能獲得的寶石種類取決於所用的原材料的岩石種類."
+      "text": "透過$(l:metalworking/sluices)洗礦$()和$(l:getting_started/panning)淘金$()可以獲得$(thing)寶石$(). 洗礦槽可能獲得的寶石種類取決於所用的原材料的岩石種類."
     },
     {
       "type": "patchouli:text",

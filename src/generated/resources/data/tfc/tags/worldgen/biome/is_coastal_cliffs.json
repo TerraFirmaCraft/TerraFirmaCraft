@@ -1,0 +1,13 @@
+{
+  "values": [
+    "tfc:embayments",
+    "tfc:ice_sheet_shore",
+    "tfc:rocky_shores",
+    "tfc:sea_stacks",
+    "tfc:setback_cliffs",
+    "tfc:shield_volcano_shore",
+    "tfc:terrace_lower",
+    "tfc:terrace_upper",
+    "tfc:guano_island"
+  ]
+}

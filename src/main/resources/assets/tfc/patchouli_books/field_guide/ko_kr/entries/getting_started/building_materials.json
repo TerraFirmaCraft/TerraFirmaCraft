@@ -29,7 +29,7 @@
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/drying_bricks/entisol",
       "title": "§l진흙 벽돌",
-      "text": "$(thing)진흙$()은 땅 위에서나 강과 호수 바닥, 또는 늪지대의 낮은 곳에서 발견할 수 있습니다. 점토와 $(thing)짚$()이 있다면 $()젖은 진흙 벽돌$()을 만들 수 있습니다."
+      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. Mud can be created by right clicking a dirt block with a container of fresh water, such as a jug or sealed barrel. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$()."
     },
     {
       "type": "tfc:multimultiblock",
@@ -162,5 +162,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 7
+  "sortnum": 8
 }

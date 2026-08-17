@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:crafting/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:metalworking/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Plaster Decorations"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "將一些小石子$(l:mechanics/chisel)鑿制$()可以得到這種岩石的$(thing)磚$(). 然後需要使用$(thing)砂漿$()來形成一個堅固的磚方塊.$(br2)砂漿可以透過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到.",
+      "text": "將一些小石子$(l:metalworking/chisel)鑿制$()可以得到這種岩石的$(thing)磚$(). 然後需要使用$(thing)砂漿$()來形成一個堅固的磚方塊.$(br2)砂漿可以透過將$(thing)沙子$()加入裝有$(l:crafting/barrels#limewater)石灰水$()的大桶得到.",
       "title": "石磚和砂漿"
     },
     {

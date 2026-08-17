@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:crafting/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:metalworking/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Plaster Decorations"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)石レンガ$() は、$(l:mechanics/chisel)ノミ$() とばらばらの石を使用して作成できます。 次に、補強のため $(thing)モルタル$() が必要です。$(br2)モルタルは、$(thing)石灰水$()を入れた$(l:mechanics/barrels#) 樽$()に $(thing)砂$() を追加することで作成できます。",
+      "text": "$(thing)石レンガ$() は、$(l:metalworking/chisel)ノミ$() とばらばらの石を使用して作成できます。 次に、補強のため $(thing)モルタル$() が必要です。$(br2)モルタルは、$(thing)石灰水$()を入れた$(l:crafting/barrels#) 樽$()に $(thing)砂$() を追加することで作成できます。",
       "title": "レンガとモルタル"
     },
     {

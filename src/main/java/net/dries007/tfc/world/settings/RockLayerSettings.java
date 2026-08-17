@@ -12,10 +12,14 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -35,7 +39,7 @@ public final class RockLayerSettings
         final List<Layer> bottom = new ArrayList<>();
         for (String id : data.bottom)
         {
-            final RockSettings rock = data.rocks.get(id);
+            final Holder<RockSettings> rock = data.rocks.get(id);
             if (rock == null) return DataResult.error(() -> "No rock with id: " + id);
             bottom.add(new Layer(rock, bottom));
         }
@@ -52,7 +56,7 @@ public final class RockLayerSettings
                 final List<Layer> next = layers.get(entry.getValue());
                 if (next == null) return DataResult.error(() -> "No layer with id: " + entry.getValue());
 
-                final RockSettings rock = data.rocks.get(entry.getKey());
+                final Holder<RockSettings> rock = data.rocks.get(entry.getKey());
                 if (rock == null) return DataResult.error(() -> "No rock with id: " + entry.getKey());
 
                 baked.add(new Layer(rock, next));
@@ -84,8 +88,8 @@ public final class RockLayerSettings
     }
 
     private final List<Layer> oceanFloor, land, volcanic, uplift;
-    private final Map<Block, RockSettings> rockBlocks;
-    private final Map<Block, Block> rawToHardened;
+    private final Supplier<Map<Block, RockSettings>> rockBlocks;
+    private final Supplier<Map<Block, Block>> rawToHardened;
     private final Data data;
 
     private RockLayerSettings(List<Layer> oceanFloor, List<Layer> land, List<Layer> volcanic, List<Layer> uplift, Data data)
@@ -96,42 +100,47 @@ public final class RockLayerSettings
         this.uplift = uplift;
         this.data = data;
 
-        this.rockBlocks = new IdentityHashMap<>();
+        this.rockBlocks = Suppliers.memoize(() -> {
+            final Map<Block, RockSettings> map = new IdentityHashMap<>();
 
-        for (RockSettings rock : data.rocks.values())
-        {
-            rockBlocks.put(rock.raw(), rock);
-            rockBlocks.put(rock.hardened(), rock);
-            rockBlocks.put(rock.gravel(), rock);
-            rockBlocks.put(rock.cobble(), rock);
-            rockBlocks.put(rock.gravel(), rock);
-            rockBlocks.put(rock.sand(), rock);
-            rockBlocks.put(rock.sandstone(), rock);
-            rock.loose().ifPresent(loose -> rockBlocks.put(loose, rock));
-            rock.mossyLoose().ifPresent(loose -> rockBlocks.put(loose, rock));
-            rock.spike().ifPresent(spike -> rockBlocks.put(spike, rock));
-        }
+            for (Holder<RockSettings> holder : data.rocks.values())
+            {
+                final RockSettings rock = holder.value();
+                map.put(rock.raw(), rock);
+                map.put(rock.hardened(), rock);
+                map.put(rock.gravel(), rock);
+                map.put(rock.cobble(), rock);
+                map.put(rock.gravel(), rock);
+                map.put(rock.sand(), rock);
+                map.put(rock.sandstone(), rock);
+                rock.loose().ifPresent(loose -> map.put(loose, rock));
+                rock.mossyLoose().ifPresent(loose -> map.put(loose, rock));
+                rock.spike().ifPresent(spike -> map.put(spike, rock));
+            }
 
-        this.rawToHardened = getRocks()
+            return map;
+        });
+
+        this.rawToHardened = Suppliers.memoize(() -> getRocks()
             .stream()
-            .collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened));
+            .collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened)));
     }
 
     @Nullable
     public Block getHardened(Block raw)
     {
-        return rawToHardened.get(raw);
+        return rawToHardened.get().get(raw);
     }
 
     @Nullable
     public RockSettings getRock(Block block)
     {
-        return rockBlocks.get(block);
+        return rockBlocks.get().get(block);
     }
 
     public Collection<RockSettings> getRocks()
     {
-        return data.rocks.values();
+        return data.rocks.values().stream().map(Holder::value).toList();
     }
 
     public RockSettings sampleAtLayer(int pointRock, int layerN)
@@ -150,7 +159,7 @@ public final class RockLayerSettings
         {
             layer = layer.next.get(source.nextInt(layer.next.size()));
         }
-        return layer.rock;
+        return layer.rock.value();
     }
 
     public Sampler sampler(int pointRock)
@@ -173,7 +182,7 @@ public final class RockLayerSettings
             {
                 final Layer chosen = layer.get(source.nextInt(layer.size()));
                 layer = chosen.next();
-                return chosen.rock();
+                return chosen.rock().value();
             }
         };
     }
@@ -185,12 +194,12 @@ public final class RockLayerSettings
         RockSettings next();
     }
 
-    public record Layer(RockSettings rock, List<Layer> next) {}
+    public record Layer(Holder<RockSettings> rock, List<Layer> next) {}
 
-    public record Data(Map<String, RockSettings> rocks, List<String> bottom, List<LayerData> layers, List<String> oceanFloor, List<String> land, List<String> volcanic, List<String> uplift)
+    public record Data(Map<String, Holder<RockSettings>> rocks, List<String> bottom, List<LayerData> layers, List<String> oceanFloor, List<String> land, List<String> volcanic, List<String> uplift)
     {
         static final Codec<Data> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.unboundedMap(Codec.STRING, RockSettings.CODEC).fieldOf("rocks").forGetter(c -> c.rocks),
+            Codec.unboundedMap(Codec.STRING, RegistryFileCodec.create(RockSettings.KEY, RockSettings.CODEC)).fieldOf("rocks").forGetter(c -> c.rocks),
             Codec.STRING.listOf().fieldOf("bottom").forGetter(c -> c.bottom),
             LayerData.CODEC.listOf().fieldOf("layers").forGetter(c -> c.layers),
             Codec.STRING.listOf().fieldOf("ocean_floor").forGetter(c -> c.oceanFloor),

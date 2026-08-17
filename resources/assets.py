@@ -350,6 +350,11 @@ def generate(rm: ResourceManager):
             for i in range(1, 5):
                 variants += four_ways('tfc:block/groundcover/stick%s' % i)
             block.with_blockstate(variants={"": variants}, use_default_model=False)
+        elif misc == 'driftwood':
+            variants = []
+            for i in range(0, 6):
+                variants += four_ways('tfc:block/groundcover/driftwood_%s' % i)
+            block.with_blockstate(variants={"": variants}, use_default_model=False)
         else:
             block.with_blockstate(variants={"": four_ways('tfc:block/groundcover/%s' % misc)}, use_default_model=False)
         block.with_lang(lang(misc))
@@ -995,6 +1000,21 @@ def generate(rm: ResourceManager):
                 else:
                     item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
                 item.with_lang(lang('stone %s', rock_item))
+
+    make_javelin(rm, 'obsidian_javelin', 'tfc:item/obsidian_javelin').with_lang(lang('obsidian javelin'))
+    rm.item_model('obsidian_knife', 'tfc:item/obsidian_knife', parent='tfc:item/handheld_flipped').with_lang(lang('obsidian knife'))
+    rm.item_model('obsidian_hoe', 'tfc:item/obsidian_hoe', parent='minecraft:item/handheld').with_lang(lang('obsidian hoe'))
+    rm.item_model('obsidian_axe', 'tfc:item/obsidian_axe', parent='minecraft:item/handheld').with_lang(lang('obsidian axe'))
+    rm.item_model('obsidian_shovel', 'tfc:item/obsidian_shovel', parent='minecraft:item/handheld').with_lang(lang('obsidian shovel'))
+    rm.item_model('obsidian_hammer', 'tfc:item/obsidian_hammer', parent='minecraft:item/handheld').with_lang(lang('obsidian hammer'))
+    rm.item_model('obsidian_macuahuitl', 'tfc:item/obsidian_macuahuitl', parent='minecraft:item/handheld').with_lang(lang('obsidian macuahuitl'))
+
+    rm.item_model('obsidian_javelin_head', 'tfc:item/obsidian_javelin_head', parent='minecraft:item/handheld').with_lang(lang('obsidian javelin head'))
+    rm.item_model('obsidian_knife_head', 'tfc:item/obsidian_knife_head', parent='minecraft:item/handheld').with_lang(lang('obsidian knife head'))
+    rm.item_model('obsidian_hoe_head', 'tfc:item/obsidian_hoe_head', parent='minecraft:item/handheld').with_lang(lang('obsidian hoe head'))
+    rm.item_model('obsidian_axe_head', 'tfc:item/obsidian_axe_head', parent='minecraft:item/handheld').with_lang(lang('obsidian axe head'))
+    rm.item_model('obsidian_shovel_head', 'tfc:item/obsidian_shovel_head', parent='minecraft:item/handheld').with_lang(lang('obsidian shovel head'))
+    rm.item_model('obsidian_hammer_head', 'tfc:item/obsidian_hammer_head', parent='minecraft:item/handheld').with_lang(lang('obsidian hammer head'))
 
     # Rock Items
     for rock, rock_data in ROCKS.items():
@@ -2638,6 +2658,8 @@ def generate(rm: ResourceManager):
         mold_model(rm, mold_item_location, pattern)
     for but in BUTTERFLIES:
         particle(rm, but, ['tfc:butterfly/' + but + '_' + str(i) for i in range(1, 5)])
+    for moth in MOTHS:
+        particle(rm, moth, ['tfc:moth/' + moth + '_' + str(i) for i in range(1, 5)])
 
 
 def particle(rm: ResourceManager, name: str, textures: List[str]):

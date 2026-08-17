@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Другие примитивные сплавы не подходят для создания инструментов. Это $(thing)латунь$(), $(thing)розовое золото$() и $(thing)стерлинговое серебро$().$(br2)$(thing)Латунь$() — сплав полезный для всевозможных механизмов, включая $(l:mechanics/mechanical_power)механическую энергию$().$(br2)$(thing)Розовое золото$() и $(thing)стерлинговое серебро$() используются для изготовления $(l:mechanics/steel#red_steel)красной стали$() и $(l:mechanics/steel#blue_steel)синей стали$().",
+      "text": "Другие примитивные сплавы не подходят для создания инструментов. Это $(thing)латунь$(), $(thing)розовое золото$() и $(thing)стерлинговое серебро$().$(br2)$(thing)Латунь$() — сплав полезный для всевозможных механизмов, включая $(l:mechanics/mechanical_power)механическую энергию$().$(br2)$(thing)Розовое золото$() и $(thing)стерлинговое серебро$() используются для изготовления $(l:metalworking/steel#red_steel)красной стали$() и $(l:metalworking/steel#blue_steel)синей стали$().",
       "title": "Полезные сплавы"
     },
     {
@@ -66,7 +66,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 5,
+  "sortnum": 6,
   "extra_recipe_mappings": {
     "tfc:metal/ingot/bronze": 3,
     "tfc:metal/ingot/bismuth_bronze": 4,

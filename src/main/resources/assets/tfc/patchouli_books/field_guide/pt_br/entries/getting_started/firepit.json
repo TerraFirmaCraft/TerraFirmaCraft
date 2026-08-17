@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "O uso da fogueira agora abrirá a tela da fogueira. À esquerda estão quatro $(thing)fuel$() slots. Torros, turfa e feixes de pau podem ser usados como combustível de fogo, colocando-os no slot superior. O combustível será consumido a partir do slot BottomMest. Há um medidor que exibe a corrente $(thing)Temperatura$() do fogo e à direita um slot para itens serem $(l:mechanics/heating)aquecida$() in."
+      "text": "O uso da fogueira agora abrirá a tela da fogueira. À esquerda estão quatro $(thing)fuel$() slots. Torros, turfa e feixes de pau podem ser usados como combustível de fogo, colocando-os no slot superior. O combustível será consumido a partir do slot BottomMest. Há um medidor que exibe a corrente $(thing)Temperatura$() do fogo e à direita um slot para itens serem $(l:core_mechanics/heating)aquecida$() in."
     },
     {
       "type": "patchouli:image",
@@ -58,11 +58,11 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/food/cooked_cod",
-      "text": "A fogueira também é um bom dispositivo para $(thing)cozinhar comida$(). Todas as carnes e massas cruas podem ser cozidas em uma fogueira, que prolongará sua vida útil. (Mais sobre isso $(l:mechanics/decay)aqui$())"
+      "text": "A fogueira também é um bom dispositivo para $(thing)cozinhar comida$(). Todas as carnes e massas cruas podem ser cozidas em uma fogueira, que prolongará sua vida útil. (Mais sobre isso $(l:food/decay)aqui$())"
     },
     {
       "type": "patchouli:text",
-      "text": "A fogueira pode ser extinta a qualquer momento usando um $(thing)Shovel$() nele.$(br2)Uma fogueira também pode ter outros dispositivos adicionados a ele para estender sua funcionalidade. Usando um $(thing)Grill de ferro forjado$() converterá a fogueira em um $(l:mechanics/grill)Grade$(), e usando um $(thing)Pote de cerâmica$() converterá a fogueira em um $(l:mechanics/pot)Panela$(). Para remover qualquer um dos dispositivos, $(item)$(k:key.use)$() enquanto aguarda $(item)$(k:key.sneak)$(). Cuidado para não tentar remover uma churrasqueira ou maconha!"
+      "text": "A fogueira pode ser extinta a qualquer momento usando um $(thing)Shovel$() nele.$(br2)Uma fogueira também pode ter outros dispositivos adicionados a ele para estender sua funcionalidade. Usando um $(thing)Grill de ferro forjado$() converterá a fogueira em um $(l:food/grill)Grade$(), e usando um $(thing)Pote de cerâmica$() converterá a fogueira em um $(l:food/pot)Panela$(). Para remover qualquer um dos dispositivos, $(item)$(k:key.use)$() enquanto aguarda $(item)$(k:key.sneak)$(). Cuidado para não tentar remover uma churrasqueira ou maconha!"
     },
     {
       "type": "tfc:multimultiblock",

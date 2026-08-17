@@ -1,0 +1,22 @@
+{
+  "values": [
+    "tfc:collisional_mountains",
+    "tfc:extreme_doline_mountains",
+    "tfc:glacially_carved_mountains",
+    "tfc:glacially_carved_oceanic_mountains",
+    "tfc:glaciated_mountains",
+    "tfc:glaciated_oceanic_mountains",
+    "tfc:glaciated_volcanic_mountains",
+    "tfc:glaciated_volcanic_oceanic_mountains",
+    "tfc:ice_sheet_mountains",
+    "tfc:ice_sheet_mountains_edge",
+    "tfc:ice_sheet_oceanic_mountains",
+    "tfc:ice_sheet_oceanic_mountains_edge",
+    "tfc:ice_sheet_volcanic_mountains",
+    "tfc:ice_sheet_volcanic_oceanic_mountains",
+    "tfc:mountains",
+    "tfc:oceanic_mountains",
+    "tfc:old_mountains",
+    "tfc:volcanic_mountain_islands"
+  ]
+}

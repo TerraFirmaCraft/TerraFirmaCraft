@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
+      "text": "Lamps are smithed in the $(l:metalworking/anvils)Anvil$() and crafted with $(l:crafting/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
     },
     {
       "type": "tfc:quern_recipe",
@@ -49,12 +49,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "在$(l:mechanics/pot)鍋$()裏用$(thing)水$()煮$(thing)橄欖糊$()可以得到$(thing)毛橄欖油$(). 把它和$(thing)黃麻網$()一起密封在$(l:mechanics/barrels)大桶$()裏可以得到$(thing)橄欖油$(). 每單位橄欖油的燃燒時間是 8 遊戲內小時。"
+      "text": "在$(l:food/pot)鍋$()裏用$(thing)水$()煮$(thing)橄欖糊$()可以得到$(thing)毛橄欖油$(). 把它和$(thing)黃麻網$()一起密封在$(l:crafting/barrels)大桶$()裏可以得到$(thing)橄欖油$(). 每單位橄欖油的燃燒時間是 8 遊戲內小時。"
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一種較弱的燃料是$(thing)蠟脂$()。要製作蠟脂，在$(l:mechanics/pot)陶鍋$()中用淡水中煮 5 份$(thing)鯨脂$()。每單位蠟脂的燃燒時間只有不到 2 遊戲內小時。蠟脂可以用於製作$(l:mechanics/lighting#candles)蠟燭$()。"
+      "text": "另一種較弱的燃料是$(thing)蠟脂$()。要製作蠟脂，在$(l:food/pot)陶鍋$()中用淡水中煮 5 份$(thing)鯨脂$()。每單位蠟脂的燃燒時間只有不到 2 遊戲內小時。蠟脂可以用於製作$(l:core_mechanics/lighting#candles)蠟燭$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -72,13 +72,13 @@
         }
       },
       "name": "熔巖燈",
-      "text": "熔巖燈是一種$(thing)永久光源$()。不過，只有$(l:mechanics/steel#blue_steel)藍鋼$()燈才能盛裝熔巖。",
+      "text": "熔巖燈是一種$(thing)永久光源$()。不過，只有$(l:metalworking/steel#blue_steel)藍鋼$()燈才能盛裝熔巖。",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)鏈子$()可以用來掛燈，在$(l:mechanics/anvils)砧$()上就能鍛造。"
+      "text": "$(thing)鏈子$()可以用來掛燈，在$(l:metalworking/anvils)砧$()上就能鍛造。"
     }
   ],
   "read_by_default": true,

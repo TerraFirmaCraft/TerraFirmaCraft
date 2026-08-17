@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "羣巒傳説的世界充滿了各種各樣的動物。有些動物對你的生存大有助益，有些動物卻非常危險。這一章節是關於野生動物的。有關牲畜的信息，請參閲$(l:mechanics/animal_husbandry)畜牧業$()章節。"
+      "text": "羣巒傳説的世界充滿了各種各樣的動物。有些動物對你的生存大有助益，有些動物卻非常危險。這一章節是關於野生動物的。有關牲畜的信息，請參閲$(l:food/animal_husbandry)畜牧業$()章節。"
     },
     {
       "type": "patchouli:text",
@@ -23,87 +23,87 @@
       "entity": "tfc:polar_bear",
       "scale": 0.55,
       "name": "北極熊",
-      "text": "北極熊生活在$(l:the_world/climate#temperature)温度$()不超過 10°C、$(l:the_world/climate#rainfall)降雨量$()不小於 100mm 的寒冷地區中。"
+      "text": "北極熊生活在$(l:core_mechanics/climate#temperature)温度$()不超過 10°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 100mm 的寒冷地區中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
       "name": "灰熊",
-      "text": "灰熊生活在$(l:the_world/climate#temperature)温度$()在 -15 到 15°C、$(l:the_world/climate#rainfall)降雨量$()不小於 200mm 的温和氣候的森林中。"
+      "text": "灰熊生活在$(l:core_mechanics/climate#temperature)温度$()在 -15 到 15°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 200mm 的温和氣候的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "黑熊",
-      "text": "黑熊生活在$(l:the_world/climate#temperature)温度$()在 5 到 20°C、$(l:the_world/climate#rainfall)降雨量$()不小於 250mm 的温暖潮濕的森林中。"
+      "text": "黑熊生活在$(l:core_mechanics/climate#temperature)温度$()在 5 到 20°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 250mm 的温暖潮濕的森林中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
       "scale": 0.6,
       "name": "山獅",
-      "text": "山獅生活在$(l:the_world/climate#temperature)温度$()在 -10 到 21°C、$(l:the_world/climate#rainfall)降雨量$()不小於 150mm 的大多數温和氣候中。"
+      "text": "山獅生活在$(l:core_mechanics/climate#temperature)温度$()在 -10 到 21°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 150mm 的大多數温和氣候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
       "scale": 0.6,
       "name": "黑豹",
-      "text": "黑豹生活在$(l:the_world/climate#temperature)温度$()在 -10 到 21°C、$(l:the_world/climate#rainfall)降雨量$()不小於 150mm 的温和氣候中。"
+      "text": "黑豹生活在$(l:core_mechanics/climate#temperature)温度$()在 -10 到 21°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 150mm 的温和氣候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "獅",
-      "text": "獅子生活在$(l:the_world/climate#temperature)温度$()不低於 16°C、$(l:the_world/climate#rainfall)降雨量$()在 50 到 300mm 的平原上。"
+      "text": "獅子生活在$(l:core_mechanics/climate#temperature)温度$()不低於 16°C、$(l:core_mechanics/climate#rainfall)降雨量$()在 50 到 300mm 的平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tiger",
       "scale": 0.55,
       "name": "Tiger",
-      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+      "text": "The tiger spawns in forests with an average $(l:core_mechanics/climate#temperature)temperature$() of at least 13°C, and $(l:core_mechanics/climate#rainfall)rainfall$() above 100mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "劍齒虎",
-      "text": "劍齒虎生活在$(l:the_world/climate#temperature)温度$()不低於 0°C、$(l:the_world/climate#rainfall)降雨量$()不小於 250mm 的任意地區。"
+      "text": "劍齒虎生活在$(l:core_mechanics/climate#temperature)温度$()不低於 0°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 250mm 的任意地區。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "狼生活在$(l:the_world/climate#temperature)温度$()不高於 22°C、$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm 的地區。狼有集羣狩獵的習性。餵食狼足夠多次可能將其馴化為$(l:mechanics/pets)狗$()。"
+      "text": "狼生活在$(l:core_mechanics/climate#temperature)温度$()不高於 22°C、$(l:core_mechanics/climate#rainfall)降雨量$()在 150 到 420mm 的地區。狼有集羣狩獵的習性。餵食狼足夠多次可能將其馴化為$(l:food/pets)狗$()。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "冰原狼生活在$(l:the_world/climate#temperature)氣温$()低於冰點，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 420mm 的地區。冰原狼由集羣狩獵的習性，體型比普通的狼更大，且不可馴服。"
+      "text": "冰原狼生活在$(l:core_mechanics/climate#temperature)氣温$()低於冰點，且$(l:core_mechanics/climate#rainfall)降雨量$()在 150 到 420mm 的地區。冰原狼由集羣狩獵的習性，體型比普通的狼更大，且不可馴服。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:hyena",
       "scale": 0.7,
-      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+      "text": "The hyena spawns at any $(l:core_mechanics/climate#temperature)temperature$() warmer than 15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crocodile",
       "scale": 0.7,
       "name": "Crocodile",
-      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:core_mechanics/climate#temperature)temperature$() warmer than 15°C, and at any $(l:core_mechanics/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
+      "text": "The ocelot attacks small animals. It spawns at any $(l:core_mechanics/climate#temperature)temperature$() from 15 to 30°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:food/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
       "type": "patchouli:text",
@@ -116,26 +116,26 @@
       "entity": "tfc:boar",
       "scale": 0.8,
       "name": "野豬",
-      "text": "野豬生活在$(l:the_world/climate#temperature)温度$()不高於 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
+      "text": "野豬生活在$(l:core_mechanics/climate#temperature)温度$()不高於 25°C，且$(l:core_mechanics/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "麋鹿生活在$(l:the_world/climate#temperature)温度$()在 -15 到 10°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 300mm 的任何氣候中。"
+      "text": "麋鹿生活在$(l:core_mechanics/climate#temperature)温度$()在 -15 到 10°C 之間，且$(l:core_mechanics/climate#rainfall)降雨量$()在 150 到 300mm 的任何氣候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wildebeest",
       "scale": 0.7,
-      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "The wildebeest spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above 13°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 90 and 380mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bison",
       "scale": 0.6,
       "name": "Bison",
-      "text": "The bison spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above -10°C and below 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 160 and 420mm."
+      "text": "The bison spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above -10°C and below 15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 160 and 420mm."
     },
     {
       "type": "patchouli:empty"
@@ -151,58 +151,68 @@
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "狐狸",
-      "text": "狐狸喜歡從灌木中啃食莓果，它可以在$(l:the_world/climate#temperature)温度$()不高於 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的森林中生成。"
+      "text": "狐狸喜歡從灌木中啃食莓果，它可以在$(l:core_mechanics/climate#temperature)温度$()不高於 25°C，且$(l:core_mechanics/climate#rainfall)降雨量$()在 130 到 400mm 的森林中生成。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "野豬生活在$(l:the_world/climate#temperature)温度$()不高於 25°C，且$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
+      "text": "野豬生活在$(l:core_mechanics/climate#temperature)温度$()不高於 25°C，且$(l:core_mechanics/climate#rainfall)降雨量$()在 130 到 400mm 的平原上。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:caribou",
       "scale": 0.5,
       "name": "Caribou",
-      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+      "text": "The caribou spawns at any $(l:core_mechanics/climate#temperature)temperature$() below -9°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 110 and 500mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "The gazelle spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above 12°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 90 and 380mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bongo",
       "scale": 0.7,
       "name": "Bongo",
-      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
+      "text": "The bongo spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() above 15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 230 and 500mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "松雞生活在$(l:the_world/climate#temperature)温度$()在 -12 到 13°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 150 到 400mm 的任何氣候中。"
+      "text": "松雞生活在$(l:core_mechanics/climate#temperature)温度$()在 -12 到 13°C 之間，且$(l:core_mechanics/climate#rainfall)降雨量$()在 150 到 400mm 的任何氣候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "雉雞生活在$(l:the_world/climate#temperature)温度$()在 -5 到 17°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 100 到 300mm 的任何氣候中。"
+      "text": "雉雞生活在$(l:core_mechanics/climate#temperature)温度$()在 -5 到 17°C 之間，且$(l:core_mechanics/climate#rainfall)降雨量$()在 100 到 300mm 的任何氣候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "火雞生活在$(l:the_world/climate#temperature)温度$()在 0 到 17°C 之間，且$(l:the_world/climate#rainfall)降雨量$()在 250 到 450mm 的任何氣候中。"
+      "text": "火雞生活在$(l:core_mechanics/climate#temperature)温度$()在 0 到 17°C 之間，且$(l:core_mechanics/climate#rainfall)降雨量$()在 250 到 450mm 的任何氣候中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
       "scale": 0.8,
       "name": "Peafowl",
-      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
+      "text": "The peafowl spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() above 14°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 190 and 500mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:armadillo",
+      "scale": 0.7,
+      "name": "Armadillo",
+      "text": "The armadillo sheds scutes every 30 hours. It can be found at any $(l:core_mechanics/climate#temperature)temperature$() above 12°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 400mm."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
@@ -219,28 +229,28 @@
       "entity": "tfc:penguin",
       "scale": 0.7,
       "name": "企鵝",
-      "text": "The penguin spawns on only the coldest beaches, ice sheet edges, and sea ice with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm."
+      "text": "The penguin spawns on only the coldest beaches, ice sheet edges, and sea ice with $(l:core_mechanics/climate#temperature)temperature$() of at most -14°C and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 75mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:leopard_seal",
       "scale": 0.7,
       "name": "Leopard Seal",
-      "text": "The Leopard Seal spawns on cold beaches, ice sheet edges, and sea ice with $(l:the_world/climate#temperature)temperatures$() of at most -9°C and $(l:the_world/climate#rainfall)rainfall$() of at least 105mm."
+      "text": "The Leopard Seal spawns on cold beaches, ice sheet edges, and sea ice with $(l:core_mechanics/climate#temperature)temperatures$() of at most -9°C and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 105mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turtle",
       "scale": 0.7,
       "name": "海龜",
-      "text": "海龜喜歡温暖的水域。它們生活在$(l:the_world/climate#temperature)温度$()不低於 21°C、$(l:the_world/climate#rainfall)降雨量$()不小於 250mm 的温暖海洋中。"
+      "text": "海龜喜歡温暖的水域。它們生活在$(l:core_mechanics/climate#temperature)温度$()不低於 21°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 250mm 的温暖海洋中。"
     },
     {
       "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)魚$()是生活在水中的小動物。它們中的大多數都可以被$(l:mechanics/fishing)釣起來$()。不同種的魚喜好在海洋、河流或湖泊中生活。",
+      "text": "$(thing)魚$()是生活在水中的小動物。它們中的大多數都可以被$(l:food/fishing)釣起來$()。不同種的魚喜好在海洋、河流或湖泊中生活。",
       "title": "魚類"
     },
     {
@@ -248,63 +258,63 @@
       "entity": "tfc:cod",
       "scale": 0.7,
       "name": "鱈魚",
-      "text": "鱈魚生活在$(l:the_world/climate#temperature)温度$()不高於 18°C 的寒冷海洋中。它們可以被釣起來。"
+      "text": "鱈魚生活在$(l:core_mechanics/climate#temperature)温度$()不高於 18°C 的寒冷海洋中。它們可以被釣起來。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
       "name": "河豚",
-      "text": "河豚生活在$(l:the_world/climate#temperature)温度$()不低於 10°C 的海洋中。"
+      "text": "河豚生活在$(l:core_mechanics/climate#temperature)温度$()不低於 10°C 的海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
       "name": "水母",
-      "text": "水母生活在$(l:the_world/climate#temperature)温度$()不低於 18°C 的温暖海洋中。"
+      "text": "水母生活在$(l:core_mechanics/climate#temperature)温度$()不低於 18°C 的温暖海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
       "name": "熱帶魚",
-      "text": "熱帶魚生活在$(l:the_world/climate#temperature)温度$()不低於 18°C 的温暖海洋中。"
+      "text": "熱帶魚生活在$(l:core_mechanics/climate#temperature)温度$()不低於 18°C 的温暖海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "三文魚",
-      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
+      "text": "Salmon spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rainbow_trout",
       "scale": 0.7,
       "name": "Rainbow Trout",
-      "text": "Rainbow Trout spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
+      "text": "Rainbow Trout spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lake_trout",
       "scale": 0.7,
       "name": "Lake Trout",
-      "text": "Lake Trout spawn in any lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
+      "text": "Lake Trout spawn in any lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:largemouth_bass",
       "scale": 0.7,
       "name": "Largemouth Bass",
-      "text": "Largemouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
+      "text": "Largemouth Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:smallmouth_bass",
       "scale": 0.7,
       "name": "Smallmouth Bass",
-      "text": "Smallmouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
+      "text": "Smallmouth Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
     },
     {
       "type": "patchouli:entity",
@@ -325,68 +335,68 @@
       "entity": "tfc:northern_pike",
       "scale": 0.7,
       "name": "Northern Pike",
-      "text": "Northern Pike spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
+      "text": "Northern Pike spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peacock_bass",
       "scale": 0.7,
       "name": "Peacock Bass",
-      "text": "Peacock Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
+      "text": "Peacock Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:arctic_char",
       "scale": 0.7,
       "name": "Arctic Char",
-      "text": "Arctic Char spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
+      "text": "Arctic Char spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:muksun",
       "scale": 0.7,
       "name": "Muksun",
-      "text": "Muksun spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
+      "text": "Muksun spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:burbot",
       "scale": 0.7,
       "name": "Burbot",
-      "text": "Burbot spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
+      "text": "Burbot spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tilapia",
       "scale": 0.7,
       "name": "Tilapia",
-      "text": "Tilapia spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
+      "text": "Tilapia spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:spotted_gudgeon",
       "scale": 0.7,
       "name": "Spotted Gudgeon",
-      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
+      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pacu",
       "scale": 0.7,
       "name": "Pacu",
-      "text": "Pacu spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
+      "text": "Pacu spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:red_piranha",
       "scale": 0.7,
       "name": "Red Piranha",
-      "text": "Red Piranha spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
+      "text": "Red Piranha spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
     },
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)貝類$()是生活在水底的小動物。它們不能被釣起來，但會掉落可以食用或製成$(l:mechanics/flux)助焊劑$()的殼。貝類可以作為釣魚所需的$(l:mechanics/fishing)誘餌$()。",
+      "text": "$(thing)貝類$()是生活在水底的小動物。它們不能被釣起來，但會掉落可以食用或製成$(l:metalworking/flux)助焊劑$()的殼。貝類可以作為釣魚所需的$(l:food/fishing)誘餌$()。",
       "title": "貝類"
     },
     {
@@ -394,28 +404,28 @@
       "entity": "tfc:isopod",
       "scale": 0.7,
       "name": "等足蟲",
-      "text": "等足蟲生活在$(l:the_world/climate#temperature)温度$()不高於 14°C 的深海中。"
+      "text": "等足蟲生活在$(l:core_mechanics/climate#temperature)温度$()不高於 14°C 的深海中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "龍蝦",
-      "text": "龍蝦生活在$(l:the_world/climate#temperature)温度$()不高於 21°C 的海洋中。"
+      "text": "龍蝦生活在$(l:core_mechanics/climate#temperature)温度$()不高於 21°C 的海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "小龍蝦",
-      "text": "小龍蝦和龍蝦類似，不過它們生活在河流和湖泊中。它們喜歡生活在$(l:the_world/climate#temperature)温度$()不低於 5°C、$(l:the_world/climate#rainfall)降雨量$()不小於 125mm 的環境中。"
+      "text": "小龍蝦和龍蝦類似，不過它們生活在河流和湖泊中。它們喜歡生活在$(l:core_mechanics/climate#temperature)温度$()不低於 5°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 125mm 的環境中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
       "name": "馬蹄蟹",
-      "text": "馬蹄蟹生活在$(l:the_world/climate#temperature)温度$()在 10 到 21°C、$(l:the_world/climate#rainfall)降雨量$()不大於 400mm 的温和海洋中。"
+      "text": "馬蹄蟹生活在$(l:core_mechanics/climate#temperature)温度$()在 10 到 21°C、$(l:core_mechanics/climate#rainfall)降雨量$()不大於 400mm 的温和海洋中。"
     },
     {
       "type": "patchouli:text",
@@ -427,21 +437,21 @@
       "entity": "tfc:orca",
       "scale": 0.25,
       "name": "逆戟鯨",
-      "text": "逆戟鯨生活在$(l:the_world/climate#temperature)温度$()不高於 19°C、$(l:the_world/climate#rainfall)降雨量$()不小於 100mm 的深海中。"
+      "text": "逆戟鯨生活在$(l:core_mechanics/climate#temperature)温度$()不高於 19°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 100mm 的深海中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dolphin",
       "scale": 0.4,
       "name": "海豚",
-      "text": "海豚生活在$(l:the_world/climate#temperature)温度$()不低於 10°C、$(l:the_world/climate#rainfall)降雨量$()不小於 200mm 的深海中。"
+      "text": "海豚生活在$(l:core_mechanics/climate#temperature)温度$()不低於 10°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 200mm 的深海中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:manatee",
       "scale": 0.25,
       "name": "海牛",
-      "text": "海牛生活在$(l:the_world/climate#temperature)温度$()不低於 20°C、$(l:the_world/climate#rainfall)降雨量$()不小於 300mm 的温暖湖泊中。"
+      "text": "海牛生活在$(l:core_mechanics/climate#temperature)温度$()不低於 20°C、$(l:core_mechanics/climate#rainfall)降雨量$()不小於 300mm 的温暖湖泊中。"
     },
     {
       "type": "patchouli:text",
@@ -450,5 +460,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6
+  "sortnum": 5
 }

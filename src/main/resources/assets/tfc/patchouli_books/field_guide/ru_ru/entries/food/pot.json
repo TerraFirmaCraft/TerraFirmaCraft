@@ -1,0 +1,75 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Горшок на костре",
+  "category": "tfc:food",
+  "icon": "tfc:pot",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Горшок$() — это предмет, который можно добавить к костру для приготовления новых видов пищи, а также для производства некоторых полезных предметов.$(br)Чтобы создать костёр с горшком, сначала создайте $(l:getting_started/firepit)костёр$(), затем используйте $(thing)горшок$() на костре."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:pot"
+        }
+      },
+      "name": "",
+      "text": "Костёр с горшком.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:knapping/ceramic/unfired_pot",
+      "text": "Горшок сначала должен быть $(l:getting_started/pottery)вылеплен$() из глины."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ceramic/pot",
+      "text": "Затем его необходимо $(l:core_mechanics/heating)обжечь$(), чтобы использовать на костре."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Как и костёр, горшок имеет четыре слота для топлива, которые должны быть добавлены в верхний слот, и индикатор температуры. Горшок также содержит пять слотов для предметов и вмещает до $(thing)1000 мБ$() любой жидкости.$(br2)Чтобы что-то приготовить в горшке, сначала нужно добавить жидкость, используя любой контейнер для жидкости, например ведро. Затем добавьте предметы и зажгите костёр. Он будет кипеть некоторое время, пока рецепт не будет завершен."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/pot.png"
+      ],
+      "text": "Интерфейс котелка, активно кипящего и готовящего суп.",
+      "border": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "soup",
+      "item": "tfc:food/fruit_soup",
+      "title": "Рецепты супов",
+      "link_recipes": false,
+      "text": "Суп готовится из 3-5 $(thing)фруктов$(), $(thing)овощей$() или $(thing)мяса$() в котелке с $(thing)водой$(). Когда суп готов, вода в котелке станет красной. Заберите суп, используя $(item)$(k:key.use)$() с $(l:mechanics/bowls)миской$() в руке. Суп объединяет питательные вещества ингредиентов. Число блюд зависит от числа ингридиентов. Супы дешевле, но менее питательны, чем другие блюда."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:bucket/red_dye",
+      "title": "Простые рецепты",
+      "link_recipes": false,
+      "text": "Другие рецепты в котелке превращают предметы и жидкость во что-то другое. Например, кипячение пяти кучек $(thing)золы$() в $(thing)воде$() дает $(thing)щелочь$()."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 11,
+  "extra_recipe_mappings": {
+    "tfc:pot": 0,
+    "tfc:ceramic/unfired_pot": 2,
+    "tfc:ceramic/pot": 3
+  }
+}

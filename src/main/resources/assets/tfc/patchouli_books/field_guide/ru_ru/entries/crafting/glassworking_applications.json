@@ -1,0 +1,412 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Изделия из стекла",
+  "category": "tfc:crafting",
+  "icon": "minecraft:glass",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Самые простые изделия из стекла — это $(thing)стеклянные панели$() и блоки $(thing)стекла$(). Для их создания начните с $(l:crafting/glassworking#blowpipe)трубки стеклодува$() со $(thing)стеклянной шихтой$(), а затем выполните $(thing)разлив$().$(br)$(li)$(bold)разлив на стол$() используется для создания $(thing)стеклянных панелей$()$(li)$(bold)Разлив в резервуар$() используется для создания блоков $(thing)стекла$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Стекло также может быть $(thing)окрашено$() перед его разливом для придания ему цвета. Цвет зависит от типа партии стекла и добавленных порошков.$(br2)Каждый тип $(thing)стеклянной шихты$() придает стеклу уникальный естественный цвет. $(thing)Силикатные$() шихты могут быть окрашены во множество цветов, $(thing)оливиновые$() и $(thing)вулканические$() шихты могут быть окрашены в меньшее количество цветов."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Стеклянные панели$() делаются с помощью $(thing)разлива на стол$(). Стол для литья делается путем размещения до шестнадцати $(thing)обитых латунью блоков$() в одной плоскости (см. далее).$(br2) 1. Добавьте $(l:crafting/glassworking)стеклянную шихту$() в $(thing)трубку стеклодува$().$(br) 2. Нагрейте трубку до $(4)$(bold)Начинает краснеть$().$(br) 3. Нажмите $()$(item)$(k:key.use)$() трубкой по верхней части стола.$(br) 4. Нажмите $(item)$(k:key.use)$() с $(l:crafting/glassworking#paddle)лопаткой$() во второй руке, чтобы разгладить.",
+      "title": "Литьё на стол"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_panes_1.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_2.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_3.png"
+      ],
+      "text": "После охлаждения стекло можно получить с помощью $(l:crafting/glassworking#saw)пилы с напылением$().",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Стеклянные блоки$() делаются с помощью $(thing)литья в резервуар$(). Резервуар делается путем окружения пустого блока со всех сторон, кроме верхней, $(thing)обитыми латунью блоками$().$(br2) 1. Добавьте $(l:crafting/glassworking)стеклянную шихту$() в $(thing)трубку стеклодува$().$(br) 2. Нагрейте трубку до $(4)$(bold)Начинает краснеть$().$(br) 3. Нажмите $(item)$(k:key.use)$() трубкой по дну резервуара.",
+      "title": "Литьё в резервуар"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_block_1.png",
+        "tfc:textures/gui/book/tutorial/glass_block_2.png",
+        "tfc:textures/gui/book/tutorial/glass_block_3.png"
+      ],
+      "text": "После охлаждения стекло можно получить с помощью $(l:crafting/glassworking#saw)пилы с напылением$().",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "coloring",
+      "text": "Стекло имеет естественный цвет $(l:crafting/glassworking)стеклянной шихты$(), которая была использована. Другие цвета могут быть получены с помощью $(l:food/bowls)миски$().$(br2)Для этого поместите $(l:food/bowls)миску$() на землю, и нажмите $(item)$(k:key.use)$() по ней с желаемым $(thing)порошком$(). Перед $(thing)разливом$() используйте трубку на миске, чтобы добавить порошок в стекло.",
+      "title": "Окрашивание стекла"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br2)На следующих страницах отражены все возможные комбинации стеклянных шихт и порошков для создания стекла всех цветов."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(7)Белый$(): силикатное/гематитовое + $(thing)сода$()$(li)$(bold)$(0)Чёрный$(): любое + $(thing)графит$()$(li)$(bold)$(8)Серый$(): любое + $(thing)графит$() + $(thing)сода$()$(li)$(bold)$(7)Светло-серый$(): любое + $(thing)графит$() + 2x $(thing)сода$()$(li)$(bold)$(5)Фиолетовый$(): любое + $(thing)железо$() + $(thing)медь$()$(li)$(bold)$(#964b00)Коричневый$(): любое + $(thing)никель$()$(li)$(bold)$(3)Бирюзовый$(): невулканическое + $(thing)медь$() + $(thing)сапфир$()$(li)$(bold)$(2)Зелёный$(): силикатное/гематитовое + $(thing)железо$()",
+      "title": "Цвета окрашивания"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(a)Лаймовый$(): силикатное/гематитовое + $(thing)железо$() + $(thing)сода$()$(li)$(bold)$(b)Светло-голубой$(): силикатное + $(thing)лазурит$()$(li)$(bold)$(1)Синий$(): силикатное + $(thing)медь$()$(li)$(bold)$(4)Красный$(): силикатное/гематитовое + $(thing)олово$()$(li)$(bold)$(6)Жёлтый$(): силикатное/гематитовое + $(thing)серебро$()$(li)$(bold)$(#ef8e38)Оранжевый$(): силикатное + $(thing)пирит$()$(li)$(bold)$(5)Пурпурный$(): силикатное/гематитовое + $(thing)рубин$()$(li)$(bold)$(d)Розовый$(): силикатное + $(thing)золото$()$(li)$(bold)$(0)Тонированное$(): несиликатное + $(thing)аметист$()"
+    },
+    {
+      "type": "tfc:table_small",
+      "strings": [
+        {
+          "text": ""
+        },
+        {
+          "text": "П"
+        },
+        {
+          "text": "Т"
+        },
+        {
+          "fill": "0xff42f2"
+        },
+        {
+          "fill": "0x8af3ff"
+        },
+        {
+          "fill": "0x526cff"
+        },
+        {
+          "fill": "0xe3e3e3"
+        },
+        {
+          "fill": "0xe69407"
+        },
+        {
+          "fill": "0xc738c9"
+        },
+        {
+          "fill": "0xffe81c"
+        },
+        {
+          "fill": "0x48ff1f"
+        },
+        {
+          "fill": "0xe01414"
+        },
+        {
+          "fill": "0x0c9400"
+        },
+        {
+          "fill": "0x188a9e"
+        },
+        {
+          "fill": "0x7d4f00"
+        },
+        {
+          "fill": "0x6e059c"
+        },
+        {
+          "fill": "0x7d7d7d"
+        },
+        {
+          "fill": "0xbdbdbd"
+        },
+        {
+          "fill": "0x000000"
+        },
+        {
+          "text": "Силикат."
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "Гематит."
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "Оливинов."
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "Вулканич."
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        }
+      ],
+      "text": "Доступность цветов стекла.$(br)'П' — прозрачное,$(br)'Т' — тонированное.$(br)Все цвета могут быть изготовлены только с определенными стеклянными шихтами.",
+      "title": "Доступность цветов стекла",
+      "legend": [
+        {
+          "text": "Можно получить",
+          "color": "0x3eb340"
+        },
+        {
+          "text": "Нельзя получить",
+          "color": "0xb33e3e"
+        },
+        {
+          "text": "Стандартный цвет",
+          "color": "0x3d42a8"
+        }
+      ],
+      "columns": 18,
+      "first_column_width": 35,
+      "column_width": 10,
+      "row_height": 10,
+      "left_buffer": 5,
+      "top_buffer": 15,
+      "draw_background": true
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "lamp_glass",
+      "recipe": "tfc:glassworking/lamp_glass",
+      "text": "$(thing)Стекло для лампы$() является необходимым компонентом для создания $(l:mechanics/lamps)ламп$()."
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "jar",
+      "recipe": "tfc:glassworking/empty_jar",
+      "text": "$(l:food/jarring)Банки$() тоже делаются из дутого стекла, но только из силикатного или гематитового."
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "glass_bottle",
+      "recipe": "tfc:glassworking/silica_glass_bottle",
+      "text": "$(thing)Пузырьки$() делаются из любой шихты, но их качество будет разным."
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "recipe": "tfc:glassworking/lens",
+      "text": "$(thing)Линза$() используется для создания подзорной трубы, компаса и датчика дневного света."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tag:tfc:glass_batches": 1,
+    "tag:c:glass_panes": 2,
+    "tag:c:glass_blocks": 4
+  }
+}

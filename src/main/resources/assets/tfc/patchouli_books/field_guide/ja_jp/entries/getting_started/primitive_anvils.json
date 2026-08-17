@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TFCの初期段階でツールを直接鋳造する代わりの方法を使用する、および高度な金属を加工するためには、$(thing)金床$() を使用することになります。 金床は、$(l:mechanics/anvils#working)鍛造$() と $(l:mechanics/anvils#welding)溶接$() という 2 つの異なるプロセスに使用できるブロックです。 この章では、最初の金床、石の金床を入手する方法を説明します。"
+      "text": "TFCの初期段階でツールを直接鋳造する代わりの方法を使用する、および高度な金属を加工するためには、$(thing)金床$() を使用することになります。 金床は、$(l:metalworking/anvils#working)鍛造$() と $(l:metalworking/anvils#welding)溶接$() という 2 つの異なるプロセスに使用できるブロックです。 この章では、最初の金床、石の金床を入手する方法を説明します。"
     },
     {
       "type": "patchouli:text",
@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "$(thing)ハンマー$() も必要です。。 金床を作るには、$(thing)ハンマー$() を持って、金床にしたい石ブロックの露出した $(thing)上$() 面を右クリックするだけです。 金床が形成されます。$(br2)金床には $(l:mechanics/anvils#tiers)ティア$() があり、石の金床は ティア0 (最下位のティア) です。 $(l:mechanics/anvils#welding)溶接$()ではTier 1インゴットのみ扱うことができます。",
+      "text": "$(thing)ハンマー$() も必要です。。 金床を作るには、$(thing)ハンマー$() を持って、金床にしたい石ブロックの露出した $(thing)上$() 面を右クリックするだけです。 金床が形成されます。$(br2)金床には $(l:metalworking/anvils#tiers)ティア$() があり、石の金床は ティア0 (最下位のティア) です。 $(l:metalworking/anvils#welding)溶接$()ではTier 1インゴットのみ扱うことができます。",
       "title": "石の金床"
     },
     {
@@ -214,7 +214,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6,
+  "sortnum": 7,
   "extra_recipe_mappings": {
     "tfc:rock/anvil/granite": 0,
     "tfc:rock/anvil/diorite": 0,

@@ -1,0 +1,25 @@
+{
+  "values": [
+    "tfc:coastal_dunes",
+    "tfc:deep_ocean",
+    "tfc:deep_ocean_atolls",
+    "tfc:deep_ocean_trench",
+    "tfc:embayments",
+    "tfc:ice_sheet_oceanic",
+    "tfc:ice_sheet_shore",
+    "tfc:ocean",
+    "tfc:oceanic_volcanic_arc",
+    "tfc:ocean_atolls",
+    "tfc:ocean_reef",
+    "tfc:ocean_ridge",
+    "tfc:old_shield_volcano_shore",
+    "tfc:rocky_shores",
+    "tfc:sea_stacks",
+    "tfc:setback_cliffs",
+    "tfc:shield_volcano_shore",
+    "tfc:shore",
+    "tfc:terrace_lower",
+    "tfc:terrace_upper",
+    "tfc:tidal_flats"
+  ]
+}

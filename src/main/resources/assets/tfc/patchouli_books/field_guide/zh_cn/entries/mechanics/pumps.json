@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)钢泵$()和$(thing)钢管$()是用于输送流体的方块，例如$(thing)水$()、$(thing)咸水$()和$(thing)温泉水$()。它们也可用于移动水源方块，并填充小型封闭区域。与$(l:mechanics/aqueducts)引水桥$()不同，它们还可以向上输送水源方块。"
+      "text": "$(thing)钢泵$()和$(thing)钢管$()是用于输送流体的方块，例如$(thing)水$()、$(thing)咸水$()和$(thing)温泉水$()。它们也可用于移动水源方块，并填充小型封闭区域。与$(l:food/aqueducts)引水桥$()不同，它们还可以向上输送水源方块。"
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/steel_pipe",
-      "text": "钢管，顾名思义，可以用$(l:mechanics/steel)钢$()在$(l:mechanics/anvils)砧$()上锻造而成。$(thing)钢泵$()可以用一些$(thing)钢管$()和$(l:getting_started/primitive_alloys#brass)黄铜机件$()合成。"
+      "text": "钢管，顾名思义，可以用$(l:metalworking/steel)钢$()在$(l:metalworking/anvils)砧$()上锻造而成。$(thing)钢泵$()可以用一些$(thing)钢管$()和$(l:getting_started/primitive_alloys#brass)黄铜机件$()合成。"
     },
     {
       "type": "patchouli:crafting",

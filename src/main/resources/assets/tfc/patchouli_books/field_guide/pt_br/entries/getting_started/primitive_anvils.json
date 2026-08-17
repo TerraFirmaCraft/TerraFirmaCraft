@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Uma alternativa às ferramentas de fundição diretamente no jogo inicial e um requisito para metais de camada mais altos é usar uma $(thing)Anvil$(). Uma bigorna é um bloco que pode ser usado para dois processos diferentes: $(l:mechanics/anvils#working)Working$() e $(l:mechanics/anvils#welding)Welding$(). Este capítulo vai apenas mostrar como obter sua primeira bigorna primitiva de pedra."
+      "text": "Uma alternativa às ferramentas de fundição diretamente no jogo inicial e um requisito para metais de camada mais altos é usar uma $(thing)Anvil$(). Uma bigorna é um bloco que pode ser usado para dois processos diferentes: $(l:metalworking/anvils#working)Working$() e $(l:metalworking/anvils#welding)Welding$(). Este capítulo vai apenas mostrar como obter sua primeira bigorna primitiva de pedra."
     },
     {
       "type": "patchouli:text",
@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "Você também precisará de qualquer material de $(thing)Martelo$(). Para fazer a bigorna, basta clicar com o botão direito do mouse no exposto $(thing)principal$() Face de um daqueles blocos de rocha crua com o seu $(thing)martelo$(), e pronto! Uma bigor será formada.$(br2)Anvils tem $(l:mechanics/anvils#tiers)camadas$() E a bigorna da rocha é de nível 0 - o nível mais baixo. Só é capaz de $(l:mechanics/anvils#welding)Soldar$()Tier i lingotes.",
+      "text": "Você também precisará de qualquer material de $(thing)Martelo$(). Para fazer a bigorna, basta clicar com o botão direito do mouse no exposto $(thing)principal$() Face de um daqueles blocos de rocha crua com o seu $(thing)martelo$(), e pronto! Uma bigor será formada.$(br2)Anvils tem $(l:metalworking/anvils#tiers)camadas$() E a bigorna da rocha é de nível 0 - o nível mais baixo. Só é capaz de $(l:metalworking/anvils#welding)Soldar$()Tier i lingotes.",
       "title": "Rock Anvil"
     },
     {
@@ -214,7 +214,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6,
+  "sortnum": 7,
   "extra_recipe_mappings": {
     "tfc:rock/anvil/granite": 0,
     "tfc:rock/anvil/diorite": 0,

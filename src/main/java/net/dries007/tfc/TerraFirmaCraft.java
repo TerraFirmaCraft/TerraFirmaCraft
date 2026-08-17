@@ -21,6 +21,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -80,6 +81,7 @@ import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.density.TFCDensityFunctions;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.placement.TFCPlacements;
+import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
 import net.dries007.tfc.world.structure.TFCStructureHooks;
 
@@ -120,12 +122,14 @@ public final class TerraFirmaCraft
 
         bus.addListener(this::setup);
         bus.addListener(this::registerRegistries);
+        bus.addListener(this::registerDatapackRegistries);
         bus.addListener(this::loadComplete);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
         bus.addListener(TFCComponents::onModifyDefaultComponents);
         bus.addListener(ItemCapabilities::register);
         bus.addListener(BlockCapabilities::register);
         bus.addListener(TFCCreativeTabs::setAllTabContentAsNonDecaying);
+        bus.addListener(TFCCreativeTabs::addToVanillaTabs);
         bus.addListener(Faunas::registerSpawnPlacements);
         bus.addListener(PacketHandler::setup);
 
@@ -238,6 +242,11 @@ public final class TerraFirmaCraft
         event.register(TFCBiomes.REGISTRY);
         event.register(ChiselMode.REGISTRY);
         event.register(GlassOperation.REGISTRY);
+    }
+
+    public void registerDatapackRegistries(DataPackRegistryEvent.NewRegistry event)
+    {
+        event.dataPackRegistry(RockSettings.KEY, RockSettings.CODEC);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

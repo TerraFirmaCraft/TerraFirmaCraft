@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "你可以使用$(thing)流道$()和$(thing)模具台$()一次从$(l:mechanics/crucible)坩埚$()浇铸到多个模具。只需用$(thing)流道$()将$(thing)模具台$()连接到$(thing)坩埚$()，然后右键点击坩埚旁边的$(thing)流道$()即可开始浇铸。手持$(l:getting_started/pottery#mold)模具$()时按住$(item)$(k:key.sneak)$()右键点击$(thing)模具台$()可以放置或移除模具。"
+      "text": "你可以使用$(thing)流道$()和$(thing)模具台$()一次从$(l:metalworking/crucible)坩埚$()浇铸到多个模具。只需用$(thing)流道$()将$(thing)模具台$()连接到$(thing)坩埚$()，然后右键点击坩埚旁边的$(thing)流道$()即可开始浇铸。手持$(l:getting_started/pottery#mold)模具$()时按住$(item)$(k:key.sneak)$()右键点击$(thing)模具台$()可以放置或移除模具。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -32,7 +32,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)在$(thing)模具台$()上使用$(l:mechanics/bellows)风箱$()会使金属冷却得更快。$()$(li)用红石脉冲激活$(thing)流道$()会开始浇铸金属。$()$(li)$(thing)模具台$()会输出比较器信号。",
+      "text": "$(li)在$(thing)模具台$()上使用$(l:metalworking/bellows)风箱$()会使金属冷却得更快。$()$(li)用红石脉冲激活$(thing)流道$()会开始浇铸金属。$()$(li)$(thing)模具台$()会输出比较器信号。",
       "title": "自动化"
     }
   ],

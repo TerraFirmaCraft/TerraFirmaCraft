@@ -1,0 +1,87 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Ткачество",
+  "category": "tfc:crafting",
+  "icon": "tfc:spindle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Ткачество$() — это процесс соединения различных видов нитей в $(thing)ткань$(). Хотя последний этап ткачества выполняется на $(thing)ткацком станке$(), некоторые ткани, такие как шерсть $(l:food/animal_husbandry#wooly_animals)шёрстных животных$(), требуют $(thing)веретена$() для получения $(thing)пряжи$(), чтобы их можно было ткать."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "recipe": "tfc:knapping/ceramic/unfired_spindle_head",
+      "text": "$(thing)Необожжённая головка веретена$() лепится из глины. Затем ее нужно $(l:core_mechanics/heating)обжечь$() в $(thing)головку веретена$(). Соберите её с $(thing)палкой$(), чтобы получить готовое веретено."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wool_yarn",
+      "text": "$(thing)Шерстяная пряжа$() получается из веретена и $(thing)шерсти$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/loom/acacia",
+      "text": "Ткацкий станок изготавливается из $(thing)досок$() и $(thing)палок$()."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "anchor": "wool_cloth",
+      "recipe": "tfc:loom/wool_cloth",
+      "text": "Создание $(thing)шерстяной ткани$() требует 16 $(thing)шерстяной пряжи$(). Добавляется пряжа на ткацкий станок нажатием $(item)$(k:key.use)$(). Добавив необходимое количество пряжи, удерживайте $(item)$(k:key.use)$(), чтобы начать работу на ткацком станке. Когда работа будет закончена, нажмите $(item)$(k:key.use)$(), чтобы забрать ткань."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/loom_empty.png",
+        "tfc:textures/gui/book/tutorial/loom_full.png",
+        "tfc:textures/gui/book/tutorial/loom_working.png",
+        "tfc:textures/gui/book/tutorial/loom_done.png"
+      ],
+      "text": "Этапы работы на ткацком станке.",
+      "border": true
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/white_wool",
+      "text": "$(thing)Шерстяную ткань$() можно переткать в $(thing)шерстяные блоки$(). Шерстяные блоки можно $(l:mechanics/dye)окрасить$()."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/silk_cloth",
+      "text": "$(thing)Шёлковую ткань$() можно сделать на ткацком станке из $(thing)нитей$(). Её можно использовать в качестве замены шерстяной ткани."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "anchor": "burlap_cloth",
+      "recipe": "tfc:loom/burlap_cloth",
+      "text": "$(thing)Джутовую ткань$() можно сделать из $(l:food/crops#jute)волокон джута$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:light_blue_bed",
+      "recipe2": "minecraft:painting"
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "power_loom",
+      "recipe": "tfc:crafting/power_loom",
+      "text": "Ткачество можно автоматизировать используя $(l:mechanics/mechanical_power#quern)механическую энергию$() с помощью $(thing)механического ткацкого станка$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "В механический ткацкий станок, как и в обычный, можно положить предметы, используя воронку сбоку, и забрать продукт воронкой под станком. С правой стороны к станку  можно присоединить $(thing)ось$() для снабжения его механической энергией. Заполните станок нитями, и он медленно соткет конечный продукт. На механическом ткацком станке нельзя работать вручную."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3,
+  "extra_recipe_mappings": {
+    "tfc:spindle": 1,
+    "tfc:wool": 2,
+    "tag:tfc:looms": 3,
+    "tfc:wool_cloth": 4,
+    "minecraft:white_wool": 6,
+    "tfc:silk_cloth": 7,
+    "tfc:burlap_cloth": 8,
+    "tfc:power_loom": 10
+  }
+}

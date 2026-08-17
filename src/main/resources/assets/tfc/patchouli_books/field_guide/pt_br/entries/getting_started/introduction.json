@@ -100,7 +100,7 @@
         "tfc:knapping/stone/hoe_head/igneous_extrusive",
         "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
-      "text": "$(thing)Enxadas$() são ferramentas úteis para $(l:mechanics/crops)Agricultura$(), Mas eles também podem ser usados para cortar folhas e outras matérias vegetais."
+      "text": "$(thing)Enxadas$() são ferramentas úteis para $(l:food/crops)Agricultura$(), Mas eles também podem ser usados para cortar folhas e outras matérias vegetais."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:knapping/stone/hammer_head/igneous_extrusive",
         "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
-      "text": "$(thing)Martelos$() pode ser usado como $(l:mechanics/damage_types)Esmagando$() armas, mas são ferramentas mais importantes usadas para $(l:getting_started/primitive_anvils)Forjamento$()."
+      "text": "$(thing)Martelos$() pode ser usado como $(l:core_mechanics/damage_types)Esmagando$() armas, mas são ferramentas mais importantes usadas para $(l:getting_started/primitive_anvils)Forjamento$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:knapping/stone/javelin_head/igneous_extrusive",
         "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
-      "text": "Finalmente, a $(thing)Javelin$() pode ser usado como uma arma primitiva, capaz de ser jogada em alvos ou usada como um $(l:mechanics/damage_types)Lanças$() arma."
+      "text": "Finalmente, a $(thing)Javelin$() pode ser usado como uma arma primitiva, capaz de ser jogada em alvos ou usada como um $(l:core_mechanics/damage_types)Lanças$() arma."
     }
   ],
   "read_by_default": true,

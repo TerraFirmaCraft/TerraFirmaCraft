@@ -100,7 +100,7 @@
         "tfc:knapping/stone/hoe_head/igneous_extrusive",
         "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
-      "text": "$(thing)Hoes$() are useful tools for $(l:mechanics/crops)Farming$(), but they can also be used to cut down leaves and other plant matter."
+      "text": "$(thing)Hoes$() are useful tools for $(l:food/crops)Farming$(), but they can also be used to cut down leaves and other plant matter."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:knapping/stone/hammer_head/igneous_extrusive",
         "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
-      "text": "$(thing)Hammers$() can be used as $(l:mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$()."
+      "text": "$(thing)Hammers$() can be used as $(l:core_mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:knapping/stone/javelin_head/igneous_extrusive",
         "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
-      "text": "Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:mechanics/damage_types)Piercing$() weapon."
+      "text": "Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:core_mechanics/damage_types)Piercing$() weapon."
     }
   ],
   "read_by_default": true,

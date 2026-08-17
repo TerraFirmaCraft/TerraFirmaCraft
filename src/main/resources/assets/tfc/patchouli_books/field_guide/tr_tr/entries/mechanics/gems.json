@@ -12,11 +12,11 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Değerli taşlar, bir $(l:mechanics/quern)El Değirmeni$() kullanılarak toz haline getirilebilir. Değerli taş tozları, özellikle $(l:mechanics/glassworking_applications#coloring)Cam Renklendirme$() işleminde oldukça kullanışlıdır."
+      "text": "Değerli taşlar, bir $(l:crafting/quern)El Değirmeni$() kullanılarak toz haline getirilebilir. Değerli taş tozları, özellikle $(l:crafting/glassworking_applications#coloring)Cam Renklendirme$() işleminde oldukça kullanışlıdır."
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/sluices)Olukla Yıkama$() ve $(l:mechanics/panning)Eleme$() yoluyla $(thing)İşlenmemiş Değerli Taşlar$() elde edilebilir. Oluk ile elde edilebilecek değerli taş, işlenen yatağın kaya türüne bağlıdır."
+      "text": "$(l:metalworking/sluices)Olukla Yıkama$() ve $(l:getting_started/panning)Eleme$() yoluyla $(thing)İşlenmemiş Değerli Taşlar$() elde edilebilir. Oluk ile elde edilebilecek değerli taş, işlenen yatağın kaya türüne bağlıdır."
     },
     {
       "type": "patchouli:text",

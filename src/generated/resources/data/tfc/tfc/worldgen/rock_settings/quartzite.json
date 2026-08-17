@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/quartzite",
+  "gravel": "tfc:rock/gravel/quartzite",
+  "hardened": "tfc:rock/hardened/quartzite",
+  "karst": false,
+  "loose": "tfc:rock/loose/quartzite",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/quartzite",
+  "raw": "tfc:rock/raw/quartzite",
+  "sand": "tfc:sand/white",
+  "sandstone": "tfc:raw_sandstone/white",
+  "spike": "tfc:rock/spike/quartzite"
+}

@@ -24,7 +24,7 @@
         }
       },
       "name": "火藥桶",
-      "text": "與$(l:mechanics/barrels)大桶$()類似, 火藥桶可以用$(item)$(k:key.use)$()鍵來密封和解除密封. 只有密封的火藥桶可以被點燃.",
+      "text": "與$(l:crafting/barrels)大桶$()類似, 火藥桶可以用$(item)$(k:key.use)$()鍵來密封和解除密封. 只有密封的火藥桶可以被點燃.",
       "enable_visualize": false
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "有兩種方式可以製造火藥: 第一種公式是用$(l:the_world/ores_and_minerals#saltpeter)硝石$(), $(l:the_world/ores_and_minerals#saltpeter)硫磺$(), 和$(l:mechanics/charcoal_pit)木炭$()粉. 粉末可以用$(l:mechanics/quern)手推磨$()得到. 但如果你能找到$(l:the_world/ores_and_minerals#graphite)石墨$(), 你就可以使用一個更高效的合成方法了."
+      "text": "有兩種方式可以製造火藥: 第一種公式是用$(l:the_world/ores_and_minerals#saltpeter)硝石$(), $(l:the_world/ores_and_minerals#saltpeter)硫磺$(), 和$(l:metalworking/charcoal_pit)木炭$()粉. 粉末可以用$(l:crafting/quern)手推磨$()得到. 但如果你能找到$(l:the_world/ores_and_minerals#graphite)石墨$(), 你就可以使用一個更高效的合成方法了."
     }
   ],
   "read_by_default": true

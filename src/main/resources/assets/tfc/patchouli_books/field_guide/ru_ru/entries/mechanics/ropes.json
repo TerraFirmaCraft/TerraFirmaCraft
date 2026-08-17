@@ -1,21 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Ropes",
+  "name": "Верёвки",
   "category": "tfc:mechanics",
   "icon": "tfc:rope",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Rope$() can be strung up to climb down cliffs and shafts. To hang a rope, $(item)$(k:key.use)$() it on the tip of a $(thing)Rock Spike$(), or on a $(thing)Steel Rope Anchor$(). This ties off the rope and turns the block into an anchor."
+      "text": "$(thing)Верёвку$() можно свесить с края, чтобы преодолевать отвесные утёсы и передвигаться по шахтам. Чтобы свесить верёвку, нажмите $(item)$(k:key.use)$() по верхушке $(thing)сталагмита$() или $(thing)стальному анкеру$(). Так, один конец верёвки будет закреплён на камне или анкере."
     },
     {
       "type": "patchouli:text",
-      "text": "$(item)$(k:key.use)$() the rope again to throw it out in the direction you are facing, laying down rope that you can climb. To recall the rope, $(item)$(k:key.use)$() the anchor with an empty hand. The rope will be destroyed, the spike will turn back into an anchor, and the items returned to you."
+      "text": "Нажмите $(item)$(k:key.use)$() с верёвкой в руке ещё раз, чтобы бросить второй конец в направлении взгляда. По упавшей верёвке можно будет взбираться. Чтобы смотать висящую верёвку, нажмите $(item)$(k:key.use)$() пустой рукой по месту её крепления. Висящая верёвка пропадёт, а её использованные фрагменты вернутся в инвентарь."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/steel_rope_anchor",
-      "text": "$(thing)Rock Spikes$() cannot be picked up, so the $(thing)Steel Rope Anchor$() can be crafted and placed wherever you need an anchor instead."
+      "text": "$(thing)Сталагмиты$() нельзя переносить, но можно использовать $(thing)стальной анкер$(), чтобы закрепить верёвку где угодно."
     }
   ],
   "read_by_default": true,

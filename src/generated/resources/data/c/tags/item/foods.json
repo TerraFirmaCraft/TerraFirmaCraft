@@ -116,6 +116,7 @@
     "tfc:food/chevon",
     "tfc:food/gran_feline",
     "tfc:food/turtle",
+    "tfc:food/armadillo",
     "tfc:food/camelidae",
     "tfc:food/frog_legs",
     "tfc:food/cod",
@@ -181,6 +182,7 @@
     "tfc:food/cooked_red_piranha",
     "tfc:food/cooked_spotted_gudgeon",
     "tfc:food/cooked_tilapia",
+    "tfc:food/cooked_armadillo",
     "#c:foods/soup",
     "#c:foods/salad",
     "#c:foods/sandwiches"

@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
+      "text": "Lamps are smithed in the $(l:metalworking/anvils)Anvil$() and crafted with $(l:crafting/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
     },
     {
       "type": "tfc:quern_recipe",
@@ -49,12 +49,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot$() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 6 in-game hours for every unit of fluid."
+      "text": "Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:food/pot)Pot$() to make $(thing)Olive Oil Water$(). Seal that in a $(l:crafting/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 6 in-game hours for every unit of fluid."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for 2 in-game hours per unit. It can be used to make $(l:mechanics/lighting#candles)Candles$()"
+      "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:food/pot)Pot$() of water. Tallow burns for 2 in-game hours per unit. It can be used to make $(l:core_mechanics/lighting#candles)Candles$()"
     },
     {
       "type": "patchouli:multiblock",
@@ -72,13 +72,13 @@
         }
       },
       "name": "Lava Lamps",
-      "text": "Lava will keep burning forever, but can only be held in a $(l:mechanics/steel#blue_steel)Blue Steel$() lamp.",
+      "text": "Lava will keep burning forever, but can only be held in a $(l:metalworking/steel#blue_steel)Blue Steel$() lamp.",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$()."
+      "text": "$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:metalworking/anvils)Anvil$()."
     }
   ],
   "read_by_default": true,

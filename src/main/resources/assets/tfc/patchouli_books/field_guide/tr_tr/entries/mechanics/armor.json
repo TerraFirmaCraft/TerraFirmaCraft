@@ -6,26 +6,26 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Zırh$(), yırtıcılardan ve canavarlardan gelen saldırılara karşı koruma sağlar. Zırhın kalitesi, $(l:mechanics/leather_making)Deri$() en zayıf ve $(l:mechanics/steel)Renkli Çelikler$() en güçlü olacak şekilde, $(thing)Metal$() seviyesine göre artar."
+      "text": "$(thing)Zırh$(), yırtıcılardan ve canavarlardan gelen saldırılara karşı koruma sağlar. Zırhın kalitesi, $(l:crafting/leather_making)Deri$() en zayıf ve $(l:metalworking/steel)Renkli Çelikler$() en güçlü olacak şekilde, $(thing)Metal$() seviyesine göre artar."
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/leather_chestplate",
-      "text": "Deri zırh, $(l:mechanics/leather_making)Deri$() kullanılarak $(thing)Yontulur$(). Çok uzun ömürlü değildir ancak tam bir setiniz varsa oldukça iyi bir koruma sağlar."
+      "text": "Deri zırh, $(l:crafting/leather_making)Deri$() kullanılarak $(thing)Yontulur$(). Çok uzun ömürlü değildir ancak tam bir setiniz varsa oldukça iyi bir koruma sağlar."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/unfinished_helmet/copper",
-      "text": "$(thing)Metal Zırh$(), bir $(l:mechanics/anvils)Örs$() üzerinde birden fazla işlem adımı gerektirir. İlk olarak, $(thing)tamamlanmamış$() bir zırh parçası dövülmelidir. Botlar hariç (botlar tek bir levha gerektirir), bunlar metalden bir $(thing)Çift Levha$() gerektirir."
+      "text": "$(thing)Metal Zırh$(), bir $(l:metalworking/anvils)Örs$() üzerinde birden fazla işlem adımı gerektirir. İlk olarak, $(thing)tamamlanmamış$() bir zırh parçası dövülmelidir. Botlar hariç (botlar tek bir levha gerektirir), bunlar metalden bir $(thing)Çift Levha$() gerektirir."
     },
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/metal/greaves/bismuth_bronze",
-      "text": "Ardından, zırh parçasını tamamlamak için bir $(thing)Levha$() zırh parçasına $(l:mechanics/anvils#welding)Kaynaklanmalıdır$(). Göğüslüklerin tamamlanması için bir $(thing)Çift Levha$() gerekir."
+      "text": "Ardından, zırh parçasını tamamlamak için bir $(thing)Levha$() zırh parçasına $(l:metalworking/anvils#welding)Kaynaklanmalıdır$(). Göğüslüklerin tamamlanması için bir $(thing)Çift Levha$() gerekir."
     },
     {
       "type": "patchouli:text",
-      "text": "Aynı seviyede ancak farklı metallerden yapılmış zırhlar küçük farklılıklar gösterebilir. Bunlar dayanıklılığın yanı sıra $(l:mechanics/damage_types)Hasar Dirençleri$() ile ifade edilir. Artan dayanıklılık sırasına göre bronzlar; $(thing)Bizmut Bronzu$(), normal $(thing)Bronz$() ve $(thing)Kara Bronz$() olarak sıralanır. Renkli çelikler için ise $(thing)Kızıl Çelik$(), $(thing)Mavi Çelik$()'ten daha uzun ömürlüdür."
+      "text": "Aynı seviyede ancak farklı metallerden yapılmış zırhlar küçük farklılıklar gösterebilir. Bunlar dayanıklılığın yanı sıra $(l:core_mechanics/damage_types)Hasar Dirençleri$() ile ifade edilir. Artan dayanıklılık sırasına göre bronzlar; $(thing)Bizmut Bronzu$(), normal $(thing)Bronz$() ve $(thing)Kara Bronz$() olarak sıralanır. Renkli çelikler için ise $(thing)Kızıl Çelik$(), $(thing)Mavi Çelik$()'ten daha uzun ömürlüdür."
     },
     {
       "type": "patchouli:text",

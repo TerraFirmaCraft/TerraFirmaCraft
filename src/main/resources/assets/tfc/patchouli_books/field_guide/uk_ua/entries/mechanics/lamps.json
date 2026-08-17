@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
+      "text": "Lamps are smithed in the $(l:metalworking/anvils)Anvil$() and crafted with $(l:crafting/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
     },
     {
       "type": "tfc:quern_recipe",
@@ -49,12 +49,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Відвари $(thing)оливкову пасту$() з $(thing)водою$() у $(l:mechanics/pot)казані$(), та отримай $(thing)оливкову олійну воду$(). Запечатай цю воду у $(l:mechanics/barrels)діжці$() разом з $(thing)джутовим фільтром$() для отримання $(thing)оливкової олії$(). Оливкова олія горить 8 годин у грі на кожну одиницю палива."
+      "text": "Відвари $(thing)оливкову пасту$() з $(thing)водою$() у $(l:food/pot)казані$(), та отримай $(thing)оливкову олійну воду$(). Запечатай цю воду у $(l:crafting/barrels)діжці$() разом з $(thing)джутовим фільтром$() для отримання $(thing)оливкової олії$(). Оливкова олія горить 8 годин у грі на кожну одиницю палива."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "Також, у якості палива можна використовувати $(thing)сало$(). Треба відварити 5 шматків  $(thing)сала$(), у $(l:mechanics/pot)казані$() з водою. Сало горить менше, 2 години у грі на одиницю. З сала також можна виготовляти $(l:mechanics/lighting#candles)свічки$()."
+      "text": "Також, у якості палива можна використовувати $(thing)сало$(). Треба відварити 5 шматків  $(thing)сала$(), у $(l:food/pot)казані$() з водою. Сало горить менше, 2 години у грі на одиницю. З сала також можна виготовляти $(l:core_mechanics/lighting#candles)свічки$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -72,13 +72,13 @@
         }
       },
       "name": "Лавова лампа",
-      "text": "Лава буде світити вічно, але її можна утримувати лише у ліхтарі з $(l:mechanics/steel#blue_steel)синьої сталі$().",
+      "text": "Лава буде світити вічно, але її можна утримувати лише у ліхтарі з $(l:metalworking/steel#blue_steel)синьої сталі$().",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)Ланцюг$() - це чудовий пристрій, щоб повісити ліхтар. Ланцюг можна виготовити на $(l:mechanics/anvils)ковадлі$()."
+      "text": "$(thing)Ланцюг$() - це чудовий пристрій, щоб повісити ліхтар. Ланцюг можна виготовити на $(l:metalworking/anvils)ковадлі$()."
     }
   ],
   "read_by_default": true,

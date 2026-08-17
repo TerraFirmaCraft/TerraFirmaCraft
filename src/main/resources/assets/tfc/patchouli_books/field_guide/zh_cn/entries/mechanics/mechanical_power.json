@@ -98,7 +98,7 @@
     {
       "type": "patchouli:text",
       "anchor": "quern",
-      "text": "一个可以连接到机械网络的设备是$(l:mechanics/quern)手推磨$()，只需在其上方放置一根竖直方向的传动杆即可。连接后，手推磨不能手动转动，而是会随着上方传动杆的旋转自动研磨物品。$(br2)上方传动杆旋转得越快，手推磨研磨得也越快。",
+      "text": "一个可以连接到机械网络的设备是$(l:crafting/quern)手推磨$()，只需在其上方放置一根竖直方向的传动杆即可。连接后，手推磨不能手动转动，而是会随着上方传动杆的旋转自动研磨物品。$(br2)上方传动杆旋转得越快，手推磨研磨得也越快。",
       "title": "手推磨自动化"
     },
     {
@@ -111,7 +111,7 @@
     {
       "type": "patchouli:text",
       "anchor": "trip_hammer",
-      "text": "另一种机械设备是$(thing)杵锤$()。杵锤会在$(l:mechanics/anvils)砧$()上自动进行锻造。杵锤需要一根$(thing)带刃传动杆$()才能工作。带刃传动杆的工作原理与普通传动杆相同，但上面有一个用来激活锤子的叶片。",
+      "text": "另一种机械设备是$(thing)杵锤$()。杵锤会在$(l:metalworking/anvils)砧$()上自动进行锻造。杵锤需要一根$(thing)带刃传动杆$()才能工作。带刃传动杆的工作原理与普通传动杆相同，但上面有一个用来激活锤子的叶片。",
       "title": "杵锤"
     },
     {
@@ -149,7 +149,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "通过使用$(l:mechanics/weaving#power_loom)动力织布机$()，可以让织布过程实现自动化。有关$(l:mechanics/weaving#power_loom)动力织布机$()的详细信息，请参看这一章节。"
+      "text": "通过使用$(l:crafting/weaving#power_loom)动力织布机$()，可以让织布过程实现自动化。有关$(l:crafting/weaving#power_loom)动力织布机$()的详细信息，请参看这一章节。"
     }
   ],
   "read_by_default": true,

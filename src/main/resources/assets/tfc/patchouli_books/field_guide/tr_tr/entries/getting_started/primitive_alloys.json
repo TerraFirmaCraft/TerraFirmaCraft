@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Diğer alaşımlar alet yapmak için uygun değildir. Bunlar $(thing)Pirinç$(), $(thing)Pembe Altın$() ve $(thing)Som Gümüş$() alaşımlarıdır.$(br2)$(thing)Pirinç$(), $(l:mechanics/mechanical_power)Mekanik Güç$() dahil olmak üzere her türlü düzenek için kullanışlı bir alaşımdır.$(br2)$(thing)Pembe Altın$() ve $(thing)Som Gümüş$(), $(l:mechanics/steel#red_steel)Kızıl Çelik$() ve $(l:mechanics/steel#blue_steel)Mavi Çelik$() üretimi için kullanılır.",
+      "text": "Diğer alaşımlar alet yapmak için uygun değildir. Bunlar $(thing)Pirinç$(), $(thing)Pembe Altın$() ve $(thing)Som Gümüş$() alaşımlarıdır.$(br2)$(thing)Pirinç$(), $(l:mechanics/mechanical_power)Mekanik Güç$() dahil olmak üzere her türlü düzenek için kullanışlı bir alaşımdır.$(br2)$(thing)Pembe Altın$() ve $(thing)Som Gümüş$(), $(l:metalworking/steel#red_steel)Kızıl Çelik$() ve $(l:metalworking/steel#blue_steel)Mavi Çelik$() üretimi için kullanılır.",
       "title": "Yardımcı Alaşımlar"
     },
     {
@@ -66,7 +66,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 5,
+  "sortnum": 6,
   "extra_recipe_mappings": {
     "tfc:metal/ingot/bronze": 3,
     "tfc:metal/ingot/bismuth_bronze": 4,

@@ -29,7 +29,7 @@
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/drying_bricks/entisol",
       "title": "壤泥磚",
-      "text": "$(thing)壤泥$()會生成在地表、河流和湖底，或大量出現在低窪潮溼的生物群系中。將它們和一束$(thing)乾草$()合成就能製成$()溼壤泥磚$()."
+      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. Mud can be created by right clicking a dirt block with a container of fresh water, such as a jug or sealed barrel. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$()."
     },
     {
       "type": "tfc:multimultiblock",
@@ -162,5 +162,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 7
+  "sortnum": 8
 }

@@ -65,12 +65,12 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/surface_grasses', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
     rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder', 'tfc:raw_boulder_small_patch', 'tfc:cobble_boulder_small_patch', 'tfc:mossy_boulder_small_patch')
     rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt', 'tfc:mollisol_disc') # Does not include alfisol/podzol discs as those are placed per tree by the forest feature
-    rm.placed_feature_tag('feature/stratovolcanoes', 'tfc:stratovolcano_pumice', 'tfc:fuji_caldera', 'tfc:fuji_spring', 'tfc:kelimutu_lava', 'tfc:kelimutu_spring_water', 'tfc:kelimutu_water', 'tfc:tahoma_caldera', 'tfc:tahoma_spring', 'tfc:wizard_island_lava', 'tfc:wizard_island_spring', 'tfc:random_fuji_fissure', 'tfc:random_fuji_spring_water_fissure', 'tfc:random_tahoma_fissure', 'tfc:random_tahoma_spring_water_fissure', 'tfc:random_kelimutu_fissure', 'tfc:random_kelimutu_spring_water_fissure', 'tfc:random_crater_lake_fissure', 'tfc:random_crater_lake_spring_water_fissure', 'tfc:fuji_rivulet', 'tfc:tahoma_rivulet', 'tfc:crater_lake_rivulet', 'tfc:crater_lake_sulfur')
-    rm.placed_feature_tag('feature/cinder_cones', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure', 'tfc:cinder_cone_pumice')
+    rm.placed_feature_tag('feature/stratovolcanoes', 'tfc:stratovolcano_pumice_patch', 'tfc:stratovolcano_obsidian_shard_patch', 'tfc:fuji_caldera', 'tfc:fuji_spring', 'tfc:kelimutu_lava', 'tfc:kelimutu_spring_water', 'tfc:kelimutu_water', 'tfc:tahoma_caldera', 'tfc:tahoma_spring', 'tfc:wizard_island_lava', 'tfc:wizard_island_spring', 'tfc:random_fuji_fissure', 'tfc:random_fuji_spring_water_fissure', 'tfc:random_tahoma_fissure', 'tfc:random_tahoma_spring_water_fissure', 'tfc:random_kelimutu_fissure', 'tfc:random_kelimutu_spring_water_fissure', 'tfc:random_crater_lake_fissure', 'tfc:random_crater_lake_spring_water_fissure', 'tfc:fuji_rivulet', 'tfc:tahoma_rivulet', 'tfc:crater_lake_rivulet', 'tfc:crater_lake_sulfur')
+    rm.placed_feature_tag('feature/cinder_cones', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure', 'tfc:cinder_cone_pumice_patch', 'tfc:cinder_cone_obsidian_shard_patch')
     rm.placed_feature_tag('feature/volcanic', 'tfc:lava_surface_spring')
-    rm.placed_feature_tag('feature/tuyas', 'tfc:tuya_rivulet', 'tfc:tuya_caldera', 'tfc:random_tuya_fissure', 'tfc:tuya_pumice')
+    rm.placed_feature_tag('feature/tuyas', 'tfc:tuya_rivulet', 'tfc:tuya_caldera', 'tfc:random_tuya_fissure', 'tfc:tuya_pumice_patch', 'tfc:tuya_obsidian_shard_patch')
     rm.placed_feature_tag('feature/surface_flood_fill_lakes', 'tfc:flood_fill_lake')
-    rm.placed_feature_tag('feature/shield_volcanoes', 'tfc:pumice_shield_volcano_patch')
+    rm.placed_feature_tag('feature/shield_volcanoes', 'tfc:pumice_shield_volcano_patch', 'tfc:obsidian_shard_shield_volcano_patch')
     rm.placed_feature_tag('feature/guano_islands', 'tfc:extra_island_guano_patch')
 
     # Biomes
@@ -951,12 +951,6 @@ def generate(rm: ResourceManager):
         },
         'blocks': [],
     }, decorate_climate(min_water=300, min_temp=18))
-    rm.biome_tag('tower_karsts', 'tfc:tower_karst_plains', 'tfc:tower_karst_canyons', 'tfc:tower_karst_hills', 'tower_karst_highlands', 'tfc:extreme_doline_plateau', 'tfc:extreme_doline_mountains', 'tfc:tower_karst_lake', 'tfc:tower_karst_bay')
-    rm.biome_tag('dolines', 'tfc:doline_plains', 'tfc:doline_canyons', 'tfc:doline_hills', 'tfc:doline_highlands', 'tfc:doline_plateau')
-    rm.biome_tag('cenotes', 'tfc:cenote_plains', 'tfc:cenote_canyons', 'tfc:cenote_hills', 'tfc:cenote_highlands', 'tfc:cenote_plateau')
-    rm.biome_tag('shilins', 'tfc:shilin_plains', 'tfc:shilin_canyons', 'tfc:shilin_hills', 'tfc:shilin_highlands', 'tfc:shilin_plateau')
-    rm.biome_tag('burrens', 'tfc:burren_plains', 'tfc:burren_badlands', 'tfc:burren_badlands_tall', 'tfc:burren_plateau')
-    rm.biome_tag('karsts', '#tfc:tower_karsts', '#tfc:dolines', '#tfc:cenotes', '#tfc:shilins', '#tfc:burrens')
 
     configured_placed_feature(rm, ('vein', 'gravel'), 'tfc:disc_vein', {
         'rarity': 30,
@@ -1343,7 +1337,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature('big_tide_pool', 'tfc:tide_pool', decorate_chance(15), decorate_count(40), decorate_square(), decorate_heightmap('ocean_floor_wg'))
 
     # Groundcover
-    configured_patch_feature(rm, 'driftwood', patch_config('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 5, True), decorate_count(4), decorate_square(), extra_singular_decorators=[decorate_intertidal(1, 1)])
+    configured_patch_feature(rm, 'driftwood', patch_config('tfc:groundcover/driftwood[fluid=empty]', 1, 15, 5, True), decorate_chance(2), decorate_square(), extra_singular_decorators=[decorate_intertidal(1, 1)])
     configured_patch_feature(rm, 'clam', patch_config('tfc:groundcover/clam[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(-50, 22, 10, 450))
     configured_patch_feature(rm, 'mollusk', patch_config('tfc:groundcover/mollusk[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(-10, 30, 150, 500))
     configured_patch_feature(rm, 'mussel', patch_config('tfc:groundcover/mussel[fluid=empty]', 1, 15, 5, 'salt'), decorate_chance(6), decorate_square(), decorate_climate(10, 50, 100, 500))
@@ -1361,10 +1355,11 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'salt_lick', patch_config('tfc:groundcover/salt_lick[fluid=empty]', 1, 5, 100), decorate_chance(110), decorate_square(), decorate_climate(5, 33, 100, 500, needs_forest=True))
     configured_patch_feature(rm, 'rotten_flesh', patch_config('tfc:groundcover/rotten_flesh[fluid=empty]', 1, 10, 10), decorate_chance(100), decorate_square(), decorate_climate(-30, 30, 0, 400))
     configured_patch_feature(rm, 'bone', patch_config('tfc:groundcover/bone[fluid=empty]', 1, 10, 10), decorate_chance(100), decorate_square(), decorate_climate(-30, 30, 0, 400))
-    configured_patch_feature(rm, 'cinder_cone_pumice', patch_config('tfc:groundcover/pumice[fluid=empty]', 1, 10, 10), decorate_chance(3), decorate_square(), ('tfc:volcano', {'min_easing': 0.8}))
-    configured_patch_feature(rm, 'tuya_pumice', patch_config('tfc:groundcover/pumice[fluid=empty]', 1, 10, 10), decorate_chance(3), decorate_square(), ('tfc:tuya', {'min_easing': 0.8}))
-    configured_patch_feature(rm, 'stratovolcano_pumice', patch_config('tfc:groundcover/pumice[fluid=empty]', 1, 10, 10), decorate_chance(3), decorate_square(), ('tfc:stratovolcano', {'min_easing': 0.8}))
-    configured_patch_feature(rm, 'pumice_shield_volcano', patch_config('tfc:groundcover/pumice[fluid=empty]', 1, 10, 10), decorate_chance(3), decorate_square())
+    for gc in ('pumice', 'obsidian_shard'):
+        configured_patch_feature(rm, 'cinder_cone_%s' % gc, patch_config('tfc:groundcover/%s[fluid=empty]' % gc, 1, 10, 10), decorate_chance(3), decorate_square(), ('tfc:volcano', {'min_easing': 0.8}))
+        configured_patch_feature(rm, 'tuya_%s' % gc, patch_config('tfc:groundcover/%s[fluid=empty]' % gc, 1, 10, 10), decorate_chance(3), decorate_square(), ('tfc:tuya', {'min_easing': 0.8}))
+        configured_patch_feature(rm, 'stratovolcano_%s' % gc, patch_config('tfc:groundcover/%s[fluid=empty]' % gc, 1, 10, 10), decorate_chance(3), decorate_square(), ('tfc:stratovolcano', {'min_easing': 0.8}))
+        configured_patch_feature(rm, '%s_shield_volcano' % gc, patch_config('tfc:groundcover/%s[fluid=empty]' % gc, 1, 10, 10), decorate_chance(3), decorate_square())
 
     # Loose Rocks - Both Surface + Underground
     configured_placed_feature(rm, 'loose_rock', 'tfc:loose_rock', {}, decorate_heightmap('ocean_floor_wg'))
@@ -1385,8 +1380,6 @@ def generate(rm: ResourceManager):
         'use_alternate_layer0_chance': 0.3, 'invalid_blocks_threshold': 1, 'crack': {}, 'layers': {}
     })
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(50), decorate_square(), decorate_range(-48, 30))
-
-    rm.biome_tag('has_predictable_winds', '#tfc:is_ocean')
 
     for b in TFC_BIOMES:
         assert b in ALL_BIOMES, 'Error: Biome %s described in TFC_BIOMES not represented in world_gen.py' % b
@@ -2044,8 +2037,11 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'direwolf': spawner('tfc:direwolf', min_count=3, max_count=7),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
+    'dromedary_camel': spawner('tfc:dromedary_camel', min_count=1, max_count=3),
+    'bactrian_camel': spawner('tfc:bactrian_camel', min_count=1, max_count=3),
     'ocelot': spawner('tfc:ocelot', min_count=1, max_count=3),
     'frog': spawner('tfc:frog', min_count=2, max_count=4),
+    'armadillo': spawner('tfc:armadillo', min_count=2, max_count=3),
 }
 
 VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
@@ -2211,45 +2207,6 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     rm.placed_feature_tag(('in_biome/soil_discs', name), *soil_discs)
     rm.placed_feature_tag(('in_biome/large_features', name), *large_features)
     rm.placed_feature_tag(('in_biome/surface_decoration', name), *surface_decorations)
-
-    if cinder_cone_features:
-        rm.biome_tag('has_cinder_cones', name)
-    if tuya_features:
-        rm.biome_tag('has_tuyas', name)
-    if 'atoll' in name:
-        rm.biome_tag('has_atolls', name)
-    if 'shield_volcano' in name and 'active' not in name and 'ice' not in name and 'active' not in name:
-        rm.biome_tag('has_tuff_cones', name)
-    if 'volcanic' in name and 'volcanic_mountain_islands' not in name:
-        rm.biome_tag('has_stratovolcanoes', name)
-    if 'ice_sheet' in name or 'subglacial_lake' in name:
-        rm.biome_tag('is_ice_sheet', name)
-    if 'glaciated' in name:
-        rm.biome_tag('is_glaciated', name)
-    if 'doline' in name and 'extreme' not in name:
-        rm.biome_tag('is_dolines', name)
-    if 'doline' in name and 'extreme' in name:
-        rm.biome_tag('is_extreme_dolines', name)
-    if 'tower_karst' in name:
-        rm.biome_tag('is_tower_karst', name)
-    if 'shilin' in name:
-        rm.biome_tag('is_shilin', name)
-    if 'burren' in name:
-        rm.biome_tag('is_burren', name)
-    if 'doline' in name or 'karst' in name or 'shilin' in name or 'burren' in name:
-        rm.biome_tag('is_karst', name)
-    if 'shield_volcano' in name:
-        rm.biome_tag('is_shield_volcano')
-    if 'lake' in name:
-        rm.biome_tag('is_lake', name)
-    if 'river' in name:
-        rm.biome_tag('is_river', name)
-    if 'ocean' in name and 'mountain' not in name:
-        rm.biome_tag('is_ocean', name)
-    if 'shore' in name or 'stacks' in name or 'tidal' in name or 'embayments' in name or 'coastal' in name or 'terrace' in name or 'setback_cliffs' in name:
-        rm.biome_tag('is_ocean', name)
-    if 'rift' in name:
-        rm.biome_tag('is_rift', name)
 
     rm.lang('biome.tfc.%s' % name, lang(name))
     assert name in TFC_BIOMES, 'Error: Biome not in TFC_BIOMES list: %s' % name

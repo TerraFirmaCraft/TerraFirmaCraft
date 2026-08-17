@@ -172,7 +172,7 @@ public class NutritionData implements INutritionData
             if (nextHunger <= this.hungerWindow)
             {
                 // Add weighted nutrition, keep moving
-                updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] + record.nutrient(j) * Math.max(record.hunger(), 4));
+                updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] + record.nutrient(j) * Math.max(record.hunger(), 1));
                 runningHungerTotal = nextHunger;
             }
             else

@@ -1,0 +1,59 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "储物",
+  "category": "tfc:core_mechanics",
+  "icon": "tfc:wood/chest/oak",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "你自己的背包容量有限，所以有很多方法可以安全有序地存放物品，比如$(thing)箱子$()和$(thing)板条箱$()、$(thing)工具架$()、$(thing)架子$()以及$(thing)篮子$()。$(br2)请记住，物品的$(l:core_mechanics/size_and_weight)尺寸 ⇲$()决定了它能装进哪种容器。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/chest/oak",
+      "text": "$(thing)箱子$()是最基本的储物方块，由单一类型的$(thing)木材$()制成。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)箱子$()有 18 个槽位。$(br2)箱子最多可以存放$(thing)大$()尺寸的物品。$(thing)非常大$()的物品，比如$(thing)原木$()，太大装不进去，必须用其他方式存放。",
+      "title": "箱子"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/trapped_chest/oak",
+      "text": "$(thing)陷阱箱$()的存放方式与普通箱子相同，但在打开时会发出$(thing)红石$()信号。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/crate/oak",
+      "text": "$(thing)板条箱$()只存放一种物品，但最多可以存放 36 组，尺寸最大为$(thing)大$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要放入物品，手持物品对板条箱按$(item)$(k:key.use)$()。空手按$(item)$(k:key.use)$()会取出一整组，按住$(item)$(k:key.sneak)$()则会一次性清空整个板条箱。",
+      "title": "板条箱"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/tool_rack/oak",
+      "text": "$(thing)工具架$()安装在实心方块的侧面。用$(item)$(k:key.use)$()放置或取下工具。只有能当作工具使用的物品才能放在上面。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/shelf/oak",
+      "text": "$(thing)架子$()可以安装在实心墙壁上。对架子或架子下方使用物品，可以把物品（包括罐子）放在架子上。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要存放$(thing)食物$()并减缓$(l:food/decay)腐烂$()，最好的选择莫过于$(thing)小缸$()。详情请参阅相关章节:$(br)$(li)$(l:food/decay#small_vessels)小缸$()$(li)$(l:food/decay#large_vessels)大缸$()",
+      "title": "缸"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/basket",
+      "text": "$(thing)篮子$()里面可以装 64 个物品。把物品放在篮子上按$(item)$(k:key.use)$()即可放入或取出。较大的物品会占用更多空间。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6
+}

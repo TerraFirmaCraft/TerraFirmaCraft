@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:crafting/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:metalworking/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Plaster Decorations"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)Кам'яні цеглини$() можна виготовити за допомогою $(l:mechanics/chisel)долота$() з деяких пухких камінців гірських порід. Щоб з'єднати ці цеглини у будівельний блок, треба використати  $(thing)будівельний розчин$().$(br2)Розчин можна отримати з $(thing)піску$(), що буде запечатаний у діжці з $(l:mechanics/barrels#limewater)вапняною водою$().",
+      "text": "$(thing)Кам'яні цеглини$() можна виготовити за допомогою $(l:metalworking/chisel)долота$() з деяких пухких камінців гірських порід. Щоб з'єднати ці цеглини у будівельний блок, треба використати  $(thing)будівельний розчин$().$(br2)Розчин можна отримати з $(thing)піску$(), що буде запечатаний у діжці з $(l:crafting/barrels#limewater)вапняною водою$().",
       "title": "Цегла та розчин"
     },
     {

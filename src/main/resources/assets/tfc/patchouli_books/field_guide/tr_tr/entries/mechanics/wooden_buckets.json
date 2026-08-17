@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Ahşap Kovalar$(), oyunun erken safhalarında kullanılan bir sıvı kabıdır. 1000 mB sıvı alabilirler. $(l:mechanics/pot)Tencere$() veya $(l:mechanics/barrels)Fıçı$() içindekiler gibi tariflerde kullanılan her türlü sıvıyı alabilirler. Ancak, ahşap kovalar kaynak blokları yerleştiremez. İçindeki sıvıyı yere dökmek, hızla kaybolan az miktarda sıvı ile sonuçlanır."
+      "text": "$(thing)Ahşap Kovalar$(), oyunun erken safhalarında kullanılan bir sıvı kabıdır. 1000 mB sıvı alabilirler. $(l:food/pot)Tencere$() veya $(l:crafting/barrels)Fıçı$() içindekiler gibi tariflerde kullanılan her türlü sıvıyı alabilirler. Ancak, ahşap kovalar kaynak blokları yerleştiremez. İçindeki sıvıyı yere dökmek, hızla kaybolan az miktarda sıvı ile sonuçlanır."
     },
     {
       "type": "patchouli:crafting",

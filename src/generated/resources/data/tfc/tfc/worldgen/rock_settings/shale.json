@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/shale",
+  "gravel": "tfc:rock/gravel/shale",
+  "hardened": "tfc:rock/hardened/shale",
+  "karst": false,
+  "loose": "tfc:rock/loose/shale",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/shale",
+  "raw": "tfc:rock/raw/shale",
+  "sand": "tfc:sand/brown",
+  "sandstone": "tfc:raw_sandstone/brown",
+  "spike": "tfc:rock/spike/shale"
+}

@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "其他合金不适合制作工具。它们是$(thing)黄铜$()、$(thing)玫瑰金$()和$(thing)纯银$()。$(br2)$(thing)黄铜$()是一种有用的合金，可用于各种装置，包括$(l:mechanics/mechanical_power)机械动力$()。$(br2)$(thing)玫瑰金$()和$(thing)纯银$()用于制作$(l:mechanics/steel#red_steel)红钢$()和$(l:mechanics/steel#blue_steel)蓝钢$()。",
+      "text": "其他合金不适合制作工具。它们是$(thing)黄铜$()、$(thing)玫瑰金$()和$(thing)纯银$()。$(br2)$(thing)黄铜$()是一种有用的合金，可用于各种装置，包括$(l:mechanics/mechanical_power)机械动力$()。$(br2)$(thing)玫瑰金$()和$(thing)纯银$()用于制作$(l:metalworking/steel#red_steel)红钢$()和$(l:metalworking/steel#blue_steel)蓝钢$()。",
       "title": "实用合金"
     },
     {
@@ -66,7 +66,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 5,
+  "sortnum": 6,
   "extra_recipe_mappings": {
     "tfc:metal/ingot/bronze": 3,
     "tfc:metal/ingot/bismuth_bronze": 4,

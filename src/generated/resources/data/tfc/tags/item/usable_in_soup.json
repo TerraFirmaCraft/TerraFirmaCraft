@@ -1,4 +1,7 @@
 {
+  "remove": [
+    "tfc:food/lentil"
+  ],
   "values": [
     "#c:foods/fruit",
     "#c:foods/vegetable",

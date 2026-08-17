@@ -1,0 +1,19 @@
+{
+  "type": "tfc:knapping",
+  "default_on": false,
+  "ingredient": {
+    "item": "tfc:groundcover/obsidian_shard"
+  },
+  "knapping_type": "tfc:rock",
+  "pattern": [
+    "###",
+    "###",
+    "###",
+    "###",
+    " # "
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:obsidian_shovel_head"
+  }
+}

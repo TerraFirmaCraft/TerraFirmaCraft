@@ -12,11 +12,11 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$()."
+      "text": "Gems can be ground into powder using a $(l:crafting/quern)Quern$(). Gem powders are particularly useful in $(l:crafting/glassworking_applications#coloring)Coloring Glass$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/panning)Промиванням$() решетом, або за допомогою $(l:mechanics/sluices)мийного жолобу$() можна отримати $(thing)мінерал дорогоцінного каміння$(), або ж самоцвіт. Самоцвіт, який можна отримати за допомогою мийного жолобу, прив’язаний до типу породи родовища, що обробляється."
+      "text": "$(l:getting_started/panning)Промиванням$() решетом, або за допомогою $(l:metalworking/sluices)мийного жолобу$() можна отримати $(thing)мінерал дорогоцінного каміння$(), або ж самоцвіт. Самоцвіт, який можна отримати за допомогою мийного жолобу, прив’язаний до типу породи родовища, що обробляється."
     },
     {
       "type": "patchouli:text",

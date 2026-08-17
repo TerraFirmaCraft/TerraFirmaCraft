@@ -49,7 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "黏土可以用来做成小缸。你捏出来的小缸还需要烧制才能使用。烧制是指将黏土置于 1200°C（$(e)$(bold)$(t:Yellow)黄色$()）以上的高温中$(l:mechanics/heating)加热$()，直到它变成$(thing)瓷$()。$(br2)篝火的温度并不足以烧制瓷器，你得使用$(l:getting_started/pit_kiln)坑窑$()才行。",
+      "text": "黏土可以用来做成小缸。你捏出来的小缸还需要烧制才能使用。烧制是指将黏土置于 1200°C（$(e)$(bold)$(t:Yellow)黄色$()）以上的高温中$(l:core_mechanics/heating)加热$()，直到它变成$(thing)瓷$()。$(br2)篝火的温度并不足以烧制瓷器，你得使用$(l:getting_started/pit_kiln)坑窑$()才行。",
       "title": "小缸"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/decay#large_vessels)大缸$()的制作方法类似。它可以放置在地上，拥有九个物品槽。更多信息请查看链接章节。",
+      "text": "$(l:food/decay#large_vessels)大缸$()的制作方法类似。它可以放置在地上，拥有九个物品槽。更多信息请查看链接章节。",
       "title": "大缸"
     },
     {
@@ -104,7 +104,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
-      "text": "$(l:mechanics/prospecting#propick)勘矿镐$()本身并不能挖掘，但却是寻找矿脉必不可少的工具。"
+      "text": "$(l:metalworking/prospecting#propick)勘矿镐$()本身并不能挖掘，但却是寻找矿脉必不可少的工具。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -114,7 +114,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
-      "text": "$(thing)锯$()可以将原木切割成木板或$(l:mechanics/support_beams)支撑柱$()等高级木工物品。只有有了锯子你才能制作$(thing)工作台$()！"
+      "text": "$(thing)锯$()可以将原木切割成木板或$(l:core_mechanics/support_beams)支撑柱$()等高级木工物品。只有有了锯子你才能制作$(thing)工作台$()！"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -124,7 +124,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
-      "text": "$(l:mechanics/chisel)凿$()可以用来将普通方块转变为平滑方块，还可以用来制作多种装饰性方块。"
+      "text": "$(l:metalworking/chisel)凿$()可以用来将普通方块转变为平滑方块，还可以用来制作多种装饰性方块。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -134,17 +134,17 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
-      "text": "$(thing)锤$()是在$(l:mechanics/anvils)砧$()上制作物品不可或缺的工具。"
+      "text": "$(thing)锤$()是在$(l:metalworking/anvils)砧$()上制作物品不可或缺的工具。"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
-      "text": "$(thing)刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块。"
+      "text": "$(thing)小刀$()可以当作武器使用，不过主要还是用来破坏植物类型的方块。"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "$(thing)锄$()可以用来种植和管理$(l:mechanics/crops)农作物$()。"
+      "text": "A $(thing)Hoe$() used for planting and maintaining $(l:food/crops)Crops$()."
     },
     {
       "type": "tfc:knapping_recipe",

@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -19,6 +20,7 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.CamelModel;
 import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.ChestRaftModel;
 import net.minecraft.client.model.ChestedHorseModel;
@@ -36,6 +38,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BellRenderer;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
+import net.minecraft.client.renderer.entity.ArmadilloRenderer;
 import net.minecraft.client.renderer.entity.DolphinRenderer;
 import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.FoxRenderer;
@@ -95,6 +98,7 @@ import net.dries007.tfc.client.model.TrimmedItemModel;
 import net.dries007.tfc.client.model.entity.AlpacaModel;
 import net.dries007.tfc.client.model.entity.AnemometerModel;
 import net.dries007.tfc.client.model.entity.ArcticCharModel;
+import net.dries007.tfc.client.model.entity.BactrianCamelModel;
 import net.dries007.tfc.client.model.entity.BisonModel;
 import net.dries007.tfc.client.model.entity.BlackBearModel;
 import net.dries007.tfc.client.model.entity.BluegillModel;
@@ -238,6 +242,7 @@ import net.dries007.tfc.client.render.entity.TFCSquidRenderer;
 import net.dries007.tfc.client.render.entity.TFCTropicalFishRenderer;
 import net.dries007.tfc.client.render.entity.TFCWolfRenderer;
 import net.dries007.tfc.client.render.entity.ThrownJavelinRenderer;
+import net.dries007.tfc.client.render.entity.BactrianCamelRenderer;
 import net.dries007.tfc.client.screen.AnvilPlanScreen;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.client.screen.BarrelScreen;
@@ -669,6 +674,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, RenderHelpers.layerId("mule"), "mule"));
         event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, RenderHelpers.layerId("donkey"), "donkey"));
         event.registerEntityRenderer(TFCEntities.HORSE.get(), TFCHorseRenderer::new);
+        event.registerEntityRenderer(TFCEntities.DROMEDARY_CAMEL.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, CamelModel::new, "dromedary_camel").shadow(0.7f).texture((e) -> ResourceLocation.withDefaultNamespace("textures/entity/camel/camel.png")).build());
+        event.registerEntityRenderer(TFCEntities.BACTRIAN_CAMEL.get(), ctx -> new BactrianCamelRenderer<>(ctx, new BactrianCamelModel(RenderHelpers.bakeSimple(ctx, "bactrian_camel")), 0.6F));
         event.registerEntityRenderer(TFCEntities.RAT.get(), RatRenderer::new);
         event.registerEntityRenderer(TFCEntities.JERBOA.get(), JerboaRenderer::new);
         event.registerEntityRenderer(TFCEntities.LEMMING.get(), LemmingRenderer::new);
@@ -679,6 +686,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.WILDEBEEST.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, WildebeestModel::new, "wildebeest").build());
         event.registerEntityRenderer(TFCEntities.MOOSE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, MooseModel::new, "moose").shadow(1.0f).scale(0.8f).build());
         event.registerEntityRenderer(TFCEntities.BISON.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BisonModel::new, "bison").build());
+        event.registerEntityRenderer(TFCEntities.ARMADILLO.get(), ArmadilloRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.FIREPIT.get(), ctx -> new FirepitBlockEntityRenderer<>());
@@ -812,6 +820,8 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.layerId("horse_chest"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("mule"), ChestedHorseModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("donkey"), ChestedHorseModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("dromedary_camel"), CamelModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("bactrian_camel"), BactrianCamelModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("water_wheel"), WaterWheelModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("vane"), VaneModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("anemometer"), AnemometerModel::createBodyLayer);
@@ -1019,6 +1029,7 @@ public final class ClientEventHandler
         event.registerSpriteSet(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         event.registerSpriteSet(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
         TFCParticles.BUTTERFLIES.values().forEach(fly -> event.registerSpriteSet(fly.get(), AnimatedParticle.Provider::new));
+        TFCParticles.MOTHS.values().forEach(moth -> event.registerSpriteSet(moth.get(), AnimatedParticle.Provider::new));
         event.registerSpriteSet(TFCParticles.FLUID_DRIP.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidHangParticle::new));
         event.registerSpriteSet(TFCParticles.FLUID_FALL.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidFallAndLandParticle::new));
         event.registerSpriteSet(TFCParticles.FLUID_LAND.get(), set -> FluidDripParticle.provider(set, FluidDripParticle.FluidLandParticle::new));
@@ -1042,6 +1053,7 @@ public final class ClientEventHandler
         // Items
         TFCItems.ROCK_TOOLS.values().forEach(map -> registerCustomItemRenderer(event, map.get(RockCategory.ItemType.JAVELIN), JavelinItemRenderer::new));
         TFCItems.METAL_ITEMS.values().forEach(map -> registerCustomItemRenderer(event, map.get(Metal.ItemType.JAVELIN), JavelinItemRenderer::new));
+        registerCustomItemRenderer(event, TFCItems.OBSIDIAN_JAVELIN, JavelinItemRenderer::new);
         TFCBlocks.WOODS.values().forEach(map -> registerCustomItemRenderer(event, map.get(CHEST), ChestItemRenderer::new));
         TFCBlocks.WOODS.values().forEach(map -> registerCustomItemRenderer(event, map.get(TRAPPED_CHEST), ChestItemRenderer::new));
 

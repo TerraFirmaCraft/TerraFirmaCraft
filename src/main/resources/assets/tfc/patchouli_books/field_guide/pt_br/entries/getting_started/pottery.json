@@ -49,7 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "A pequena vessel é um desses itens. Como todos os itens de cerâmica, deve ser $(l:https://en.wikipedia.org/wiki/Pottery)despedida$() antes que possa ser usado. Disparar é um processo de $(l:mechanics/heating)aquecimento$() o item até um ponto em que a argila se transformará em um difícil $(thing)Cerâmica$() material, que requer aquecimento a 1200 ° C, ou $(e)$(bold)$(t:Yellow)Amarela$().$(br2)Para fazer isso no início do jogo, você precisará usar um $(l:getting_started/pit_kiln)Forno do poço$().",
+      "text": "A pequena vessel é um desses itens. Como todos os itens de cerâmica, deve ser $(l:https://en.wikipedia.org/wiki/Pottery)despedida$() antes que possa ser usado. Disparar é um processo de $(l:core_mechanics/heating)aquecimento$() o item até um ponto em que a argila se transformará em um difícil $(thing)Cerâmica$() material, que requer aquecimento a 1200 ° C, ou $(e)$(bold)$(t:Yellow)Amarela$().$(br2)Para fazer isso no início do jogo, você precisará usar um $(l:getting_started/pit_kiln)Forno do poço$().",
       "title": "Small Vessel"
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The $(l:mechanics/decay#large_vessels)Large Vessel$() is created in a similar way. It can be placed, and has nine slots for items. View the linked chapter for more information.",
+      "text": "The $(l:food/decay#large_vessels)Large Vessel$() is created in a similar way. It can be placed, and has nine slots for items. View the linked chapter for more information.",
       "title": "Large Vessel"
     },
     {
@@ -104,7 +104,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_propick_head_mold",
-      "text": "Uma $(l:mechanics/prospecting#propick)Escolha do prospector$() é uma ferramenta essencial para localizar grandes quantidades de minério."
+      "text": "Uma $(l:metalworking/prospecting#propick)Escolha do prospector$() é uma ferramenta essencial para localizar grandes quantidades de minério."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -114,7 +114,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_saw_blade_mold",
-      "text": "A $(thing)Serra$() é uma ferramenta necessária para criar componentes avançados de madeira como um $(thing)Bancada de Trabalho$() junto com muitos outros dispositivos como $(l:mechanics/support_beams)Apoia$()."
+      "text": "A $(thing)Serra$() é uma ferramenta necessária para criar componentes avançados de madeira como um $(thing)Bancada de Trabalho$() junto com muitos outros dispositivos como $(l:core_mechanics/support_beams)Apoia$()."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -124,7 +124,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_chisel_head_mold",
-      "text": "A $(l:mechanics/chisel)Formão$() é uma ferramenta usada para suavizar blocos, além de criar um grande número de blocos decorativos."
+      "text": "A $(l:metalworking/chisel)Formão$() é uma ferramenta usada para suavizar blocos, além de criar um grande número de blocos decorativos."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -134,7 +134,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hammer_head_mold",
-      "text": "O $(thing)Martelo$() é uma ferramenta essencial para criar e trabalhar em $(l:mechanics/anvils)Anvils$()."
+      "text": "O $(thing)Martelo$() é uma ferramenta essencial para criar e trabalhar em $(l:metalworking/anvils)Anvils$()."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -144,7 +144,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "A $(thing)Enxada$() usado para plantar e manter $(l:mechanics/crops)Plantações$()."
+      "text": "A $(thing)Enxada$() usado para plantar e manter $(l:food/crops)Plantações$()."
     },
     {
       "type": "tfc:knapping_recipe",

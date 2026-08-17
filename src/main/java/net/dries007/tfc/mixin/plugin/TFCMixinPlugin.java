@@ -30,7 +30,8 @@ public class TFCMixinPlugin implements IMixinConfigPlugin
     public static final Supplier<Boolean> TRUE = () -> true;
 
     public static final Map<String, Supplier<Boolean>> CONDITIONS = ImmutableMap.of(
-        "net.dries007.tfc.mixin.client.compat.sodium.DefaultFluidRendererMixin", () -> LoadingModList.get().getModFileById("sodium") != null
+        "net.dries007.tfc.mixin.client.compat.sodium.DefaultFluidRendererMixin", () -> LoadingModList.get().getModFileById("sodium") != null,
+        "net.dries007.tfc.mixin.client.compat.jade.NextEntityDropProviderMixin", () -> LoadingModList.get().getModFileById("jade") != null
     );
 
     @Override

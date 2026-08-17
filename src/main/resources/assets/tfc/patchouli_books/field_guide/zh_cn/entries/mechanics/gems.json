@@ -12,11 +12,11 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "宝石可以用$(l:mechanics/quern)手推磨$()磨成粉末。宝石粉在$(l:mechanics/glassworking_applications#coloring)玻璃染色$()中特别有用。"
+      "text": "宝石可以用$(l:crafting/quern)手推磨$()磨成粉末。宝石粉在$(l:crafting/glassworking_applications#coloring)玻璃染色$()中特别有用。"
     },
     {
       "type": "patchouli:text",
-      "text": "通过$(l:mechanics/sluices)洗矿$()和$(l:mechanics/panning)淘金$()可以获得$(thing)未切割的宝石$()。洗矿槽可能获得的宝石种类取决于所用的原材料的岩石种类。"
+      "text": "通过$(l:metalworking/sluices)洗矿$()和$(l:getting_started/panning)淘金$()可以获得$(thing)未切割的宝石$()。洗矿槽可能获得的宝石种类取决于所用的原材料的岩石种类。"
     },
     {
       "type": "patchouli:text",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "群峦传说中的矿物和矿石可称得上是稀有资源。与原版不同，矿石只会生成在庞大，但稀少的$(thing)矿脉$()结构中。要想找到矿脉，就必须熟练掌握$(l:mechanics/prospecting)勘矿$()技巧。有些矿石只会出现在特定的岩石类型中或高度上。因此，勘矿的一大关键步骤便是找到正确的岩石类型和高度。"
+      "text": "群峦传说中的矿物和矿石可称得上是稀有资源。与原版不同，矿石只会生成在庞大，但稀少的$(thing)矿脉$()结构中。要想找到矿脉，就必须熟练掌握$(l:metalworking/prospecting)勘矿$()技巧。有些矿石只会出现在特定的岩石类型中或高度上。因此，勘矿的一大关键步骤便是找到正确的岩石类型和高度。"
     },
     {
       "type": "patchouli:text",
@@ -684,7 +684,7 @@
       "item": "tfc:kaolin_clay",
       "title": "高岭石",
       "link_recipes": false,
-      "text": "高岭石是一种柔软的$(thing)矿物$()，用于制作$(l:mechanics/fire_clay)耐火黏土$()。它可以在高原、古老山脉、丘陵和高地的海拔较高处生成，需要$(l:the_world/climate#temperature)温度$()至少 18°C，$(l:the_world/climate#rainfall)降雨量$()至少 300mm。$(thing)火球花$()生长在高岭土上。"
+      "text": "高岭石是一种柔软的$(thing)矿物$()，用于制作$(l:metalworking/fire_clay)耐火黏土$()。它可以在高原、古老山脉、丘陵和高地的海拔较高处生成，需要$(l:core_mechanics/climate#temperature)温度$()至少 18°C，$(l:core_mechanics/climate#rainfall)降雨量$()至少 300mm。$(thing)火球花$()生长在高岭土上。"
     },
     {
       "type": "tfc:multimultiblock",
@@ -766,7 +766,7 @@
       "item": "tfc:ore/graphite",
       "title": "石墨",
       "link_recipes": false,
-      "text": "石墨是一种$(thing)矿物$()，用于制作$(l:mechanics/fire_clay)耐火黏土$()。它可以在 y=60 以下的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中找到。"
+      "text": "石墨是一种$(thing)矿物$()，用于制作$(l:metalworking/fire_clay)耐火黏土$()。它可以在 y=60 以下的$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -793,7 +793,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "朱砂",
       "link_recipes": false,
-      "text": "Cinnabar is a $(thing)Mineral$() which can be ground in the $(l:mechanics/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground or high in mountains, in $(thing)Quartzite$(), $(thing)Granite$(), $(thing)Phyllite$(), and $(thing)Schist$()."
+      "text": "朱砂是一种$(thing)矿物$()，可以在$(l:crafting/quern)手推磨$()中研磨得到$(thing)红石粉$()。它可以在深层地下或高山中的矿脉中找到，存在于$(thing)石英岩$()、$(thing)花岗岩$()、$(thing)千枚岩$()和$(thing)片岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -820,7 +820,7 @@
       "item": "tfc:ore/cryolite",
       "title": "冰晶石",
       "link_recipes": false,
-      "text": "冰晶石是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨得到$(thing)红石粉$()。它可以在深层地下的矿脉中找到，存在于$(thing)花岗岩$()和$(thing)闪长岩$()中。"
+      "text": "冰晶石是一种$(thing)矿物$()，可以在$(l:crafting/quern)手推磨$()中研磨得到$(thing)红石粉$()。它可以在深层地下的矿脉中找到，存在于$(thing)花岗岩$()和$(thing)闪长岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -847,7 +847,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "硝石",
       "link_recipes": false,
-      "text": "硝石是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨，然后用于制作$(thing)火药$()。它可以在近地表的$(l:the_world/geology#sedimentary)沉积岩$()中以非常巨大的扁平矿层形式找到。"
+      "text": "硝石是一种$(thing)矿物$()，可以在$(l:crafting/quern)手推磨$()中研磨，然后用于制作$(thing)火药$()。它可以在近地表的$(l:the_world/geology#sedimentary)沉积岩$()中以非常巨大的扁平矿层形式找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -874,7 +874,7 @@
       "item": "tfc:ore/sulfur",
       "title": "硫磺",
       "link_recipes": false,
-      "text": "硫磺是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨，然后用于制作$(thing)火药$()。它出现在深层地下靠近岩浆层的位置，以稀疏但大型且丰富的矿脉形式存在，可在任何$(l:the_world/geology#metamorphic)变质岩$()或$(l:the_world/geology#igneous_intrusive)侵入岩$()中找到。"
+      "text": "硫磺是一种$(thing)矿物$()，可以在$(l:crafting/quern)手推磨$()中研磨，然后用于制作$(thing)火药$()。它出现在深层地下靠近岩浆层的位置，以稀疏但大型且丰富的矿脉形式存在，可在任何$(l:the_world/geology#metamorphic)变质岩$()或$(l:the_world/geology#igneous_intrusive)侵入岩$()中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -901,7 +901,7 @@
       "item": "tfc:ore/sylvite",
       "title": "钾石盐",
       "link_recipes": false,
-      "text": "钾石盐是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨，然后用作$(l:mechanics/fertilizers)肥料$()。它可以在近地表的$(thing)页岩$()、$(thing)黏土岩$()和$(thing)燧石岩$()中以非常巨大的扁平矿层形式找到。"
+      "text": "钾石盐是一种$(thing)矿物$()，可以在$(l:crafting/quern)手推磨$()中研磨，然后用作$(l:mechanics/fertilizers)肥料$()。它可以在近地表的$(thing)页岩$()、$(thing)黏土岩$()和$(thing)燧石岩$()中以非常巨大的扁平矿层形式找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -928,7 +928,7 @@
       "item": "tfc:ore/borax",
       "title": "硼砂",
       "link_recipes": false,
-      "text": "硼砂是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨制成$(l:mechanics/flux)助焊剂$()。它可以在近地表的$(thing)黏土岩$()、$(thing)石灰岩$()和$(thing)页岩$()中以非常巨大的扁平矿层形式找到。"
+      "text": "硼砂是一种$(thing)矿物$()，可以在$(l:crafting/quern)手推磨$()中研磨制成$(l:metalworking/flux)助焊剂$()。它可以在近地表的$(thing)黏土岩$()、$(thing)石灰岩$()和$(thing)页岩$()中以非常巨大的扁平矿层形式找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -982,7 +982,7 @@
       "item": "tfc:ore/halite",
       "title": "岩盐",
       "link_recipes": false,
-      "text": "岩盐是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨制成$(thing)盐$()，这是一种重要的$(l:mechanics/decay#salting)防腐剂$()。它可以在近地表的$(l:the_world/geology#sedimentary)沉积岩$()中以非常巨大的扁平矿层形式找到。"
+      "text": "岩盐是一种$(thing)矿物$()，可以在$(l:crafting/quern)手推磨$()中研磨制成$(thing)盐$()，这是一种重要的$(l:food/decay#salting)防腐剂$()。它可以在近地表的$(l:the_world/geology#sedimentary)沉积岩$()中以非常巨大的扁平矿层形式找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1009,7 +1009,7 @@
       "item": "tfc:ore/emerald",
       "title": "祖母绿",
       "link_recipes": false,
-      "text": "Emerald is a $(l:mechanics/gems)Gemstone$(). It looks quite pretty, maybe if you could find someone else in this incredibly lonely world you could trade it with them...$(br2)It appears in thin vertical ore formations which can be up to a hundred blocks tall. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks, or associated with hotsprings."
+      "text": "祖母绿是一种$(l:mechanics/gems)宝石$()。它看起来相当漂亮，也许在这个无比孤独的世界里，如果你能找到另一个人，还能用它和他们做交易……$(br2)它出现在薄而垂直的矿脉中，最高可达一百格。它可以在$(l:the_world/geology#igneous_intrusive)侵入岩$()中找到，或与温泉相伴而生。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1036,7 +1036,7 @@
       "item": "tfc:ore/diamond",
       "title": "金伯利岩",
       "link_recipes": false,
-      "text": "Kimberlite is a decorative and priceless $(l:mechanics/gems)Gemstone$(). It appears in thin vertical ore formations called $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)Kimberlite Pipes$() which can be up to a hundred blocks tall. These can only be found in $(thing)Gabbro$(). Kimberlite also occurs rarely in volcanic fissures."
+      "text": "金伯利岩是一种装饰性且价值连城的$(l:mechanics/gems)宝石$()。它出现在被称为$(l:https://en.wikipedia.org/wiki/Volcanic_pipe)金伯利岩管$()的薄而垂直的矿脉中，最高可达一百格。它们只能在$(thing)辉长岩$()中找到。金伯利岩也偶尔出现在火山裂缝中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1063,7 +1063,7 @@
       "item": "tfc:ore/lapis_lazuli",
       "title": "青金石",
       "link_recipes": false,
-      "text": "Lapis Lazuli is a decorative $(l:mechanics/gems)Gemstone$() which can be used to make $(l:mechanics/dye)Blue Dye$(). It can be found in large, but sparse veins in $(thing)Limestone$() and $(thing)Marble$(), between y=-20 and y=80."
+      "text": "青金石是一种装饰性$(l:mechanics/gems)宝石$()，可以用来制作$(l:mechanics/dye)蓝色染料$()。它可以在$(thing)石灰岩$()和$(thing)大理岩$()中以巨大但稀疏的矿脉形式找到，位于 y=-20 到 y=80 之间。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1081,16 +1081,16 @@
         }
       },
       "name": "",
-      "text": "Lapis Lazuli in Marble.",
+      "text": "大理岩中的青金石。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "amethyst",
       "item": "tfc:ore/amethyst",
-      "title": "Amethyst",
+      "title": "紫水晶",
       "link_recipes": false,
-      "text": "Amethyst is a decorative $(l:mechanics/gems)Gemstone$() which can be used to make $(l:mechanics/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40, or in geodes below y=30."
+      "text": "紫水晶是一种装饰性$(l:mechanics/gems)宝石$()，可以用来制作$(l:crafting/glassworking)玻璃$()。它可以在河流下方 y=40 以上的$(thing)沉积岩$()和$(thing)变质岩$()中找到，或在 y=30 以下的晶洞中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1108,16 +1108,16 @@
         }
       },
       "name": "",
-      "text": "Amethyst in Marble.",
+      "text": "大理岩中的紫水晶。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "opal",
       "item": "tfc:ore/opal",
-      "title": "Opal",
+      "title": "蛋白石",
       "link_recipes": false,
-      "text": "Opal is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
+      "text": "蛋白石是一种装饰性$(l:mechanics/gems)宝石$()。它可以在河流下方 y=40 以上的$(thing)沉积岩$()和$(thing)喷出岩$()中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1135,16 +1135,16 @@
         }
       },
       "name": "",
-      "text": "Opal in Basalt.",
+      "text": "玄武岩中的蛋白石。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "pyrite",
       "item": "tfc:ore/pyrite",
-      "title": "Pyrite",
+      "title": "黄铁矿",
       "link_recipes": false,
-      "text": "Pyrite, or fool's gold, is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Igneous Intrusive) and $(thing)Igneous Extrusive$() beloy y=70."
+      "text": "黄铁矿，又名愚人金，是一种装饰性$(l:mechanics/gems)宝石$()。它可以在 y=70 以下的$(thing)侵入岩$()和$(thing)喷出岩$()中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1162,16 +1162,16 @@
         }
       },
       "name": "",
-      "text": "Pyrite in Granite.",
+      "text": "花岗岩中的黄铁矿。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "ruby",
       "item": "tfc:ore/ruby",
-      "title": "Ruby",
+      "title": "红宝石",
       "link_recipes": false,
-      "text": "Ruby is a decorative $(l:mechanics/gems)Gemstone$(). It can be found rarely in $(thing)Marble$() rock below y=-10, or more commonly in veins of $(thing)Marble$() rock Collisional Mountains"
+      "text": "红宝石是一种装饰性$(l:mechanics/gems)宝石$()。它很少在 y=-10 以下的$(thing)大理岩$()中找到，更常见于碰撞山脉的$(thing)大理岩$()矿脉中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1189,16 +1189,16 @@
         }
       },
       "name": "",
-      "text": "Ruby in Marble.",
+      "text": "大理岩中的红宝石。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "sapphire",
       "item": "tfc:ore/sapphire",
-      "title": "Sapphire",
+      "title": "蓝宝石",
       "link_recipes": false,
-      "text": "Sapphire is a decorative $(l:mechanics/gems)Gemstone$(). It can be found $(thing)Hot Springs$() fissures."
+      "text": "蓝宝石是一种装饰性$(l:mechanics/gems)宝石$()。它可以在$(thing)温泉$()的裂缝中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1216,16 +1216,16 @@
         }
       },
       "name": "",
-      "text": "Sapphire in Gabbro.",
+      "text": "辉长岩中的蓝宝石。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "topaz",
       "item": "tfc:ore/topaz",
-      "title": "Topaz",
+      "title": "黄玉",
       "link_recipes": false,
-      "text": "Topaz is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in the fissures of Volcanoes."
+      "text": "黄玉是一种装饰性$(l:mechanics/gems)宝石$()。它可以在火山的裂缝中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1243,7 +1243,7 @@
         }
       },
       "name": "",
-      "text": "Topaz in Schist.",
+      "text": "片岩中的黄玉。",
       "enable_visualize": false
     }
   ],

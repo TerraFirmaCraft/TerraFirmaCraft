@@ -14,17 +14,11 @@ public enum Butterfly
     GOLDEN_BIRDWING(23f, 30f, 300f, 500f),
     PAPILIO_RUMANZOVIA(20f, 30f,400f, 500f),
     PAPILIO_PALINURUS(21f, 30f, 300f, 500f),
-    MOTH_DIAPHORA(10f, 20f, 150f, 400f),
     PEACOCK(10f, 30f, 120f, 410f),
     SERICINUS(15f, 18f, 150f, 400f),
     PAPILIO_BLUMEI(18f, 24f, 300f, 500f),
     ADONIS_BLUE(10f, 20f, 150f, 400f),
-    SILVERWASHED_FRITILLARY(9f, 15f, 150f, 250f),
-    MOTH_SATURNIA(10f, 20f, 150f, 400f),
-    MOTH_ARGEMA(21f, 30f, 300f, 500f),
-    MOTH_ATTACUS(18f, 30f, 330f, 500f),
-    MOTH_LUNA(8f, 30f, 100f, 500f),
-    MOTH_TROSIA(18f, 30f, 330f, 500f);
+    SILVERWASHED_FRITILLARY(9f, 15f, 150f, 250f);
 
     public static final Butterfly[] VALUES = Butterfly.values();
 

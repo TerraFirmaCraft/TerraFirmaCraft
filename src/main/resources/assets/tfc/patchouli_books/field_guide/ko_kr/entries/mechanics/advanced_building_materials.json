@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:crafting/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:metalworking/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Plaster Decorations"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)돌 벽돌$()은 $(l:mechanics/chisel)끌$()을 돌에 사용하여 만들 수 있습니다. 단단한 건축 재료로 만들기 위해서는 $(thing)회반죽$()이 필요합니다.$(br2)회반죽은 $(thing)모래$()를 $(l:mechanics/barrels#limewater)석회수$()가 채워진 통에 넣어 만들 수 있습니다.",
+      "text": "$(thing)돌 벽돌$()은 $(l:metalworking/chisel)끌$()을 돌에 사용하여 만들 수 있습니다. 단단한 건축 재료로 만들기 위해서는 $(thing)회반죽$()이 필요합니다.$(br2)회반죽은 $(thing)모래$()를 $(l:crafting/barrels#limewater)석회수$()가 채워진 통에 넣어 만들 수 있습니다.",
       "title": "§l벽돌과 회반죽"
     },
     {

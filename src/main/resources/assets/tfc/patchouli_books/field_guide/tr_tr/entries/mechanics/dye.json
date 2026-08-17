@@ -6,14 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "16 standart $(thing)Boya Rengi$() eşya olarak elde edilebilir. Çoğu çiçek ve diğer renkli bitkiler, bir $(l:mechanics/quern)El Değirmeni$() kullanılarak boyaya dönüştürülebilir. $(l:the_world/ores_and_minerals)Metal cevherlerinin$() tozları doğrudan boya olarak üretilebilir. $(l:the_world/ores_and_minerals#graphite)Grafit$(), $(l:the_world/ores_and_minerals#kaolinite)Kaolinit$(), $(l:the_world/ores_and_minerals#sylvite)Silvit$(), $(l:the_world/ores_and_minerals#lapis_lazuli)Lapis$(), Kok ve Kömür tozu da boya olarak üretilebilir."
+      "text": "16 standart $(thing)Boya Rengi$() eşya olarak elde edilebilir. Çoğu çiçek ve diğer renkli bitkiler, bir $(l:crafting/quern)El Değirmeni$() kullanılarak boyaya dönüştürülebilir. $(l:the_world/ores_and_minerals)Metal cevherlerinin$() tozları doğrudan boya olarak üretilebilir. $(l:the_world/ores_and_minerals#graphite)Grafit$(), $(l:the_world/ores_and_minerals#kaolinite)Kaolinit$(), $(l:the_world/ores_and_minerals#sylvite)Silvit$(), $(l:the_world/ores_and_minerals#lapis_lazuli)Lapis$(), Kok ve Kömür tozu da boya olarak üretilebilir."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
       "title": "Boya Sıvıları",
       "link_recipes": false,
-      "text": "Boyalar sıvı haline de getirilebilir. Bir boya eşyası ve 1000mB $(item)Su$(), bir $(l:mechanics/pot)Tencere$() içinde kaynatıldığında aynı miktarda $(thing)Boya Sıvısı$() üretir. Boya sıvıları, eşyaları renklendirmek için $(l:mechanics/barrels)Fıçılarda$() kullanılır."
+      "text": "Boyalar sıvı haline de getirilebilir. Bir boya eşyası ve 1000mB $(item)Su$(), bir $(l:food/pot)Tencere$() içinde kaynatıldığında aynı miktarda $(thing)Boya Sıvısı$() üretir. Boya sıvıları, eşyaları renklendirmek için $(l:crafting/barrels)Fıçılarda$() kullanılır."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -34,11 +34,11 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
       "recipe": "tfc:barrel/bleach_bed",
-      "text": "Beş $(item)Odun Külü$() ve 1000mB $(item)Su$(), bir $(l:mechanics/pot)Tencere$() içinde kaynatıldığında kül suyu üretir. 25mB Kül suyu, boyalı bir eşyanın rengini çıkarır."
+      "text": "Beş $(item)Odun Külü$() ve 1000mB $(item)Su$(), bir $(l:food/pot)Tencere$() içinde kaynatıldığında kül suyu üretir. 25mB Kül suyu, boyalı bir eşyanın rengini çıkarır."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(item)Siyah Boya$(), $(l:mechanics/scribing_table)Yazı Masaları$() için kullanılır.$(li)$(item)Kırmızı Boya$(), $(l:mechanics/powderkegs)Barut Fıçıları$() için kullanılır. $(li)Pişmemiş $(l:mechanics/decay#small_vessels)Küçük Kaplar$() ve $(l:mechanics/decay#large_vessels)Büyük Kaplar$() boyanabilir$().",
+      "text": "$(li)$(item)Siyah Boya$(), $(l:crafting/scribing_table)Yazı Masaları$() için kullanılır.$(li)$(item)Kırmızı Boya$(), $(l:mechanics/powderkegs)Barut Fıçıları$() için kullanılır. $(li)Pişmemiş $(l:food/decay#small_vessels)Küçük Kaplar$() ve $(l:food/decay#large_vessels)Büyük Kaplar$() boyanabilir$().",
       "title": "Çeşitli"
     }
   ],

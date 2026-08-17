@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/gneiss",
+  "gravel": "tfc:rock/gravel/gneiss",
+  "hardened": "tfc:rock/hardened/gneiss",
+  "karst": false,
+  "loose": "tfc:rock/loose/gneiss",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/gneiss",
+  "raw": "tfc:rock/raw/gneiss",
+  "sand": "tfc:sand/yellow",
+  "sandstone": "tfc:raw_sandstone/yellow",
+  "spike": "tfc:rock/spike/gneiss"
+}

@@ -38,6 +38,7 @@
     "accessor.BiomeAccessor",
     "accessor.BlockBehaviourAccessor",
     "accessor.BlockStateBaseAccessor",
+    "accessor.CamelAccessor",
     "accessor.ChunkAccessAccessor",
     "accessor.ChunkGeneratorAccessor",
     "accessor.ChunkMapAccessor",
@@ -73,6 +74,7 @@
     "client.accessor.LevelRendererAccessor",
     "client.accessor.LocalPlayerAccessor",
     "client.accessor.SignRendererAccessor",
+    "client.compat.jade.NextEntityDropProviderMixin",
     "client.compat.patchouli.GuiBookMixin",
     "client.compat.sodium.DefaultFluidRendererMixin",
     "client.compat.sodium.ItemColorsMixin"

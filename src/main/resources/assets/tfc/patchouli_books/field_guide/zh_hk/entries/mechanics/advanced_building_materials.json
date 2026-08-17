@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "plaster",
-      "text": "雪花石膏是一種用$(l:the_world/ores_and_minerals#gypsum)石膏$()礦做成的建築材料。石膏可以直接在物品欄中做成雪花石膏，不過等以後有了$(l:mechanics/barrels)桶$()會有更高效的製作方法。",
+      "text": "雪花石膏是一種用$(l:the_world/ores_and_minerals#gypsum)石膏$()礦做成的建築材料。石膏可以直接在物品欄中做成雪花石膏，不過等以後有了$(l:crafting/barrels)桶$()會有更高效的製作方法。",
       "title": "Plaster"
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:crafting/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:metalworking/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Plaster Decorations"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "將一些小石子與$(l:mechanics/chisel)鑿子$()在合成欄中合成就可以得到這種巖石的$(thing)磚$()。將磚與$(thing)砂漿$()合成就能做成堅固的建築方塊。$(br2)砂漿可以通過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到。",
+      "text": "將一些小石子與$(l:metalworking/chisel)鑿子$()在合成欄中合成就可以得到這種巖石的$(thing)磚$()。將磚與$(thing)砂漿$()合成就能做成堅固的建築方塊。$(br2)砂漿可以通過將$(thing)沙子$()加入裝有$(l:crafting/barrels#limewater)石灰水$()的大桶得到。",
       "title": "石磚和砂漿"
     },
     {

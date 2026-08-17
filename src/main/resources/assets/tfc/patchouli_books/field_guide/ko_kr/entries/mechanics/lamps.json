@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Lamps are smithed in the $(l:mechanics/anvils)Anvil$() and crafted with $(l:mechanics/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
+      "text": "Lamps are smithed in the $(l:metalworking/anvils)Anvil$() and crafted with $(l:crafting/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
     },
     {
       "type": "tfc:quern_recipe",
@@ -49,12 +49,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)으깬 올리브$()를 $(thing)물$()이 든 $(l:mechanics/pot)냄비$()에 끓이면 $(thing)올리브 물$()을 만들 수 있습니다. 올리브 물을 $(l:mechanics/barrels)통$()에 담고 $(thing)황마 그물$()을 넣으면 $(thing)올리브유$()를 만들 수 있습니다. 올리브유는 각 유닛당 인게임 시간으로 8시간동안 탑니다."
+      "text": "$(thing)으깬 올리브$()를 $(thing)물$()이 든 $(l:food/pot)냄비$()에 끓이면 $(thing)올리브 물$()을 만들 수 있습니다. 올리브 물을 $(l:crafting/barrels)통$()에 담고 $(thing)황마 그물$()을 넣으면 $(thing)올리브유$()를 만들 수 있습니다. 올리브유는 각 유닛당 인게임 시간으로 8시간동안 탑니다."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "또 다른 램프 연료로는 $(thing)고래기름$()이 있습니다. 고래기름을 만들려면, $(thing)고래지방$() 5개를 물이 든 $(l:mechanics/pot)냄비$()에 끓여야 합니다. 고래 기름은 각 유닛당 인게임 시간으로 2시간 미만동안 탑니다. 고래기름으로는 $(l:mechanics/lighting#candles)초$()를 만들 수 있습니다."
+      "text": "또 다른 램프 연료로는 $(thing)고래기름$()이 있습니다. 고래기름을 만들려면, $(thing)고래지방$() 5개를 물이 든 $(l:food/pot)냄비$()에 끓여야 합니다. 고래 기름은 각 유닛당 인게임 시간으로 2시간 미만동안 탑니다. 고래기름으로는 $(l:core_mechanics/lighting#candles)초$()를 만들 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -72,13 +72,13 @@
         }
       },
       "name": "§l용암 램프",
-      "text": "용암은 영원히 지속되는 연료지만, $(l:mechanics/steel#blue_steel)청강$() 램프에만 사용할 수 있습니다.",
+      "text": "용암은 영원히 지속되는 연료지만, $(l:metalworking/steel#blue_steel)청강$() 램프에만 사용할 수 있습니다.",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)사슬$()을 이용하면 램프를 근사하게 걸 수 있습니다. 사슬은 $(l:mechanics/anvils)모루$()에서 만들 수 있습니다."
+      "text": "$(thing)사슬$()을 이용하면 램프를 근사하게 걸 수 있습니다. 사슬은 $(l:metalworking/anvils)모루$()에서 만들 수 있습니다."
     }
   ],
   "read_by_default": true,

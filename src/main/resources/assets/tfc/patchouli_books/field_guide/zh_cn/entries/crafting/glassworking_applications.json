@@ -1,0 +1,412 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "玻璃制品",
+  "category": "tfc:crafting",
+  "icon": "minecraft:glass",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "最简单的玻璃制品是$(thing)玻璃板$()和$(thing)玻璃块$()。要制作它们，必须先有装有$(thing)玻璃配料$()的$(l:crafting/glassworking#blowpipe)吹管$()，然后执行$(thing)浇注$()。$(br)$(li)$(bold)台盆浇注$()用于制作$(thing)玻璃板$()$(li)$(bold)盆式浇注$()用于制作$(thing)玻璃块$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "玻璃也可以在浇注前$(thing)染色$()以制作彩色玻璃。颜色取决于玻璃配料的类型以及添加的任何粉末。$(br2)每种$(thing)玻璃配料$()制成的玻璃都有其固有的自然色。$(thing)二氧化硅$()玻璃配料可以制成多种颜色，而$(thing)橄榄石质$()和$(thing)火山质$()玻璃可制成的颜色相对较少。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)玻璃板$()通过$(thing)台盆浇注$()制作。浇注台由最多十六个$(thing)镀黄铜块$()在一个连续区域内铺设而成。$(br2) 1. 将$(l:crafting/glassworking)玻璃配料$()添加到$(thing)吹管$()上。$(br) 2. 将吹管加热至$(4)$(bold)淡红色$()。$(br) 3. 在浇注台顶部使用$(thing)吹管$()。$(br) 4. 最后用$(l:crafting/glassworking#paddle)玻璃压板$()右键点击以压平玻璃。",
+      "title": "台盆浇注"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_panes_1.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_2.png",
+        "tfc:textures/gui/book/tutorial/glass_panes_3.png"
+      ],
+      "text": "玻璃冷却后，可以用$(l:crafting/glassworking#saw)宝石锯$()将其破坏以获得成品。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)玻璃块$()通过$(thing)盆式浇注$()制作。浇注盆由$(thing)镀黄铜块$()围成一个除顶部外各面封闭的空格区域。$(br2) 1. 将$(l:crafting/glassworking)玻璃配料$()添加到$(thing)吹管$()上。$(br) 2. 将吹管加热至$(4)$(bold)淡红色$()。$(br) 3. 在浇注盆顶部使用$(thing)吹管$()。",
+      "title": "盆式浇注"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/glass_block_1.png",
+        "tfc:textures/gui/book/tutorial/glass_block_2.png",
+        "tfc:textures/gui/book/tutorial/glass_block_3.png"
+      ],
+      "text": "玻璃冷却后，可以用$(l:crafting/glassworking#saw)宝石锯$()将其破坏以获得成品。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "coloring",
+      "text": "玻璃有其基于所用$(l:crafting/glassworking)玻璃配料$()类型的自然色。其他颜色可以使用$(l:food/bowls)碗$()来制作。$(br2)使用时，将碗放在地上，然后用所需的$(thing)粉末$()右键点击碗。在$(thing)浇注$()之前，用$(thing)吹管$()右键点击碗，将粉末添加到配料中。",
+      "title": "玻璃染色"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br2)接下来的几页展示了制作每种颜色所需的不同玻璃类型和粉末材料组合。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(7)白色$()：二氧化硅或赤铁质玻璃 + $(thing)苏打粉$()$(li)$(bold)$(0)黑色$()：任意玻璃 + $(thing)石墨粉$()$(li)$(bold)$(8)灰色$()：任意 + $(thing)石墨粉$() + $(thing)苏打粉$()$(li)$(bold)$(7)淡灰色$()：任意 + $(thing)石墨粉$() + 2x $(thing)苏打粉$()$(li)$(bold)$(5)紫色$()：任意 + $(thing)铁粉$() + $(thing)铜粉$()$(li)$(bold)$(#964b00)棕色$()：任意 + $(thing)镍粉$()$(li)$(bold)$(3)青色$()：非火山质玻璃 + $(thing)铜粉$() + $(thing)蓝宝石粉$()$(li)$(bold)$(2)绿色$()：二氧化硅或赤铁质玻璃 + $(thing)铁粉$()",
+      "title": "染料颜色"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)$(a)黄绿色$()：二氧化硅或赤铁质玻璃 + $(thing)铁粉$() + $(thing)苏打粉$()$(li)$(bold)$(b)淡蓝色$()：二氧化硅玻璃 + $(thing)青金石粉$()$(li)$(bold)$(1)蓝色$()：二氧化硅玻璃 + $(thing)铜粉$()$(li)$(bold)$(4)红色$()：二氧化硅或赤铁质玻璃 + $(thing)锡粉$()$(li)$(bold)$(6)黄色$()：二氧化硅或赤铁质玻璃 + $(thing)银粉$()$(li)$(bold)$(#ef8e38)橙色$()：二氧化硅玻璃 + $(thing)黄铁矿粉$()$(li)$(bold)$(5)品红色$()：二氧化硅或赤铁质玻璃 + $(thing)红宝石粉$()$(li)$(bold)$(d)粉红色$()：二氧化硅玻璃 + $(thing)金粉$()$(li)$(bold)$(0)遮光$()：非二氧化硅玻璃 + $(thing)紫水晶粉$()"
+    },
+    {
+      "type": "tfc:table_small",
+      "strings": [
+        {
+          "text": ""
+        },
+        {
+          "text": "透明"
+        },
+        {
+          "text": "遮光"
+        },
+        {
+          "fill": "0xff42f2"
+        },
+        {
+          "fill": "0x8af3ff"
+        },
+        {
+          "fill": "0x526cff"
+        },
+        {
+          "fill": "0xe3e3e3"
+        },
+        {
+          "fill": "0xe69407"
+        },
+        {
+          "fill": "0xc738c9"
+        },
+        {
+          "fill": "0xffe81c"
+        },
+        {
+          "fill": "0x48ff1f"
+        },
+        {
+          "fill": "0xe01414"
+        },
+        {
+          "fill": "0x0c9400"
+        },
+        {
+          "fill": "0x188a9e"
+        },
+        {
+          "fill": "0x7d4f00"
+        },
+        {
+          "fill": "0x6e059c"
+        },
+        {
+          "fill": "0x7d7d7d"
+        },
+        {
+          "fill": "0xbdbdbd"
+        },
+        {
+          "fill": "0x000000"
+        },
+        {
+          "text": "二氧化硅"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "赤铁质"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "橄榄石"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "text": "火山岩"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3d42a8"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0xb33e3e"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        },
+        {
+          "fill": "0x3eb340"
+        }
+      ],
+      "text": "玻璃颜色的可用性。'C' 表示透明，'T' 表示遮光。某些颜色只能用特定的玻璃配料制作。",
+      "title": "玻璃颜色可用性",
+      "legend": [
+        {
+          "text": "可以制作",
+          "color": "0x3eb340"
+        },
+        {
+          "text": "无法制作",
+          "color": "0xb33e3e"
+        },
+        {
+          "text": "默认颜色",
+          "color": "0x3d42a8"
+        }
+      ],
+      "columns": 18,
+      "first_column_width": 35,
+      "column_width": 10,
+      "row_height": 10,
+      "left_buffer": 5,
+      "top_buffer": 15,
+      "draw_background": true
+    },
+    {
+      "type": "patchouli:empty",
+      "draw_filler": false
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "lamp_glass",
+      "recipe": "tfc:glassworking/lamp_glass",
+      "text": "$(thing)灯罩$()是制作$(l:mechanics/lamps)灯$()的必要部件。"
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "jar",
+      "recipe": "tfc:glassworking/empty_jar",
+      "text": "$(l:food/jarring)玻璃罐$()也是由吹制玻璃制成，但只能用二氧化硅或赤铁质玻璃。"
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "anchor": "glass_bottle",
+      "recipe": "tfc:glassworking/silica_glass_bottle",
+      "text": "还可以制作$(thing)玻璃瓶$()。玻璃瓶的强度取决于制作所用的玻璃种类。"
+    },
+    {
+      "type": "tfc:glassworking_recipe",
+      "recipe": "tfc:glassworking/lens",
+      "text": "$(thing)透镜$()用于制作望远镜、指南针和阳光探测器。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6,
+  "extra_recipe_mappings": {
+    "tag:tfc:glass_batches": 1,
+    "tag:c:glass_panes": 2,
+    "tag:c:glass_blocks": 4
+  }
+}

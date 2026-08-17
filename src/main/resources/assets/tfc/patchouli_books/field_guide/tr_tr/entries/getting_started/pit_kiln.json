@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Çukur fırın, eşyaları $(l:mechanics/heating)ısıtmak$() için kullanılan bir oyun başı yöntemidir. Örneğin, kili seramiğe $(thing)dönüştürmek$() için kullanılabilir. Çukur fırın, yaklaşık altı saatlik bir süre boyunca içindekileri 1400 °C'ye veya $(bold)$(#FFDF00)$(t:Yellow White)Sarı Beyaz$() renge kadar ısıtacaktır."
+      "text": "Çukur fırın, eşyaları $(l:core_mechanics/heating)ısıtmak$() için kullanılan bir oyun başı yöntemidir. Örneğin, kili seramiğe $(thing)dönüştürmek$() için kullanılabilir. Çukur fırın, yaklaşık altı saatlik bir süre boyunca içindekileri 1400 °C'ye veya $(bold)$(#FFDF00)$(t:Yellow White)Sarı Beyaz$() renge kadar ısıtacaktır."
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Bir çukur fırın oluşturmak için:$(br2)$(bold)1.$() $(item)$(k:tfc.key.place_block)$() tuşunu kullanarak 1x1'lik bir çukura en fazla dört eşya yerleştirin.$(br)$(bold)2.$() Eşyalar kapanana kadar çukur fırında sekiz adet $(thing)Saman$() veya iki adet $(thing)Saz$() bloğu kullanın.$(br)$(bold)3.$() Dolana kadar çukur fırında sekiz adet $(thing)Kütük$() kullanın.$(br)$(bold)4.$() Çukur fırının üzerini ateşe verin!$(br2)Çukur fırın daha sonra altı saat boyunca yanacak ve içindeki eşyaları yavaşça $(l:mechanics/heating)ısıtacaktır$()."
+      "text": "Bir çukur fırın oluşturmak için:$(br2)$(bold)1.$() $(item)$(k:tfc.key.place_block)$() tuşunu kullanarak 1x1'lik bir çukura en fazla dört eşya yerleştirin.$(br)$(bold)2.$() Eşyalar kapanana kadar çukur fırında sekiz adet $(thing)Saman$() veya iki adet $(thing)Saz$() bloğu kullanın.$(br)$(bold)3.$() Dolana kadar çukur fırında sekiz adet $(thing)Kütük$() kullanın.$(br)$(bold)4.$() Çukur fırının üzerini ateşe verin!$(br2)Çukur fırın daha sonra altı saat boyunca yanacak ve içindeki eşyaları yavaşça $(l:core_mechanics/heating)ısıtacaktır$()."
     },
     {
       "type": "patchouli:image",

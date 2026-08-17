@@ -24,7 +24,7 @@
         }
       },
       "name": "Порохова бочка",
-      "text": "Подібно до $(l:mechanics/barrels)діжки$(), порохову бочку можна запечатати та розпечатати $(item)$(k:key.use)$(). Запалювати можна лише запечатані.",
+      "text": "Подібно до $(l:crafting/barrels)діжки$(), порохову бочку можна запечатати та розпечатати $(item)$(k:key.use)$(). Запалювати можна лише запечатані.",
       "enable_visualize": false
     },
     {
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Порох можна виготовити двома способами: перший рецепт — з $(l:the_world/ores_and_minerals#saltpeter)селітри$(), $(l:the_world/ores_and_minerals#saltpeter)сірки$(), та $(l:mechanics/charcoal_pit)деревного вугілля$(). Порошки виготовляються за допомогою $(l:mechanics/quern)млина$(). А, якщо в тебе є $(l:the_world/ores_and_minerals#graphite)графіт$(), то можна використати більш продуктивний рецепт."
+      "text": "Порох можна виготовити двома способами: перший рецепт — з $(l:the_world/ores_and_minerals#saltpeter)селітри$(), $(l:the_world/ores_and_minerals#saltpeter)сірки$(), та $(l:metalworking/charcoal_pit)деревного вугілля$(). Порошки виготовляються за допомогою $(l:crafting/quern)млина$(). А, якщо в тебе є $(l:the_world/ores_and_minerals#graphite)графіт$(), то можна використати більш продуктивний рецепт."
     }
   ],
   "read_by_default": true

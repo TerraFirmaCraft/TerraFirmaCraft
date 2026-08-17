@@ -100,7 +100,7 @@
         "tfc:knapping/stone/hoe_head/igneous_extrusive",
         "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
-      "text": "$(thing)Мотика$() є корисним інструментом для $(l:mechanics/crops)землеробства$(), але її також можна використати для зрізання листя та інших рослин."
+      "text": "$(thing)Мотика$() є корисним інструментом для $(l:food/crops)землеробства$(), але її також можна використати для зрізання листя та інших рослин."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:knapping/stone/hammer_head/igneous_extrusive",
         "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
-      "text": "$(thing)Молот$() можна використати як $(l:mechanics/damage_types)руйнівну$() зброю, але він більш потрібен для $(l:getting_started/primitive_anvils)ковальства$()."
+      "text": "$(thing)Молот$() можна використати як $(l:core_mechanics/damage_types)руйнівну$() зброю, але він більш потрібен для $(l:getting_started/primitive_anvils)ковальства$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:knapping/stone/javelin_head/igneous_extrusive",
         "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
-      "text": "Нарешті, $(thing)спис$(). Він використовується як примітивна зброя. Його можна кидати, а можна використовувати як зброю ближнього $(l:mechanics/damage_types)колольного$() бою."
+      "text": "Нарешті, $(thing)спис$(). Він використовується як примітивна зброя. Його можна кидати, а можна використовувати як зброю ближнього $(l:core_mechanics/damage_types)колольного$() бою."
     }
   ],
   "read_by_default": true,

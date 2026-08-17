@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/basalt",
+  "gravel": "tfc:rock/gravel/basalt",
+  "hardened": "tfc:rock/hardened/basalt",
+  "karst": false,
+  "loose": "tfc:rock/loose/basalt",
+  "mafic": true,
+  "mossy_loose": "tfc:rock/mossy_loose/basalt",
+  "raw": "tfc:rock/raw/basalt",
+  "sand": "tfc:sand/black",
+  "sandstone": "tfc:raw_sandstone/black",
+  "spike": "tfc:rock/spike/basalt"
+}

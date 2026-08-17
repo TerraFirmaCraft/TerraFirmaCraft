@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Core Mechanics",
+  "description": "An introduction to the core gameplay mechanics and systems present in TerraFirmaCraft.",
+  "icon": "tfc:calendar_clock",
+  "sortnum": 1
+}

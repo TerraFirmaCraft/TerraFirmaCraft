@@ -100,7 +100,7 @@
         "tfc:knapping/stone/hoe_head/igneous_extrusive",
         "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
-      "text": "$(thing)Çapalar$(), $(l:mechanics/crops)Tarım$() için yararlı aletlerdir, ancak yaprakları ve diğer bitki maddelerini kesmek için de kullanılabilirler."
+      "text": "$(thing)Çapalar$(), $(l:food/crops)Tarım$() için yararlı aletlerdir, ancak yaprakları ve diğer bitki maddelerini kesmek için de kullanılabilirler."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:knapping/stone/hammer_head/igneous_extrusive",
         "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
-      "text": "$(thing)Çekiçler$(), $(l:mechanics/damage_types)Ezici$() silahlar olarak kullanılabilir, ancak daha çok $(l:getting_started/primitive_anvils)Demircilik$() için kullanılan önemli aletlerdir."
+      "text": "$(thing)Çekiçler$(), $(l:core_mechanics/damage_types)Ezici$() silahlar olarak kullanılabilir, ancak daha çok $(l:getting_started/primitive_anvils)Demircilik$() için kullanılan önemli aletlerdir."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:knapping/stone/javelin_head/igneous_extrusive",
         "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
-      "text": "Son olarak, $(thing)Cirit$(), hedeflere fırlatılabilen veya $(l:mechanics/damage_types)Delici$() bir silah olarak kullanılabilen ilkel bir silahtır."
+      "text": "Son olarak, $(thing)Cirit$(), hedeflere fırlatılabilen veya $(l:core_mechanics/damage_types)Delici$() bir silah olarak kullanılabilen ilkel bir silahtır."
     }
   ],
   "read_by_default": true,

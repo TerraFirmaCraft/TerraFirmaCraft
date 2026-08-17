@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Oyunun başlarında aletleri doğrudan dökümle yapmaya bir alternatif ve daha üst seviye metaller için bir gereklilik, bir $(thing)Örs$() kullanmaktır. Örs, iki farklı işlem için kullanılabilen bir bloktur: $(l:mechanics/anvils#working)Şekillendirme$() ve $(l:mechanics/anvils#welding)Kaynaklama$(). Bu bölüm size sadece ilk ilkel taş örsünüzü nasıl elde edeceğinizi gösterecektir."
+      "text": "Oyunun başlarında aletleri doğrudan dökümle yapmaya bir alternatif ve daha üst seviye metaller için bir gereklilik, bir $(thing)Örs$() kullanmaktır. Örs, iki farklı işlem için kullanılabilen bir bloktur: $(l:metalworking/anvils#working)Şekillendirme$() ve $(l:metalworking/anvils#welding)Kaynaklama$(). Bu bölüm size sadece ilk ilkel taş örsünüzü nasıl elde edeceğinizi gösterecektir."
     },
     {
       "type": "patchouli:text",
@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "Ayrıca herhangi bir malzemeden yapılmış bir $(thing)Çekiç$() gerekecektir. Örsü yapmak için, bu ham kaya bloklarından birinin açıkta duran $(thing)üst$() yüzeyine $(thing)çekiç$() ile sağ tıklamanız yeterlidir; işte bu kadar! Bir örs oluşacaktır.$(br2)Örslerin $(l:mechanics/anvils#tiers)seviyeleri$() vardır ve taş örs 0. Seviyedir; yani en düşük seviyedir. Sadece I. Seviye külçeleri $(l:mechanics/anvils#welding)Kaynaklayabilir$().",
+      "text": "Ayrıca herhangi bir malzemeden yapılmış bir $(thing)Çekiç$() gerekecektir. Örsü yapmak için, bu ham kaya bloklarından birinin açıkta duran $(thing)üst$() yüzeyine $(thing)çekiç$() ile sağ tıklamanız yeterlidir; işte bu kadar! Bir örs oluşacaktır.$(br2)Örslerin $(l:metalworking/anvils#tiers)seviyeleri$() vardır ve taş örs 0. Seviyedir; yani en düşük seviyedir. Sadece I. Seviye külçeleri $(l:metalworking/anvils#welding)Kaynaklayabilir$().",
       "title": "Taş Örs"
     },
     {
@@ -214,7 +214,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6,
+  "sortnum": 7,
   "extra_recipe_mappings": {
     "tfc:rock/anvil/granite": 0,
     "tfc:rock/anvil/diorite": 0,

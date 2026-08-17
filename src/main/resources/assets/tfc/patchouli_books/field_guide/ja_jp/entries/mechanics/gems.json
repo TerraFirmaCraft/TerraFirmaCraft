@@ -12,11 +12,11 @@
       "type": "patchouli:spotlight",
       "item": "tag:tfc:gem_powders",
       "link_recipes": false,
-      "text": "Gems can be ground into powder using a $(l:mechanics/quern)Quern$(). Gem powders are particularly useful in $(l:mechanics/glassworking_applications#coloring)Coloring Glass$()."
+      "text": "Gems can be ground into powder using a $(l:crafting/quern)Quern$(). Gem powders are particularly useful in $(l:crafting/glassworking_applications#coloring)Coloring Glass$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/sluices)堰$() と $(l:mechanics/panning)パンニング$() を通じて、$(thing)宝石$() を取得できます。 堰で入手できる宝石は、処理中の岩石の種類に関連付けられています。"
+      "text": "$(l:metalworking/sluices)堰$() と $(l:getting_started/panning)パンニング$() を通じて、$(thing)宝石$() を取得できます。 堰で入手できる宝石は、処理中の岩石の種類に関連付けられています。"
     },
     {
       "type": "patchouli:text",

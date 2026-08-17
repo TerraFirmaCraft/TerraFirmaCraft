@@ -98,7 +98,7 @@
     {
       "type": "patchouli:text",
       "anchor": "quern",
-      "text": "Mekanik ağa bağlanabilen cihazlardan biri, sadece $(l:mechanics/quern)El Değirmeni$()'nin üzerine dikey bakan bir aks yerleştirilerek bağlanan El Değirmeni'dir. Bağlıyken El Değirmeni manuel olarak döndürülemez; bunun yerine, üzerindeki aks döndükçe eşyaları otomatik olarak öğütür.$(br2)El Değirmeni, üzerindeki aks daha hızlı döndüğünde daha hızlı öğütme yapar.",
+      "text": "Mekanik ağa bağlanabilen cihazlardan biri, sadece $(l:crafting/quern)El Değirmeni$()'nin üzerine dikey bakan bir aks yerleştirilerek bağlanan El Değirmeni'dir. Bağlıyken El Değirmeni manuel olarak döndürülemez; bunun yerine, üzerindeki aks döndükçe eşyaları otomatik olarak öğütür.$(br2)El Değirmeni, üzerindeki aks daha hızlı döndüğünde daha hızlı öğütme yapar.",
       "title": "El Değirmeni Otomasyonu"
     },
     {
@@ -111,7 +111,7 @@
     {
       "type": "patchouli:text",
       "anchor": "trip_hammer",
-      "text": "Bir diğer mekanik cihaz ise $(thing)Mekanik Çekiç$()'tir. Mekanik Çekiç, bir $(l:mechanics/anvils)Örs$() üzerinde otomatik olarak demircilik işlemleri gerçekleştirir. Mekanik Çekiç'in çalışması için bir $(thing)Bıçaklı Aks$()'a ihtiyacı vardır. Bıçaklı Aks normal bir aks gibi çalışır, ancak üzerinde çekici harekete geçirmek için kullanılan bir bıçak bulunur.",
+      "text": "Bir diğer mekanik cihaz ise $(thing)Mekanik Çekiç$()'tir. Mekanik Çekiç, bir $(l:metalworking/anvils)Örs$() üzerinde otomatik olarak demircilik işlemleri gerçekleştirir. Mekanik Çekiç'in çalışması için bir $(thing)Bıçaklı Aks$()'a ihtiyacı vardır. Bıçaklı Aks normal bir aks gibi çalışır, ancak üzerinde çekici harekete geçirmek için kullanılan bir bıçak bulunur.",
       "title": "Mekanik Çekiç"
     },
     {
@@ -149,7 +149,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/weaving#power_loom)Weaving$() can be automated through the use of a $(l:mechanics/weaving#power_loom)Power Loom$(). Read that chapter for more information."
+      "text": "$(l:crafting/weaving#power_loom)Weaving$() can be automated through the use of a $(l:crafting/weaving#power_loom)Power Loom$(). Read that chapter for more information."
     }
   ],
   "read_by_default": true,

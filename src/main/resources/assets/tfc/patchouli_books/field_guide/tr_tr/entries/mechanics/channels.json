@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Kanallar$() ve $(thing)Kalıp Masaları$() kullanarak bir $(l:mechanics/crucible)Potadan$() aynı anda birden fazla kalıba döküm yapabilirsiniz. $(thing)Kalıp Masalarını$(), $(thing)Kanalları$() kullanarak $(l:mechanics/crucible)Potaya$() bağlamanız ve $(l:mechanics/crucible)Potanın$() yanındaki $(thing)Kanala$() sağ tıklamanız yeterlidir. Bir $(l:getting_started/pottery#mold)Kalıbı$() yerleştirmek veya çıkarmak için $(thing)Kalıp Masasına$() Shift+sağ tıklayın."
+      "text": "$(thing)Kanallar$() ve $(thing)Kalıp Masaları$() kullanarak bir $(l:metalworking/crucible)Potadan$() aynı anda birden fazla kalıba döküm yapabilirsiniz. $(thing)Kalıp Masalarını$(), $(thing)Kanalları$() kullanarak $(l:metalworking/crucible)Potaya$() bağlamanız ve $(l:metalworking/crucible)Potanın$() yanındaki $(thing)Kanala$() sağ tıklamanız yeterlidir. Bir $(l:getting_started/pottery#mold)Kalıbı$() yerleştirmek veya çıkarmak için $(thing)Kalıp Masasına$() Shift+sağ tıklayın."
     },
     {
       "type": "tfc:knapping_recipe",
@@ -32,7 +32,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)Bir $(thing)Kalıp Masası$() üzerinde $(l:mechanics/bellows)Körük$() kullanmak metalin daha hızlı soğumasını sağlar.$()$(li)Bir $(thing)Kanalı$() kızıltaş sinyali ile etkinleştirmek metalin dökülmesini başlatır.$()$(li)$(thing)Kalıp Masaları$() karşılaştırıcı sinyali verir.",
+      "text": "$(li)Bir $(thing)Kalıp Masası$() üzerinde $(l:metalworking/bellows)Körük$() kullanmak metalin daha hızlı soğumasını sağlar.$()$(li)Bir $(thing)Kanalı$() kızıltaş sinyali ile etkinleştirmek metalin dökülmesini başlatır.$()$(li)$(thing)Kalıp Masaları$() karşılaştırıcı sinyali verir.",
       "title": "Otomasyon"
     }
   ],

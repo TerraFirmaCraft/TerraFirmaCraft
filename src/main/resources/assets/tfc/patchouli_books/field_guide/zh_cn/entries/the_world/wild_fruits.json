@@ -28,7 +28,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "果树始于$(thing)树苗$()。只有当该果树的非休眠季节且满足其气候要求时，树苗才会开始生长，种下第一段树干。最终树的大小大致由原始树苗方块中包含的树苗数量决定。树苗越多，树就越大。$(br)可以通过$(thing)嫁接$()在同一方块中添加更多树苗。要嫁接树苗，只需手持树苗，副手拿着$(thing)刀$()，然后对着已有的树苗$(item)$(k:key.use)$()。"
+      "text": "果树始于$(thing)树苗$()。只有当该果树的非休眠季节且满足其气候要求时，树苗才会开始生长，种下第一段树干。最终树的大小大致由原始树苗方块中包含的树苗数量决定。树苗越多，树就越大。$(br)可以通过$(thing)嫁接$()在同一方块中添加更多树苗。要嫁接树苗，只需手持树苗，副手拿着$(thing)小刀$()，然后对着已有的树苗$(item)$(k:key.use)$()。"
     },
     {
       "type": "patchouli:text",
@@ -36,7 +36,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "种植果树时，正确的$(l:the_world/climate#temperature)温度$()和$(l:mechanics/hydration)湿度$()至关重要。只有当树木基部（种植树苗处）的年平均温度在该树种范围内时，果树才会生长和结果。同样，湿度由年平均降雨量和树木基部附近的水源决定。"
+      "text": "种植果树时，正确的$(l:core_mechanics/climate#temperature)温度$()和$(l:food/hydration)湿度$()至关重要。只有当树木基部（种植树苗处）的年平均温度在该树种范围内时，果树才会生长和结果。同样，湿度由年平均降雨量和树木基部附近的水源决定。"
     },
     {
       "type": "patchouli:empty"
@@ -44,7 +44,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cherry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -5.2 - 14 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 100 - 350mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -6.4 - 15.2 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 7 - 80%$(br2)樱桃树在一月至三月生长，四月至五月开花，六月结果。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -5.2 - 14 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 100 - 350mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -6.4 - 15.2 °C$(br)$(bold)$(l:food/hydration)湿度$(): 7 - 80%$(br2)樱桃树在一月至三月生长，四月至五月开花，六月结果。",
       "title": "樱桃树"
     },
     {
@@ -268,7 +268,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_apple",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -10.6 - 10.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 130 - 280mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -11.8 - 11.6 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 10 - 75%$(br2)青苹果树三月至七月生长，八月至九月开花，十月结果。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -10.6 - 10.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 130 - 280mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -11.8 - 11.6 °C$(br)$(bold)$(l:food/hydration)湿度$(): 10 - 75%$(br2)青苹果树三月至七月生长，八月至九月开花，十月结果。",
       "title": "青苹果树"
     },
     {
@@ -492,7 +492,7 @@
     {
       "type": "patchouli:text",
       "anchor": "lemon",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 7.4 - 24.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 220 - 440mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 6.2 - 26 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 19 - 95%$(br2)柠檬树二月至五月生长，六月至七月开花，八月结果。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 7.4 - 24.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 220 - 440mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 6.2 - 26 °C$(br)$(bold)$(l:food/hydration)湿度$(): 19 - 95%$(br2)柠檬树二月至五月生长，六月至七月开花，八月结果。",
       "title": "柠檬树"
     },
     {
@@ -716,7 +716,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 2 - 23 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 250 - 450mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 0.8 - 24.2 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 22 - 95%$(br2)橄榄树三月至七月生长，八月至九月开花，十月结果。$(br2)橄榄可用于生产$(l:mechanics/lamps#olives)橄榄油$()，可用作灯的燃料。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 2 - 23 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 250 - 450mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 0.8 - 24.2 °C$(br)$(bold)$(l:food/hydration)湿度$(): 22 - 95%$(br2)橄榄树三月至七月生长，八月至九月开花，十月结果。$(br2)橄榄可用于生产$(l:mechanics/lamps#olives)橄榄油$()，可用作灯的燃料。",
       "title": "橄榄树"
     },
     {
@@ -940,7 +940,7 @@
     {
       "type": "patchouli:text",
       "anchor": "orange",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 9.2 - 40 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 300 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 8 - 41.2 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 27 - 100%$(br2)橙树三月至六月生长，七月至八月开花，九月结果。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 9.2 - 40 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 300 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 8 - 41.2 °C$(br)$(bold)$(l:food/hydration)湿度$(): 27 - 100%$(br2)橙树三月至六月生长，七月至八月开花，九月结果。",
       "title": "橙树"
     },
     {
@@ -1164,7 +1164,7 @@
     {
       "type": "patchouli:text",
       "anchor": "peach",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -3.4 - 15.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 180 - 470mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -4.6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 15 - 95%$(br2)桃树十二月至三月生长，四月至五月开花，六月结果。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -3.4 - 15.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 180 - 470mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -4.6 - 17 °C$(br)$(bold)$(l:food/hydration)湿度$(): 15 - 95%$(br2)桃树十二月至三月生长，四月至五月开花，六月结果。",
       "title": "桃树"
     },
     {
@@ -1388,7 +1388,7 @@
     {
       "type": "patchouli:text",
       "anchor": "plum",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -7 - 12.2 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 120 - 300mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -8.2 - 13.4 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 9 - 75%$(br2)李树一月至四月生长，五月至六月开花，七月结果。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -7 - 12.2 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 120 - 300mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -8.2 - 13.4 °C$(br)$(bold)$(l:food/hydration)湿度$(): 9 - 75%$(br2)李树一月至四月生长，五月至六月开花，七月结果。",
       "title": "李树"
     },
     {
@@ -1612,7 +1612,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_apple",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -10.6 - 10.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 190 - 310mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -11.8 - 11.6 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 16 - 75%$(br2)红苹果树三月至七月生长，八月至九月开花，十月结果。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -10.6 - 10.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 190 - 310mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -11.8 - 11.6 °C$(br)$(bold)$(l:food/hydration)湿度$(): 16 - 75%$(br2)红苹果树三月至七月生长，八月至九月开花，十月结果。",
       "title": "红苹果树"
     },
     {
@@ -1836,7 +1836,7 @@
     {
       "type": "patchouli:text",
       "anchor": "banana",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 11 - 40 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 280 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): 9.8 - 41.2 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 25 - 100%$(br2)香蕉是一种特殊的果树。它们仅垂直生长，没有叶子，只在最顶端的方块结果。树苗从植物的开花部分掉落。香蕉植株一旦被收获，就会死亡，不会再结果。必须在春季重新种植。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 11 - 40 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 280 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): 9.8 - 41.2 °C$(br)$(bold)$(l:food/hydration)湿度$(): 25 - 100%$(br2)香蕉是一种特殊的果树。它们仅垂直生长，没有叶子，只在最顶端的方块结果。树苗从植物的开花部分掉落。香蕉植株一旦被收获，就会死亡，不会再结果。必须在春季重新种植。",
       "title": "香蕉树"
     },
     {
@@ -1984,7 +1984,7 @@
           "text": "Dec"
         },
         {
-          "text": "Cherry"
+          "text": "樱桃"
         },
         {
           "fill": "0x6ab553"
@@ -2023,7 +2023,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Apple"
+          "text": "苹果"
         },
         {
           "fill": "0xa8986a"
@@ -2062,7 +2062,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Lemon"
+          "text": "柠檬"
         },
         {
           "fill": "0xa8986a"
@@ -2101,7 +2101,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Olive"
+          "text": "橄榄"
         },
         {
           "fill": "0xa8986a"
@@ -2140,7 +2140,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Orange"
+          "text": "橙子"
         },
         {
           "fill": "0xa8986a"
@@ -2179,7 +2179,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Peach"
+          "text": "桃子"
         },
         {
           "fill": "0x6ab553"
@@ -2218,7 +2218,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Plum"
+          "text": "李子"
         },
         {
           "fill": "0x6ab553"
@@ -2257,7 +2257,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Banana"
+          "text": "香蕉"
         },
         {
           "fill": "0xa8986a"
@@ -2300,19 +2300,19 @@
       "title": "果树",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "休眠",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "健康",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "开花",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "结果",
           "color": "0xa217ff"
         }
       ],
@@ -2348,12 +2348,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "与果树类似，灌木在确定$(l:mechanics/hydration)湿度$()和$(l:the_world/climate#temperature)温度$()时以植株的基部方块为准，只要年平均降雨量和温度合适就会生长。$(br)任何完全长成的灌木块都可以结出浆果，用$(item)$(k:key.use)$()即可收获。"
+      "text": "与果树类似，灌木在确定$(l:food/hydration)湿度$()和$(l:core_mechanics/climate#temperature)温度$()时以植株的基部方块为准，只要年平均降雨量和温度合适就会生长。$(br)任何完全长成的灌木块都可以结出浆果，用$(item)$(k:key.use)$()即可收获。"
     },
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -5.2 - 19.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 200 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -6.4 - 20.6 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 17 - 100%$(br2)黑莓灌木二月至五月生长，六月至七月开花，八月结果。$(br2)它们可以在树木稀少的地区找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -5.2 - 19.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 200 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -6.4 - 20.6 °C$(br)$(bold)$(l:food/hydration)湿度$(): 17 - 100%$(br2)黑莓灌木二月至五月生长，六月至七月开花，八月结果。$(br2)它们可以在树木稀少的地区找到。",
       "title": "黑莓灌木"
     },
     {
@@ -2453,7 +2453,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -10.6 - 14 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 180 - 450mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -11.8 - 15.2 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 15 - 95%$(br2)树莓灌木四月至七月生长，八月至九月开花，十月结果。$(br2)它们可以在树木稀少的地区找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -10.6 - 14 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 180 - 450mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -11.8 - 15.2 °C$(br)$(bold)$(l:food/hydration)湿度$(): 15 - 95%$(br2)树莓灌木四月至七月生长，八月至九月开花，十月结果。$(br2)它们可以在树木稀少的地区找到。",
       "title": "树莓灌木"
     },
     {
@@ -2553,7 +2553,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -8.8 - 8.6 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 150 - 400mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -10 - 9.8 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 12 - 90%$(br2)蓝莓灌木二月至五月生长，六月至七月开花，八月结果。$(br2)它们可以在树木稀少的地区找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -8.8 - 8.6 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 150 - 400mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -10 - 9.8 °C$(br)$(bold)$(l:food/hydration)湿度$(): 12 - 90%$(br2)蓝莓灌木二月至五月生长，六月至七月开花，八月结果。$(br2)它们可以在树木稀少的地区找到。",
       "title": "蓝莓灌木"
     },
     {
@@ -2653,7 +2653,7 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -5.2 - 15.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 120 - 380mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -6.4 - 17 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 9 - 85%$(br2)接骨木灌木二月至五月生长，六月至七月开花，八月结果。$(br2)它们可以在树木稀少的地区找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -5.2 - 15.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 120 - 380mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -6.4 - 17 °C$(br)$(bold)$(l:food/hydration)湿度$(): 9 - 85%$(br2)接骨木灌木二月至五月生长，六月至七月开花，八月结果。$(br2)它们可以在树木稀少的地区找到。",
       "title": "接骨木灌木"
     },
     {
@@ -2793,7 +2793,7 @@
           "text": "Dec"
         },
         {
-          "text": "Blackberry"
+          "text": "黑莓"
         },
         {
           "fill": "0xa8986a"
@@ -2832,7 +2832,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Raspberry"
+          "text": "树莓"
         },
         {
           "fill": "0xa8986a"
@@ -2871,7 +2871,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Blueberry"
+          "text": "蓝莓"
         },
         {
           "fill": "0xa8986a"
@@ -2910,7 +2910,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Elderberry"
+          "text": "接骨木莓"
         },
         {
           "fill": "0xa8986a"
@@ -2953,19 +2953,19 @@
       "title": "大型浆果灌木",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "休眠",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "健康",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "开花",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "结果",
           "color": "0xa217ff"
         }
       ],
@@ -3035,7 +3035,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bunchberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -14.2 - 1.4 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 280 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -15.4 - 2.6 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 25 - 100%$(br2)御膳橘灌木五月至七月生长，八月至九月开花，十月结果。$(br2)它们可以在森林中找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -14.2 - 1.4 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 280 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -15.4 - 2.6 °C$(br)$(bold)$(l:food/hydration)湿度$(): 25 - 100%$(br2)御膳橘灌木五月至七月生长，八月至九月开花，十月结果。$(br2)它们可以在森林中找到。",
       "title": "御膳橘灌木"
     },
     {
@@ -3099,7 +3099,7 @@
     {
       "type": "patchouli:text",
       "anchor": "gooseberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -7 - 12.2 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 200 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -8.2 - 13.4 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 17 - 100%$(br2)鹅莓灌木四月至七月生长，八月至九月开花，十月结果。$(br2)它们可以在森林中找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -7 - 12.2 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 200 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -8.2 - 13.4 °C$(br)$(bold)$(l:food/hydration)湿度$(): 17 - 100%$(br2)鹅莓灌木四月至七月生长，八月至九月开花，十月结果。$(br2)它们可以在森林中找到。",
       "title": "鹅莓灌木"
     },
     {
@@ -3163,7 +3163,7 @@
     {
       "type": "patchouli:text",
       "anchor": "snowberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -10.6 - 5 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 200 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -11.8 - 6.2 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 17 - 100%$(br2)雪莓灌木三月至六月生长，七月至八月开花，九月结果。$(br2)它们可以在森林中找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -10.6 - 5 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 200 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -11.8 - 6.2 °C$(br)$(bold)$(l:food/hydration)湿度$(): 17 - 100%$(br2)雪莓灌木三月至六月生长，七月至八月开花，九月结果。$(br2)它们可以在森林中找到。",
       "title": "雪莓灌木"
     },
     {
@@ -3227,7 +3227,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cloudberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -14.2 - 6.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 80 - 320mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -15.4 - 8 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 5 - 80%$(br2)云莓灌木二月至五月生长，六月至八月开花，九月结果。$(br2)它们可以在森林中找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -14.2 - 6.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 80 - 320mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -15.4 - 8 °C$(br)$(bold)$(l:food/hydration)湿度$(): 5 - 80%$(br2)云莓灌木二月至五月生长，六月至八月开花，九月结果。$(br2)它们可以在森林中找到。",
       "title": "云莓灌木"
     },
     {
@@ -3291,7 +3291,7 @@
     {
       "type": "patchouli:text",
       "anchor": "strawberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -1.6 - 17.6 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 140 - 400mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -2.8 - 18.8 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 11 - 90%$(br2)草莓灌木十月至十二月生长，一月至二月开花，三月结果。$(br2)它们可以在森林中找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -1.6 - 17.6 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 140 - 400mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -2.8 - 18.8 °C$(br)$(bold)$(l:food/hydration)湿度$(): 11 - 90%$(br2)草莓灌木十月至十二月生长，一月至二月开花，三月结果。$(br2)它们可以在森林中找到。",
       "title": "草莓灌木"
     },
     {
@@ -3355,7 +3355,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wintergreen_berry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -8.8 - 6.8 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 100 - 370mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -10 - 8 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 7 - 85%$(br2)冬青莓灌木五月至九月生长，十月至十一月开花，十二月结果。$(br2)它们可以在森林中找到。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -8.8 - 6.8 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 100 - 370mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -10 - 8 °C$(br)$(bold)$(l:food/hydration)湿度$(): 7 - 85%$(br2)冬青莓灌木五月至九月生长，十月至十一月开花，十二月结果。$(br2)它们可以在森林中找到。",
       "title": "冬青莓灌木"
     },
     {
@@ -3419,7 +3419,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cranberry",
-      "text": "可在以下区域找到：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -14.2 - 8.6 °C$(br)$(bold)$(l:the_world/climate#rainfall)降雨量$(): 250 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:the_world/climate#temperature)温度$(): -15.4 - 9.8 °C$(br)$(bold)$(l:mechanics/hydration)湿度$(): 25 - 100%$(br2)蔓越莓灌木三月至六月生长，七月至八月开花，九月结果。$(br2)它们可以在森林中找到。与大多数小型灌木不同，蔓越莓灌木在水下生长。",
+      "text": "可在以下区域找到：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -14.2 - 8.6 °C$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$(): 250 - 500mm$(br2)生长所需条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$(): -15.4 - 9.8 °C$(br)$(bold)$(l:food/hydration)湿度$(): 25 - 100%$(br2)蔓越莓灌木三月至六月生长，七月至八月开花，九月结果。$(br2)它们可以在森林中找到。与大多数小型灌木不同，蔓越莓灌木在水下生长。",
       "title": "蔓越莓灌木"
     },
     {
@@ -3523,7 +3523,7 @@
           "text": "Dec"
         },
         {
-          "text": "Bunchberry"
+          "text": "御膳橘"
         },
         {
           "fill": "0xa8986a"
@@ -3562,7 +3562,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Gooseberry"
+          "text": "鹅莓"
         },
         {
           "fill": "0xa8986a"
@@ -3601,7 +3601,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Snowberry"
+          "text": "雪莓"
         },
         {
           "fill": "0xa8986a"
@@ -3640,7 +3640,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Cloudberry"
+          "text": "云莓"
         },
         {
           "fill": "0xa8986a"
@@ -3679,7 +3679,7 @@
           "fill": "0xa8986a"
         },
         {
-          "text": "Strawberry"
+          "text": "草莓"
         },
         {
           "fill": "0xcca0db"
@@ -3718,7 +3718,7 @@
           "fill": "0x6ab553"
         },
         {
-          "text": "Wintergreen"
+          "text": "冬青莓"
         },
         {
           "fill": "0xa8986a"
@@ -3757,7 +3757,7 @@
           "fill": "0xa217ff"
         },
         {
-          "text": "Cranberry"
+          "text": "蔓越莓"
         },
         {
           "fill": "0xa8986a"
@@ -3800,19 +3800,19 @@
       "title": "小型浆果灌木",
       "legend": [
         {
-          "text": "Dormant",
+          "text": "休眠",
           "color": "0xa8986a"
         },
         {
-          "text": "Healthy",
+          "text": "健康",
           "color": "0x6ab553"
         },
         {
-          "text": "Flowering",
+          "text": "开花",
           "color": "0xcca0db"
         },
         {
-          "text": "Fruiting",
+          "text": "结果",
           "color": "0xa217ff"
         }
       ],
@@ -3830,7 +3830,7 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 5,
+  "sortnum": 4,
   "extra_recipe_mappings": {
     "tfc:food/cherry": 8,
     "tfc:plant/cherry_sapling": 8,

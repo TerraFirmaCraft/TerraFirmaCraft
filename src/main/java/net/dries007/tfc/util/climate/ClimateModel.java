@@ -263,7 +263,7 @@ public interface ClimateModel
     }
 
     /**
-     * @return A unit vector representing the horizontal strength of the wind at the given {@code pos}.
+     * @return A vector representing the horizontal strength of the wind at the given {@code pos}.
      */
     default Vec2 getWind(Level level, BlockPos pos)
     {
@@ -272,7 +272,7 @@ public interface ClimateModel
     }
 
     /**
-     * @return A unit vector representing the horizontal strength of the wind at the given {@code pos} and
+     * @return A vector representing the horizontal strength of the wind at the given {@code pos} and
      * timestamp given by {@code calendarTicks}
      */
     default Vec2 getWind(Level level, BlockPos pos, long calendarTicks, int daysInMonth)

@@ -1,0 +1,13 @@
+{
+  "cobble": "tfc:rock/cobble/andesite",
+  "gravel": "tfc:rock/gravel/andesite",
+  "hardened": "tfc:rock/hardened/andesite",
+  "karst": false,
+  "loose": "tfc:rock/loose/andesite",
+  "mafic": false,
+  "mossy_loose": "tfc:rock/mossy_loose/andesite",
+  "raw": "tfc:rock/raw/andesite",
+  "sand": "tfc:sand/red",
+  "sandstone": "tfc:raw_sandstone/red",
+  "spike": "tfc:rock/spike/andesite"
+}

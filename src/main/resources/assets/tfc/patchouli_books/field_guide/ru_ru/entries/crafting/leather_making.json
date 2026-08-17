@@ -1,0 +1,77 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Leatherworking",
+  "category": "tfc:crafting",
+  "icon": "minecraft:leather",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Кожа$() — это прочный материал, получаемый из шкур животных. Кожа необходима для изготовления $(l:mechanics/armor)доспехов$(), $(thing)сёдел$() или $(l:metalworking/bellows)мехов$(). $()Свежие шкуры$() должны быть обработаны в несколько стадий, чтобы превратить их в $(thing)кожу$(): $(l:crafting/leather_making#soaking)замачивание$(), $(l:crafting/leather_making#scraping)скобление$(), $(l:crafting/leather_making#preparing)подготовка$() и $(l:crafting/leather_making#tanning)дубление$()."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
+      "title": "Сырая шкура",
+      "link_recipes": true,
+      "text": "Для начала вам нужно будет получить $(thing)свежую шкуру$(), которая выпадает при убийстве многих $(l:the_world/wild_animals)животных$(). Разные животные дают шкуры разного размера."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Для выделки кожи вам понадобятся: $(br)$(li)$(l:crafting/barrels#limewater)Известковая вода$() — раствор $(l:metalworking/flux)флюса$() в $(thing)воде$()$(li)Вода$(li)$(l:crafting/barrels#tannin)Дубильная кислота$() — кислый раствор из коры некоторых деревьев.$(li)$(thing)Свежие шкуры шкуры$()$(br2)Имея все это под рукой, вы готовы начать выделку кожи."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "soaking",
+      "recipe": "tfc:barrel/medium_soaked_hide",
+      "text": "Сначала свежие шкуры должны быть $(thing)замочены$(), чтобы очистить их и размягчить лишний материал перед дальнейшей обработкой. Это можно сделать, запечатав $(thing)свежие шкуры$() в $(l:crafting/barrels#limewater)бочке с известковой водой$() на шесть часов."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "scraping",
+      "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
+      "title": "Скобление",
+      "link_recipes": true,
+      "text": "После замачивания $(thing)отмоченные шкуры$() должны быть очищены от лишнего материала. Для скобления шкуры поместите её на бок $(thing)бревна$(). С $(thing)ножом$() в руке нажмите $(item)$(k:key.use)$() по всем частям шкуры, шкура при этом будет менять внешний вид."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/soaked_hide_1.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_2.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
+        "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
+      ],
+      "text": "Как только шкура полностью очищена, ее можно сломать, чтобы получить $(thing)гольё$().",
+      "border": true
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "preparing",
+      "recipe": "tfc:barrel/medium_prepared_hide",
+      "text": "После скобления $(thing)гольё$() нужно запечатать в $(l:crafting/barrels)бочке с водой$() на шесть часов для последней очистки перед дублением."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tanning",
+      "recipe": "tfc:barrel/medium_leather",
+      "text": "Наконец, $(thing)мягчёное гольё$() нужно запечатать в $(l:crafting/barrels#tannin)бочке с дубильной кислотой$(), которая помогает превратить шкуру в $(thing)кожу$(). Через шесть часов вы можете извлечь готовую $(thing)кожу$() из бочки."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2,
+  "extra_recipe_mappings": {
+    "tfc:small_raw_hide": 1,
+    "tfc:medium_raw_hide": 1,
+    "tfc:large_raw_hide": 1,
+    "tfc:small_soaked_hide": 3,
+    "tfc:medium_soaked_hide": 3,
+    "tfc:large_soaked_hide": 3,
+    "tfc:small_scraped_hide": 4,
+    "tfc:medium_scraped_hide": 4,
+    "tfc:large_scraped_hide": 4,
+    "tfc:small_prepared_hide": 6,
+    "tfc:medium_prepared_hide": 6,
+    "tfc:large_prepared_hide": 6,
+    "minecraft:leather": 7
+  }
+}

@@ -100,7 +100,7 @@
         "tfc:knapping/stone/hoe_head/igneous_extrusive",
         "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
-      "text": "$(thing)Мотыги$() — полезные инструменты для $(l:mechanics/crops)фермерства$(), но их также можно использовать для срезания листвы и другого растительного материала."
+      "text": "$(thing)Мотыги$() — полезные инструменты для $(l:food/crops)фермерства$(), но их также можно использовать для срезания листвы и другого растительного материала."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -110,7 +110,7 @@
         "tfc:knapping/stone/hammer_head/igneous_extrusive",
         "tfc:knapping/stone/hammer_head/igneous_intrusive"
       ],
-      "text": "$(thing)Молоты$() можно использовать как $(l:mechanics/damage_types)дробящее$() оружие, но они более важны в качестве инструментов для $(l:getting_started/primitive_anvils)ковки$()."
+      "text": "$(thing)Молоты$() можно использовать как $(l:core_mechanics/damage_types)дробящее$() оружие, но они более важны в качестве инструментов для $(l:getting_started/primitive_anvils)ковки$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:knapping/stone/javelin_head/igneous_extrusive",
         "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
-      "text": "Наконец, $(thing)дротики$() можно использовать как примитивное оружие для кидания в цели или как $(l:mechanics/damage_types)пронзающее$() оружие."
+      "text": "Наконец, $(thing)дротики$() можно использовать как примитивное оружие для кидания в цели или как $(l:core_mechanics/damage_types)пронзающее$() оружие."
     }
   ],
   "read_by_default": true,

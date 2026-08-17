@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TerraFirmaCraft의 세상은 동물들로 가득합니다. 몇몇 동물들은 도움이 되지만, 다른 동물들은 매우 위험합니다. 이 단락은 야생동물에 관한 것입니다. 당신에게 도움을 줄 수 있는 생물과 동물들에 대해서는 $(l:mechanics/animal_husbandry)축산업$() 페이지를 확인하세요."
+      "text": "TerraFirmaCraft의 세상은 동물들로 가득합니다. 몇몇 동물들은 도움이 되지만, 다른 동물들은 매우 위험합니다. 이 단락은 야생동물에 관한 것입니다. 당신에게 도움을 줄 수 있는 생물과 동물들에 대해서는 $(l:food/animal_husbandry)축산업$() 페이지를 확인하세요."
     },
     {
       "type": "patchouli:text",
@@ -23,87 +23,87 @@
       "entity": "tfc:polar_bear",
       "scale": 0.55,
       "name": "§l북극곰",
-      "text": "북극곰은 $(l:the_world/climate#temperature)기온$()이 10°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 100mm 이상인 가장 추운 지역에서만 생성됩니다."
+      "text": "북극곰은 $(l:core_mechanics/climate#temperature)기온$()이 10°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 100mm 이상인 가장 추운 지역에서만 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
       "name": "§l회색곰",
-      "text": "회색곰은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상 15°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 온화한 기후를 가진 숲에서 생성됩니다."
+      "text": "회색곰은 $(l:core_mechanics/climate#temperature)기온$()이 -15°C 이상 15°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 200mm 이상인 온화한 기후를 가진 숲에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "§l흑곰",
-      "text": "흑곰은 $(l:the_world/climate#temperature)기온$()이 5°C 이상 20°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 따뜻하고 습한 기후를 가진 숲에서 생성됩니다."
+      "text": "흑곰은 $(l:core_mechanics/climate#temperature)기온$()이 5°C 이상 20°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 250mm 이상인 따뜻하고 습한 기후를 가진 숲에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
       "scale": 0.6,
       "name": "§l퓨마",
-      "text": "퓨마는 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 21°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상인 대부분의 온화한 기후를 선호합니다."
+      "text": "퓨마는 $(l:core_mechanics/climate#temperature)기온$()이 -10°C 이상 21°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 150mm 이상인 대부분의 온화한 기후를 선호합니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
       "scale": 0.6,
       "name": "§l표범",
-      "text": "표범은 $(l:the_world/climate#temperature)기온$()이 -10°C 이상 21°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상인 대부분의 온화한 기후를 선호합니다."
+      "text": "표범은 $(l:core_mechanics/climate#temperature)기온$()이 -10°C 이상 21°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 150mm 이상인 대부분의 온화한 기후를 선호합니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "§l사자",
-      "text": "사자는 $(l:the_world/climate#temperature)기온$()이 16°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 50mm 이상 300mm 이하인 평원에 생성됩니다."
+      "text": "The lion spawns in plains with an average $(l:core_mechanics/climate#temperature)temperature$() of at least 16°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 50 and 300mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tiger",
       "scale": 0.55,
       "name": "Tiger",
-      "text": "The tiger spawns in forests with an average $(l:the_world/climate#temperature)temperature$() of at least 13°C, and $(l:the_world/climate#rainfall)rainfall$() above 100mm."
+      "text": "The tiger spawns in forests with an average $(l:core_mechanics/climate#temperature)temperature$() of at least 13°C, and $(l:core_mechanics/climate#rainfall)rainfall$() above 100mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "§l검치호",
-      "text": "검치호는 $(l:the_world/climate#temperature)기온$()이 0°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 곳에 생성됩니다."
+      "text": "검치호는 $(l:core_mechanics/climate#temperature)기온$()이 0°C 이상이고, $(l:core_mechanics/climate#rainfall)강수량$()이 250mm 이상인 곳에 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "늑대는 $(l:the_world/climate#temperature)기온$()이 22°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 150mm 이상 420mm 이하인 곳에 생성됩니다. 늑대는 무리지어 사냥합니다. 늑대를 충분한 시간동안 길들이면 $(l:mechanics/pets)개$()가 됩니다."
+      "text": "늑대는 $(l:core_mechanics/climate#temperature)기온$()이 22°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 150mm 이상 420mm 이하인 곳에 생성됩니다. 늑대는 무리지어 사냥합니다. 늑대를 충분한 시간동안 길들이면 $(l:food/pets)개$()가 됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "The direwolf spawns at any $(l:the_world/climate#temperature)temperature$() below freezing, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
+      "text": "The direwolf spawns at any $(l:core_mechanics/climate#temperature)temperature$() below freezing, and $(l:core_mechanics/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:hyena",
       "scale": 0.7,
-      "text": "The hyena spawns at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+      "text": "The hyena spawns at any $(l:core_mechanics/climate#temperature)temperature$() warmer than 15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crocodile",
       "scale": 0.7,
       "name": "Crocodile",
-      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:the_world/climate#temperature)temperature$() warmer than 15°C, and at any $(l:the_world/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:core_mechanics/climate#temperature)temperature$() warmer than 15°C, and at any $(l:core_mechanics/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "The ocelot attacks small animals. It spawns at any $(l:the_world/climate#temperature)temperature$() from 15 to 30°C, and $(l:the_world/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:mechanics/pets)Cat$(). Ocelots can eat raw fish"
+      "text": "The ocelot attacks small animals. It spawns at any $(l:core_mechanics/climate#temperature)temperature$() from 15 to 30°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:food/pets)Cat$(). Ocelots can eat raw fish"
     },
     {
       "type": "patchouli:text",
@@ -116,26 +116,26 @@
       "entity": "tfc:boar",
       "scale": 0.8,
       "name": "Boar",
-      "text": "The boar spawns at $(l:the_world/climate#temperature)temperature$() below 25°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "The boar spawns at $(l:core_mechanics/climate#temperature)temperature$() below 25°C and above -5°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 130 and 400mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "The moose spawns in forests at $(l:the_world/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 300mm."
+      "text": "The moose spawns in forests at $(l:core_mechanics/climate#temperature)temperature$() below 10°C and above -15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 150 and 300mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wildebeest",
       "scale": 0.7,
-      "text": "The wildebeest spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 13°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "The wildebeest spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above 13°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 90 and 380mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bison",
       "scale": 0.6,
       "name": "Bison",
-      "text": "The bison spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above -10°C and below 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 160 and 420mm."
+      "text": "The bison spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above -10°C and below 15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 160 and 420mm."
     },
     {
       "type": "patchouli:empty"
@@ -151,58 +151,68 @@
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "Fox",
-      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:core_mechanics/climate#temperature)temperature$() below 25°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 130 and 400mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "The deer spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 25°C and above -15°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "The deer spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() below 25°C and above -15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 130 and 400mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:caribou",
       "scale": 0.5,
       "name": "Caribou",
-      "text": "The caribou spawns at any $(l:the_world/climate#temperature)temperature$() below -9°C, and $(l:the_world/climate#rainfall)rainfall$() between 110 and 500mm."
+      "text": "The caribou spawns at any $(l:core_mechanics/climate#temperature)temperature$() below -9°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 110 and 500mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "The gazelle spawns in open plains at any $(l:the_world/climate#temperature)temperature$() above 12°C, and $(l:the_world/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "The gazelle spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above 12°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 90 and 380mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bongo",
       "scale": 0.7,
       "name": "Bongo",
-      "text": "The bongo spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 15°C, and $(l:the_world/climate#rainfall)rainfall$() between 230 and 500mm."
+      "text": "The bongo spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() above 15°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 230 and 500mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "The grouse spawns at any $(l:the_world/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:the_world/climate#rainfall)rainfall$() between 150 and 400mm."
+      "text": "The grouse spawns at any $(l:core_mechanics/climate#temperature)temperature$() below 13°C and above -12°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 150 and 400mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "The pheasant spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:the_world/climate#rainfall)rainfall$() between 100 and 300mm."
+      "text": "The pheasant spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() below 17°C and above -5°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 300mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "The turkey spawns in forests at any $(l:the_world/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:the_world/climate#rainfall)rainfall$() between 250 and 450mm."
+      "text": "The turkey spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() below 17°C and above 0°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 250 and 450mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
       "scale": 0.8,
       "name": "Peafowl",
-      "text": "The peafowl spawns in forests at any $(l:the_world/climate#temperature)temperature$() above 14°C, and $(l:the_world/climate#rainfall)rainfall$() between 190 and 500mm."
+      "text": "The peafowl spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() above 14°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 190 and 500mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:armadillo",
+      "scale": 0.7,
+      "name": "Armadillo",
+      "text": "The armadillo sheds scutes every 30 hours. It can be found at any $(l:core_mechanics/climate#temperature)temperature$() above 12°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 400mm."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
@@ -219,28 +229,28 @@
       "entity": "tfc:penguin",
       "scale": 0.7,
       "name": "§l펭귄",
-      "text": "The penguin spawns on only the coldest beaches, ice sheet edges, and sea ice with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm."
+      "text": "The penguin spawns on only the coldest beaches, ice sheet edges, and sea ice with $(l:core_mechanics/climate#temperature)temperature$() of at most -14°C and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 75mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:leopard_seal",
       "scale": 0.7,
       "name": "Leopard Seal",
-      "text": "The Leopard Seal spawns on cold beaches, ice sheet edges, and sea ice with $(l:the_world/climate#temperature)temperatures$() of at most -9°C and $(l:the_world/climate#rainfall)rainfall$() of at least 105mm."
+      "text": "The Leopard Seal spawns on cold beaches, ice sheet edges, and sea ice with $(l:core_mechanics/climate#temperature)temperatures$() of at most -9°C and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 105mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turtle",
       "scale": 0.7,
       "name": "§l바다거북",
-      "text": "바다거북은 따뜻한 물을 좋아합니다. $(l:the_world/climate#temperature)기온$()이 21°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 250mm 이상인 지역에 생성됩니다."
+      "text": "바다거북은 따뜻한 물을 좋아합니다. $(l:core_mechanics/climate#temperature)기온$()이 21°C 이상이고, $(l:core_mechanics/climate#rainfall)강수량$()이 250mm 이상인 지역에 생성됩니다."
     },
     {
       "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)물고기$()는 물에서 헤엄치는 작은 생물입니다. 대부분은 $(l:mechanics/fishing)낚시$()할 수 있습니다. 각각 바다, 강, 호수를 사는 종류가 있습니다.",
+      "text": "$(thing)물고기$()는 물에서 헤엄치는 작은 생물입니다. 대부분은 $(l:food/fishing)낚시$()할 수 있습니다. 각각 바다, 강, 호수를 사는 종류가 있습니다.",
       "title": "§l물고기"
     },
     {
@@ -248,63 +258,63 @@
       "entity": "tfc:cod",
       "scale": 0.7,
       "name": "§l대구",
-      "text": "대구는 $(l:the_world/climate#temperature)기온$()이 18°C 이하인 추운 바다를 선호합니다. 낚시할 수 있습니다."
+      "text": "대구는 $(l:core_mechanics/climate#temperature)기온$()이 18°C 이하인 추운 바다를 선호합니다. 낚시할 수 있습니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
       "name": "§l복어",
-      "text": "복어는 $(l:the_world/climate#temperature)기온$()이 10°C 이상인 바다에 삽니다."
+      "text": "복어는 $(l:core_mechanics/climate#temperature)기온$()이 10°C 이상인 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
       "name": "§l해파리",
-      "text": "해파리는 $(l:the_world/climate#temperature)기온$()이 18°C 이상인 따뜻한 바다에 삽니다."
+      "text": "해파리는 $(l:core_mechanics/climate#temperature)기온$()이 18°C 이상인 따뜻한 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
       "name": "§l열대어",
-      "text": "열대어는 $(l:the_world/climate#temperature)기온$()이 18°C 이상인 따뜻한 바다를 선호합니다."
+      "text": "열대어는 $(l:core_mechanics/climate#temperature)기온$()이 18°C 이상인 따뜻한 바다를 선호합니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "§l연어",
-      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
+      "text": "Salmon spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rainbow_trout",
       "scale": 0.7,
       "name": "Rainbow Trout",
-      "text": "Rainbow Trout spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
+      "text": "Rainbow Trout spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lake_trout",
       "scale": 0.7,
       "name": "Lake Trout",
-      "text": "Lake Trout spawn in any lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
+      "text": "Lake Trout spawn in any lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:largemouth_bass",
       "scale": 0.7,
       "name": "Largemouth Bass",
-      "text": "Largemouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
+      "text": "Largemouth Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:smallmouth_bass",
       "scale": 0.7,
       "name": "Smallmouth Bass",
-      "text": "Smallmouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
+      "text": "Smallmouth Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
     },
     {
       "type": "patchouli:entity",
@@ -325,68 +335,68 @@
       "entity": "tfc:northern_pike",
       "scale": 0.7,
       "name": "Northern Pike",
-      "text": "Northern Pike spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
+      "text": "Northern Pike spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peacock_bass",
       "scale": 0.7,
       "name": "Peacock Bass",
-      "text": "Peacock Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
+      "text": "Peacock Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:arctic_char",
       "scale": 0.7,
       "name": "Arctic Char",
-      "text": "Arctic Char spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
+      "text": "Arctic Char spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:muksun",
       "scale": 0.7,
       "name": "Muksun",
-      "text": "Muksun spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
+      "text": "Muksun spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:burbot",
       "scale": 0.7,
       "name": "Burbot",
-      "text": "Burbot spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
+      "text": "Burbot spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tilapia",
       "scale": 0.7,
       "name": "Tilapia",
-      "text": "Tilapia spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
+      "text": "Tilapia spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:spotted_gudgeon",
       "scale": 0.7,
       "name": "Spotted Gudgeon",
-      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
+      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pacu",
       "scale": 0.7,
       "name": "Pacu",
-      "text": "Pacu spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
+      "text": "Pacu spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:red_piranha",
       "scale": 0.7,
       "name": "Red Piranha",
-      "text": "Red Piranha spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
+      "text": "Red Piranha spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
     },
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)갑각류$()는 물 속 바닥에 사는 동물들입니다. 낚시할 수는 없지만, 먹거나 $(l:mechanics/flux)플럭스$()를 만들 수 있는 껍데기를 떨어뜨립니다. 갑각류는 낚시용 $(l:mechanics/fishing)미끼$()가 될 수 있습니다.",
+      "text": "$(thing)갑각류$()는 물 속 바닥에 사는 동물들입니다. 낚시할 수는 없지만, 먹거나 $(l:metalworking/flux)플럭스$()를 만들 수 있는 껍데기를 떨어뜨립니다. 갑각류는 낚시용 $(l:food/fishing)미끼$()가 될 수 있습니다.",
       "title": "§l갑각류"
     },
     {
@@ -394,28 +404,28 @@
       "entity": "tfc:isopod",
       "scale": 0.7,
       "name": "§l등각류",
-      "text": "등각류는 $(l:the_world/climate#temperature)기온$()이 14°C 이하인 깊은 바다에서 생성됩니다."
+      "text": "등각류는 $(l:core_mechanics/climate#temperature)기온$()이 14°C 이하인 깊은 바다에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "§l바닷가재",
-      "text": "바닷가재는 $(l:the_world/climate#temperature)기온$()이 21°C 이하인 바다에서 생성됩니다."
+      "text": "바닷가재는 $(l:core_mechanics/climate#temperature)기온$()이 21°C 이하인 바다에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "§l민물가재",
-      "text": "민물가재는 바닷가재와 비슷하지만, 강과 호수에 생성됩니다. $(l:the_world/climate#temperature)기온$()이 5°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 125mm 이상인 지역에서 생성됩니다."
+      "text": "민물가재는 바닷가재와 비슷하지만, 강과 호수에 생성됩니다. $(l:core_mechanics/climate#temperature)기온$()이 5°C 이상이고, $(l:core_mechanics/climate#rainfall)강수량$()이 125mm 이상인 지역에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
       "name": "§l투구게",
-      "text": "투구게는 $(l:the_world/climate#temperature)기온$()이 10°C 이상 21°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 400mm 이하인 온화한 기후의 바다에 생성됩니다."
+      "text": "투구게는 $(l:core_mechanics/climate#temperature)기온$()이 10°C 이상 21°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 400mm 이하인 온화한 기후의 바다에 생성됩니다."
     },
     {
       "type": "patchouli:text",
@@ -427,21 +437,21 @@
       "entity": "tfc:orca",
       "scale": 0.25,
       "name": "§l범고래",
-      "text": "범고래는 $(l:the_world/climate#temperature)기온$()이 19°C 이하이고, $(l:the_world/climate#rainfall)강수량$()이 100mm 이상인 깊은 바다에 삽니다."
+      "text": "범고래는 $(l:core_mechanics/climate#temperature)기온$()이 19°C 이하이고, $(l:core_mechanics/climate#rainfall)강수량$()이 100mm 이상인 깊은 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dolphin",
       "scale": 0.4,
       "name": "§l돌고래",
-      "text": "돌고래는 $(l:the_world/climate#temperature)기온$()이 10°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 깊은 바다에 삽니다."
+      "text": "돌고래는 $(l:core_mechanics/climate#temperature)기온$()이 10°C 이상이고, $(l:core_mechanics/climate#rainfall)강수량$()이 200mm 이상인 깊은 바다에 삽니다."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:manatee",
       "scale": 0.25,
       "name": "§l매너티",
-      "text": "매너티는 $(l:the_world/climate#temperature)기온$()이 20°C 이상이고, $(l:the_world/climate#rainfall)강수량$()이 300mm 이하인 따뜻한 호수에 삽니다."
+      "text": "매너티는 $(l:core_mechanics/climate#temperature)기온$()이 20°C 이상이고, $(l:core_mechanics/climate#rainfall)강수량$()이 300mm 이하인 따뜻한 호수에 삽니다."
     },
     {
       "type": "patchouli:text",
@@ -450,5 +460,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6
+  "sortnum": 5
 }

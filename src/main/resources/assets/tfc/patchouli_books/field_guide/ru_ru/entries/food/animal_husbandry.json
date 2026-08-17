@@ -1,0 +1,321 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Животноводство",
+  "category": "tfc:food",
+  "icon": "minecraft:textures/item/egg.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Домашний скот$() — это животные, которых можно приручивать и разводить. Домашняя скотина может быть $(thing)самцом$() или $(thing)самкой$(). У некоторых животных можно визуально определить пол. Например, у самцов свиней есть клыки."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Домашний скот $(thing)стареет$(). Они рождаются маленькими и по началу не могут давать полезные ресурсы. После определенного количества дней они вырастают во $(thing)взрослых$() животных, которые могут размножаться или производить молоко. После того как они размножились или были использованы для получения продуктов животноводства достаточное количество раз, животные становятся $(thing)старыми$(), и полезны только своим мясом."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/old_cow.png"
+      ],
+      "text": "Этот бык стар и не может размножаться, поэтому у него блеклая шерсть и серые глаза.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Домашний скот можно кормить, чтобы повысить $(thing)привязанность$(). У каждого животного есть предпочтительная еда. Чтобы покормить животное, нажмите $(item)$(k:key.sneak)$() и $(item)$(k:key.use)$() с едой в руке по животному."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
+      ],
+      "text": "У домашнего скота есть индикатор-сердечко, показывающий уровень $(thing)привязанности$() к вам. Зажмите $(item)$(k:key.sneak)$(), чтобы увидеть его.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
+      ],
+      "text": "Привязанность уменьшается ежедневно, если животное не кормить. Небольшое повышение привязанности (белый контур сердечка) предотвращает её снижение.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
+      ],
+      "text": "Взрослый домашний скот не может быть полностью приручен (красный контур сердечка). А вот родившееся у них потомство может быть приручено.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mammals",
+      "text": "$(thing)Млекопитающие$() — это домашний скот, который может $(thing)беременнеть$(). Взрослые млекопитающие, привязанность которых выше 30 % и которые были накормлены в этот день, будут спариваться, если они противоположного пола и находятся рядом друг с другом. Самка становится $(thing)беременной$(), что приводит к рождению потомства через определенное количество дней после оплодотворения.$(br)Пример — $(l:food/animal_husbandry#pig)свиньи$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wooly_animals",
+      "text": "$(thing)Шёрстные животные$() — это $(l:food/animal_husbandry#mammals)млекопитающие$(), которых можно $(thing)стричь$(), если они взрослые и достаточно привыкли к вам. Некоторые примеры — $(l:food/animal_husbandry#sheep)овцы$(), $(l:food/animal_husbandry#alpaca)альпаки$() и $(l:food/animal_husbandry#musk_ox)мускусные быки$()."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/metal/shears/bronze",
+      "text": "Ножницы можно сделать путём $(l:metalworking/anvils#welding)сварки$() двух $(thing)лезвий ножа$() вместе. Лезвие ножа с наименьшим бонусом ковки (если он имеется) передаст этот бонус ножницам."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dairy_animals",
+      "text": "$(thing)Молочные животные$() — это млекопитающие, которые производят $(thing)молоко$(). Самок молочных животных можно доить, нажав $(item)$(k:key.use)$() по ним ведром. Некоторые примеры — $(l:food/animal_husbandry#goat)козы$(), $(l:food/animal_husbandry#cow)коровы$() и $(l:food/animal_husbandry#yak)яки$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "oviparous_animals",
+      "recipe": "tfc:crafting/nest_box",
+      "title": "Насест",
+      "text": "$(thing)Яйцекладущие животные$() — это животные, откладывающие $(thing)яйца$() для продолжения рода. Чтобы откладывать яйца, им нужен $(thing)насест$(), который они могут найти самостоятельно.$(br)Некоторые примеры — $(l:food/animal_husbandry#duck)утки$(), $(l:food/animal_husbandry#quail)перепела$() и $(l:food/animal_husbandry#chicken)куры$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/food/cooked_egg",
+      "text": "$(thing)Яйца$() можно сварить или пожарить для употребления в пищу. Самцы яйцекладущих животных могут оплодотворять самок, которые в свою очередь отложат оплодотворённые яйца. Такие яйца будут иметь подсказку с указанием времени до вылупления птенца."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Однокопытные$() — это $(l:food/animal_husbandry#mammals)млекопитающие$(), которых можно оседлать после приручения. Они пригодны для верховой езды при достижении 15% привязанности. Лошади передают свои $(thing)генетические характеристики$(), включая скорость, высоту прыжка, здоровье, размер и отметины. Потомок скрещивания лошади и осла — это $(thing)мул$()."
+    },
+    {
+      "type": "tfc:knapping_recipe",
+      "anchor": "horses",
+      "recipe": "tfc:knapping/saddle",
+      "text": "Седла можно вырезать из кожи."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Для верховой езды на $(l:food/animal_husbandry#mule)мулах$(), $(l:food/animal_husbandry#donkey)ослах$() и $(l:food/animal_husbandry#horses)лошадях$() нужно $(thing)седло$(), которое $(thing)вырезается$() из кожи. Мулы и ослы могут нести на себе сундук или бочку. Бочку с них можно снять нажав $(item)$(k:key.use)$(), удерживая $(item)$(k:key.sneak)$(). Те же клавиши с ведром в руке можно использовать для слива жидкости из бочки. $(br2)На следующих страницах рассмотрены все представители домашнего скота."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pig",
+      "text": "$(thing)Свиньи$() обитают в умеренных лесах при $(l:core_mechanics/climate#temperature)температуре$() от -10 до 35°C и $(l:core_mechanics/climate#rainfall)осадках$() более 200 мм. Они — $(l:food/animal_husbandry#mammals)млекопитающиие$() без особых способностей. Свиньи едят любую пищу, даже если она испорчена. Свинья может родить от 1 до 10 поросят за беременность, она длится всего 19 дней, и поросята достигает зрелости за 80 дней. Свиньи могут иметь потомство до 6 раз.",
+      "title": "Свиньи"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Свинья."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rabbit",
+      "text": "$(thing)Rabbits$() spawn in $(l:core_mechanics/climate#temperature)temperatures$() above -16°C, and at least 15mm of $(l:core_mechanics/climate#rainfall)rainfall$(), changing their coat based on climate. They are $(l:food/animal_husbandry#mammals)Mammals$() with no special abilities, aside from being known for chewing on carrots and cabbage. They will eat any food, even if it is rotten. They have 1-6 children, are pregnant for just 19 days, and reach adulthood in 20 days. They can have children 6 times.",
+      "title": "Кролики"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.8,
+      "name": " ",
+      "text": "Кролик."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cow",
+      "text": "$(thing)Коровы$() обитают почти во всём мире при $(l:core_mechanics/climate#temperature)температуре$() от -10 до 35°C и $(l:core_mechanics/climate#rainfall)осадках$() выше 250 мм. Коровы — $(l:food/animal_husbandry#dairy_animals)молочные животные$(). Они едят только $(thing)крупы$(), в том числе испорченные. Корова может родить от 1 до 2 телят за беременность, она длится 58 дней, и телята достигают зрелости за 192 дня. Коровы могут иметь потомство 13 раз, если их никогда не доили, или быть подоены 128 раз, если их никогда не оплодотворяли. Коровы дают молоко каждый день.",
+      "title": "Коровы"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Корова."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "goat",
+      "text": "$(thing)Goats$() spawn in moderate climates, with $(l:core_mechanics/climate#temperature)temperature$() between -12 and 25°C, and at least 300mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.",
+      "title": "Козы"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Коза."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "yak",
+      "text": "$(thing)Яки$() обитают в холодном климате при $(l:core_mechanics/climate#temperature)температуре$() ниже -11°C и $(l:core_mechanics/climate#rainfall)осадках$() более 100 мм. Яки — $(l:food/animal_husbandry#dairy_animals)молочные животные$(). Они едят только свежие $(thing)крупы$(). Самка яка может родить только 1 телёнка за беременность, она длится 64 дня, и телёнок достигает зрелости за 180 дней. Самки яка могут иметь потомство 23 раза, если их никогда не доили, или быть подоены 230 раз, если их никогда не оплодотворяли. Самки яка дают молоко каждый день.",
+      "title": "Як"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Як."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alpaca",
+      "text": "$(thing)Альпаки$() обитают в умеренном климате при $(l:core_mechanics/climate#temperature)температуре$() от -8 до 20°C и $(l:core_mechanics/climate#rainfall)осадках$() более 250 мм. Альпаки — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(). Они питаются $(thing)крупами$() и $(thing)фруктами$(). Альпаки могут родить от 1 до 2 детенышей за беременность, она длится 36 дней, и детёныши достигают зрелости за 98 дней. Альпаки могут иметь потомство 13 раз, если их никогда не стригли, или быть подстрижены 128 раз, если их никогда не оплодотворяли. Шерсть у них отрастает каждые 6 дней.",
+      "title": "Альпака"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Альпака."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sheep",
+      "text": "$(thing)Sheep$() spawn in drier climates, with $(l:core_mechanics/climate#temperature)temperature$() between 0 and 35°C, and between 70 and 300mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 3 days.",
+      "title": "Овцы"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Овца."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "musk_ox",
+      "text": "$(thing)Овцебыки$() обитают в холодном климате при $(l:core_mechanics/climate#temperature)температуре$() от -25 до 0°C и $(l:core_mechanics/climate#rainfall)осадках$() более 100 мм. Овцебыки — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(). Они питаются $(thing)крупами$(). Самка овцебыка может родить только 1 теленка за беременность, которая длится 64 дня, и телята достигают зрелости за 168 дней. Овцебыки могут иметь потомство 16 раз, если их никогда не стригли, или быть подстрижены 160 раз, если их никогда не оплодотворяли. Шерсть у них отрастает каждые 4 дня.",
+      "title": "Овцебыки"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "Овцебык."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bactrian_camel",
+      "text": "$(thing)Bactrian Camels$() spawn in cold deserts, with $(l:core_mechanics/climate#temperature)temperature$() of at most -5°C, and at most 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#wooly_animals)Wooly Animals$() and can be ridden. They are slower than horses, but faster on sand and snow. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 24 days, and become adults in 80 days. They can have children 8 times if they are never sheared, or be sheared 80 times if they are never bred. They grow wool every 7 days.",
+      "title": "Bactrian Camel"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bactrian_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A bactrian camel."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "chicken",
+      "text": "$(thing)Куры$() обитают в теплых лесах при $(l:core_mechanics/climate#temperature)температуре$() выше 14°C и $(l:core_mechanics/climate#rainfall)осадках$() более 225 мм. Куры — $(l:food/animal_husbandry#oviparous_animals)яйцекладущими животными$(). Они питаются $(thing)крупами$(), $(thing)фруктами$(), $(thing)овощами$() и $(thing)семенами$(), в том числе испорченными. Куриные яйца вылупляются за 8 дней, и цыплята становятся взрослыми за 24 дня. Куры могут нести яйца 100 раз и несутся каждые 30 часов.",
+      "title": "Куры"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "Курица."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "duck",
+      "text": "$(thing)Ducks$() spawn in most plains, with $(l:core_mechanics/climate#temperature)temperature$() between -25 and 30°C, and at least 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.",
+      "title": "Утки"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "Утка."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "quail",
+      "text": "$(thing)Quails$() spawn in colder climates, with $(l:core_mechanics/climate#temperature)temperature$() between -15 and 15°C, and at least 200mm of  $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.",
+      "title": "Перепел"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
+      "name": " ",
+      "text": "Перепел."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "donkey",
+      "text": "$(thing)Donkeys$() spawn in wetter plains, with $(l:core_mechanics/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "title": "Ослы"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Осел."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mule",
+      "text": "$(thing)Mules$() spawn in plains with $(l:core_mechanics/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$() and are the sterile product of a $(thing)horse$() and a $()donkey$(). They eat $(thing)grains$() and $(thing)fruits$(). They reach adulthood in 80 days.",
+      "title": "Мулы"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Мул."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "horse",
+      "text": "$(thing)Horses$() spawn in plains with $(l:core_mechanics/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "title": "Лошади"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
+      "name": " ",
+      "text": "Лошадь."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "dromedary_camel",
+      "text": "$(thing)Dromedary Camels$() spawn in drier climates, with $(l:core_mechanics/climate#temperature)temperature$() of at least -5°C, and at most 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#mammals)Mammals$() that can be ridden. They are slower than horses, but are immune to cacti and run fast on sand. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "title": "Dromedary Camels"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dromedary_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
+      "name": " ",
+      "text": "A dromedary camel."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "frog",
+      "text": "$(thing)Frogs$() spawn in $(l:core_mechanics/climate#temperature)temperatures$() above -13°C, and at least 150mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They can be familiarized, and when bred they will lay eggs in fresh water, which hatch into tadpoles. They will eat fish and spider eyes. ",
+      "title": "Лягушки"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:frog{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.8,
+      "name": " ",
+      "text": "Лягушка."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

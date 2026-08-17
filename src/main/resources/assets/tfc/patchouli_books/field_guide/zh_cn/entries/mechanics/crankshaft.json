@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)曲轴$()是一种将$(l:mechanics/mechanical_power)旋转动力$()转化为$(thing)往复运动动力$()的方式。这对于为$(l:mechanics/bellows)风箱$()或$(l:mechanics/pumps)水泵$()等设备提供动力非常有用。$(br2)$(thing)曲轴$()由两部分组成：基座和连杆。基座必须连接到$(l:mechanics/mechanical_power#axle)传动杆$()，设备可以连接到连杆的末端。"
+      "text": "$(thing)曲轴$()是一种将$(l:mechanics/mechanical_power)旋转动力$()转化为$(thing)往复运动动力$()的方式。这对于为$(l:metalworking/bellows)风箱$()或$(l:mechanics/pumps)水泵$()等设备提供动力非常有用。$(br2)$(thing)曲轴$()由两部分组成：基座和连杆。基座必须连接到$(l:mechanics/mechanical_power#axle)传动杆$()，设备可以连接到连杆的末端。"
     },
     {
       "type": "patchouli:multiblock",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "曲轴可以通过在连杆旁放置一个$(l:mechanics/bellows)风箱$()来连接。这样，每次连杆伸出和缩回时，风箱都会自动推拉。连接到曲轴后，风箱就不能手动操作了。$(br2)曲轴也可以连接到$(l:mechanics/pumps)泵$()，用于输送流体。"
+      "text": "曲轴可以通过在连杆旁放置一个$(l:metalworking/bellows)风箱$()来连接。这样，每次连杆伸出和缩回时，风箱都会自动推拉。连接到曲轴后，风箱就不能手动操作了。$(br2)曲轴也可以连接到$(l:mechanics/pumps)泵$()，用于输送流体。"
     }
   ],
   "read_by_default": true

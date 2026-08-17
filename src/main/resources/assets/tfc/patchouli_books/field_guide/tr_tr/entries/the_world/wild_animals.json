@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TFC dünyası hayvan yaşamıyla doludur. Bazı hayvanlar yardım etmek için oradadır, bazıları ise inanılmaz derecede tehlikelidir. Bu bölüm vahşi hayvanlar hakkındadır. İhtiyacınız olan eşyaları sağlayabilen hayvanlar olan çiftlik hayvanları hakkında bilgi için $(l:mechanics/animal_husbandry)Hayvancılık$() sayfasına bakın."
+      "text": "TFC dünyası hayvan yaşamıyla doludur. Bazı hayvanlar yardım etmek için oradadır, bazıları ise inanılmaz derecede tehlikelidir. Bu bölüm vahşi hayvanlar hakkındadır. İhtiyacınız olan eşyaları sağlayabilen hayvanlar olan çiftlik hayvanları hakkında bilgi için $(l:food/animal_husbandry)Hayvancılık$() sayfasına bakın."
     },
     {
       "type": "patchouli:text",
@@ -23,87 +23,87 @@
       "entity": "tfc:polar_bear",
       "scale": 0.55,
       "name": "Kutup Ayısı",
-      "text": "Kutup ayısı sadece en soğuk bölgelerde, $(l:the_world/climate#temperature)sıcaklığın$() en fazla 10°C ve $(l:the_world/climate#rainfall)yağışın$() en az 100mm olduğu yerlerde ortaya çıkar."
+      "text": "Kutup ayısı sadece en soğuk bölgelerde, $(l:core_mechanics/climate#temperature)sıcaklığın$() en fazla 10°C ve $(l:core_mechanics/climate#rainfall)yağışın$() en az 100mm olduğu yerlerde ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
       "name": "Boz Ayı",
-      "text": "Boz ayı, ılıman iklimli ormanlarda, -15 ile 15°C arası $(l:the_world/climate#temperature)sıcaklık$() ve en az 200mm $(l:the_world/climate#rainfall)yağış$() olan yerlerde ortaya çıkar."
+      "text": "Boz ayı, ılıman iklimli ormanlarda, -15 ile 15°C arası $(l:core_mechanics/climate#temperature)sıcaklık$() ve en az 200mm $(l:core_mechanics/climate#rainfall)yağış$() olan yerlerde ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "Kara Ayı",
-      "text": "Kara ayı, daha sıcak ve nemli iklimli ormanlarda, 5 ile 20°C arası $(l:the_world/climate#temperature)sıcaklık$() ve en az 250mm $(l:the_world/climate#rainfall)yağış$() olan yerlerde ortaya çıkar."
+      "text": "Kara ayı, daha sıcak ve nemli iklimli ormanlarda, 5 ile 20°C arası $(l:core_mechanics/climate#temperature)sıcaklık$() ve en az 250mm $(l:core_mechanics/climate#rainfall)yağış$() olan yerlerde ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
       "scale": 0.6,
       "name": "Puma",
-      "text": "Puma, -10 ile 21°C arası $(l:the_world/climate#temperature)sıcaklık$() ve en az 150mm $(l:the_world/climate#rainfall)yağış$() olan çoğu ılıman iklimi tercih eder."
+      "text": "Puma, -10 ile 21°C arası $(l:core_mechanics/climate#temperature)sıcaklık$() ve en az 150mm $(l:core_mechanics/climate#rainfall)yağış$() olan çoğu ılıman iklimi tercih eder."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
       "scale": 0.6,
       "name": "Panter",
-      "text": "Panter, -10 ile 21°C arası $(l:the_world/climate#temperature)sıcaklık$() ve en az 150mm $(l:the_world/climate#rainfall)yağış$() olan çoğu ılıman iklimi tercih eder."
+      "text": "Panter, -10 ile 21°C arası $(l:core_mechanics/climate#temperature)sıcaklık$() ve en az 150mm $(l:core_mechanics/climate#rainfall)yağış$() olan çoğu ılıman iklimi tercih eder."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "Aslan",
-      "text": "Aslan, ortalama $(l:the_world/climate#temperature)sıcaklığın$() en az 16°C ve $(l:the_world/climate#rainfall)yağışın$() 50 ile 300mm arasında olduğu ovalarda ortaya çıkar."
+      "text": "Aslan, ortalama $(l:core_mechanics/climate#temperature)sıcaklığın$() en az 16°C ve $(l:core_mechanics/climate#rainfall)yağışın$() 50 ile 300mm arasında olduğu ovalarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tiger",
       "scale": 0.55,
       "name": "Kaplan",
-      "text": "Kaplan, ortalama $(l:the_world/climate#temperature)sıcaklığın$() en az 13°C ve $(l:the_world/climate#rainfall)yağışın$() 100mm üzerinde olduğu ormanlarda ortaya çıkar."
+      "text": "Kaplan, ortalama $(l:core_mechanics/climate#temperature)sıcaklığın$() en az 13°C ve $(l:core_mechanics/climate#rainfall)yağışın$() 100mm üzerinde olduğu ormanlarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "Kılıç Dişli Kaplan",
-      "text": "Kılıç dişli kaplan, 0°C üzerindeki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 250mm üzerindeki herhangi bir $(l:the_world/climate#rainfall)yağışta$() ortaya çıkar."
+      "text": "Kılıç dişli kaplan, 0°C üzerindeki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 250mm üzerindeki herhangi bir $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "Kurt, 22°C altındaki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 150 ile 420mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ortaya çıkar. Sürüler halinde avlanırlar. Bir kurdu yeterince kez beslemek, onu evcilleştirerek bir $(l:mechanics/pets)Köpeğe$() dönüştürür."
+      "text": "Kurt, 22°C altındaki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 150 ile 420mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkar. Sürüler halinde avlanırlar. Bir kurdu yeterince kez beslemek, onu evcilleştirerek bir $(l:food/pets)Köpeğe$() dönüştürür."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "Dehşet kurdu, donma noktasının altındaki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 150 ile 420mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ortaya çıkar. Sürüler halinde avlanırlar. Normal kurtlardan daha büyüktürler ve evcilleştirilemezler."
+      "text": "Dehşet kurdu, donma noktasının altındaki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 150 ile 420mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkar. Sürüler halinde avlanırlar. Normal kurtlardan daha büyüktürler ve evcilleştirilemezler."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:hyena",
       "scale": 0.7,
-      "text": "Sırtlan, 15°C'den daha sıcak herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 80 ile 380mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ortaya çıkar. Sürüler halinde avlanırlar. Evcilleştirilemezler."
+      "text": "Sırtlan, 15°C'den daha sıcak herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 80 ile 380mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkar. Sürüler halinde avlanırlar. Evcilleştirilemezler."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crocodile",
       "scale": 0.7,
       "name": "Timsah",
-      "text": "Timsah; nehir, göl ve bataklık yakınlarında, 15°C'den daha sıcak herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve herhangi bir $(l:the_world/climate#rainfall)yağış$() miktarında ortaya çıkar. Gececildirler ve en tehlikeli oldukları yer sudur."
+      "text": "Timsah; nehir, göl ve bataklık yakınlarında, 15°C'den daha sıcak herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve herhangi bir $(l:core_mechanics/climate#rainfall)yağış$() miktarında ortaya çıkar. Gececildirler ve en tehlikeli oldukları yer sudur."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "Oselot küçük hayvanlara saldırır. 15 ile 30°C arasındaki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 300 ile 500mm arasındaki $(l:the_world/climate#rainfall)yağışta$(), ormanlarda ortaya çıkar. Bir oselotu yeterince kez beslemek, onu evcilleştirerek bir $(l:mechanics/pets)Kediye$() dönüştürür. Oselotlar çiğ balık yiyebilir."
+      "text": "Oselot küçük hayvanlara saldırır. 15 ile 30°C arasındaki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 300 ile 500mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$(), ormanlarda ortaya çıkar. Bir oselotu yeterince kez beslemek, onu evcilleştirerek bir $(l:food/pets)Kediye$() dönüştürür. Oselotlar çiğ balık yiyebilir."
     },
     {
       "type": "patchouli:text",
@@ -116,26 +116,26 @@
       "entity": "tfc:boar",
       "scale": 0.8,
       "name": "Yaban Domuzu",
-      "text": "Yaban domuzu, 25°C'nin altında ve -5°C'nin üzerinde bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 130 ile 400mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ortaya çıkar."
+      "text": "Yaban domuzu, 25°C'nin altında ve -5°C'nin üzerinde bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 130 ile 400mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "Geyik, 10°C'nin altında ve -15°C'nin üzerinde bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 150 ile 300mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
+      "text": "Geyik, 10°C'nin altında ve -15°C'nin üzerinde bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 150 ile 300mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wildebeest",
       "scale": 0.7,
-      "text": "Antilop, 13°C üzerindeki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 90 ile 380mm arasındaki $(l:the_world/climate#rainfall)yağışta$() açık ovalarda ortaya çıkar."
+      "text": "Antilop, 13°C üzerindeki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 90 ile 380mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() açık ovalarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bison",
       "scale": 0.6,
       "name": "Bizon",
-      "text": "Bizon, -10°C'nin üzerinde ve 15°C'nin altında herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 160 ile 420mm arasındaki $(l:the_world/climate#rainfall)yağışta$() açık ovalarda ortaya çıkar."
+      "text": "Bizon, -10°C'nin üzerinde ve 15°C'nin altında herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 160 ile 420mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() açık ovalarda ortaya çıkar."
     },
     {
       "type": "patchouli:empty"
@@ -151,58 +151,68 @@
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "Tilki",
-      "text": "Tilki, çalılardaki meyveleri yemeyi sever. 25°C'nin altındaki $(l:the_world/climate#temperature)sıcaklığa$() ve 130 ile 400mm arasındaki $(l:the_world/climate#rainfall)yağışa$() sahip ormanlarda bulunabilir."
+      "text": "Tilki, çalılardaki meyveleri yemeyi sever. 25°C'nin altındaki $(l:core_mechanics/climate#temperature)sıcaklığa$() ve 130 ile 400mm arasındaki $(l:core_mechanics/climate#rainfall)yağışa$() sahip ormanlarda bulunabilir."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "Geyik, 25°C'nin altında ve -15°C'nin üzerinde herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 130 ile 400mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
+      "text": "Geyik, 25°C'nin altında ve -15°C'nin üzerinde herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 130 ile 400mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:caribou",
       "scale": 0.5,
       "name": "Ren Geyiği",
-      "text": "Ren geyiği, -9°C'nin altındaki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 110 ile 500mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ortaya çıkar."
+      "text": "Ren geyiği, -9°C'nin altındaki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 110 ile 500mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "Ceylan, 12°C üzerindeki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 90 ile 380mm arasındaki $(l:the_world/climate#rainfall)yağışta$() açık ovalarda ortaya çıkar."
+      "text": "Ceylan, 12°C üzerindeki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 90 ile 380mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() açık ovalarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bongo",
       "scale": 0.7,
       "name": "Bongo",
-      "text": "Bongo, 15°C'nin üzerindeki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 230 ile 500mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
+      "text": "Bongo, 15°C'nin üzerindeki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 230 ile 500mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "Orman tavuğu, 13°C'nin altında ve -12°C'nin üzerinde herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 150 ile 400mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ortaya çıkar."
+      "text": "Orman tavuğu, 13°C'nin altında ve -12°C'nin üzerinde herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 150 ile 400mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "Sülün, 17°C'nin altında ve -5°C'nin üzerinde herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 100 ile 300mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
+      "text": "Sülün, 17°C'nin altında ve -5°C'nin üzerinde herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 100 ile 300mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "Hindi, 17°C'nin altında ve 0°C'nin üzerinde herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 250 ile 450mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
+      "text": "Hindi, 17°C'nin altında ve 0°C'nin üzerinde herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 250 ile 450mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
       "scale": 0.8,
       "name": "Tavus kuşu",
-      "text": "Tavus kuşu, 14°C üzerindeki herhangi bir $(l:the_world/climate#temperature)sıcaklıkta$() ve 190 ile 500mm arasındaki $(l:the_world/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
+      "text": "Tavus kuşu, 14°C üzerindeki herhangi bir $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve 190 ile 500mm arasındaki $(l:core_mechanics/climate#rainfall)yağışta$() ormanlarda ortaya çıkar."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:armadillo",
+      "scale": 0.7,
+      "name": "Armadillo",
+      "text": "The armadillo sheds scutes every 30 hours. It can be found at any $(l:core_mechanics/climate#temperature)temperature$() above 12°C, and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 400mm."
+    },
+    {
+      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
@@ -219,28 +229,28 @@
       "entity": "tfc:penguin",
       "scale": 0.7,
       "name": "Penguen",
-      "text": "Penguen sadece en soğuk kumsallarda, buz tabakası kenarlarında ve $(l:the_world/climate#temperature)sıcaklığın$() en fazla -14°C, $(l:the_world/climate#rainfall)yağışın$() ise en az 75mm olduğu deniz buzlarında ortaya çıkar."
+      "text": "Penguen sadece en soğuk kumsallarda, buz tabakası kenarlarında ve $(l:core_mechanics/climate#temperature)sıcaklığın$() en fazla -14°C, $(l:core_mechanics/climate#rainfall)yağışın$() ise en az 75mm olduğu deniz buzlarında ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:leopard_seal",
       "scale": 0.7,
       "name": "Leopar Foku",
-      "text": "Leopar Foku, $(l:the_world/climate#temperature)sıcaklığın$() en fazla -9°C ve $(l:the_world/climate#rainfall)yağışın$() en az 105mm olduğu soğuk kumsallarda, buz tabakası kenarlarında ve deniz buzlarında ortaya çıkar."
+      "text": "Leopar Foku, $(l:core_mechanics/climate#temperature)sıcaklığın$() en fazla -9°C ve $(l:core_mechanics/climate#rainfall)yağışın$() en az 105mm olduğu soğuk kumsallarda, buz tabakası kenarlarında ve deniz buzlarında ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turtle",
       "scale": 0.7,
       "name": "Deniz Kaplumbağası",
-      "text": "Deniz kaplumbağası ılık suyu sever. En az 21°C $(l:the_world/climate#temperature)sıcaklık$() ve en az 250mm $(l:the_world/climate#rainfall)yağış$() olan yerlerde ortaya çıkar."
+      "text": "Deniz kaplumbağası ılık suyu sever. En az 21°C $(l:core_mechanics/climate#temperature)sıcaklık$() ve en az 250mm $(l:core_mechanics/climate#rainfall)yağış$() olan yerlerde ortaya çıkar."
     },
     {
       "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Balıklar$(), suda yüzen küçük yaratıklardır. Çoğu $(l:mechanics/fishing)avlanabilir$(). Bazıları okyanusları, nehirleri veya gölleri tercih eder.",
+      "text": "$(thing)Balıklar$(), suda yüzen küçük yaratıklardır. Çoğu $(l:food/fishing)avlanabilir$(). Bazıları okyanusları, nehirleri veya gölleri tercih eder.",
       "title": "Balık"
     },
     {
@@ -248,63 +258,63 @@
       "entity": "tfc:cod",
       "scale": 0.7,
       "name": "Morina Balığı",
-      "text": "Morina balıkları daha soğuk okyanusları tercih eder, $(l:the_world/climate#temperature)sıcaklık$() en fazla 18°C olmalıdır. Avlanabilirler."
+      "text": "Morina balıkları daha soğuk okyanusları tercih eder, $(l:core_mechanics/climate#temperature)sıcaklık$() en fazla 18°C olmalıdır. Avlanabilirler."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
       "name": "Balon Balığı",
-      "text": "Balon balıkları, en az 10°C $(l:the_world/climate#temperature)sıcaklığa$() sahip herhangi bir okyanusta yaşar."
+      "text": "Balon balıkları, en az 10°C $(l:core_mechanics/climate#temperature)sıcaklığa$() sahip herhangi bir okyanusta yaşar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
       "name": "Denizanası",
-      "text": "Denizanaları, en az 18°C $(l:the_world/climate#temperature)sıcaklığa$() sahip daha ılık okyanuslarda yaşar."
+      "text": "Denizanaları, en az 18°C $(l:core_mechanics/climate#temperature)sıcaklığa$() sahip daha ılık okyanuslarda yaşar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
       "name": "Tropikal Balık",
-      "text": "Tropikal balıklar, en az 18°C $(l:the_world/climate#temperature)sıcaklığa$() sahip daha ılık okyanusları tercih eder."
+      "text": "Tropikal balıklar, en az 18°C $(l:core_mechanics/climate#temperature)sıcaklığa$() sahip daha ılık okyanusları tercih eder."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
       "name": "Somon",
-      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
+      "text": "Salmon spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -8°C and at most 12°C and with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:rainbow_trout",
       "scale": 0.7,
       "name": "Rainbow Trout",
-      "text": "Rainbow Trout spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
+      "text": "Rainbow Trout spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -12°C and at most 10°C and with rainfall of at least 150 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lake_trout",
       "scale": 0.7,
       "name": "Lake Trout",
-      "text": "Lake Trout spawn in any lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
+      "text": "Lake Trout spawn in any lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -5°C and at most 15°C and with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:largemouth_bass",
       "scale": 0.7,
       "name": "Largemouth Bass",
-      "text": "Largemouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
+      "text": "Largemouth Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of at least 200 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:smallmouth_bass",
       "scale": 0.7,
       "name": "Smallmouth Bass",
-      "text": "Smallmouth Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
+      "text": "Smallmouth Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -14°C and at most 16°C and with rainfall of less than 300 mm."
     },
     {
       "type": "patchouli:entity",
@@ -325,68 +335,68 @@
       "entity": "tfc:northern_pike",
       "scale": 0.7,
       "name": "Northern Pike",
-      "text": "Northern Pike spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
+      "text": "Northern Pike spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -10°C and at most 26°C with rainfall between 150 mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peacock_bass",
       "scale": 0.7,
       "name": "Peacock Bass",
-      "text": "Peacock Bass spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
+      "text": "Peacock Bass spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 12°C and at most 25°C with rainfall between 200 mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:arctic_char",
       "scale": 0.7,
       "name": "Arctic Char",
-      "text": "Arctic Char spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
+      "text": "Arctic Char spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -20°C and at most -8°C with rainfall between 150mm and 400 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:muksun",
       "scale": 0.7,
       "name": "Muksun",
-      "text": "Muksun spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
+      "text": "Muksun spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -20°C and at most -10°C with rainfall of at least 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:burbot",
       "scale": 0.7,
       "name": "Burbot",
-      "text": "Burbot spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
+      "text": "Burbot spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least -16°C and at most -9°C with rainfall less than 350 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tilapia",
       "scale": 0.7,
       "name": "Tilapia",
-      "text": "Tilapia spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
+      "text": "Tilapia spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 10°C and at most 32°C with rainfall less than 300 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:spotted_gudgeon",
       "scale": 0.7,
       "name": "Spotted Gudgeon",
-      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
+      "text": "Spotted Gudgeon spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 6°C and at most 24°C with rainfall less than 250 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pacu",
       "scale": 0.7,
       "name": "Pacu",
-      "text": "Pacu spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
+      "text": "Pacu spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 20°C and at most 35°C with rainfall above 200 mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:red_piranha",
       "scale": 0.7,
       "name": "Red Piranha",
-      "text": "Red Piranha spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
+      "text": "Red Piranha spawn in any river or lake with a $(l:core_mechanics/climate#temperature)temperature$() of at least 22°C and at most 35°C with rainfall above 300 mm."
     },
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)Kabuklular$(), su kütlelerinin tabanında yaşayan küçük hayvanlardır. Avlanamazlar ancak yenebilen veya $(l:mechanics/flux)akı$() haline getirilebilen kabuklar düşürürler. Kabuklular, balıklar için $(l:mechanics/fishing)yem$() olabilir.",
+      "text": "$(thing)Kabuklular$(), su kütlelerinin tabanında yaşayan küçük hayvanlardır. Avlanamazlar ancak yenebilen veya $(l:metalworking/flux)akı$() haline getirilebilen kabuklar düşürürler. Kabuklular, balıklar için $(l:food/fishing)yem$() olabilir.",
       "title": "Kabuklular"
     },
     {
@@ -394,28 +404,28 @@
       "entity": "tfc:isopod",
       "scale": 0.7,
       "name": "İzopod",
-      "text": "İzopodlar, $(l:the_world/climate#temperature)sıcaklığın$() en fazla 14°C olduğu okyanusların daha derin kısımlarında ortaya çıkar."
+      "text": "İzopodlar, $(l:core_mechanics/climate#temperature)sıcaklığın$() en fazla 14°C olduğu okyanusların daha derin kısımlarında ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "Istakoz",
-      "text": "Istakozlar, $(l:the_world/climate#temperature)sıcaklığın$() en fazla 21°C olduğu herhangi bir okyanusta ortaya çıkar."
+      "text": "Istakozlar, $(l:core_mechanics/climate#temperature)sıcaklığın$() en fazla 21°C olduğu herhangi bir okyanusta ortaya çıkar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "Kerevit",
-      "text": "Kerevitler ıstakoza benzer ancak nehirlerde ve göllerde ortaya çıkarlar. En az 5°C $(l:the_world/climate#temperature)sıcaklığa$() ve en az 125mm $(l:the_world/climate#rainfall)yağışa$() ihtiyaç duyarlar."
+      "text": "Kerevitler ıstakoza benzer ancak nehirlerde ve göllerde ortaya çıkarlar. En az 5°C $(l:core_mechanics/climate#temperature)sıcaklığa$() ve en az 125mm $(l:core_mechanics/climate#rainfall)yağışa$() ihtiyaç duyarlar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
       "name": "At Nalı Yengeci",
-      "text": "At nalı yengeçleri, ılıman iklime sahip okyanuslarda, 10 ile 21°C arasındaki $(l:the_world/climate#temperature)sıcaklıkta$() ve en fazla 400mm $(l:the_world/climate#rainfall)yağışta$() ortaya çıkarlar."
+      "text": "At nalı yengeçleri, ılıman iklime sahip okyanuslarda, 10 ile 21°C arasındaki $(l:core_mechanics/climate#temperature)sıcaklıkta$() ve en fazla 400mm $(l:core_mechanics/climate#rainfall)yağışta$() ortaya çıkarlar."
     },
     {
       "type": "patchouli:text",
@@ -427,21 +437,21 @@
       "entity": "tfc:orca",
       "scale": 0.25,
       "name": "Orka",
-      "text": "Orkalar, en fazla 19°C $(l:the_world/climate#temperature)sıcaklığa$() ve en az 100mm $(l:the_world/climate#rainfall)yağışa$() sahip derin okyanuslarda yaşarlar."
+      "text": "Orkalar, en fazla 19°C $(l:core_mechanics/climate#temperature)sıcaklığa$() ve en az 100mm $(l:core_mechanics/climate#rainfall)yağışa$() sahip derin okyanuslarda yaşarlar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dolphin",
       "scale": 0.4,
       "name": "Yunus",
-      "text": "Yunuslar, en az 10°C $(l:the_world/climate#temperature)sıcaklığa$() ve en az 200mm $(l:the_world/climate#rainfall)yağışa$() sahip derin okyanuslarda yaşarlar."
+      "text": "Yunuslar, en az 10°C $(l:core_mechanics/climate#temperature)sıcaklığa$() ve en az 200mm $(l:core_mechanics/climate#rainfall)yağışa$() sahip derin okyanuslarda yaşarlar."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:manatee",
       "scale": 0.25,
       "name": "Deniz İneği",
-      "text": "Deniz inekleri, en az 20°C $(l:the_world/climate#temperature)sıcaklığa$() ve en fazla 300mm $(l:the_world/climate#rainfall)yağışa$() sahip her türlü ılık gölde yaşarlar."
+      "text": "Deniz inekleri, en az 20°C $(l:core_mechanics/climate#temperature)sıcaklığa$() ve en fazla 300mm $(l:core_mechanics/climate#rainfall)yağışa$() sahip her türlü ılık gölde yaşarlar."
     },
     {
       "type": "patchouli:text",
@@ -450,5 +460,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 6
+  "sortnum": 5
 }

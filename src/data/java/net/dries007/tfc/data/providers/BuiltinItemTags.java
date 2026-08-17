@@ -140,11 +140,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
 
         tag(FRUITS).add(Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY, Food.GOOSEBERRY, Food.RASPBERRY, Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY, Food.BANANA, Food.CHERRY, Food.GREEN_APPLE, Food.LEMON, Food.OLIVE, Food.ORANGE, Food.PEACH, Food.PLUM, Food.RED_APPLE, Food.MELON_SLICE);
         tag(VEGETABLES).add(Food.BEET, Food.CABBAGE, Food.CARROT, Food.GARLIC, Food.GREEN_BEAN, Food.GREEN_BELL_PEPPER, Food.ONION, Food.POTATO, Food.BAKED_POTATO, Food.RED_BELL_PEPPER, Food.SOYBEAN, Food.SUGARCANE, Food.SQUASH, Food.TOMATO, Food.YELLOW_BELL_PEPPER, Food.CASSAVA, Food.COOKED_CASSAVA, Food.LENTIL, Food.COOKED_LENTIL, Food.PEANUT, Food.RADISH, Food.PUMPKIN_CHUNKS);
-        tag(RAW_MEATS).add(Food.BEEF, Food.PORK, Food.CHICKEN, Food.QUAIL, Food.MUTTON, Food.BEAR, Food.HORSE_MEAT, Food.PHEASANT, Food.GROUSE, Food.TURKEY, Food.PEAFOWL, Food.VENISON, Food.BISON, Food.WOLF, Food.RABBIT, Food.FOX, Food.HYENA, Food.DUCK, Food.CHEVON, Food.GRAN_FELINE, Food.TURTLE, Food.CAMELIDAE, Food.FROG_LEGS, Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
-        tag(COOKED_MEATS).add(Food.COOKED_BEEF, Food.COOKED_PORK, Food.COOKED_CHICKEN, Food.COOKED_QUAIL, Food.COOKED_MUTTON, Food.COOKED_BEAR, Food.COOKED_HORSE_MEAT, Food.COOKED_PHEASANT, Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_GROUSE, Food.COOKED_VENISON, Food.COOKED_BISON, Food.COOKED_WOLF, Food.COOKED_RABBIT, Food.COOKED_FOX, Food.COOKED_HYENA, Food.COOKED_DUCK, Food.COOKED_CHEVON, Food.COOKED_CAMELIDAE, Food.COOKED_FROG_LEGS, Food.COOKED_GRAN_FELINE, Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
+        tag(RAW_MEATS).add(Food.BEEF, Food.PORK, Food.CHICKEN, Food.QUAIL, Food.MUTTON, Food.BEAR, Food.HORSE_MEAT, Food.PHEASANT, Food.GROUSE, Food.TURKEY, Food.PEAFOWL, Food.VENISON, Food.BISON, Food.WOLF, Food.RABBIT, Food.FOX, Food.HYENA, Food.DUCK, Food.CHEVON, Food.GRAN_FELINE, Food.TURTLE, Food.CAMELIDAE, Food.FROG_LEGS, Food.CALAMARI, Food.SHELLFISH, Food.ARMADILLO).addTag(RAW_FISH);
+        tag(COOKED_MEATS).add(Food.COOKED_BEEF, Food.COOKED_PORK, Food.COOKED_CHICKEN, Food.COOKED_QUAIL, Food.COOKED_MUTTON, Food.COOKED_BEAR, Food.COOKED_HORSE_MEAT, Food.COOKED_PHEASANT, Food.COOKED_TURKEY, Food.COOKED_PEAFOWL, Food.COOKED_GROUSE, Food.COOKED_VENISON, Food.COOKED_BISON, Food.COOKED_WOLF, Food.COOKED_RABBIT, Food.COOKED_FOX, Food.COOKED_HYENA, Food.COOKED_DUCK, Food.COOKED_CHEVON, Food.COOKED_CAMELIDAE, Food.COOKED_FROG_LEGS, Food.COOKED_GRAN_FELINE, Food.COOKED_TURTLE, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_ARMADILLO).addTag(COOKED_FISH);
         tag(MEATS).addTag(RAW_MEATS).addTag(COOKED_MEATS);
-        tag(RAW_FISH).add(Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS);
-        tag(COOKED_FISH).add(Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS);
+        tag(RAW_FISH).add(Food.COD, Food.TROPICAL_FISH, Food.CALAMARI, Food.SHELLFISH, Food.BLUEGILL, Food.CRAPPIE, Food.LAKE_TROUT, Food.LARGEMOUTH_BASS, Food.RAINBOW_TROUT, Food.SALMON, Food.SMALLMOUTH_BASS, Food.TILAPIA, Food.SPOTTED_GUDGEON, Food.RED_PIRANHA, Food.PEACOCK_BASS, Food.PACU, Food.NORTHERN_PIKE, Food.MUKSUN, Food.BURBOT, Food.ARCTIC_CHAR);
+        tag(COOKED_FISH).add(Food.COOKED_TURTLE, Food.COOKED_COD, Food.COOKED_TROPICAL_FISH, Food.COOKED_CALAMARI, Food.COOKED_SHELLFISH, Food.COOKED_BLUEGILL, Food.COOKED_CRAPPIE, Food.COOKED_LAKE_TROUT, Food.COOKED_LARGEMOUTH_BASS, Food.COOKED_RAINBOW_TROUT, Food.COOKED_SALMON, Food.COOKED_SMALLMOUTH_BASS, Food.COOKED_TILAPIA, Food.COOKED_SPOTTED_GUDGEON, Food.COOKED_RED_PIRANHA, Food.COOKED_PEACOCK_BASS, Food.COOKED_PACU, Food.COOKED_NORTHERN_PIKE, Food.COOKED_MUKSUN, Food.COOKED_BURBOT, Food.COOKED_ARCTIC_CHAR);
         tag(FISH).addTags(RAW_FISH, COOKED_FISH);
         tag(FLOUR).add(Food.BARLEY_FLOUR, Food.MAIZE_FLOUR, Food.OAT_FLOUR, Food.RYE_FLOUR, Food.RICE_FLOUR, Food.WHEAT_FLOUR);
         tag(DOUGH).add(Food.BARLEY_DOUGH, Food.MAIZE_DOUGH, Food.OAT_DOUGH, Food.RYE_DOUGH, Food.RICE_DOUGH, Food.WHEAT_DOUGH);
@@ -178,7 +178,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .addTags(FRUITS, VEGETABLES, COOKED_MEATS);
         tag(USABLE_IN_SOUP)
             .addTags(FRUITS, VEGETABLES, MEATS, COOKED_MEATS)
-            .add(Food.COOKED_RICE);
+            .add(Food.COOKED_RICE)
+            .remove(TFCItems.FOOD.get(Food.LENTIL));
         tag(USABLE_IN_SANDWICH).addTags(VEGETABLES, COOKED_MEATS, COOKED_FISH, DAIRY);
         tag(USABLE_IN_JAM_SANDWICH).addTags(COOKED_MEATS, COOKED_FISH, DAIRY, PRESERVES, JAM);
         tag(CAN_BE_SALTED).addTags(MEATS, COOKED_MEATS);
@@ -195,6 +196,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(DONKEY_FOOD).addTag(HORSE_FOOD);
         tag(MULE_FOOD).addTag(HORSE_FOOD);
         tag(HORSE_FOOD).addTags(GRAINS, FRUITS);
+        tag(CAMEL_FOOD).addTags(GRAINS, FRUITS);
         tag(CAT_FOOD).addTags(GRAINS, COOKED_MEATS, DAIRY, COOKED_FISH);
         tag(OCELOT_FOOD).addTags(RAW_FISH);
         tag(DOG_FOOD).addTag(MEATS);
@@ -382,29 +384,34 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(ItemTags.FOOT_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.BOOTS);
 
         // Vanilla Tool Tags
-        tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD);
+        tag(ItemTags.SWORDS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD)
+            .add(TFCItems.OBSIDIAN_MACUAHUITL);;
         tag(ItemTags.AXES)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE)
+            .add(TFCItems.OBSIDIAN_AXE);
         tag(ItemTags.HOES)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.HOE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE)
+            .add(TFCItems.OBSIDIAN_HOE);
         tag(ItemTags.PICKAXES).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
         tag(ItemTags.SHOVELS)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.SHOVEL)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL)
+            .add(TFCItems.OBSIDIAN_SHOVEL);;
 
         // Common `#c:tools/???`
         tag(Tags.Items.TOOLS_SHIELD).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHIELD);
         tag(Tags.Items.TOOLS_FISHING_ROD).add(TFCItems.METAL_ITEMS, Metal.ItemType.FISHING_ROD);
         tag(Tags.Items.TOOLS_SPEAR)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
+            .add(TFCItems.OBSIDIAN_JAVELIN);
         tag(Tags.Items.TOOLS_SHEAR).add(TFCItems.METAL_ITEMS, Metal.ItemType.SHEARS);
         tag(Tags.Items.TOOLS_IGNITER).add(TFCItems.FIRESTARTER);
         tag(Tags.Items.TOOLS_MACE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE);
         tag(Tags.Items.MINING_TOOL_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.PICKAXE);
-        tag(Tags.Items.RANGED_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN);
+        tag(Tags.Items.RANGED_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.JAVELIN).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN).add(TFCItems.OBSIDIAN_JAVELIN);
         tag(Tags.Items.MELEE_WEAPON_TOOLS).add(TFCItems.METAL_ITEMS, Metal.ItemType.SWORD).add(TFCItems.METAL_ITEMS, Metal.ItemType.AXE).add(TFCItems.METAL_ITEMS, Metal.ItemType.MACE).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
         // N.B.
         // melee_weapons, ranged_weapons, and mining_tool are all poorly defined, their use case is not clear,
@@ -413,13 +420,15 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         // TFC Added `#c:tools/`
         tag(TOOLS_HAMMER)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.HAMMER)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HAMMER)
+            .add(TFCItems.OBSIDIAN_HAMMER);;
         tag(TOOLS_SAW).add(TFCItems.METAL_ITEMS, Metal.ItemType.SAW);
         tag(TOOLS_SCYTHE).add(TFCItems.METAL_ITEMS, Metal.ItemType.SCYTHE);
         tag(TOOLS_PROPICK).add(TFCItems.METAL_ITEMS, Metal.ItemType.PROPICK);
         tag(TOOLS_KNIFE)
             .add(TFCItems.METAL_ITEMS, Metal.ItemType.KNIFE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE)
+            .add(TFCItems.OBSIDIAN_KNIFE);
         tag(TOOLS_CHISEL).add(TFCItems.METAL_ITEMS, Metal.ItemType.CHISEL);
         tag(TOOLS_GLASSWORKING).add(TFCItems.PADDLE, TFCItems.JACKS, TFCItems.GEM_SAW);
         tag(TOOLS_BLOWPIPE).add(TFCItems.BLOWPIPE, TFCItems.CERAMIC_BLOWPIPE);
@@ -435,7 +444,13 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.HOE)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.KNIFE)
-            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL);
+            .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.SHOVEL)
+            .add(TFCItems.OBSIDIAN_AXE)
+            .add(TFCItems.OBSIDIAN_HAMMER)
+            .add(TFCItems.OBSIDIAN_HOE)
+            .add(TFCItems.OBSIDIAN_JAVELIN)
+            .add(TFCItems.OBSIDIAN_KNIFE)
+            .add(TFCItems.OBSIDIAN_SHOVEL);
         tag(TOOLS_COPPER)
             .add(TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.TUYERE))
             .add(TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD))
@@ -690,7 +705,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(PIT_KILN_LOGS).addTags(ItemTags.LOGS_THAT_BURN);
         tag(INEFFICIENT_LOGGING_AXES).add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE);
         tag(CAN_BE_LIT_ON_TORCH).addTag(Tags.Items.RODS_WOODEN);
-        tag(ROCK_KNAPPING).addTag(STONES_LOOSE);
+        tag(ROCK_KNAPPING).addTag(STONES_LOOSE).add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.OBSIDIAN_SHARD));
         tag(CLAY_KNAPPING).add(Items.CLAY_BALL);
         tag(FIRE_CLAY_KNAPPING).add(TFCItems.FIRE_CLAY);
         tag(LEATHER_KNAPPING).add(Items.LEATHER);
@@ -787,6 +802,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(SKELETON_WEAPONS)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.AXE)
             .add(TFCItems.ROCK_TOOLS, RockCategory.ItemType.JAVELIN)
+            .add(TFCItems.OBSIDIAN_JAVELIN)
             .add(Items.BOW);
 
         for (Ore ore : Ore.values())

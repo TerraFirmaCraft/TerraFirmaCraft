@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "textures": [
-    "tfc:butterfly/moth_attacus_1",
-    "tfc:butterfly/moth_attacus_2",
-    "tfc:butterfly/moth_attacus_3",
-    "tfc:butterfly/moth_attacus_4"
+    "tfc:moth/moth_attacus_1",
+    "tfc:moth/moth_attacus_2",
+    "tfc:moth/moth_attacus_3",
+    "tfc:moth/moth_attacus_4"
   ]
 }

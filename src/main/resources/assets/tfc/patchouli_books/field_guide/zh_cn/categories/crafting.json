@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Crafting Systems",
+  "description": "An introduction to the various crafting systems added by TerraFirmaCraft.",
+  "icon": "tfc:wood/workbench/sequoia",
+  "sortnum": 5
+}

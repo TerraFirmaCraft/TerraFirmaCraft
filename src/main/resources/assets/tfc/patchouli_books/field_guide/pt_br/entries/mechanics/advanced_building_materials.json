@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:crafting/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:metalworking/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
       "title": "Plaster Decorations"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)Stone Bricks$() pode ser feito usando um $(l:mechanics/chisel)Chisel$() com algumas pedras soltas individuais. Então requer $(thing)Argamassa$() Para formar um forte bloco de construção.$(br2)Argamassa pode ser feita adicionando $(thing)Sand$() para um barril de $(l:mechanics/barrels#limewater)Limewater$().",
+      "text": "$(thing)Stone Bricks$() pode ser feito usando um $(l:metalworking/chisel)Chisel$() com algumas pedras soltas individuais. Então requer $(thing)Argamassa$() Para formar um forte bloco de construção.$(br2)Argamassa pode ser feita adicionando $(thing)Sand$() para um barril de $(l:crafting/barrels#limewater)Limewater$().",
       "title": "Tijolos e argamassa"
     },
     {

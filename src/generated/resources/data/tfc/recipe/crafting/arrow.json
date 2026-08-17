@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "tag": "c:feathers"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "X": {
+      "item": "tfc:groundcover/obsidian_shard"
+    }
+  },
+  "pattern": [
+    "X",
+    "S",
+    "F"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:arrow"
+  }
+}

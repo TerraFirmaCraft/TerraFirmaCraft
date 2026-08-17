@@ -50,7 +50,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Bu küçük cevher parçaları iki amaca hizmet edebilir: bir metal kaynağı sağlayabilirler ve daha da önemlisi, yakınlarda, muhtemelen yerin altında ve yüzeye yakın bir yerde daha büyük bir cevher damarının varlığına işaret ederler. Küçük cevherleri nerede bulduğunuzu not ettiğinizden emin olun, çünkü cevher damarlarının konumu daha sonra $(l:mechanics/prospecting)Maden Arama$() sırasında işinize yarayacaktır.$(br2)On iki küçük cevher türü ve eritilebilecekleri metaller bir sonraki sayfada listelenmiştir."
+      "text": "Bu küçük cevher parçaları iki amaca hizmet edebilir: bir metal kaynağı sağlayabilirler ve daha da önemlisi, yakınlarda, muhtemelen yerin altında ve yüzeye yakın bir yerde daha büyük bir cevher damarının varlığına işaret ederler. Küçük cevherleri nerede bulduğunuzu not ettiğinizden emin olun, çünkü cevher damarlarının konumu daha sonra $(l:metalworking/prospecting)Maden Arama$() sırasında işinize yarayacaktır.$(br2)On iki küçük cevher türü ve eritilebilecekleri metaller bir sonraki sayfada listelenmiştir."
     },
     {
       "type": "patchouli:text",
