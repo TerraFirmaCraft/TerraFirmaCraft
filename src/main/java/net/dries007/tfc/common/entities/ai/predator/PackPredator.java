@@ -46,10 +46,6 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public class PackPredator extends Predator implements Temptable
 {
-    public static PackPredator createWolf(EntityType<? extends Predator> type, Level level)
-    {
-        return new PackPredator(type, level, false, TFCSounds.TFC_WOLF, true, true);
-    }
     public static PackPredator createHyena(EntityType<? extends Predator> type, Level level)
     {
         return new PackPredator(type, level, false, TFCSounds.HYENA, false, false);

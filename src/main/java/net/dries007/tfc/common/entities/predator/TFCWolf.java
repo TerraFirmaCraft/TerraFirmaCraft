@@ -46,7 +46,7 @@ public class TFCWolf extends PackPredator implements VariantHolder<Holder<WolfVa
 
     public TFCWolf(EntityType<? extends PackPredator> type, Level level)
     {
-        super(type, level, false, TFCSounds.TFC_WOLF, true);
+        super(type, level, false, TFCSounds.TFC_WOLF, true, true);
     }
 
     @Override
