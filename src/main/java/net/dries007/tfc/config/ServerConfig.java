@@ -16,6 +16,7 @@ import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.calendar.Month;
 
 /**
  * Server Config
@@ -154,6 +155,8 @@ public class ServerConfig
     // Blocks - Crops
     public final ForgeConfigSpec.DoubleValue cropGrowthModifier;
     public final ForgeConfigSpec.DoubleValue cropExpiryModifier;
+    public final ForgeConfigSpec.EnumValue<Month> wildCropMaturityStartMonth;
+    public final ForgeConfigSpec.EnumValue<Month> wildCropMaturityEndMonth;
     // Blocks - Dispenser
     public final ForgeConfigSpec.BooleanValue dispenserEnableLighting;
     // Blocks - Powder Bowl
@@ -502,6 +505,13 @@ public class ServerConfig
 
         cropGrowthModifier = builder.comment("Modifier applied to the growth time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").define("cropGrowthModifier", 1, 0.001, 1000);
         cropExpiryModifier = builder.comment("Modifier applied to the expiry time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer expiry times. For example, a value of 2 doubles the expiry time.").define("cropExpiryModifier", 1, 0.001, 1000);
+        wildCropMaturityStartMonth = builder.comment(
+            "The first month in which wild crops are mature, inclusive.",
+            "If this month is later than the end month, the maturity period wraps across the end of the year."
+        ).define("wildCropMaturityStartMonth", Month.JUNE);
+        wildCropMaturityEndMonth = builder.comment(
+            "The last month in which wild crops are mature, inclusive."
+        ).define("wildCropMaturityEndMonth", Month.OCTOBER);
 
         builder.swap("dispenser");
 

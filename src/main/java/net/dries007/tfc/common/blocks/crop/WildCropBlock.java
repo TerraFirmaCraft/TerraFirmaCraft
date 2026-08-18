@@ -26,6 +26,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.ISpecialPile;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.TFCBushBlock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
@@ -34,8 +35,15 @@ public class WildCropBlock extends TFCBushBlock implements ISpecialPile
 {
     public static boolean isMature(LevelAccessor level)
     {
-        final int month = Calendars.get(level).getCalendarMonthOfYear().ordinal();
-        return month >= Month.JUNE.ordinal() && month <= Month.OCTOBER.ordinal();
+        final Month month = Calendars.get(level).getCalendarMonthOfYear();
+        final Month startMonth = TFCConfig.SERVER.wildCropMaturityStartMonth.get();
+        final Month endMonth = TFCConfig.SERVER.wildCropMaturityEndMonth.get();
+
+        if (startMonth.ordinal() <= endMonth.ordinal())
+        {
+            return month.ordinal() >= startMonth.ordinal() && month.ordinal() <= endMonth.ordinal();
+        }
+        return month.ordinal() >= startMonth.ordinal() || month.ordinal() <= endMonth.ordinal();
     }
 
     public static final BooleanProperty MATURE = TFCBlockStateProperties.MATURE;
