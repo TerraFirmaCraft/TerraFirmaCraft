@@ -17,7 +17,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.dries007.tfc.compat.jei.category.BaseRecipeCategory;
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
@@ -30,8 +30,11 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.LampFuel;
 
 public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe {
-    private static final EmiTexture LAMP_BACKGROUND = new EmiTexture(BaseRecipeCategory.ICONS, 0, 48, 20, 20);
-    private static final EmiTexture LAMP_FOREGROUND = new EmiTexture(BaseRecipeCategory.ICONS, 20, 48, 20, 20);
+
+    private static final ResourceLocation ICONS = Helpers.identifier("textures/gui/jei/icons.png");
+
+    private static final EmiTexture LAMP_BACKGROUND = new EmiTexture(ICONS, 0, 48, 20, 20);
+    private static final EmiTexture LAMP_FOREGROUND = new EmiTexture(ICONS, 20, 48, 20, 20);
 
     private final LampFuel fuel;
     private final ResourceLocation id;

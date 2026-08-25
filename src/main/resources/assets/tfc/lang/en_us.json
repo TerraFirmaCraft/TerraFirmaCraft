@@ -1140,7 +1140,7 @@
   "tfc.jei.lamp_fuel": "Lamp Fuel",
   "tfc.jei.lamp_fuel.burn_rate": "%s Sec/ mB",
   "tfc.jei.lamp_fuel.days": "%s Days/ %s mB (Full Lamp)",
-  "emi.category.lamp_fuel": "Lamp Fuel",
+  "emi.category.tfc.lamp_fuel": "Lamp Fuel",
   "emi.category.tfc.heating": "Heating",
   "emi.category.tfc.quern": "Grinding",
   "emi.category.tfc.scraping": "Scraping",
