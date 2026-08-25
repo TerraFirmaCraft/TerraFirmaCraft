@@ -40,7 +40,12 @@ public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
         inputSlot.setBackground(slot, -1, -1);
         outputSlot.addItemStack(recipe.getResultItem(registryAccess()));
         outputSlot.setBackground(slot, -1, -1);
-        outputSlot.addRichTooltipCallback((view, tooltip) -> tooltip.add(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getMinTier()))));
+        outputSlot.addRichTooltipCallback((view, tooltip) -> {
+            if (recipe.getMinTier() > 0)
+            {
+                tooltip.add(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getMinTier())));
+            }
+        });
     }
 
     @Override
