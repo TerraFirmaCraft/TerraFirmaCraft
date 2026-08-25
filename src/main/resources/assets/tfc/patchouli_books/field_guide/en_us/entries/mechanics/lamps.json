@@ -57,22 +57,37 @@
       "text": "Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:food/pot)Pot$() of water. Tallow burns for 2 in-game hours per unit. It can be used to make $(l:core_mechanics/lighting#candles)Candles$()"
     },
     {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
-            "X"
+      "type": "tfc:multimultiblock",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
           ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:metal/lamp/blue_steel[lit=true]"
+          "mapping": {
+            "X": "tfc:metal/lamp/blue_steel[lit=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:metal/lamp/red_steel[lit=true]"
+          }
         }
-      },
+      ],
       "name": "Lava Lamps",
-      "text": "Lava will keep burning forever, but can only be held in a $(l:metalworking/steel#blue_steel)Blue Steel$() lamp.",
+      "text": "Lava will keep burning forever, but can only be held in a $(l:metalworking/steel#blue_steel)Blue Steel$() or $(l:metalworking/steel#red_steel)Red Steel$() lamp.",
       "enable_visualize": false
     },
     {
