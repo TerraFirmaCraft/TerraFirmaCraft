@@ -73,6 +73,7 @@ import net.dries007.tfc.compat.emi.recipe.EmiInstantBarrelRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiInstantFluidBarrelRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiJamPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiKnappingRecipe;
+import net.dries007.tfc.compat.emi.recipe.EmiLampFuelRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiLoomRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiQuernRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSealedBarrelRecipe;
@@ -83,6 +84,7 @@ import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.KnappingType;
+import net.dries007.tfc.util.data.LampFuel;
 
 @EmiEntrypoint
 public final class EmiIntegration implements EmiPlugin
@@ -103,6 +105,7 @@ public final class EmiIntegration implements EmiPlugin
     public static final EmiRecipeCategory QUERN = createCategory("quern", TFCBlocks.QUERN);
     public static final EmiRecipeCategory SCRAPING = createCategory("scraping", TFCItems.METAL_ITEMS.get(Metal.BLACK_BRONZE).get(Metal.ItemType.KNIFE));
     public static final EmiRecipeCategory SEWING = createCategory("sewing", TFCItems.BONE_NEEDLE);
+    public static final EmiRecipeCategory LAMP_FUEL = createCategory("lamp_fuel", TFCBlocks.METALS.get(Metal.BLUE_STEEL).get(Metal.BlockType.LAMP));
 
     public static final HashMap<KnappingType, EmiRecipeCategory> KNAPPING = new HashMap<>();
 
@@ -180,6 +183,7 @@ public final class EmiIntegration implements EmiPlugin
         registry.addWorkstation(QUERN, EmiStack.of(TFCBlocks.QUERN));
         registry.addWorkstation(QUERN, EmiStack.of(TFCItems.HANDSTONE));
         registry.addWorkstation(POT, EmiStack.of(TFCBlocks.POT));
+        registry.addWorkstation(LAMP_FUEL, EmiIngredient.of(TFCBlocks.METALS.values().stream().map(map -> map.get(Metal.BlockType.LAMP)).filter(java.util.Objects::nonNull).map(EmiStack::of).toList()));
 
         for (var knap : KNAPPING.entrySet())
         {
@@ -232,6 +236,13 @@ public final class EmiIntegration implements EmiPlugin
             KnappingType type = recipe.knappingType().get();
             EmiRecipeCategory category = KNAPPING.get(type);
             registry.addRecipe(new EmiKnappingRecipe(category, entry.id(), recipe));
+        }
+
+        for (var entry : LampFuel.MANAGER.getElements().entrySet())
+        {
+            ResourceLocation id = entry.getKey();
+            LampFuel fuel = entry.getValue();
+            registry.addRecipe(new EmiLampFuelRecipe(EmiHelpers.syntheticId("lamp_fuel/" + id.getNamespace() + "/" + id.getPath()), fuel));
         }
 
         for (RecipeHolder<ScrapingRecipe> entry : recipes(registry.getRecipeManager(), TFCRecipeTypes.SCRAPING))

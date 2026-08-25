@@ -92,6 +92,7 @@ import net.dries007.tfc.compat.jei.category.InstantBarrelRecipeCategory;
 import net.dries007.tfc.compat.jei.category.InstantFluidBarrelRecipeCategory;
 import net.dries007.tfc.compat.jei.category.JamPotRecipeCategory;
 import net.dries007.tfc.compat.jei.category.KnappingRecipeCategory;
+import net.dries007.tfc.compat.jei.category.LampFuelRecipeCategory;
 import net.dries007.tfc.compat.jei.category.LoomRecipeCategory;
 import net.dries007.tfc.compat.jei.category.QuernRecipeCategory;
 import net.dries007.tfc.compat.jei.category.ScrapingRecipeCategory;
@@ -107,7 +108,9 @@ import net.dries007.tfc.compat.jei.transfer.FluidIgnoringRecipeTransferHandler;
 import net.dries007.tfc.compat.jei.transfer.PotTransferInfo;
 import net.dries007.tfc.compat.jei.transfer.WeldingRecipeTransferInfo;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.KnappingType;
+import net.dries007.tfc.util.data.LampFuel;
 
 @JeiPlugin
 public final class JEIIntegration implements IModPlugin
@@ -134,6 +137,8 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<RecipeHolder<GlassworkingRecipe>> GLASSWORKING = type("glassworking", GlassworkingRecipe.class);
     public static final RecipeType<RecipeHolder<BlastFurnaceRecipe>> BLAST_FURNACE = type("blast_furnace", BlastFurnaceRecipe.class);
     public static final RecipeType<RecipeHolder<SewingRecipe>> SEWING = type("sewing", SewingRecipe.class);
+
+    public static final RecipeType<LampFuel> LAMP_FUEL = RecipeType.create(TerraFirmaCraft.MOD_ID, "lamp_fuel", LampFuel.class);
 
     private static final Map<KnappingType, RecipeType<RecipeHolder<KnappingRecipe>>> KNAPPING_TYPES = new HashMap<>();
 
@@ -201,7 +206,8 @@ public final class JEIIntegration implements IModPlugin
             new ChiselRecipeCategory(CHISEL, gui),
             new GlassworkingRecipeCategory(GLASSWORKING, gui),
             new BlastFurnaceRecipeCategory(BLAST_FURNACE, gui),
-            new SewingRecipeCategory(SEWING, gui)
+            new SewingRecipeCategory(SEWING, gui),
+            new LampFuelRecipeCategory(LAMP_FUEL, gui)
         );
 
         for (var entry : KnappingType.MANAGER.getElements().entrySet())
@@ -232,6 +238,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(GLASSWORKING, recipes(TFCRecipeTypes.GLASSWORKING));
         registry.addRecipes(BLAST_FURNACE, recipes(TFCRecipeTypes.BLAST_FURNACE));
         registry.addRecipes(SEWING, recipes(TFCRecipeTypes.SEWING));
+        registry.addRecipes(LAMP_FUEL, LampFuel.MANAGER.getValues().stream().toList());
 
         KNAPPING_TYPES.forEach((knappingType, recipeType) -> registry.addRecipes(recipeType, recipes(TFCRecipeTypes.KNAPPING, r -> r.knappingType().get().equals(knappingType))));
     }
@@ -274,6 +281,15 @@ public final class JEIIntegration implements IModPlugin
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, SEALED_BARREL);
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, INSTANT_BARREL);
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, INSTANT_FLUID_BARREL);
+
+        for (var metalEntry : TFCBlocks.METALS.values())
+        {
+            var lamp = metalEntry.get(Metal.BlockType.LAMP);
+            if (lamp != null)
+            {
+                registry.addRecipeCatalyst(new ItemStack(lamp.get()), LAMP_FUEL);
+            }
+        }
 
         for (var entry : KnappingType.MANAGER.getElements().entrySet())
         {
