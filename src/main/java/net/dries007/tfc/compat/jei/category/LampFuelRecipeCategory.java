@@ -28,12 +28,14 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.LampFuel;
 
-public class LampFuelRecipeCategory extends AbstractRecipeCategory<LampFuel> {
+public class LampFuelRecipeCategory extends AbstractRecipeCategory<LampFuel>
+{
     private final IDrawableStatic slot;
     private final IDrawableStatic lampBg;
     private final IDrawableStatic lampFg;
 
-    public LampFuelRecipeCategory(RecipeType<LampFuel> type, IGuiHelper helper) {
+    public LampFuelRecipeCategory(RecipeType<LampFuel> type, IGuiHelper helper)
+    {
         super(type, Component.translatable("tfc.jei.lamp_fuel"), helper.createDrawableIngredient(JEIIntegration.ITEM_STACK, new ItemStack(TFCBlocks.METALS.get(Metal.BLUE_STEEL).get(Metal.BlockType.LAMP).get())), 140, 38);
         this.slot = helper.getSlotDrawable();
         this.lampBg = helper.createDrawable(BaseRecipeCategory.ICONS, 0, 48, 20, 20);
@@ -41,7 +43,8 @@ public class LampFuelRecipeCategory extends AbstractRecipeCategory<LampFuel> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, LampFuel recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, LampFuel recipe, IFocusGroup focuses)
+    {
         builder.addSlot(RecipeIngredientRole.INPUT, 3, 11)
             .addIngredients(JEIIntegration.FLUID_STACK, Arrays.asList(recipe.fluid().getStacks()))
             .setBackground(slot, -1, -1);
@@ -52,18 +55,23 @@ public class LampFuelRecipeCategory extends AbstractRecipeCategory<LampFuel> {
     }
 
     @Override
-    public void draw(LampFuel recipe, IRecipeSlotsView recipeSlots, GuiGraphics graphics, double mouseX, double mouseY) {
+    public void draw(LampFuel recipe, IRecipeSlotsView recipeSlots, GuiGraphics graphics, double mouseX, double mouseY)
+    {
 
         lampBg.draw(graphics, 22, 11);
-        if (recipe.burnRate() <= 0) {
+        if (recipe.burnRate() <= 0)
+        {
             // Negative rate shows the foreground image permanently.
             lampFg.draw(graphics, 22, 11);
-        } else {
+        }
+        else
+        {
             // Animated Foreground Lamp.
             long time = System.currentTimeMillis() % (recipe.burnRate() * 5L);
             int remainingHeight = 20 - (int) (20 * (time / (float) (recipe.burnRate() * 5)));
 
-            if (remainingHeight > 0) {
+            if (remainingHeight > 0)
+            {
                 int burnOffset = 20 - remainingHeight;
 
                 graphics.blit(
@@ -85,7 +93,8 @@ public class LampFuelRecipeCategory extends AbstractRecipeCategory<LampFuel> {
     }
 
     @Override
-    public void getTooltip(ITooltipBuilder tooltip, LampFuel recipe, IRecipeSlotsView recipeSlots, double mouseX, double mouseY) {
+    public void getTooltip(ITooltipBuilder tooltip, LampFuel recipe, IRecipeSlotsView recipeSlots, double mouseX, double mouseY)
+    {
         int lampCapacity = TFCConfig.SERVER.lampCapacity.get();
         int daysPerLamp = recipe.burnRate() * lampCapacity / 24000;
         Object burnDays = daysPerLamp <= 0 ? "∞" : daysPerLamp;
@@ -93,7 +102,8 @@ public class LampFuelRecipeCategory extends AbstractRecipeCategory<LampFuel> {
         Font font = Minecraft.getInstance().font;
         Component text = Component.translatable("tfc.jei.lamp_fuel.burn_rate", recipe.burnRate() / 20 <= 0 ? "∞" : recipe.burnRate() / 20);
 
-        if (mouseX >= 65 && mouseX < 65 + font.width(text) && mouseY >= 15 && mouseY < 15 + font.lineHeight) {
+        if (mouseX >= 65 && mouseX < 65 + font.width(text) && mouseY >= 15 && mouseY < 15 + font.lineHeight)
+        {
             tooltip.add(Component.translatable("tfc.jei.lamp_fuel.days", burnDays, lampCapacity));
         }
     }

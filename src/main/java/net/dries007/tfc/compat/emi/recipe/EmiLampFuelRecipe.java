@@ -17,7 +17,9 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+
 import net.dries007.tfc.util.Helpers;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
@@ -29,7 +31,8 @@ import net.dries007.tfc.compat.emi.EmiIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.data.LampFuel;
 
-public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe {
+public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe
+{
 
     private static final ResourceLocation ICONS = Helpers.identifier("textures/gui/jei/icons.png");
 
@@ -44,7 +47,8 @@ public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe {
     private static final int WIDTH = 140;
     private static final int HEIGHT = 30;
 
-    public EmiLampFuelRecipe(ResourceLocation id, LampFuel fuel) {
+    public EmiLampFuelRecipe(ResourceLocation id, LampFuel fuel)
+    {
         this.fuel = fuel;
         this.id = id;
         this.fluidInput = EmiIngredient.of(Arrays.stream(fuel.fluid().getStacks()).map(s -> EmiStack.of(s.getFluid())).toList());
@@ -52,37 +56,44 @@ public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe {
     }
 
     @Override
-    public EmiRecipeCategory getCategory() {
+    public EmiRecipeCategory getCategory()
+    {
         return EmiIntegration.LAMP_FUEL;
     }
 
     @Override
-    public @Nullable ResourceLocation getId() {
+    public @Nullable ResourceLocation getId()
+    {
         return id;
     }
 
     @Override
-    public List<EmiIngredient> getInputs() {
+    public List<EmiIngredient> getInputs()
+    {
         return List.of(fluidInput, lampInput);
     }
 
     @Override
-    public List<EmiStack> getOutputs() {
+    public List<EmiStack> getOutputs()
+    {
         return List.of();
     }
 
     @Override
-    public int getDisplayWidth() {
+    public int getDisplayWidth()
+    {
         return WIDTH;
     }
 
     @Override
-    public int getDisplayHeight() {
+    public int getDisplayHeight()
+    {
         return HEIGHT;
     }
 
     @Override
-    public void addWidgets(WidgetHolder widgets) {
+    public void addWidgets(WidgetHolder widgets)
+    {
         int x = 2;
         int y = 5;
 
@@ -91,10 +102,13 @@ public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe {
 
         widgets.addTexture(LAMP_BACKGROUND, x, y);
 
-        if (fuel.burnRate() <= 0) {
+        if (fuel.burnRate() <= 0)
+        {
             // Negative rate shows the foreground image permanently.
             widgets.addTexture(LAMP_FOREGROUND, x, y);
-        } else {
+        }
+        else
+        {
             // Animated Foreground Lamp.
             widgets.addAnimatedTexture(LAMP_FOREGROUND, x, y, fuel.burnRate() * 5, false, true, true);
         }
@@ -110,7 +124,8 @@ public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe {
         Object burnTime = secondsPerMb <= 0 ? "∞" : secondsPerMb;
         Object burnDays = daysPerLamp <= 0 ? "∞" : daysPerLamp;
 
-        widgets.add(new TextWidget(Component.translatable("tfc.jei.lamp_fuel.burn_rate", burnTime).getVisualOrderText(), x, y * 2, ChatFormatting.WHITE.getColor(), true) {
+        widgets.add(new TextWidget(Component.translatable("tfc.jei.lamp_fuel.burn_rate", burnTime).getVisualOrderText(), x, y * 2, ChatFormatting.WHITE.getColor(), true)
+        {
             @Override
             public List<ClientTooltipComponent> getTooltip(int mouseX, int mouseY)
             {
@@ -120,8 +135,10 @@ public class EmiLampFuelRecipe implements EmiRecipe, ComparableRecipe {
     }
 
     @Override
-    public int compareTo(EmiRecipe other) {
-        if (other instanceof EmiLampFuelRecipe otherFuel) {
+    public int compareTo(EmiRecipe other)
+    {
+        if (other instanceof EmiLampFuelRecipe otherFuel)
+        {
             return fuel.burnRate() - otherFuel.fuel.burnRate();
         }
         return id.compareTo(Objects.requireNonNull(other.getId()));
