@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
 import net.dries007.tfc.common.component.EggComponent;
 import net.dries007.tfc.common.component.TFCComponents;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.container.NestBoxContainer;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.misc.Seat;
@@ -31,6 +34,9 @@ import net.dries007.tfc.util.Helpers;
 public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
 {
     public static final int SLOTS = 4;
+    private static final String INCUBATING_EGGS = "incubatingEggs";
+
+    private int incubatingEggs;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, NestBoxBlockEntity nest)
     {
@@ -76,7 +82,7 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
             {
                 final ItemStack stack = nest.inventory.getStackInSlot(slot);
                 final @Nullable EggComponent egg = stack.get(TFCComponents.EGG);
-                if (egg != null && egg.canHatch())
+                if (nest.isIncubating(slot) && egg != null && egg.canHatch())
                 {
                     egg.hatch(level).ifPresent(entity -> {
                         entity.moveTo(pos, 0f, 0f);
@@ -113,8 +119,54 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     @Override
     public void setAndUpdateSlots(int slot)
     {
+        final ItemStack stack = inventory.getStackInSlot(slot);
+        final @Nullable EggComponent egg = stack.get(TFCComponents.EGG);
+        setIncubating(slot, egg != null && egg.fertilized() && !FoodCapability.isRotten(stack));
         super.setAndUpdateSlots(slot);
         markForSync();
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider)
+    {
+        super.loadAdditional(nbt, provider);
+        if (nbt.contains(INCUBATING_EGGS, CompoundTag.TAG_ANY_NUMERIC))
+        {
+            incubatingEggs = nbt.getInt(INCUBATING_EGGS);
+        }
+        else
+        {
+            incubatingEggs = 0;
+            for (int slot = 0; slot < inventory.getSlots(); slot++)
+            {
+                final @Nullable EggComponent egg = inventory.getStackInSlot(slot).get(TFCComponents.EGG);
+                setIncubating(slot, egg != null && egg.fertilized());
+            }
+        }
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider)
+    {
+        super.saveAdditional(nbt, provider);
+        nbt.putInt(INCUBATING_EGGS, incubatingEggs);
+    }
+
+    private boolean isIncubating(int slot)
+    {
+        return (incubatingEggs & 1 << slot) != 0;
+    }
+
+    private void setIncubating(int slot, boolean incubating)
+    {
+        if (incubating)
+        {
+            incubatingEggs |= 1 << slot;
+        }
+        else
+        {
+            incubatingEggs &= ~(1 << slot);
+        }
     }
 
     @Nullable
