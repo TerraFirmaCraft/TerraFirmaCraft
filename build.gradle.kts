@@ -157,6 +157,9 @@ dependencies {
     // ModernFix - useful at runtime for significant memory savings in TFC in dev (see i.e. wall block shape caches)
     runtimeOnly(group = "curse.maven", name = "modernfix-790626", version = "6766126")
 
+    // PolyTone, for fixing incompatibility
+    runtimeOnly(group = "curse.maven", name = "polytone-958094", version = "8749944")
+
     // Sodium - useful for testing graphics behavior
 //    runtimeOnly(group = "curse.maven", name = "sodium-394468", version = "6382651")
 

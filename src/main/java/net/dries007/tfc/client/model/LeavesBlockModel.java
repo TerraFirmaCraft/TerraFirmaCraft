@@ -252,11 +252,14 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> atlas, ModelState modelState, ItemOverrides overrides)
     {
-        denseLeavesBakedModel = denseLeaves.bake(baker, atlas, modelState);
-        sparseLeavesBakedModel = sparseLeaves.bake(baker, atlas, modelState);
-        bareBakedModel = bare.bake(baker, atlas, modelState);
-        bloomingBakedModel = blooming.bake(baker, atlas, modelState);
-        return this;
+        LeavesBlockModel modelInstance = new LeavesBlockModel(denseLeaves, sparseLeaves, bare, null, null, blooming);
+
+        modelInstance.denseLeavesBakedModel = denseLeaves.bake(baker, atlas, modelState);
+        modelInstance.sparseLeavesBakedModel = sparseLeaves.bake(baker, atlas, modelState);
+        modelInstance.bareBakedModel = bare.bake(baker, atlas, modelState);
+        modelInstance.bloomingBakedModel = blooming.bake(baker, atlas, modelState);
+
+        return modelInstance;
     }
 
     @Override
