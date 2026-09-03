@@ -10,18 +10,18 @@
 	{
       "apply": [
           {
-			"model": "tfc:block/plant/white_water_lily_dynamic_east"
+			"model": "tfc:block/plant/white_water_lily_dynamic"
           },
 		  {
-			"model": "tfc:block/plant/white_water_lily_dynamic_south",
+			"model": "tfc:block/plant/white_water_lily_dynamic",
 			"y": 90
 		  },
 		  {
-			"model": "tfc:block/plant/white_water_lily_dynamic_west",
+			"model": "tfc:block/plant/white_water_lily_dynamic",
 			"y": 180
 		  },
 		  {
-			"model": "tfc:block/plant/white_water_lily_dynamic_north",
+			"model": "tfc:block/plant/white_water_lily_dynamic",
 			"y": 270
 		  }
       ]

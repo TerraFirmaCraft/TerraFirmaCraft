@@ -10,16 +10,16 @@
 	{
       "apply": [
         {
-		  "model": "tfc:block/plant/field_horsetail_dynamic_east"
+		  "model": "tfc:block/plant/field_horsetail_dynamic"
 		},
 		{
-		  "model": "tfc:block/plant/field_horsetail_dynamic_south", "y": 90
+		  "model": "tfc:block/plant/field_horsetail_dynamic", "y": 90
 		},
 		{
-		  "model": "tfc:block/plant/field_horsetail_dynamic_west", "y": 180
+		  "model": "tfc:block/plant/field_horsetail_dynamic", "y": 180
 		},
 		{
-		  "model": "tfc:block/plant/field_horsetail_dynamic_north", "y": 270
+		  "model": "tfc:block/plant/field_horsetail_dynamic", "y": 270
 		}
       ]
     }
