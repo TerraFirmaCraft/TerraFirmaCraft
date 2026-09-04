@@ -13,7 +13,7 @@
               "location": {
                 "position": {
                   "z": {
-                    "min": 20000
+                    "min": 19999
                   }
                 }
               }
@@ -33,7 +33,7 @@
               "location": {
                 "position": {
                   "z": {
-                    "max": -20000
+                    "max": -19999
                   }
                 }
               }
