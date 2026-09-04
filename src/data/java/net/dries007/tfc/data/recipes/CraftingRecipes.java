@@ -626,6 +626,18 @@ public interface CraftingRecipes extends Recipes
             recipe().to2x2(blocks.get(Wood.BlockType.LOG), blocks.get(Wood.BlockType.WOOD), 3);
             recipe().to2x2(planks, blocks.get(Wood.BlockType.WORKBENCH), 1);
         }
+        recipe()
+            .input('P', TFCBlocks.WOODS.get(Wood.PALM).get(Wood.BlockType.SLAB))
+            .pattern("P", "P")
+            .shaped(TFCBlocks.PALM_MOSAIC.get());
+        recipe()
+            .input('B', TFCBlocks.PALM_MOSAIC.get())
+            .pattern("B  ", "BB ", "BBB")
+            .shaped(TFCBlocks.PALM_MOSAIC_STAIRS, 8);
+        recipe()
+            .input('B', TFCBlocks.PALM_MOSAIC.get())
+            .pattern("BBB")
+            .shaped(TFCBlocks.PALM_MOSAIC_SLAB, 6);
 
         for (DyeColor color : DyeColor.values())
         {
