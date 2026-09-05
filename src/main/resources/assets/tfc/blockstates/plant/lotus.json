@@ -10,16 +10,16 @@
 	{
       "apply": [
         {
-		  "model": "tfc:block/plant/lotus_dynamic_east"
+		  "model": "tfc:block/plant/lotus_dynamic"
 		},
 		{
-		  "model": "tfc:block/plant/lotus_dynamic_south", "y": 90
+		  "model": "tfc:block/plant/lotus_dynamic", "y": 90
 		},
 		{
-		  "model": "tfc:block/plant/lotus_dynamic_west", "y": 180
+		  "model": "tfc:block/plant/lotus_dynamic", "y": 180
 		},
 		{
-		  "model": "tfc:block/plant/lotus_dynamic_north", "y": 270
+		  "model": "tfc:block/plant/lotus_dynamic", "y": 270
 		}
       ]
     }

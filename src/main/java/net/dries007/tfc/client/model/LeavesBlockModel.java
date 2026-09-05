@@ -61,7 +61,7 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
     @Nullable private BakedModel bareBakedModel;
     @Nullable private BakedModel bloomingBakedModel;
 
-    public LeavesBlockModel(BlockModel denseLeaves, BlockModel sparseLeaves, BlockModel bare, BlockModel snowyBare, BlockModel snowyLeaves, BlockModel blooming)
+    public LeavesBlockModel(BlockModel denseLeaves, BlockModel sparseLeaves, BlockModel bare, BlockModel blooming)
     {
         this.denseLeaves = denseLeaves;
         this.sparseLeaves = sparseLeaves;
@@ -252,11 +252,14 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> atlas, ModelState modelState, ItemOverrides overrides)
     {
-        denseLeavesBakedModel = denseLeaves.bake(baker, atlas, modelState);
-        sparseLeavesBakedModel = sparseLeaves.bake(baker, atlas, modelState);
-        bareBakedModel = bare.bake(baker, atlas, modelState);
-        bloomingBakedModel = blooming.bake(baker, atlas, modelState);
-        return this;
+        LeavesBlockModel modelInstance = new LeavesBlockModel(denseLeaves, sparseLeaves, bare, blooming);
+
+        modelInstance.denseLeavesBakedModel = denseLeaves.bake(baker, atlas, modelState);
+        modelInstance.sparseLeavesBakedModel = sparseLeaves.bake(baker, atlas, modelState);
+        modelInstance.bareBakedModel = bare.bake(baker, atlas, modelState);
+        modelInstance.bloomingBakedModel = blooming.bake(baker, atlas, modelState);
+
+        return modelInstance;
     }
 
     @Override
@@ -347,8 +350,6 @@ public class LeavesBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Le
                 context.deserialize(json.get("dense_leaves"), BlockModel.class),
                 context.deserialize(json.get("sparse_leaves"), BlockModel.class),
                 context.deserialize(json.get("bare"), BlockModel.class),
-                context.deserialize(json.get("snowy_bare"), BlockModel.class),
-                context.deserialize(json.get("snowy_leaves"), BlockModel.class),
                 context.deserialize(json.get("blooming"), BlockModel.class)
             );
         }

@@ -228,13 +228,16 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> atlas, ModelState modelState, ItemOverrides overrides)
     {
-        dormantBakedModel = dormant.bake(baker, atlas, modelState);
-        sproutingBakedModel = sprouting.bake(baker, atlas, modelState);
-        buddingBakedModel = budding.bake(baker, atlas, modelState);
-        bloomingBakedModel = blooming.bake(baker, atlas, modelState);
-        seedingBakedModel = seeding.bake(baker, atlas, modelState);
-        dyingBakedModel = dying.bake(baker, atlas, modelState);
-        return this;
+        PlantBlockModel modelInstance = new PlantBlockModel(dormant, sprouting, budding, blooming, seeding, dying);
+
+        modelInstance.dormantBakedModel = dormant.bake(baker, atlas, modelState);
+        modelInstance.sproutingBakedModel = sprouting.bake(baker, atlas, modelState);
+        modelInstance.buddingBakedModel = budding.bake(baker, atlas, modelState);
+        modelInstance.bloomingBakedModel = blooming.bake(baker, atlas, modelState);
+        modelInstance.seedingBakedModel = seeding.bake(baker, atlas, modelState);
+        modelInstance.dyingBakedModel = dying.bake(baker, atlas, modelState);
+
+        return modelInstance;
     }
 
     @Override
