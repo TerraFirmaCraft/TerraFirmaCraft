@@ -38,6 +38,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.crop.CropHelpers;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -79,13 +80,13 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, float temperature, boolean allowWiggle, String translationKey)
     {
-        final MutableComponent tooltip = Component.translatable(translationKey, String.format("%.1f", temperature));
+        final MutableComponent tooltip = Component.translatable(translationKey, TFCConfig.CLIENT.climateTooltipStyle.get().format(temperature));
 
         tooltip.append(switch (validRange.checkTemperature(temperature, allowWiggle))
             {
                 case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
-                case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", validRange.getMinTemperature(allowWiggle));
-                case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", validRange.getMaxTemperature(allowWiggle));
+                case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", TFCConfig.CLIENT.climateTooltipStyle.get().format(validRange.getMinTemperature(allowWiggle)));
+                case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", TFCConfig.CLIENT.climateTooltipStyle.get().format(validRange.getMaxTemperature(allowWiggle)));
             });
         return tooltip;
     }
