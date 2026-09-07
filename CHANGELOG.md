@@ -1,15 +1,5 @@
-### Changes
-- Made the field guide respond dynamically to config values and temperature settings.
-  - All config values mentioned in the field guide (i.e. decay modifier values) now change when the config changes.
-  - All temperatures in the field guide respond to the user's temperature config setting.
-  - Climate ranges for growth will respond if the user changes the data associated (requires reloading the world).
-  - Worldgen related values (i.e. spawning ranges) do NOT change based on data, but will change units based on the user config.
-  - The online field guide will render the default values.
-- Made wild crop maturity months configurable.
-- Fix a rare worldgen crash.
-- Added a JEI category for lamp fuels.
-- Changed how plant slowdown works to be less punishing for midair/jumping entities.
-- Clarified and fixed several errors in the field guide.
-- Fix peanut butter and cassava nutrition.
-- Fixed bell molds being in the wrong position in the creative menu.
-- Fixed rotten eggs being hatchable (though I think this isn't an issue on 1.21 because eggs laid by chickens aren't decayable)
+### Fixes
+- Gave peanut butter an item size consistent with other filled jars
+- Change client cache clearing behavior to prevent singleplayer worlds failing to get item sizes while worls are being unloaded
+- Fixed the internals of the leaves/plants dynamic models to allow blockstates to specify rotations
+- Readd missing palm mosaic recipes
