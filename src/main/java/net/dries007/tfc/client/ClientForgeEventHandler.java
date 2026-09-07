@@ -15,7 +15,9 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.resources.sounds.AmbientSoundHandler;
@@ -135,7 +137,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onEffectRender);
         bus.addListener(ClientForgeEventHandler::onRecipesUpdated);
         bus.addListener(IngameOverlays::checkGuiOverlays);
-
+        bus.addListener(ClientForgeEventHandler::onScreenOpen);
     }
 
 
@@ -402,7 +404,6 @@ public class ClientForgeEventHandler
         if (event.getPlayer() != null)
         {
             Calendars.CLIENT.resetToDefault();
-            IndirectHashCollection.clearAllCaches();
         }
     }
 
@@ -632,5 +633,13 @@ public class ClientForgeEventHandler
     public static void onRecipesUpdated(RecipesUpdatedEvent event)
     {
         Helpers.updateReloadableData(ClientHelpers.getLevelOrThrow().registryAccess(), event.getRecipeManager());
+    }
+
+    private static void onScreenOpen(ScreenEvent.Opening event)
+    {
+        if (event.getScreen() instanceof TitleScreen || event.getScreen() instanceof JoinMultiplayerScreen)
+        {
+            IndirectHashCollection.clearAllCaches();
+        }
     }
 }
