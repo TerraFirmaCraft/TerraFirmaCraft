@@ -138,7 +138,6 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onRecipesUpdated);
         bus.addListener(IngameOverlays::checkGuiOverlays);
         bus.addListener(ClientForgeEventHandler::onScreenOpen);
-
     }
 
 
@@ -400,7 +399,12 @@ public class ClientForgeEventHandler
 
     public static void onClientPlayerLoggedOut(ClientPlayerNetworkEvent.LoggingOut event)
     {
-        Calendars.CLIENT.resetToDefault();
+        // This is fired when logging out, but also when a new server is being created, just after resources are loaded. We don't want
+        // to clear caches there, so guard this behind if there was an actual player that was logging out.
+        if (event.getPlayer() != null)
+        {
+            Calendars.CLIENT.resetToDefault();
+        }
     }
 
     public static void onClientTick(ClientTickEvent.Post event)
