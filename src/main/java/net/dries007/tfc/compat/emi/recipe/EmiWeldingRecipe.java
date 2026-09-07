@@ -42,7 +42,11 @@ public class EmiWeldingRecipe extends AutoLayoutRecipe<WeldingRecipe>
     @Override
     protected SlotWidget generateOutputSlot(EmiStack stack, int x, int y, int index)
     {
-        return super.generateOutputSlot(stack, x, y, index)
+        if (tier <= 0)
+        {
+            return super.generateOutputSlot(stack, x, y, index);
+        }
+        else return super.generateOutputSlot(stack, x, y, index)
             .appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(tier)));
     }
 
