@@ -167,7 +167,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
                 TFCItems.EMPTY_JAR,
                 TFCItems.EMPTY_JAR_WITH_LID
             );
-        tag(FILLED_JARS).addTags(SEALED_PRESERVES, PRESERVES);
+        tag(FILLED_JARS).addTags(SEALED_PRESERVES, PRESERVES).add(TFCItems.UNSEALED_FRUIT_PRESERVES.get(Food.PEANUT));
         tag(EMPTY_JARS_WITH_LID).add(TFCItems.EMPTY_JAR_WITH_LID);
         tag(JARS).addTags(EMPTY_JARS, FILLED_JARS);
         tag(SWEETENERS).add(Items.SUGAR);

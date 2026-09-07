@@ -1,6 +1,7 @@
 {
   "values": [
     "#tfc:foods/sealed_preserves",
-    "#tfc:foods/preserves"
+    "#tfc:foods/preserves",
+    "tfc:jar/peanut_unsealed"
   ]
 }
