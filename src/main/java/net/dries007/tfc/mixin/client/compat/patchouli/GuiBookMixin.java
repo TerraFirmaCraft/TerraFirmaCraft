@@ -25,6 +25,7 @@ import vazkii.patchouli.client.book.gui.GuiBook;
 import vazkii.patchouli.common.book.Book;
 
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 
@@ -56,7 +57,7 @@ public abstract class GuiBookMixin extends Screen
             addRenderableWidget(new PlayerInventoryTabButton(bookLeft, bookTop, false, true, PlayerInventoryTabButton.Tab.INVENTORY, button -> {
                 playerInventory.player.containerMenu = playerInventory.player.inventoryMenu;
                 Minecraft mc = Minecraft.getInstance();
-                if (mc.gameMode != null && mc.gameMode.isServerControlledInventory() && mc.player != null) {
+                if (mc.gameMode != null && mc.gameMode.isServerControlledInventory() && mc.player != null && TFCConfig.CLIENT.enableTabsInCreative.get()) {
                     mc.setScreen(new CreativeModeInventoryScreen((LocalPlayer) playerInventory.player, mc.player.connection.enabledFeatures(), mc.options.operatorItemsTab().get()));
                 } else {
                     mc.setScreen(new InventoryScreen(playerInventory.player));
