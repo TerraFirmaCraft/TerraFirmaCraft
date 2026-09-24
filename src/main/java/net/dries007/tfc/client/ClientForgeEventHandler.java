@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.TutorialToast;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.player.LocalPlayer;
@@ -380,6 +381,17 @@ public class ClientForgeEventHandler
             event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.NUTRITION).setRecipeBookCallback(screen));
             event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.CLIMATE).setRecipeBookCallback(screen));
             PatchouliIntegration.ifEnabled(() -> event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.BOOK).setRecipeBookCallback(screen)));
+        }
+        else if (event.getScreen() instanceof CreativeModeInventoryScreen screen && player != null)
+        {
+            int guiLeft = screen.getGuiLeft() + (195 - 176);
+            int guiTop = screen.getGuiTop();
+
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, true, false, PlayerInventoryTabButton.Tab.INVENTORY, button -> {}));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.CALENDAR));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.NUTRITION));
+            event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.CLIMATE));
+            PatchouliIntegration.ifEnabled(() -> event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.BOOK)));
         }
     }
 
