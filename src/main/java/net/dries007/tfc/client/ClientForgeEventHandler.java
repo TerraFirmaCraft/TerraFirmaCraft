@@ -382,7 +382,7 @@ public class ClientForgeEventHandler
             event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.CLIMATE).setRecipeBookCallback(screen));
             PatchouliIntegration.ifEnabled(() -> event.addListener(new PlayerInventoryTabButton(guiLeft, guiTop, false, false, PlayerInventoryTabButton.Tab.BOOK).setRecipeBookCallback(screen)));
         }
-        else if (event.getScreen() instanceof CreativeModeInventoryScreen screen && player != null)
+        else if (event.getScreen() instanceof CreativeModeInventoryScreen screen && player != null && TFCConfig.CLIENT.enableTabsInCreative.get())
         {
             int guiLeft = screen.getGuiLeft() + (195 - 176);
             int guiTop = screen.getGuiTop();

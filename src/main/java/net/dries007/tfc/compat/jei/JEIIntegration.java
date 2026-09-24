@@ -26,6 +26,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -107,6 +108,7 @@ import net.dries007.tfc.compat.jei.transfer.BarrelTransferInfo;
 import net.dries007.tfc.compat.jei.transfer.FluidIgnoringRecipeTransferHandler;
 import net.dries007.tfc.compat.jei.transfer.PotTransferInfo;
 import net.dries007.tfc.compat.jei.transfer.WeldingRecipeTransferInfo;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.KnappingType;
@@ -315,6 +317,10 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipeClickArea(SewingTableScreen.class, 125, 84, 22, 15, SEWING);
 
         // Fix inventory tab button overlap
+        if (TFCConfig.CLIENT.enableTabsInCreative.get())
+        {
+            registry.addGuiContainerHandler(CreativeModeInventoryScreen.class, new TFCInventoryGuiHandler<>());
+        }
         registry.addGuiContainerHandler(InventoryScreen.class, new TFCInventoryGuiHandler<>());
         registry.addGuiContainerHandler(CalendarScreen.class, new TFCInventoryGuiHandler<>());
         registry.addGuiContainerHandler(ClimateScreen.class, new TFCInventoryGuiHandler<>());

@@ -21,6 +21,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.EmiWorldInteractionRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
@@ -81,6 +82,8 @@ import net.dries007.tfc.compat.emi.recipe.EmiSewingRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSimplePotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiSoupPotRecipe;
 import net.dries007.tfc.compat.emi.recipe.EmiWeldingRecipe;
+import net.dries007.tfc.compat.jei.TFCInventoryGuiHandler;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.data.KnappingType;
@@ -343,6 +346,10 @@ public final class EmiIntegration implements EmiPlugin
 
     private void registerExclusionZones(EmiRegistry registry)
     {
+        if (TFCConfig.CLIENT.enableTabsInCreative.get())
+        {
+            registry.addExclusionArea(CreativeModeInventoryScreen.class, EmiHelpers.inventoryTabExclusionArea());
+        }
         registry.addExclusionArea(InventoryScreen.class, EmiHelpers.inventoryTabExclusionArea());
         registry.addExclusionArea(CalendarScreen.class, EmiHelpers.inventoryTabExclusionArea());
         registry.addExclusionArea(NutritionScreen.class, EmiHelpers.inventoryTabExclusionArea());
