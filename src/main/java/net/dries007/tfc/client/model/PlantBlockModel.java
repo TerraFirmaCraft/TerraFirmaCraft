@@ -95,21 +95,13 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         }
         final Block block = state.getBlock();
         final RegistryPlant plant;
-        if (block instanceof PlantBlock)
-        {
-            plant = ((PlantBlock) block).getPlant();
-        }
-        else if (block instanceof BodyPlantBlock)
-        {
-            plant = ((BodyPlantBlock) block).getPlant();
-        }
-        else if (block instanceof TopPlantBlock)
-        {
-            plant = ((TopPlantBlock) block).getPlant();
-        }
-        else
-        {
-            return getModelFromCalendar();
+        switch (block) {
+            case PlantBlock plantBlock -> plant = plantBlock.getPlant();
+            case BodyPlantBlock bodyPlantBlock -> plant = bodyPlantBlock.getPlant();
+            case TopPlantBlock topPlantBlock -> plant = topPlantBlock.getPlant();
+            default -> {
+                return getModelFromCalendar();
+            }
         }
         float start = plant.getBloomOffset();
         final Random random = new Random();
@@ -244,17 +236,15 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction direction, RandomSource random, ModelData modelData, @Nullable RenderType renderType)
     {
         final BakedModelData bakedData = modelData.get(BakedModelData.PROPERTY);
-        final BlockPos pos;
-        if (bakedData != null)
+        if (bakedData == null)
         {
-            pos = bakedData.pos;
-        }
-        else
-        {
-            pos = null;
+            // For out-of-world renders, no level/model data means no climate or growth stage to derive,
+            // Always show the blooming model (because Patchouli previews using ModelData.EMPTY)
+            assert bloomingBakedModel != null;
+            return bloomingBakedModel.getQuads(state, direction, random, modelData, renderType);
         }
 
-        return getModelFromBlockState(state, pos).getQuads(state, direction, random, modelData, renderType);
+        return getModelFromBlockState(state, bakedData.pos).getQuads(state, direction, random, modelData, renderType);
     }
 
     @Override
