@@ -50,7 +50,7 @@ public interface WeldingRecipes extends Recipes
         add(new WeldingRecipe(
             ingredientOf(ingot1, ItemType.INGOT),
             ingredientOf(ingot2, ItemType.INGOT),
-            ingotOut.tier() - 1,
+            Math.max(0, ingotOut.tier() - 1),
             ItemStackProvider.of(TFCItems.METAL_ITEMS.get(ingotOut).get(ItemType.INGOT)),
             IGNORE
         ));
@@ -61,7 +61,7 @@ public interface WeldingRecipes extends Recipes
         add(new WeldingRecipe(
             ingredientOf(metal, input1),
             ingredientOf(metal, input2),
-            metal.tier() - 1,
+            Math.max(0, metal.tier() - 1),
             ItemStackProvider.of(TFCItems.METAL_ITEMS.get(metal).get(output)),
             behavior
         ));

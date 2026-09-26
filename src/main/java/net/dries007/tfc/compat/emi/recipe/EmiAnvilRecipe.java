@@ -39,7 +39,12 @@ public class EmiAnvilRecipe extends AutoLayoutRecipe<AnvilRecipe>
     @Override
     protected SlotWidget generateOutputSlot(EmiStack stack, int x, int y, int index)
     {
-        return super.generateOutputSlot(stack, x, y, index).appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(tier)));
+        if (tier <= 0)
+        {
+            return super.generateOutputSlot(stack, x, y, index);
+        }
+        else return super.generateOutputSlot(stack, x, y, index)
+            .appendTooltip(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(tier)));
     }
 
     @Override

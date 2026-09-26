@@ -12,7 +12,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.dries007.tfc.util.tooltip.Tooltips;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -46,7 +48,13 @@ public class WeldingRecipeCategory extends BaseRecipeCategory<WeldingRecipe>
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5)
             .addItemStack(recipe.getResultItem(registryAccess()))
-            .setBackground(slot, -1, -1);
+            .setBackground(slot, -1, -1)
+            .addRichTooltipCallback((view, tooltip) -> {
+                if (recipe.getTier() > 0)
+                {
+                    tooltip.add(Component.translatable("tfc.tooltip.anvil_tier_required", Tooltips.tier(recipe.getTier())));
+                }
+            });
     }
 
     @Override
