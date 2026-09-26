@@ -43,15 +43,15 @@ public class PetCommandScreen extends Screen
             {
                 MutableComponent comp = Helpers.translateEnum(command);
                 addRenderableWidget(Button.builder(comp, b -> {
-                    PacketDistributor.sendToServer(new PetCommandPacket(entity, command));
-                    Minecraft.getInstance().setScreen(null);
+                        PacketDistributor.sendToServer(new PetCommandPacket(entity, command));
+                        Minecraft.getInstance().setScreen(null);
 
-                    final Player player = ClientHelpers.getPlayer();
-                    if (player != null)
-                    {
-                        player.containerMenu = player.inventoryMenu;
-                    }
-                }).bounds(width / 2 - 100, height / 4 + y, 200, 20).build()
+                        final Player player = ClientHelpers.getPlayer();
+                        if (player != null)
+                        {
+                            player.containerMenu = player.inventoryMenu;
+                        }
+                    }).bounds(width / 2 - 100, height / 4 + y, 200, 20).build()
                 );
                 y += 24;
             }

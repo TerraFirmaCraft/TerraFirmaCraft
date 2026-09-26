@@ -44,14 +44,14 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
             final FluidHeat metal = FluidHeat.get(fluid.getFluid());
             if (metal != null)
             {
-                drawLine(stack, fluid.getHoverName(), CENTER,14);
-                drawLine(stack, Tooltips.fluidUnits(fluid.getAmount()), CENTER,23);
+                drawLine(stack, fluid.getHoverName(), CENTER, 14);
+                drawLine(stack, Tooltips.fluidUnits(fluid.getAmount()), CENTER, 23);
 
                 final float temperature = mold.getTemperature();
                 final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().format(temperature);
                 if (tooltip != null)
                 {
-                    drawLine(stack, tooltip, CENTER,56);
+                    drawLine(stack, tooltip, CENTER, 56);
                 }
 
                 final ItemStack outputStack = this.menu.getInventory().getStackInSlot(0);
@@ -59,7 +59,7 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
 
                 if (outputFluidHandler != null && !outputFluidHandler.isFluidValid(0, fluid))
                 {
-                    drawLine(stack, Component.translatable("tfc.tooltip.mold.fluid_incompatible"), CENTER,65);
+                    drawLine(stack, Component.translatable("tfc.tooltip.mold.fluid_incompatible"), CENTER, 65);
                 }
             }
         }

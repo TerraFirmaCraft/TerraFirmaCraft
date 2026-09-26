@@ -32,14 +32,14 @@ public class CreateTFCWorldScreen extends Screen
         return new OptionInstance<>(caption, OptionInstance.noTooltip(),
             (text, value) -> (value > 0.49 && value < 0.51) ?
                 Options.genericValueLabel(text, CommonComponents.OPTION_OFF) :
-                Component.translatable("options.percent_value", text, (int)((value - 0.5) * 200.0)),
+                Component.translatable("options.percent_value", text, (int) ((value - 0.5) * 200.0)),
             OptionInstance.UnitDouble.INSTANCE, (1.0 + defaultValue) * 0.5, value -> {});
     }
 
     private static OptionInstance<Double> pctOption(String caption, double defaultValue)
     {
         return new OptionInstance<>(caption, OptionInstance.noTooltip(),
-            (text, value) -> Component.translatable("options.percent_value", text, (int)((value - 0.5) * 200.0)),
+            (text, value) -> Component.translatable("options.percent_value", text, (int) ((value - 0.5) * 200.0)),
             OptionInstance.UnitDouble.INSTANCE, defaultValue, value -> {});
     }
 
@@ -71,7 +71,8 @@ public class CreateTFCWorldScreen extends Screen
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
+    {
         renderBackground(graphics, mouseX, mouseY, partialTick);
         super.render(graphics, mouseX, mouseY, partialTick);
         graphics.drawCenteredString(font, title, width / 2, 4, 16777215);

@@ -44,9 +44,12 @@ public class NutritionScreen extends TFCContainerScreen<Container>
         addRenderableWidget(new PlayerInventoryTabButton(leftPos, topPos, false, false, PlayerInventoryTabButton.Tab.INVENTORY, button -> {
             playerInventory.player.containerMenu = playerInventory.player.inventoryMenu;
             Minecraft mc = Minecraft.getInstance();
-            if (mc.gameMode != null && mc.gameMode.isServerControlledInventory() && mc.player != null && TFCConfig.CLIENT.enableTabsInCreative.get()) {
+            if (mc.gameMode != null && mc.gameMode.isServerControlledInventory() && mc.player != null && TFCConfig.CLIENT.enableTabsInCreative.get())
+            {
                 mc.setScreen(new CreativeModeInventoryScreen((LocalPlayer) playerInventory.player, mc.player.connection.enabledFeatures(), mc.options.operatorItemsTab().get()));
-            } else {
+            }
+            else
+            {
                 mc.setScreen(new InventoryScreen(playerInventory.player));
             }
             PacketDistributor.sendToServer(new SwitchInventoryTabPacket(PlayerInventoryTabButton.Tab.INVENTORY));
