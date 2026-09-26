@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -30,14 +31,13 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import net.neoforged.neoforge.client.model.geometry.IGeometryBakingContext;
 import net.neoforged.neoforge.client.model.geometry.IGeometryLoader;
-import org.jetbrains.annotations.Nullable;
-import net.minecraft.client.renderer.block.model.BlockModel;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.geometry.IUnbakedGeometry;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
@@ -95,11 +95,13 @@ public class PlantBlockModel implements IDynamicBakedModel, IUnbakedGeometry<Pla
         }
         final Block block = state.getBlock();
         final RegistryPlant plant;
-        switch (block) {
+        switch (block)
+        {
             case PlantBlock plantBlock -> plant = plantBlock.getPlant();
             case BodyPlantBlock bodyPlantBlock -> plant = bodyPlantBlock.getPlant();
             case TopPlantBlock topPlantBlock -> plant = topPlantBlock.getPlant();
-            default -> {
+            default ->
+            {
                 return getModelFromCalendar();
             }
         }
