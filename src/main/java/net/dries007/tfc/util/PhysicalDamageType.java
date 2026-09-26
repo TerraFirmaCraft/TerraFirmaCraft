@@ -103,7 +103,7 @@ public enum PhysicalDamageType implements StringRepresentable
         }
         if (source.is(IS_SLASHING))
         {
-            return CRUSHING;
+            return SLASHING;
         }
 
         // Next, try and check for an entity doing the damaging

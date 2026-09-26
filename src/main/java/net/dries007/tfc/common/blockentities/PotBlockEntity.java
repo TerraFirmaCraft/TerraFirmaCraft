@@ -189,6 +189,10 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     public void onCalendarUpdate(long ticks)
     {
         assert level != null;
+        if (ticks <= 0)
+        {
+            return;
+        }
         if (level.getBlockState(worldPosition).getValue(FirepitBlock.LIT))
         {
             final HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);

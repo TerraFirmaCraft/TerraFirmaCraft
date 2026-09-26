@@ -116,7 +116,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/flint_and_pyrite",
-      "text": "A more advanced firestarter can be formed using flint and pyrite, or later flint and steel."
+      "text": "A more advanced firestarter can be formed using flint and pyrite, or, later, flint and steel."
     }
   ],
   "read_by_default": true,

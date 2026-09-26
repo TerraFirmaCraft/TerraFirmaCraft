@@ -139,9 +139,9 @@ public sealed class ChunkData
     public float getMinRainfallHydration(BlockPos pos)
     {
         final int x = pos.getX();
-        final int y = pos.getY();
-        final float rainfall = getAverageRainfall(x, y);
-        final float rainVar = Math.abs(getRainVariance(x, y));
+        final int z = pos.getZ();
+        final float rainfall = getAverageRainfall(x, z);
+        final float rainVar = Math.abs(getRainVariance(x, z));
         // Max instantaneous rainfall value is actually double the max rainfall, this caps rainfall contribution at the max average rainfall
         return rainfall * (1 - rainVar) * (MAX_RAINFALL_CONTRIBUTION / ClimateModel.MAX_CROP_RAINFALL);
     }
@@ -150,9 +150,9 @@ public sealed class ChunkData
     public float getMaxRainfallHydration(BlockPos pos)
     {
         final int x = pos.getX();
-        final int y = pos.getY();
-        final float rainfall = getAverageRainfall(x, y);
-        final float rainVar = Math.abs(getRainVariance(x, y));
+        final int z = pos.getZ();
+        final float rainfall = getAverageRainfall(x, z);
+        final float rainVar = Math.abs(getRainVariance(x, z));
         // Max instantaneous rainfall value is actually double the max rainfall, this caps rainfall contribution at the max average rainfall
         return Math.min(rainfall * (1 + rainVar) * (MAX_RAINFALL_CONTRIBUTION / ClimateModel.MAX_CROP_RAINFALL), MAX_RAINFALL_CONTRIBUTION);
     }

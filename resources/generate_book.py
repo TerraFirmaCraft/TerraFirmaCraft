@@ -185,8 +185,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 block_spotlight('', '', 'tfc:grill'),
                 block_spotlight('', '', 'tfc:pot'),
             ),
-            text('Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not hot enough to do much cooking, and are very impure.'),
-            crafting('tfc:crafting/flint_and_pyrite', text_contents='A more advanced firestarter can be formed using flint and pyrite, or later flint and steel.').link('tfc:flint_and_pyrite', 'tfc:ore/pyrite'),
+            text('Firepit fuels have different levels of purity. Adding impure fuels to fires makes them more smokey. If the fire burns very impurely, smoke will start to fly very high in the air. The most pure fuels are logs, with pine being the least pure log. Fuels like pinecones and fallen leaves do not get hot enough to do much cooking, and are very impure.'),
+            crafting('tfc:crafting/flint_and_pyrite', text_contents='A more advanced firestarter can be formed using flint and pyrite, or, later, flint and steel.').link('tfc:flint_and_pyrite', 'tfc:ore/pyrite'),
         )),
         entry('pottery', 'Pottery', 'tfc:ceramic/vessel', pages=(
             text('$(thing)Clay$() is an incredibly useful and balanced material which can be used for pottery. It can prove challenging to locate at first. Clay is usually hidden by grass, but it is often found in two locations. In areas with at least 175mm $(l:core_mechanics/climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, usually marked by the presence of certain $(thing)Plants$().').link('minecraft:clay'),

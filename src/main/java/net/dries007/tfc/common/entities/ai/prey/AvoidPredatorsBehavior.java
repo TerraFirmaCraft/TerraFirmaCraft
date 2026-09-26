@@ -22,14 +22,14 @@ public class AvoidPredatorsBehavior
 {
     public static OneShot<Mob> create(boolean playersExempt)
     {
-        final Predicate<Entity> extraConditions = playersExempt ? entity -> !(entity instanceof Player) : EntitySelector.NO_CREATIVE_OR_SPECTATOR;
+        final Predicate<Entity> isAvoided = isAvoided(playersExempt);
         return BehaviorBuilder.create(instance -> {
             return instance.group(
                 instance.present(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES),
                 instance.absent(MemoryModuleType.AVOID_TARGET)
             ).apply(instance, (visible, avoiding) -> {
                 return (level, mob, time) -> instance.get(visible).findClosest(
-                    e -> extraConditions.test(e) && Helpers.isEntity(e, TFCTags.Entities.LAND_PREDATORS)
+                    isAvoided::test
                 ).map(closest -> {
                     avoiding.set(closest);
                     return true;
@@ -38,4 +38,10 @@ public class AvoidPredatorsBehavior
         });
     }
 
+    static Predicate<Entity> isAvoided(boolean playersExempt)
+    {
+        return playersExempt
+            ? entity -> !(entity instanceof Player) && Helpers.isEntity(entity, TFCTags.Entities.LAND_PREDATORS)
+            : entity -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) && (entity instanceof Player || Helpers.isEntity(entity, TFCTags.Entities.LAND_PREDATORS));
+    }
 }

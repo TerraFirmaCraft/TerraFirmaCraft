@@ -1318,6 +1318,7 @@
   "tfc.config.server.barrelCapacity": "Вместимость бочки",
   "tfc.config.server.barrelEnableAutomation": "Включить автоматизацию для бочки",
   "tfc.config.server.barrelEnableRedstoneSeal": "Включить закрытие по редстоуну для бочки",
+  "tfc.config.server.berryBushGrowthTicks": "Berry Bush Growth Ticks",
   "tfc.config.server.birchSaplingGrowthTicks": "Тиков роста саженца берёзы",
   "tfc.config.server.blackwoodSaplingGrowthTicks": "Тиков роста саженца гренадила",
   "tfc.config.server.blastFurnaceCapacity": "Вместимость доменной печи",

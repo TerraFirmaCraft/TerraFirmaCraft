@@ -72,7 +72,7 @@ public class ThrownJavelin extends AbstractArrow
             TFCAdvancements.STAB_ENTITY.trigger((ServerPlayer) this.getOwner(), result.getEntity());
         }
         final Entity entity = result.getEntity();
-        float dmg = 8.0F;
+        float dmg = getItemAttackDamage();
         final Entity owner = this.getOwner();
         final DamageSource src = this.damageSources().trident(this, (owner == null ? this : owner));
         final Level level = this.level();

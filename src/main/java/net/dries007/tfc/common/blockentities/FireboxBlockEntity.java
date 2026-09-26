@@ -48,18 +48,23 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, FireboxBlockEntity box)
     {
+        final boolean calendarAdvanced = box.lastPlayerTick != Calendars.SERVER.getTicks();
+
         box.checkForLastTickSync();
         box.checkForCalendarUpdate();
 
         if (state.getValue(FireboxBlock.LIT))
         {
-            if (box.burnTicks > 0)
+            if (calendarAdvanced)
             {
-                box.burnTicks -= box.airTicks > 0 ? 2 : 1; // Fuel burns twice as fast using bellows
-            }
-            if (box.burnTicks <= 0 && !box.consumeFuel())
-            {
-                box.extinguish(state);
+                if (box.burnTicks > 0)
+                {
+                    box.burnTicks -= box.airTicks > 0 ? 2 : 1; // Fuel burns twice as fast using bellows
+                }
+                if (box.burnTicks <= 0 && !box.consumeFuel())
+                {
+                    box.extinguish(state);
+                }
             }
         }
         else if (box.burnTemperature > 0)
@@ -297,6 +302,11 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
         markForSync();
     }
 
+    public int getAirTicks()
+    {
+        return airTicks;
+    }
+
     public void intakeAir(int amount)
     {
         airTicks += amount;
@@ -310,6 +320,11 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     public void onCalendarUpdate(long ticks)
     {
         assert level != null;
+        if (ticks <= 0)
+        {
+            return; // The calendar is paused, so no time has passed - see the note in serverTick()
+        }
+
         final BlockState state = level.getBlockState(worldPosition);
         if (state.getValue(FireboxBlock.LIT))
         {

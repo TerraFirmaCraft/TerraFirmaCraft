@@ -2135,6 +2135,7 @@ DEFAULT_LANG = {
     'tfc.config.server.barrelCapacity': 'Capacity',
     'tfc.config.server.barrelEnableAutomation': 'Enable Automation',
     'tfc.config.server.barrelEnableRedstoneSeal': 'Enable Redstone Seal',
+    'tfc.config.server.berryBushGrowthTicks': 'Berry Bush Growth Ticks',
     'tfc.config.server.birchSaplingGrowthTicks': 'Birch Sapling Growth Ticks',
     'tfc.config.server.blackwoodSaplingGrowthTicks': 'Blackwood Sapling Growth Ticks',
     'tfc.config.server.blastFurnaceCapacity': 'Capacity',

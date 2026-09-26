@@ -41,6 +41,7 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.SyncableContainerData;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.Fuel;
 
@@ -61,6 +62,8 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CharcoalForgeBlockEntity forge)
     {
+        final boolean calendarAdvanced = forge.lastPlayerTick != Calendars.SERVER.getTicks();
+
         forge.checkForLastTickSync();
         forge.checkForCalendarUpdate();
 
@@ -95,13 +98,16 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
             }
 
             // Update fuel
-            if (forge.burnTicks > 0)
+            if (calendarAdvanced)
             {
-                forge.burnTicks -= forge.airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
-            }
-            if (forge.burnTicks <= 0 && !forge.consumeFuel())
-            {
-                forge.extinguish(state);
+                if (forge.burnTicks > 0)
+                {
+                    forge.burnTicks -= forge.airTicks > 0 || isRaining ? 2 : 1; // Fuel burns twice as fast using bellows, or in the rain
+                }
+                if (forge.burnTicks <= 0 && !forge.consumeFuel())
+                {
+                    forge.extinguish(state);
+                }
             }
         }
         else if (forge.burnTemperature > 0)
@@ -189,6 +195,11 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public void onCalendarUpdate(long ticks)
     {
         assert level != null;
+        if (ticks <= 0)
+        {
+            return; // The calendar is paused, so no time has passed - see the note in serverTick()
+        }
+
         final BlockState state = level.getBlockState(worldPosition);
         if (state.getValue(CharcoalForgeBlock.HEAT) != 0)
         {

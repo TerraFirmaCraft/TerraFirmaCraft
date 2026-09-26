@@ -33,7 +33,8 @@ public class PestAi
 
     public static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
         MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET,
-        MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET, MemoryModuleType.NEAREST_VISIBLE_ADULT, TFCBrain.SMELLY_POS.get()
+        MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET, MemoryModuleType.NEAREST_VISIBLE_ADULT, TFCBrain.SMELLY_POS.get(),
+        MemoryModuleType.IS_PANICKING
     );
 
     public static Brain<?> makeBrain(Brain<? extends Pest> brain)

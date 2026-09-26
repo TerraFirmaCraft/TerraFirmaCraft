@@ -50,15 +50,16 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.SyncableContainerData;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.data.Fuel;
-
-import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastFurnaceBlockEntity.BlastFurnaceInventory> implements ICalendarTickable, IHeatable
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, BlastFurnaceBlockEntity entity)
     {
+        final boolean calendarAdvanced = entity.lastPlayerTick != Calendars.SERVER.getTicks();
+
         entity.checkForLastTickSync();
         entity.checkForCalendarUpdate();
 
@@ -97,13 +98,16 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         if (state.getValue(BlastFurnaceBlock.LIT))
         {
             // Update fuel
-            if (entity.burnTicks > 0)
+            if (calendarAdvanced)
             {
-                entity.burnTicks -= TFCConfig.SERVER.blastFurnaceFuelConsumptionMultiplier.get() * (entity.airTicks > 0 ? 2 : 1); // Fuel burns twice as fast using bellows
-            }
-            if (entity.burnTicks <= 0 && !entity.consumeFuel())
-            {
-                entity.extinguish(state);
+                if (entity.burnTicks > 0)
+                {
+                    entity.burnTicks -= TFCConfig.SERVER.blastFurnaceFuelConsumptionMultiplier.get() * (entity.airTicks > 0 ? 2 : 1); // Fuel burns twice as fast using bellows
+                }
+                if (entity.burnTicks <= 0 && !entity.consumeFuel())
+                {
+                    entity.extinguish(state);
+                }
             }
         }
         else if (entity.burnTemperature > 0)
@@ -363,6 +367,10 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     public void onCalendarUpdate(long ticks)
     {
         assert level != null;
+        if (ticks <= 0)
+        {
+            return; // The calendar is paused, so no time has passed - see the note in serverTick()
+        }
         if (level.getBlockState(worldPosition).getValue(BlastFurnaceBlock.LIT))
         {
             final HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, burnTicks, burnTemperature, fuelStacks);

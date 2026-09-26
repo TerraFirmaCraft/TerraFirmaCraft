@@ -545,7 +545,7 @@ public class ServerConfig extends BaseConfig
             .define("fruitPickBloomDelayTicks", 10 * ICalendar.PLAYER_TICKS_IN_DEFAULT_DAY, 0, Integer.MAX_VALUE);
         berryBushGrowthTicks = builder
             .comment("Ticks required between berry bush growth steps")
-            .define("bananaPlantGrowthTicks", 4 * ICalendar.PLAYER_TICKS_IN_DEFAULT_DAY, 0, Integer.MAX_VALUE);
+            .define("berryBushGrowthTicks", 4 * ICalendar.PLAYER_TICKS_IN_DEFAULT_DAY, 0, Integer.MAX_VALUE);
 
         builder.swap("crops");
 

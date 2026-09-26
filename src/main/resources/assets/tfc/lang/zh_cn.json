@@ -1326,6 +1326,7 @@
   "tfc.config.server.barrelCapacity": "容量",
   "tfc.config.server.barrelEnableAutomation": "启用自动化",
   "tfc.config.server.barrelEnableRedstoneSeal": "启用红石密封",
+  "tfc.config.server.berryBushGrowthTicks": "Berry Bush Growth Ticks",
   "tfc.config.server.birchSaplingGrowthTicks": "白桦木树苗生长刻数",
   "tfc.config.server.blackwoodSaplingGrowthTicks": "黑檀木树苗生长刻数",
   "tfc.config.server.blastFurnaceCapacity": "容量",
