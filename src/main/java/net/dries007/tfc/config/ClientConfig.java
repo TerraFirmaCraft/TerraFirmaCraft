@@ -47,6 +47,7 @@ public class ClientConfig extends BaseConfig
     public final Supplier<Boolean> displayItemHeatBars;
     public final Supplier<Boolean> enableWindParticles;
     public final Supplier<RotationDisplayStyle> rotationDisplayStyle;
+    public final Supplier<Boolean> enableTabsInCreative;
 
     // Compatibility
     public final Supplier<List<String>> additionalSpecialModels;
@@ -135,6 +136,8 @@ public class ClientConfig extends BaseConfig
 
         showGuideBookLinksAlways = builder.comment("If, when hovering over an item in the inventory, or looking at a block in the world that has a linked page in the guide book, it should display a tooltip along with allowing you to hold Ctrl/Cmd to quickly navigate to that page in the book.").define("showGuideBookLinksAlways", true);
         showGuideBookTabInInventory = builder.comment("If a button linking to the TFC Field Guide should be added to the inventory, climate, nutrition, and calendar screens?").define("showGuideBookTabInInventory", true);
+
+        enableTabsInCreative = builder.comment("If the inventory, climate, nutrition, and calendar tabs should display while in creative.").define("enableTabsInCreative", true);
 
         displayItemContentsAsImages = builder.comment("For items like bundles, their contents inside will be rendered using Bundle Technology to show their items.").define("displayItemContentsAsImages", true);
         displayItemHeatBars = builder.comment("If true, for items that are hot, they will show a bar on the item like a durability bar").define("displayItemHeatBars", true);

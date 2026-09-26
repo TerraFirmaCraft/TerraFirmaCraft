@@ -8,7 +8,9 @@ package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,6 +24,7 @@ import net.dries007.tfc.common.component.food.Nutrient;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 
@@ -40,7 +43,12 @@ public class NutritionScreen extends TFCContainerScreen<Container>
         super.init();
         addRenderableWidget(new PlayerInventoryTabButton(leftPos, topPos, false, false, PlayerInventoryTabButton.Tab.INVENTORY, button -> {
             playerInventory.player.containerMenu = playerInventory.player.inventoryMenu;
-            Minecraft.getInstance().setScreen(new InventoryScreen(playerInventory.player));
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.gameMode != null && mc.gameMode.isServerControlledInventory() && mc.player != null && TFCConfig.CLIENT.enableTabsInCreative.get()) {
+                mc.setScreen(new CreativeModeInventoryScreen((LocalPlayer) playerInventory.player, mc.player.connection.enabledFeatures(), mc.options.operatorItemsTab().get()));
+            } else {
+                mc.setScreen(new InventoryScreen(playerInventory.player));
+            }
             PacketDistributor.sendToServer(new SwitchInventoryTabPacket(PlayerInventoryTabButton.Tab.INVENTORY));
         }));
         addRenderableWidget(new PlayerInventoryTabButton(leftPos, topPos, false, false, PlayerInventoryTabButton.Tab.CALENDAR));

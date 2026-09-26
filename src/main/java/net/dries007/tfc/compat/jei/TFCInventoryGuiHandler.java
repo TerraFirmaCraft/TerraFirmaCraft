@@ -22,7 +22,7 @@ public class TFCInventoryGuiHandler<T extends AbstractContainerScreen<? extends 
     {
         List<Rect2i> areas = new ArrayList<>();
 
-        int xPosition = guiContainer.getGuiLeft() + 176;
+        int xPosition = guiContainer.getGuiLeft() + guiContainer.getXSize();
         int yPosition = guiContainer.getGuiTop() + 4; // +23 each button
         int w = 20;
         int h = 22;
