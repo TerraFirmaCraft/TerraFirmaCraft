@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
+import java.util.List;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -42,6 +43,18 @@ public interface ItemStackModifier
     default boolean dependsOnInput()
     {
         return false;
+    }
+
+    /**
+     * Modifiers which only produce an output for inputs carrying specific components cannot be represented by the ingredient of a
+     * recipe, which matches on the item alone. This provides the inputs to display in place of such an input, for recipe viewers.
+     *
+     * @param input An input stack, as matched by the ingredient of the recipe.
+     * @return The stacks to display in place of {@code input}, which may be empty if this modifier produces no output for it.
+     */
+    default List<ItemStack> displayInputs(ItemStack input)
+    {
+        return List.of(input);
     }
 
     ItemStackModifierType<?> type();

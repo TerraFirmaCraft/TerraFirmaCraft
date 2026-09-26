@@ -10,6 +10,7 @@ import java.util.List;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
+import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.compat.emi.EmiHelpers;
@@ -22,7 +23,12 @@ public class ItemStackProviderWidget extends GeneratedSlotWidget
             //TODO needs to use RecipeHelpers#setCraftingInput??
             List<EmiStack> stacks = input.getStack().getEmiStacks();
             EmiStack stack = stacks.get(r.nextInt(stacks.size()));
-            return EmiHelpers.nonDecayStack(provider.getSingleStackDisplayOnly(stack.getItemStack()));
+            List<ItemStack> displayInputs = provider.displayInputs(stack.getItemStack());
+            if (displayInputs.isEmpty())
+            {
+                return EmiStack.of(ItemStack.EMPTY);
+            }
+            return EmiHelpers.nonDecayStack(provider.getSingleStackDisplayOnly(displayInputs.get(r.nextInt(displayInputs.size()))));
         }, unique, x, y);
     }
 
