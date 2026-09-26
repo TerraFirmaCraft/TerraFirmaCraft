@@ -3,7 +3,7 @@
   "duration": 1200,
   "input_fluid": {
     "amount": 25,
-    "fluid": "tfc:purple_dye"
+    "fluid": "tfc:white_dye"
   },
   "input_item": {
     "count": 1,
@@ -11,6 +11,6 @@
   },
   "output_item": {
     "count": 1,
-    "id": "minecraft:purple_terracotta"
+    "id": "minecraft:white_terracotta"
   }
 }

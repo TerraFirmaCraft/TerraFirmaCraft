@@ -198,7 +198,7 @@ public interface BarrelRecipes extends Recipes
         dye(Items.WHITE_CARPET, "carpet");
         dye(Items.WHITE_BED, "bed");
         dye(Items.WHITE_BANNER, "banner");
-        dye(Items.WHITE_TERRACOTTA, "terracotta");
+        dye(Items.TERRACOTTA, "terracotta");
         dye(Items.WHITE_GLAZED_TERRACOTTA, "glazed_terracotta");
         dye(Items.SHULKER_BOX, "shulker_box");
         dye(TFCBlocks.AGGREGATE, "concrete_powder");
