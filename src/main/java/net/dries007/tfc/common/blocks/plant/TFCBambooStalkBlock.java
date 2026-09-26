@@ -101,16 +101,14 @@ public class TFCBambooStalkBlock extends BambooStalkBlock
         BambooLeaves leafState = BambooLeaves.NONE;
         if (age >= 1)
         {
-            if (Helpers.isBlock(belowState2, TFCTags.Blocks.BAMBOO) && belowState.getValue(LEAVES) != BambooLeaves.NONE)
+            if (Helpers.isBlock(belowState, TFCTags.Blocks.BAMBOO) && belowState.getValue(LEAVES) != BambooLeaves.NONE)
             {
-                if (Helpers.isBlock(belowState, TFCTags.Blocks.BAMBOO) && belowState.getValue(LEAVES) != BambooLeaves.NONE)
+                leafState = BambooLeaves.LARGE;
+                if (Helpers.isBlock(belowState2, TFCTags.Blocks.BAMBOO))
                 {
-                    leafState = BambooLeaves.LARGE;
-                    if (belowState2.is(TFCTags.Blocks.BAMBOO))
-                    {
-                        level.setBlock(pos.below(), belowState.setValue(LEAVES, BambooLeaves.SMALL), 3);
-                        level.setBlock(belowPos2, belowState2.setValue(LEAVES, BambooLeaves.NONE), 3);
-                    }
+                    // Leaves only grow at the top of the stalk, so push the ones below down a size as this one takes over
+                    level.setBlock(pos.below(), belowState.setValue(LEAVES, BambooLeaves.SMALL), 3);
+                    level.setBlock(belowPos2, belowState2.setValue(LEAVES, BambooLeaves.NONE), 3);
                 }
             }
             else
@@ -119,7 +117,7 @@ public class TFCBambooStalkBlock extends BambooStalkBlock
             }
         }
 
-        final int newAge = state.getValue(AGE) != 1 && !belowState2.is(TFCTags.Blocks.BAMBOO) ? 0 : 1;
+        final int newAge = state.getValue(AGE) != 1 && !Helpers.isBlock(belowState2, TFCTags.Blocks.BAMBOO) ? 0 : 1;
         final int newStage = (age < 11 || !(random.nextFloat() < 0.25F)) && age != 15 ? 0 : 1;
         level.setBlock(pos.above(), this.defaultBlockState().setValue(AGE, newAge).setValue(LEAVES, leafState).setValue(STAGE, newStage), 3);
     }
