@@ -9,6 +9,7 @@ package net.dries007.tfc.client.screen.button;
 import java.util.List;
 import java.util.Objects;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,15 +18,18 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.TemperatureDisplayStyle;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.Month;
 
 public class PlayerInventoryTabButton extends Button
 {
@@ -128,20 +132,91 @@ public class PlayerInventoryTabButton extends Button
                 case CALENDAR ->
                 {
                     final Component title = Component.translatable("tfc.screen.calendar");
-                    final Component hoverText = Calendars.CLIENT.getDayTime();
-                    graphics.renderComponentTooltip(font, List.of(title, hoverText), mouseX, mouseY);
+                    String seasonIcon = "";
+                    final Component timeAndDate = Component.literal("⌛ ").append(Calendars.CLIENT.getDayTime());
+
+                    final Month month = Calendars.CLIENT.getAbsoluteCalendarMonthOfYear();
+                    final Component monthToSeason = Component.translatable(month.getTranslationKey(Month.Style.SEASON));
+
+                    // Seasonal icon rotates throughout the year. Curse be to mojang for not adding a custom emoji that is Fall themed.
+                    // I use this site to find vanilla style symbols -> https://gist.github.com/mortuusars/ea6464e5c660c30e2a98f42e749689b0
+                    switch (month.getSeason())
+                    {
+                        case WINTER -> seasonIcon = "☃ ";
+                        case SPRING -> seasonIcon = "♧ ";
+                        case SUMMER -> seasonIcon = "☀ ";
+                        case FALL -> seasonIcon = "\uD83C\uDF42 ";
+                    }
+
+                    final Component season = Component.literal(seasonIcon).append(monthToSeason);
+                    graphics.renderComponentTooltip(font, List.of(title, season, timeAndDate), mouseX, mouseY);
                 }
                 case NUTRITION ->
                 {
+                    Player player = ClientHelpers.getPlayer();
+                    Component components = Component.literal("");
+
+                    if (player != null)
+                    {
+                        float avgNutrition = IPlayerInfo.get(player).nutrition().getAverageNutrition();
+                        String formattedAvg = String.format("%.0f%%", avgNutrition * 100);
+
+                        // Displays average nutrition as a percentage. Color changes based on the number.
+                        // Using the avg temp tooltip since it is just "Avg: %s"
+                        if (avgNutrition < 0.33f)
+                        {
+                            components = Component.translatable("tfc.tooltip.climate_temperature_average", Component.literal(formattedAvg).withStyle(ChatFormatting.RED));
+                        }
+                        else if (avgNutrition < 0.66f)
+                        {
+                            components = Component.translatable("tfc.tooltip.climate_temperature_average", Component.literal(formattedAvg).withStyle(ChatFormatting.YELLOW));
+                        }
+                        else if (avgNutrition < 0.99f)
+                        {
+                            components = Component.translatable("tfc.tooltip.climate_temperature_average", Component.literal(formattedAvg).withStyle(ChatFormatting.GREEN));
+                        }
+                        else
+                        {
+                            components = Component.translatable("tfc.tooltip.climate_temperature_average", formattedAvg).withStyle(ChatFormatting.GOLD);
+                        }
+
+                    }
+
                     final Component title = Component.translatable("tfc.screen.nutrition");
-                    graphics.renderTooltip(font, title, mouseX, mouseY);
+                    graphics.renderComponentTooltip(font, List.of(title, components), mouseX, mouseY);
                 }
                 case CLIMATE ->
                 {
-                    final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
+                    final TemperatureDisplayStyle tempStyle = TFCConfig.CLIENT.climateTooltipStyle.get();
                     final Component title = Component.translatable("tfc.screen.climate");
-                    final Component hoverText = Objects.requireNonNull(style.formatRange(ClimateRenderCache.INSTANCE.getInstantTemperature()));
-                    graphics.renderComponentTooltip(font, List.of(title, hoverText), mouseX, mouseY);
+                    final float getAvgTemp = ClimateRenderCache.INSTANCE.getInstantTemperature();
+                    final float getAvgRain = ClimateRenderCache.INSTANCE.getInstantRainfall();
+                    String tempIcon;
+                    String rainIcon;
+
+                    // Temp icon changes from fire to a snowflake when below 10C.
+                    if (getAvgTemp >= 10)
+                    {
+                        tempIcon = "\uD83D\uDD25 ";
+                    }
+                    else
+                    {
+                        tempIcon = "❄ ";
+                    }
+
+                    // Rain icon changes from an umbrella to a cactus when below 200mm.
+                    if (getAvgRain >= 200)
+                    {
+                        rainIcon = "☔ ";
+                    }
+                    else
+                    {
+                        rainIcon = "\uD83C\uDF35 ";
+                    }
+
+                    final Component avgTemp = Component.literal(tempIcon).append(Objects.requireNonNull(tempStyle.formatRange(getAvgTemp)));
+                    final Component avgRain = Component.literal(rainIcon).append(String.format("%.0f", getAvgRain) + "mm");
+                    graphics.renderComponentTooltip(font, List.of(title, avgRain, avgTemp), mouseX, mouseY);
                 }
                 case BOOK ->
                 {
