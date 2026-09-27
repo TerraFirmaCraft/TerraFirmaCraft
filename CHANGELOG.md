@@ -16,3 +16,4 @@
 - Fixed crushing damage (#3725)
 - Fixed firepits consuming fuel while the calendar is paused (#3733)
 - Fixed plants rendering in their non-blooming state outside the world, such as in the field guide or in JEI/EMI (#3186)
+- Fixed a crash when using Vivecraft

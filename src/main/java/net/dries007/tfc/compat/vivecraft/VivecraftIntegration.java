@@ -6,11 +6,16 @@
 
 package net.dries007.tfc.compat.vivecraft;
 
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
+
 public class VivecraftIntegration
 {
 
     public static boolean isVREnabled()
     {
+        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) return false;
+
         try
         {
             Class<?> vrStateClass = Class.forName("org.vivecraft.client_vr.VRState");
