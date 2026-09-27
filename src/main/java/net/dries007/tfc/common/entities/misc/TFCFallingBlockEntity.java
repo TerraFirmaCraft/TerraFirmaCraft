@@ -183,8 +183,10 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                 }
                 else
                 {
-                    // On ground
-                    if (!failedBreakCheck)
+                    // On ground. This may be the top of an entity such as a boat, in which case there is nothing to break through, and
+                    // nothing to support placing the block above where we are.
+                    final boolean onBlock = !level().noBlockCollision(this, getBoundingBox().move(0, -0.01, 0));
+                    if (onBlock && !failedBreakCheck)
                     {
                         if (!FluidHelpers.isAirOrEmptyFluid(level().getBlockState(posAt)) && canFallThrough(level(), posAt, Direction.DOWN, fallingBlockState))
                         {
@@ -212,6 +214,10 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                             if (canPlaceAt(hitBlockState, posAt, fallingBlockState, fallingBlockState))
                             {
                                 placeAsBlockOrDropAsItem(hitBlockState, posAt, fallingBlockState);
+                            }
+                            else if (!onBlock)
+                            {
+                                attemptToDropAsItem(fallingBlockState);
                             }
                             else
                             {
