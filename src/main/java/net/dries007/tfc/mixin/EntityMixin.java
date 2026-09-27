@@ -42,6 +42,15 @@ public abstract class EntityMixin
         }
     }
 
+    @Inject(method = "getFluidHeight", at = @At("RETURN"), cancellable = true)
+    private void fixGetFluidHeightToTreatWaterLikeFluidsAsWater(TagKey<Fluid> fluidTag, CallbackInfoReturnable<Double> cir)
+    {
+        if (fluidTag == TFCTags.Fluids.WATER_LIKE)
+        {
+            cir.setReturnValue(Math.max(cir.getReturnValueD(), FluidHelpers.getWaterLikeFluidHeight((Entity) (Object) this)));
+        }
+    }
+
     @Inject(method = "checkInsideBlocks", at = @At("HEAD"))
     private void checkInsideBlocksForCustomSlowEffects(CallbackInfo ci)
     {

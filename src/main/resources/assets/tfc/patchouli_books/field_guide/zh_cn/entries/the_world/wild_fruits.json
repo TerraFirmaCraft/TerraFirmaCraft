@@ -2346,7 +2346,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：24 - 100毫米$(br2)黑莓灌木从2月到5月生长，6月和7月开始开花，并在8月结果。$(br2)它们通常出现在树木稀少的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：24 - 100 %毫米$(br2)黑莓灌木从2月到5月生长，6月和7月开始开花，并在8月结果。$(br2)它们通常出现在树木稀少的区域。",
       "title": "黑莓灌木"
     },
     {
@@ -2446,7 +2446,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：24 - 100毫米$(br2)树莓灌木从4月到7月生长，8月和9月开始开花，并在10月结果。$(br2)它们通常出现在树木稀少的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：24 - 100 %毫米$(br2)树莓灌木从4月到7月生长，8月和9月开始开花，并在10月结果。$(br2)它们通常出现在树木稀少的区域。",
       "title": "树莓灌木"
     },
     {
@@ -2546,7 +2546,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：12 - 100毫米$(br2)蓝莓灌木从2月到5月生长，6月和7月开始开花，并在8月结果。$(br2)它们通常出现在树木稀少的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：12 - 100 %毫米$(br2)蓝莓灌木从2月到5月生长，6月和7月开始开花，并在8月结果。$(br2)它们通常出现在树木稀少的区域。",
       "title": "蓝莓灌木"
     },
     {
@@ -2646,7 +2646,7 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)降雨量$()：12 - 100毫米$(br2)接骨木果灌木从2月到5月生长，6月和7月开始开花，并在8月结果。$(br2)它们通常出现在树木稀少的区域。",
+      "text": "$(bold)$(l:the_world/climate#temperature)温度$()：10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：12 - 100 %毫米$(br2)接骨木果灌木从2月到5月生长，6月和7月开始开花，并在8月结果。$(br2)它们通常出现在树木稀少的区域。",
       "title": "接骨木果灌木"
     },
     {

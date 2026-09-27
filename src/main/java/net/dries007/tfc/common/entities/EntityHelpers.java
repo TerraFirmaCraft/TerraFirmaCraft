@@ -130,9 +130,9 @@ public final class EntityHelpers
     {
         if (random.nextFloat() < 0.05f) // baby chance
         {
-            return Calendars.get(entity.level()).getTotalDays() + random.nextInt(10);
+            return Calendars.get(entity.level()).getTotalDays() - random.nextInt(Math.max(1, Math.min(10, daysToAdult)));
         }
-        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
+        int lifeTimeDays = daysToAdult + random.nextInt(Math.max(1, daysToAdult));
         return Calendars.get(entity.level()).getTotalDays() - lifeTimeDays;
     }
 

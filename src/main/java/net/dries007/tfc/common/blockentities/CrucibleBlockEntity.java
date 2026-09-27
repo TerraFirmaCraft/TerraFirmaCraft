@@ -404,7 +404,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             final Metal metal = Metal.get(resource.getFluid());
             if (metal != null)
             {
-                return alloy.add(metal, resource.getAmount(), action.simulate());
+                final int filled = alloy.add(metal, resource.getAmount(), action.simulate());
+                if (filled > 0 && action.execute())
+                {
+                    crucible.markForSync();
+                }
+                return filled;
             }
             return 0;
         }

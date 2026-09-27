@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -291,17 +290,32 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         return PotContainer.create(this, playerInv, windowID);
     }
 
-    public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>
+    public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, FluidTankCallback, INBTSerializable<CompoundTag>
     {
         private final PotBlockEntity pot;
         private final ItemStackHandler inventory;
-        private final FluidTank tank;
+        private final InventoryFluidTank tank;
 
         public PotInventory(InventoryBlockEntity<PotInventory> entity)
         {
             this.pot = (PotBlockEntity) entity;
             this.inventory = new InventoryItemHandler(entity, 9);
-            this.tank = new FluidTank(FluidHelpers.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT));
+            this.tank = new InventoryFluidTank(FluidHelpers.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT), this);
+        }
+
+        @Override
+        public void fluidTankChanged()
+        {
+            if (pot.getLevel() != null && !pot.getLevel().isClientSide)
+            {
+                pot.setAndUpdateSlots(-1);
+            }
+        }
+
+        @Override
+        public int fill(FluidStack resource, FluidAction action)
+        {
+            return pot.hasRecipeStarted() ? 0 : getFluidHandler().fill(resource, action);
         }
 
         @NotNull

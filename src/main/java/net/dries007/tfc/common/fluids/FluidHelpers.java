@@ -77,6 +77,14 @@ public final class FluidHelpers
     /**
      * @see #isInWaterLikeFluid(Entity)
      */
+    public static double getWaterLikeFluidHeight(Entity entity)
+    {
+        return Math.max(entity.getFluidTypeHeight(TFCFluids.SALT_WATER.type().get()), entity.getFluidTypeHeight(TFCFluids.SPRING_WATER.type().get()));
+    }
+
+    /**
+     * @see #isInWaterLikeFluid(Entity)
+     */
     public static boolean isEyeInWaterLikeFluid(Entity entity)
     {
         return entity.isEyeInFluidType(TFCFluids.SALT_WATER.type().get()) || entity.isEyeInFluidType(TFCFluids.SPRING_WATER.type().get());
@@ -438,7 +446,7 @@ public final class FluidHelpers
                 return false;
             }
 
-            if (state.getBlock() != toPlace.getBlock() || (fluid instanceof FlowingFluid && toPlace.getFluidState().isSource()))
+            if (toPlace != state && (state.getBlock() != toPlace.getBlock() || (fluid instanceof FlowingFluid && toPlace.getFluidState().isSource())))
             {
                 if (!level.isClientSide && state.canBeReplaced(fluid) && !state.liquid())
                 {
