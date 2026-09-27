@@ -35,7 +35,7 @@ public enum TemperatureDisplayStyle
     }),
     CELSIUS(temperature -> Component.translatable("tfc.tooltip.temperature_celsius", String.format("%.0f", temperature))),
     FAHRENHEIT(temperature -> Component.translatable("tfc.tooltip.temperature_fahrenheit", String.format("%.0f", temperature * (9f / 5f) + 32f))),
-    RANKINE(temperature -> Component.translatable("tfc.tooltip.temperature_rankine", String.format("%.0f", temperature * (9f / 5f) + 32f - 459.67f))),
+    RANKINE(temperature -> Component.translatable("tfc.tooltip.temperature_rankine", String.format("%.0f", temperature * (9f / 5f) + 491.67f))),
     KELVIN(temperature -> Component.translatable("tfc.tooltip.temperature_kelvin", String.format("%.0f", temperature + 273.15f)));
 
     private final Function formatter;
