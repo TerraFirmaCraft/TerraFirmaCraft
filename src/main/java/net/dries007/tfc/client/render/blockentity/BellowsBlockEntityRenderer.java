@@ -15,7 +15,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor.ARGB32;
 
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
@@ -37,6 +39,9 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
 
     private static final float indentBase = 0.0125f;
     private static final float indentFactor = 1.8f;
+
+    // Local space normals of each quad from getVertices(), in order
+    private static final float[][] QUAD_NORMALS = {{-1, 0, 0}, {1, 0, 0}, {0, -1, 0}, {0, 1, 0}};
 
     public static float[][] getVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float changeX, float changeY)
     {
@@ -70,7 +75,8 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     @Override
     public void render(BellowsBlockEntity bellows, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
-        int meta = bellows.getBlockState().getValue(BellowsBlock.FACING).get2DDataValue();
+        final Direction facing = bellows.getBlockState().getValue(BellowsBlock.FACING);
+        final int meta = facing.get2DDataValue();
 
         poseStack.pushPose();
 
@@ -86,14 +92,19 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - 90.0F * meta));
         poseStack.translate(-0.5d, 0.0d, -0.5d);
 
-        drawMiddle(buffer, poseStack, sideSprite, width, packedLight, packedOverlay);
+        drawMiddle(buffer, poseStack, sideSprite, facing, width, packedLight, packedOverlay);
         RenderHelpers.renderTexturedCuboid(poseStack, buffer, endSprite, packedLight, packedOverlay, 0, 0, width, 1, 1, 0.125f + width);
 
         poseStack.popPose();
     }
 
-    private void drawMiddle(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, float width, int packedLight, int packedOverlay)
+    private void drawMiddle(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, Direction facing, float width, int packedLight, int packedOverlay)
     {
+        // Normals are in local space and get rotated by the pose, but the shade must be picked from the world direction each side ends up facing
+        final Direction side = facing.getClockWise();
+        final int sideColor = shadeColor(side.getStepX(), 0, side.getStepZ());
+        final int[] quadColors = {sideColor, sideColor, shadeColor(0, -1, 0), shadeColor(0, 1, 0)};
+
         float widthPerSection = (width - headWidth) / planeCount;
         float currentWidth = headWidth;
         float lastWidth = currentWidth;
@@ -104,13 +115,26 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
             currentWidth += widthPerSection;
             float min = isIndented ? bellowsWidthMin + change : bellowsWidthMin;
             float max = isIndented ? bellowsWidthMax - change : bellowsWidthMax;
-            for (float[] v : getVertices(min, max, currentWidth, max, min, lastWidth, isIndented ? -change : change, isIndented ? -change : change))
+            final float[][] vertices = getVertices(min, max, currentWidth, max, min, lastWidth, isIndented ? -change : change, isIndented ? -change : change);
+            for (int quad = 0; quad < vertices.length / 4; quad++)
             {
-                // Texture needs to the reversed due to the direction the planes are rendered in
-                // Otherwise the texture is cut up and displayed out of order
-                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(((v[3] * -texWidth) + (texWidth * (i + 1))) * (1f / 16f)), sprite.getV(v[4]), 1, 0, 0); // todo: incorrect normal
+                final float[] normal = QUAD_NORMALS[quad];
+                final int color = quadColors[quad];
+                for (int j = quad * 4; j < quad * 4 + 4; j++)
+                {
+                    final float[] v = vertices[j];
+                    // Texture needs to the reversed due to the direction the planes are rendered in
+                    // Otherwise the texture is cut up and displayed out of order
+                    RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(((v[3] * -texWidth) + (texWidth * (i + 1))) * (1f / 16f)), sprite.getV(v[4]), normal[0], normal[1], normal[2], color);
+                }
             }
             lastWidth = currentWidth;
         }
+    }
+
+    private static int shadeColor(int stepX, int stepY, int stepZ)
+    {
+        final float shade = RenderHelpers.getShadeForStep(stepX, stepY, stepZ);
+        return ARGB32.colorFromFloat(1f, shade, shade, shade);
     }
 }

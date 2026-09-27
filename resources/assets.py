@@ -1573,16 +1573,29 @@ def generate(rm: ResourceManager):
                 rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife]})
         else:
             rm.block_loot(p, {'name': p, 'conditions': [shears_or_knife]})
-    # todo this is a mess
-    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss', 'golden_bamboo_sapling', 'flame_vine', 'cycad'):
+    # Plants that aren't in PLANTS: (block, body block of a tall plant, requires a sharp tool to drop)
+    # Body blocks have no loot table of their own
+    for plant, body, needs_sharp in (
+        ('tree_fern', 'tree_fern_plant', False),
+        ('arundo', 'arundo_plant', False),
+        ('dry_phragmite', 'dry_phragmite_plant', False),
+        ('cycad', 'cycad_plant', True),
+        ('winged_kelp', 'winged_kelp_plant', False),
+        ('leafy_kelp', 'leafy_kelp_plant', False),
+        ('giant_kelp_flower', 'giant_kelp_plant', False),
+        ('hanging_vines', 'hanging_vines_plant', True),
+        ('spanish_moss', 'spanish_moss_plant', True),
+        ('liana', 'liana_plant', True),
+        ('flame_vine', 'flame_vine_plant', True),
+        ('jungle_vines', None, True),
+        ('golden_bamboo', None, False),
+    ):
+        p = 'tfc:plant/%s' % plant
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
-    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower', 'dry_phragmite', 'golden_bamboo'):
-        rm.lang('block.tfc.plant.%s' % plant, lang(plant))
-        rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
-    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'spanish_moss', 'liana', 'dry_phragmite', 'flame_vine', 'cycad'):
-        rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
-    for plant in ('hanging_vines', 'jungle_vines', 'liana', 'spanish_moss', 'flame_vine', 'cycad'):
-        rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [match_tag_1_21_plus(TAG_SHARP)]})
+        rm.block_loot(p, {'name': p, 'conditions': [match_tag_1_21_plus(TAG_SHARP)]} if needs_sharp else p)
+        if body is not None:
+            rm.lang('block.tfc.plant.%s' % body, lang(body.removesuffix('_plant')))
+    rm.lang('block.tfc.plant.golden_bamboo_sapling', lang('golden_bamboo_sapling'))
     rm.block_loot('plant/golden_bamboo_sapling', 'tfc:plant/golden_bamboo')
 
     cactus = 'saguaro'
