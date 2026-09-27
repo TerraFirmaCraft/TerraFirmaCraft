@@ -91,12 +91,6 @@ public class AtollSurfaceBuilder implements SurfaceBuilder
                         {
                             surfaceDepth = -1; // Reached air, reset surface depth
                         }
-                        // Important that the easing threshold matches the beachDist variable in the atoll shape function
-                        else if (y == seaLevel - 1 && CenteredFeatureNoise.getAtollIntegrity(cell) >= 1 && easing > 0.58 && stateAt.is(TFCFluids.SALT_WATER.createSourceBlock().getBlock()))
-                        {
-                            // Place a single floating layer of fresh water in 100% enclosed lagoons
-                            context.setBlockState(y, Fluids.WATER.getSource().defaultFluidState().createLegacyBlock());
-                        }
                         else if (context.isDefaultBlock(stateAt))
                         {
                             // If placing the topmost block
@@ -136,8 +130,24 @@ public class AtollSurfaceBuilder implements SurfaceBuilder
                             }
                         }
                     }
-                    return;
                 }
+                else
+                {
+                    parent.buildSurface(context, startY, endY);
+                }
+
+                // Important that the easing threshold matches the beachDist variable in the atoll shape function.
+                // One fresh surface layer in a fully enclosed lagoon, independent of raised-seafloor terrain replacement.
+                // Applied after the parent so a fallback surface cannot put salt water back.
+                if (CenteredFeatureNoise.getAtollIntegrity(cell) >= 1 && easing > 0.58)
+                {
+                    final BlockState surfaceWater = context.getBlockState(seaLevel - 1);
+                    if (surfaceWater.is(TFCFluids.SALT_WATER.createSourceBlock().getBlock()))
+                    {
+                        context.setBlockState(seaLevel - 1, Fluids.WATER.getSource().defaultFluidState().createLegacyBlock());
+                    }
+                }
+                return;
             }
         }
         parent.buildSurface(context, startY, endY);
