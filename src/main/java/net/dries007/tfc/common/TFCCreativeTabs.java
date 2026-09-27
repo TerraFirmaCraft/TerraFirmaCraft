@@ -40,7 +40,6 @@ import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.glass.GlassWorking;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -80,15 +79,6 @@ public final class TFCCreativeTabs
     public static Stream<CreativeModeTab.DisplayItemsGenerator> generators()
     {
         return Stream.of(TFC_BUILDING_BLOCKS, TFC_COLORED_BLOCKS, TFC_NATURAL_BLOCKS, TFC_FLORA_CROPS, TFC_FUNCTIONAL_BLOCKS, TFC_TOOLS_UTILITIES, TFC_COMBAT, TFC_FOODS_DRINKS, TFC_METALS_INGREDIENTS, TFC_SPAWN_EGGS).map(holder -> holder.generator);
-    }
-
-    public static void setAllTabContentAsNonDecaying(BuildCreativeModeTabContentsEvent event)
-    {
-        // todo 1.21, verify that this works properly (event priority first, then mod order). Needs an addon lol
-        // Otherwise, re-add the mixin from 1.20
-        FoodCapability.setTransientNonDecaying(event.getTab().getIconItem());
-        event.getParentEntries().forEach(FoodCapability::setTransientNonDecaying);
-        event.getSearchEntries().forEach(FoodCapability::setTransientNonDecaying);
     }
 
     private static void fillBuildingBlocksTab(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output out)

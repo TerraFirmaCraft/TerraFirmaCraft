@@ -128,7 +128,6 @@ public final class TerraFirmaCraft
         bus.addListener(TFCComponents::onModifyDefaultComponents);
         bus.addListener(ItemCapabilities::register);
         bus.addListener(BlockCapabilities::register);
-        bus.addListener(TFCCreativeTabs::setAllTabContentAsNonDecaying);
         bus.addListener(TFCCreativeTabs::addToVanillaTabs);
         bus.addListener(Faunas::registerSpawnPlacements);
         bus.addListener(PacketHandler::setup);
