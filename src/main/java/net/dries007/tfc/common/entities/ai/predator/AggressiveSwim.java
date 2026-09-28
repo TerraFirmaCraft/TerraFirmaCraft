@@ -31,7 +31,7 @@ public class AggressiveSwim extends Behavior<Predator>
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, Predator predator)
     {
-        return predator.isInWater() && predator.getFluidTypeHeight(ForgeMod.WATER_TYPE.get()) > predator.getFluidJumpThreshold() || predator.isInLava();
+        return predator.isInWater() && predator.getFluidTypeHeight(ForgeMod.WATER_TYPE.get()) > predator.getFluidJumpThreshold() || predator.isInLava() || predator.isInFluidType((fluidType, height) -> predator.canSwimInFluidType(fluidType) && height > predator.getFluidJumpThreshold());
     }
 
     @Override
