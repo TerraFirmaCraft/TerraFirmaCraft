@@ -431,7 +431,7 @@ public final class FluidHelpers
                 return false;
             }
 
-            if (state.getBlock() != toPlace.getBlock() || (fluid instanceof FlowingFluid && toPlace.getFluidState().isSource()))
+            if (toPlace != state && (state.getBlock() != toPlace.getBlock() || (fluid instanceof FlowingFluid && toPlace.getFluidState().isSource())))
             {
                 if (!level.isClientSide && state.canBeReplaced(fluid) && !state.liquid())
                 {

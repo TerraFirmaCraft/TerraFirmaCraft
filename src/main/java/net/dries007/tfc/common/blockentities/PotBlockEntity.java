@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +27,8 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.FirepitBlock;
+import net.dries007.tfc.common.capabilities.FluidTankCallback;
+import net.dries007.tfc.common.capabilities.InventoryFluidTank;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.PartialFluidHandler;
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
@@ -295,17 +296,33 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         return PotContainer.create(this, playerInv, windowID);
     }
 
-    public static class PotInventory implements IPotInventory, INBTSerializable<CompoundTag>
+    public static class PotInventory implements IPotInventory, FluidTankCallback, INBTSerializable<CompoundTag>
     {
         private final PotBlockEntity pot;
         private final ItemStackHandler inventory;
-        private final FluidTank tank;
+        private final InventoryFluidTank tank;
 
         public PotInventory(InventoryBlockEntity<PotInventory> entity)
         {
             this.pot = (PotBlockEntity) entity;
             this.inventory = new InventoryItemHandler(entity, 9);
-            this.tank = new FluidTank(FluidHelpers.BUCKET_VOLUME, this::canInsertFluid);
+            this.tank = new InventoryFluidTank(FluidHelpers.BUCKET_VOLUME, this::canInsertFluid, this);
+        }
+
+        @Override
+        public void fluidTankChanged()
+        {
+            // Fluid may be inserted or extracted via capability (i.e. pipes), so we need to update the recipe and sync to client
+            if (pot.getLevel() != null && !pot.getLevel().isClientSide)
+            {
+                pot.setAndUpdateSlots(-1);
+            }
+        }
+
+        @Override
+        public int fill(FluidStack resource, FluidAction action)
+        {
+            return pot.hasRecipeStarted() ? 0 : getFluidHandler().fill(resource, action);
         }
 
         @Override

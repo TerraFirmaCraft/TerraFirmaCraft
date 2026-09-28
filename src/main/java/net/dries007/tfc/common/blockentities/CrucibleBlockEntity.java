@@ -442,7 +442,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         @Override
         public int fill(FluidStack resource, IFluidHandler.FluidAction action)
         {
-            return alloy.fill(resource, action, INFO);
+            final int filled = alloy.fill(resource, action, INFO);
+            if (filled > 0 && action.execute())
+            {
+                crucible.markForSync();
+            }
+            return filled;
         }
 
         @Override
