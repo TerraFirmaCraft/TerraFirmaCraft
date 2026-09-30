@@ -40,7 +40,7 @@
         }
       },
       "name": "蜡烛",
-      "text": "Candles last for $(cfg:candleTicks), and may also be relit.",
+      "text": "蜡烛可燃烧 $(cfg:candleTicks)，熄灭后还可以重新点燃。",
       "enable_visualize": false
     },
     {
@@ -65,7 +65,7 @@
         }
       },
       "name": "南瓜灯",
-      "text": "Jack 'o Lanterns are the lit version of $(thing)Carved Pumpkins$(), and last for $(cfg:jackOLanternTicks), before reverting to carved pumpkins.",
+      "text": "南瓜灯是点亮的$(thing)雕刻南瓜$()，可持续照明 $(cfg:jackOLanternTicks)，之后会恢复为雕刻南瓜。",
       "enable_visualize": false
     },
     {
