@@ -59,7 +59,7 @@
     {
       "type": "tfc:multimultiblock",
       "name": "熔岩灯",
-      "text": "Lava will keep burning forever, but can only be held in a $(l:metalworking/steel#blue_steel)Blue Steel$() or $(l:metalworking/steel#red_steel)Red Steel$() lamp.",
+      "text": "熔岩可以永久燃烧，但只能装在$(l:metalworking/steel#blue_steel)蓝钢$()或$(l:metalworking/steel#red_steel)红钢$()灯中。",
       "multiblocks": [
         {
           "pattern": [

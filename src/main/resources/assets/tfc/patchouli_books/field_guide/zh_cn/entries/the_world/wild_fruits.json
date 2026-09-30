@@ -1836,7 +1836,7 @@
     {
       "type": "patchouli:text",
       "anchor": "banana",
-      "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:11) - $(cfg:temperature:40)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 280 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.banana.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.banana.hydration)%$(br2)Bananas grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and must be replanted in the spring.",
+      "text": "分布区域：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$()：$(cfg:temperature:11) - $(cfg:temperature:40)$(br)$(bold)$(l:core_mechanics/climate#rainfall)降雨量$()：280 - 500mm$(br2)生长条件：$(br)$(bold)$(l:core_mechanics/climate#temperature)温度$()：$(cfg:climate.banana.temperature)$(br)$(bold)$(l:food/hydration)湿度$()：$(cfg:climate.banana.hydration)%$(br2)香蕉植株只会竖直生长，没有树叶，且仅在最顶端结果。开花部位会掉落幼苗。香蕉收获后植株便会枯死，必须在春季重新种植。",
       "title": "香蕉树"
     },
     {
@@ -1948,40 +1948,40 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "一月"
         },
         {
-          "text": "Feb"
+          "text": "二月"
         },
         {
-          "text": "Mar"
+          "text": "三月"
         },
         {
-          "text": "Apr"
+          "text": "四月"
         },
         {
-          "text": "May"
+          "text": "五月"
         },
         {
-          "text": "Jun"
+          "text": "六月"
         },
         {
-          "text": "Jul"
+          "text": "七月"
         },
         {
-          "text": "Aug"
+          "text": "八月"
         },
         {
-          "text": "Sep"
+          "text": "九月"
         },
         {
-          "text": "Oct"
+          "text": "十月"
         },
         {
-          "text": "Nov"
+          "text": "十一月"
         },
         {
-          "text": "Dec"
+          "text": "十二月"
         },
         {
           "text": "樱桃"
@@ -2757,40 +2757,40 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "一月"
         },
         {
-          "text": "Feb"
+          "text": "二月"
         },
         {
-          "text": "Mar"
+          "text": "三月"
         },
         {
-          "text": "Apr"
+          "text": "四月"
         },
         {
-          "text": "May"
+          "text": "五月"
         },
         {
-          "text": "Jun"
+          "text": "六月"
         },
         {
-          "text": "Jul"
+          "text": "七月"
         },
         {
-          "text": "Aug"
+          "text": "八月"
         },
         {
-          "text": "Sep"
+          "text": "九月"
         },
         {
-          "text": "Oct"
+          "text": "十月"
         },
         {
-          "text": "Nov"
+          "text": "十一月"
         },
         {
-          "text": "Dec"
+          "text": "十二月"
         },
         {
           "text": "黑莓"
@@ -3487,40 +3487,40 @@
           "text": ""
         },
         {
-          "text": "Jan"
+          "text": "一月"
         },
         {
-          "text": "Feb"
+          "text": "二月"
         },
         {
-          "text": "Mar"
+          "text": "三月"
         },
         {
-          "text": "Apr"
+          "text": "四月"
         },
         {
-          "text": "May"
+          "text": "五月"
         },
         {
-          "text": "Jun"
+          "text": "六月"
         },
         {
-          "text": "Jul"
+          "text": "七月"
         },
         {
-          "text": "Aug"
+          "text": "八月"
         },
         {
-          "text": "Sep"
+          "text": "九月"
         },
         {
-          "text": "Oct"
+          "text": "十月"
         },
         {
-          "text": "Nov"
+          "text": "十一月"
         },
         {
-          "text": "Dec"
+          "text": "十二月"
         },
         {
           "text": "御膳橘"
