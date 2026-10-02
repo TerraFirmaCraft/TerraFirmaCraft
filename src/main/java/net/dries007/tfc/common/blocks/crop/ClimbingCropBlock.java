@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -98,21 +99,19 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
     @Override
     public void die(Level level, BlockPos pos, BlockState state, boolean fullyGrown)
     {
+        final boolean hasStick = state.getValue(STICK);
         final BlockPos posAbove = pos.above();
         final BlockState stateAbove = level.getBlockState(posAbove);
-        final boolean hasTop = stateAbove.getBlock() == this;
-
-        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(STICK, state.getValue(STICK));
+        final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(STICK, hasStick);
+        if (hasStick && isSameOrAir(stateAbove))
+        {
+            level.setBlock(posAbove, deadState.setValue(DeadDoubleCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+        }
+        else if(stateAbove.getBlock() == this)
+        {
+            level.setBlock(posAbove, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+        }
         level.setBlockAndUpdate(pos, deadState.setValue(DeadDoubleCropBlock.PART, Part.BOTTOM));
-
-        if (hasTop)
-        {
-            level.setBlock(posAbove, deadState.setValue(DeadDoubleCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
-        }
-        else
-        {
-            level.destroyBlock(posAbove, false);
-        }
     }
 
     @Nullable
