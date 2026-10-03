@@ -105,13 +105,15 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static Component getInstantTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, float temperature, boolean allowWiggle, String translationKey)
     {
-        final MutableComponent tooltip = Component.translatable(translationKey, TFCConfig.CLIENT.climateTooltipStyle.get().format(temperature));
+        // Climate temps can be <= 0°C; format() is heat-only and returns null for those values.
+        final var style = TFCConfig.CLIENT.climateTooltipStyle.get();
+        final MutableComponent tooltip = Component.translatable(translationKey, style.formatRange(temperature));
 
         tooltip.append(switch (validRange.checkTemperature(temperature, allowWiggle))
         {
             case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
-            case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", TFCConfig.CLIENT.climateTooltipStyle.get().format(validRange.getMinTemperature(allowWiggle)));
-            case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", TFCConfig.CLIENT.climateTooltipStyle.get().format(validRange.getMaxTemperature(allowWiggle)));
+            case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", style.formatRange(validRange.getMinTemperature(allowWiggle)));
+            case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", style.formatRange(validRange.getMaxTemperature(allowWiggle)));
         });
         return tooltip;
     }
