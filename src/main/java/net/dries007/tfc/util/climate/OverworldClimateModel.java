@@ -123,7 +123,18 @@ public class OverworldClimateModel implements ClimateModel
     @Override
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
-        return Helpers.adjustAverageTemperatureByElevation(pos.getY(), ChunkData.get(level, pos).getAverageSeaLevelTemp(pos), SEA_LEVEL);
+        final int y = pos.getY();
+        final float averageTemperature =  ChunkData.get(level, pos).getAverageSeaLevelTemp(pos);
+        if(y > 0)
+        {
+            return Helpers.adjustAverageTemperatureByElevation(pos.getY(),averageTemperature, SEA_LEVEL);
+        }
+        else
+        {
+            // Account for lava level influence
+            final float depthInfluence = Helpers.inverseLerp(y, DEPTH_LEVEL, 0);
+            return Mth.lerp(depthInfluence, LAVA_LEVEL_TEMPERATURE, averageTemperature);
+        }
     }
 
     @Override
