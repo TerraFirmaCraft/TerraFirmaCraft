@@ -80,7 +80,6 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, float temperature, boolean allowWiggle, String translationKey)
     {
-        // Climate temps can be <= 0°C; format() is heat-only and returns null for those values.
         final var style = TFCConfig.CLIENT.climateTooltipStyle.get();
         final MutableComponent tooltip = Component.translatable(translationKey, style.format(temperature, true));
 
