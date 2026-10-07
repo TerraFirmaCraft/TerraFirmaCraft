@@ -77,6 +77,7 @@ import net.dries007.tfc.common.entities.misc.ThrownJavelin;
 import net.dries007.tfc.common.entities.predator.AmphibiousPredator;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.predator.TFCWolf;
 import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.RammingPrey;
@@ -171,7 +172,7 @@ public class TFCEntities
     public static final Id<FelinePredator> SABERTOOTH = register("sabertooth", EntityType.Builder.of(FelinePredator::createSabertooth, MobCategory.CREATURE).sized(1.1F, 1.3F).clientTrackingRange(10));
     public static final Id<FelinePredator> TIGER = register("tiger", EntityType.Builder.of(FelinePredator::createTiger, MobCategory.CREATURE).sized(1.1F, 1.3F).clientTrackingRange(10));
     public static final Id<AmphibiousPredator> CROCODILE = register("crocodile", EntityType.Builder.of(AmphibiousPredator::createCrocodile, MobCategory.CREATURE).sized(1.8F, 0.8F).clientTrackingRange(10));
-    public static final Id<PackPredator> WOLF = register("wolf", EntityType.Builder.of(PackPredator::createWolf, MobCategory.CREATURE).sized(0.65F, 0.9F).eyeHeight(0.68F).clientTrackingRange(10));
+    public static final Id<TFCWolf> WOLF = register("wolf", EntityType.Builder.of(TFCWolf::new, MobCategory.CREATURE).sized(0.65F, 0.9F).eyeHeight(0.68F).clientTrackingRange(10));
     public static final Id<PackPredator> HYENA = register("hyena", EntityType.Builder.of(PackPredator::createHyena, MobCategory.CREATURE).sized(0.65F, 0.9F).clientTrackingRange(10));
     public static final Id<PackPredator> DIREWOLF = register("direwolf", EntityType.Builder.of(PackPredator::createDirewolf, MobCategory.CREATURE).sized(1.0F, 1.2F).clientTrackingRange(10));
 
