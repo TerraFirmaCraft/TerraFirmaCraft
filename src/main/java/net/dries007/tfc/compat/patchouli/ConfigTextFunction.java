@@ -22,8 +22,9 @@ import vazkii.patchouli.api.PatchouliAPI;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.component.heat.Heat;
+import net.dries007.tfc.config.ItemTemperatureDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.config.TemperatureDisplayStyle;
+import net.dries007.tfc.config.ClimateTemperatureDisplayStyle;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -211,7 +212,7 @@ public final class ConfigTextFunction
     private static Component climateTemperature(float value)
     {
         final Component formatted = TFCConfig.CLIENT.climateTooltipStyle.get().formatRange(value);
-        return formatted != null ? formatted : Objects.requireNonNull(TemperatureDisplayStyle.CELSIUS.formatRange(value));
+        return formatted != null ? formatted : Objects.requireNonNull(ClimateTemperatureDisplayStyle.CELSIUS.formatRange(value));
     }
 
     private static Component range(Object min, Object max)
@@ -226,8 +227,8 @@ public final class ConfigTextFunction
 
     private static Component temperature(int degrees)
     {
-        final TemperatureDisplayStyle style = TFCConfig.CLIENT.heatTooltipStyle.get();
-        final Component formatted = (style == TemperatureDisplayStyle.COLOR ? TemperatureDisplayStyle.CELSIUS : style).format(degrees);
+        final ItemTemperatureDisplayStyle style = TFCConfig.CLIENT.heatTooltipStyle.get();
+        final Component formatted = (style == ItemTemperatureDisplayStyle.COLOR ? ItemTemperatureDisplayStyle.CELSIUS : style).format(degrees);
         return formatted == null ? count(degrees) : formatted;
     }
 
