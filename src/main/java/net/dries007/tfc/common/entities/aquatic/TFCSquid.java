@@ -132,7 +132,7 @@ public class TFCSquid extends Squid implements AquaticMob
                 setSize((int) (getSize() * 0.8), true);
                 if (getSize() < pair.getFirst())
                 {
-                    discard();
+                    setSpawnCancelled(true);
                     return spawn;
                 }
             }
