@@ -46,7 +46,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
         }
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final ChunkData chunkData = ChunkData.get(level, chunkPos);
         for (int i = 0; i < 72; i++)
         {

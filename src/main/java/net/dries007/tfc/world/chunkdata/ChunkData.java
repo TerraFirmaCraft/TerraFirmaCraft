@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCAttachments;
 import net.dries007.tfc.network.ChunkWatchPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateModel;
 
 import static net.dries007.tfc.world.TFCChunkGenerator.*;
@@ -408,7 +409,7 @@ public sealed class ChunkData
     {
         private Immutable()
         {
-            super(new ChunkPos(ChunkPos.INVALID_CHUNK_POS));
+            super(Helpers.chunkPos(ChunkPos.INVALID_CHUNK_POS));
         }
 
         @Override

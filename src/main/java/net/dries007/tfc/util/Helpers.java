@@ -73,6 +73,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -177,6 +178,21 @@ public final class Helpers
     public static ResourceLocation resourceLocation(String domain, String path)
     {
         return ResourceLocation.fromNamespaceAndPath(domain, path);
+    }
+
+    public static ChunkPos chunkPos(BlockPos pos)
+    {
+        return new ChunkPos(pos);
+    }
+
+    public static ChunkPos chunkPos(long packed)
+    {
+        return new ChunkPos(packed);
+    }
+
+    public static long packChunkPos(int x, int z)
+    {
+        return ChunkPos.asLong(x, z);
     }
 
     public static Vec3 getRandomSpeedRanges(RandomSource random)

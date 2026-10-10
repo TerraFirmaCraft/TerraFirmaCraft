@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 import net.dries007.tfc.common.entities.misc.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.MutableDensityFunctionContext;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -41,7 +42,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final BlockPos pos = context.origin();
 
         final ChunkAccess chunk = level.getChunk(pos);
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final int chunkX = chunkPos.getMinBlockX(), chunkZ = chunkPos.getMinBlockZ();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final RockData rockData = ChunkData.get(chunk).getRockData();

@@ -17,6 +17,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
+import net.dries007.tfc.util.Helpers;
+
 public class OverlayTreeFeature extends Feature<OverlayTreeConfig>
 {
     public OverlayTreeFeature(Codec<OverlayTreeConfig> codec)
@@ -32,7 +34,7 @@ public class OverlayTreeFeature extends Feature<OverlayTreeConfig>
         final var random = context.random();
         final OverlayTreeConfig config = context.config();
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
         final StructureTemplateManager manager = TreeHelpers.getStructureManager(level);
         final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);

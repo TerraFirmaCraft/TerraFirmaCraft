@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
@@ -39,7 +40,7 @@ public class SoilForestAreaFeature extends Feature<SoilForestAreaConfig>
         final SoilForestAreaConfig config = context.config();
 
         // Sum forest densities of adjacent chunks
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final int densityCenter = ChunkData.get(level, chunkPos).getForestType().getDensity();
         final int densityNorth = ChunkData.get(level, pos.north(16)).getForestType().getDensity();
         final int densitySouth = ChunkData.get(level, pos.south(16)).getForestType().getDensity();

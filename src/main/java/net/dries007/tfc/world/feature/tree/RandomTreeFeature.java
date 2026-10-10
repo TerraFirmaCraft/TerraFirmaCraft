@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
+import net.dries007.tfc.util.Helpers;
 
 public class RandomTreeFeature extends Feature<RandomTreeConfig>
 {
@@ -35,7 +36,7 @@ public class RandomTreeFeature extends Feature<RandomTreeConfig>
         final RandomSource random = context.random();
         final RandomTreeConfig config = context.config();
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
         final StructureTemplateManager manager = TreeHelpers.getStructureManager(level);
         final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);

@@ -9,7 +9,8 @@ package net.dries007.tfc.world.layer.framework;
 import java.util.Arrays;
 import it.unimi.dsi.fastutil.HashCommon;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
  * @see Area
@@ -36,7 +37,7 @@ public class TypedArea<A>
     @SuppressWarnings("unchecked")
     public A get(int x, int z)
     {
-        final long key = ChunkPos.asLong(x, z);
+        final long key = Helpers.packChunkPos(x, z);
         final int index = (int) HashCommon.mix(key) & mask;
         if (keys[index] == key)
         {

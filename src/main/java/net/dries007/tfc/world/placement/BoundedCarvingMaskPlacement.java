@@ -19,6 +19,8 @@ import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
+import net.dries007.tfc.util.Helpers;
+
 /**
  * Extension of the vanilla carving mask decorator which allows min and max y bounds.
  */
@@ -50,7 +52,7 @@ public class BoundedCarvingMaskPlacement extends PlacementModifier
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos)
     {
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final CarvingMask carvingMask = context.getCarvingMask(chunkPos, step);
         final int minY = this.minY.resolveY(context);
         final int maxY = this.maxY.resolveY(context);

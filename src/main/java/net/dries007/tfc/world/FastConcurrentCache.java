@@ -10,8 +10,9 @@ import java.util.Arrays;
 import java.util.concurrent.locks.StampedLock;
 import it.unimi.dsi.fastutil.HashCommon;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
 import org.jetbrains.annotations.Nullable;
+
+import net.dries007.tfc.util.Helpers;
 
 /**
  * A concurrent (safe to read and write between multiple threads) positional based, lossy, cache.
@@ -39,7 +40,7 @@ public class FastConcurrentCache<T>
     @Nullable
     public T getIfPresent(int x, int z)
     {
-        final long key = ChunkPos.asLong(x, z);
+        final long key = Helpers.packChunkPos(x, z);
         final int index = (int) HashCommon.mix(key) & mask;
         final long stamp = lock.readLock();
 
@@ -55,7 +56,7 @@ public class FastConcurrentCache<T>
 
     public void set(int x, int z, T value)
     {
-        final long key = ChunkPos.asLong(x, z);
+        final long key = Helpers.packChunkPos(x, z);
         final int index = (int) HashCommon.mix(key) & mask;
         final long stamp = lock.writeLock();
 

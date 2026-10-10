@@ -17,6 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.util.Helpers;
+
 public abstract class TFCBlockEntity extends BlockEntity
 {
     protected TFCBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
@@ -137,7 +139,7 @@ public abstract class TFCBlockEntity extends BlockEntity
         final BlockPos pos = getBlockPos();
         if (packet != null && level instanceof ServerLevel serverLevel)
         {
-            serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
+            serverLevel.getChunkSource().chunkMap.getPlayers(Helpers.chunkPos(pos), false).forEach(e -> e.connection.send(packet));
         }
     }
 }
