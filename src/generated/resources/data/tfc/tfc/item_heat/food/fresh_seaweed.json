@@ -12,6 +12,9 @@
     },
     {
       "item": "tfc:plant/giant_kelp_flower"
+    },
+    {
+      "item": "tfc:groundcover/seaweed"
     }
   ]
 }
