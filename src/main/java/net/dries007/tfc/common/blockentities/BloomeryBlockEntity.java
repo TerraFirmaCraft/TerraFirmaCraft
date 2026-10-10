@@ -229,7 +229,8 @@ public class BloomeryBlockEntity extends TickableBlockEntity implements ICalenda
         {
             updateCachedRecipe();
         }
-        if (level.isClientSide || cachedRecipe == null || !level.getBlockState(worldPosition).getValue(BloomeryBlock.LIT))
+        final BlockState state = level.getBlockState(worldPosition);
+        if (level.isClientSide || cachedRecipe == null || !state.hasProperty(BloomeryBlock.LIT) || !state.getValue(BloomeryBlock.LIT))
         {
             return;
         }

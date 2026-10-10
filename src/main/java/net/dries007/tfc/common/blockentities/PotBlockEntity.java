@@ -194,7 +194,8 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         {
             return;
         }
-        if (level.getBlockState(worldPosition).getValue(FirepitBlock.LIT))
+        final BlockState state = level.getBlockState(worldPosition);
+        if (state.hasProperty(FirepitBlock.LIT) && state.getValue(FirepitBlock.LIT))
         {
             final HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
 
@@ -213,7 +214,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                         handleCooking();
                     }
                 }
-                extinguish(level.getBlockState(worldPosition));
+                extinguish(state);
                 coolInstantly();
             }
             else

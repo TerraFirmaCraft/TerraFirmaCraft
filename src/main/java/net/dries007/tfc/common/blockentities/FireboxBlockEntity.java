@@ -374,7 +374,7 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
         }
 
         final BlockState state = level.getBlockState(worldPosition);
-        if (state.getValue(FireboxBlock.LIT))
+        if (state.hasProperty(FireboxBlock.LIT) && state.getValue(FireboxBlock.LIT))
         {
             final boolean wasHeating = isHeatingTimerRunning();
 
