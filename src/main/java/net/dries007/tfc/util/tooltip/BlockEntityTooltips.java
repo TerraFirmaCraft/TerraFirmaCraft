@@ -124,8 +124,9 @@ import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
+import net.dries007.tfc.config.ItemTemperatureDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.config.TemperatureDisplayStyle;
+import net.dries007.tfc.config.ClimateTemperatureDisplayStyle;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.data.LampFuel;
@@ -267,7 +268,7 @@ public final class BlockEntityTooltips
                     temperature = heatable.getTemperature();
                 }
 
-                final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
+                final ItemTemperatureDisplayStyle style = TFCConfig.CLIENT.heatTooltipStyle.get();
                 final Component temperatureComponent = Objects.requireNonNull(style.formatRange(temperature));
 
                 tooltip.accept(temperatureComponent);
@@ -276,7 +277,7 @@ public final class BlockEntityTooltips
             {
                 tooltip.accept(Component.translatable("tfc.tooltip.thermometer_ambient_mode"));
 
-                final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
+                final ClimateTemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
                 final Component temperatureComponent = Objects.requireNonNull(style.formatRange(ClimateRenderCache.INSTANCE.getInstantTemperature()));
 
                 tooltip.accept(temperatureComponent);
