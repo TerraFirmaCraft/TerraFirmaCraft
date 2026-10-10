@@ -24,10 +24,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClimateRenderCache;
@@ -626,16 +628,25 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip PLACED_ITEM = (level, state, pos, entity, tooltip) -> {
+    public static final BlockEntityTooltip PLACED_ITEM = (level, state, pos, entity, tooltip) -> placedItem(entity, tooltip, null);
+
+    public static void placedItem(@Nullable BlockEntity entity, Consumer<Component> tooltip, float @Nullable [] temperatures)
+    {
         if (entity instanceof PlacedItemBlockEntity placedItem)
         {
-            for (ItemStack stack : Helpers.iterate(placedItem.getInventory()))
+            final IItemHandler inventory = placedItem.getInventory();
+            for (int slot = 0; slot < inventory.getSlots(); slot++)
             {
+                final ItemStack stack = inventory.getStackInSlot(slot);
                 if (!stack.isEmpty())
+                {
                     tooltip.accept(stack.getHoverName());
+
+                    heat(tooltip, temperatures != null && slot < temperatures.length ? temperatures[slot] : HeatCapability.getTemperature(stack));
+                }
             }
         }
-    };
+    }
 
     public static final BlockEntityTooltip TRIP_HAMMER = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TripHammerBlockEntity tripHammer)

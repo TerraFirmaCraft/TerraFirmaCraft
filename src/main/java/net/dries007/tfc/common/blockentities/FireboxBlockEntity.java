@@ -91,21 +91,14 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
             box.cascadeFuelSlots();
         }
 
-        if (level.getGameTime() % 200 == 0)
+        if (box.needsFloodfill || level.getGameTime() % 200 == 0)
         {
-            final int oldCap = box.heatingCount;
-            box.operableBlocks = floodfill(level, pos, box);
-            if (oldCap != box.operableBlocks.size())
-            {
-                box.heatingCount = box.operableBlocks.size();
-                box.heatingTimestamp = Calendars.SERVER.getTicks();
-                box.markForSync();
-            }
+            box.updateOperableBlocks();
         }
 
         // todo: the kiln should light players on fire
 
-        if (box.temperature == 0 || box.heatingCount < 4 || Math.abs(box.temperature - box.burnTemperature) > BellowsBlockEntity.MAX_DEVICE_AIR_TICKS + 1)
+        if (!box.isHeatingTimerRunning())
             box.heatingTimestamp = Calendars.SERVER.getTicks();
         if (box.getTimeLeft() <= 0)
             performHeating(level, box, box.operableBlocks);
@@ -197,22 +190,57 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
                     if (heat != null)
                     {
                         HeatCapability.addTemp(heat, firebox.temperature);
-                        if (level.getGameTime() % 20 == 0)
+                        if (level.getGameTime() % 20 == 0 && tryApplyRecipe(inv, i, item, heat))
                         {
-                            final HeatingRecipe recipe = HeatingRecipe.getRecipe(item);
-                            if (recipe != null && recipe.matches(item) && recipe.isValidTemperature(heat.getTemperature()))
-                            {
-                                final ItemStack output = recipe.assembleItem(item);
-                                item.setCount(0);
-                                inv.insertItem(i, output, false);
-                                placedItem.markForSync();
-                                placedItem.updateBlock();
-                            }
+                            placedItem.markForSync();
+                            placedItem.updateBlock();
                         }
                     }
                 }
             }
         });
+    }
+
+    private static void performSkippedHeating(Level level, FireboxBlockEntity firebox, long ticksSinceFuelRanOut)
+    {
+        for (BlockPos testPos : firebox.operableBlocks)
+        {
+            if (level.getBlockEntity(testPos) instanceof PlacedItemBlockEntity placedItem)
+            {
+                final IItemHandler inv = placedItem.getInventory();
+                for (int i = 0; i < inv.getSlots(); i++)
+                {
+                    final ItemStack item = inv.getStackInSlot(i);
+                    final IHeat heat = HeatCapability.get(item);
+                    if (heat != null)
+                    {
+                        heat.setTemperatureIfWarmer(firebox.temperature);
+                        tryApplyRecipe(inv, i, item, heat);
+
+                        final IHeat outputHeat = HeatCapability.get(inv.getStackInSlot(i));
+                        if (outputHeat != null && ticksSinceFuelRanOut > 0)
+                        {
+                            outputHeat.setTemperature(HeatCapability.adjustTemp(outputHeat.getTemperature(), outputHeat.getHeatCapacity(), ticksSinceFuelRanOut));
+                        }
+                    }
+                }
+                placedItem.markForSync();
+                placedItem.updateBlock();
+            }
+        }
+    }
+
+    private static boolean tryApplyRecipe(IItemHandler inv, int slot, ItemStack item, IHeat heat)
+    {
+        final HeatingRecipe recipe = HeatingRecipe.getRecipe(item);
+        if (recipe != null && recipe.matches(item) && recipe.isValidTemperature(heat.getTemperature()))
+        {
+            final ItemStack output = recipe.assembleItem(item);
+            item.setCount(0);
+            inv.insertItem(slot, output, false);
+            return true;
+        }
+        return false;
     }
 
     private static boolean isValidInterior(BlockState state)
@@ -232,6 +260,7 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     private int burnTicks, airTicks, heatingCount;
     private float temperature, burnTemperature;
     private boolean needsSlotUpdate = true;
+    private boolean needsFloodfill = true;
     private List<BlockPos> operableBlocks = new ArrayList<>();
 
     public FireboxBlockEntity(BlockPos pos, BlockState state)
@@ -292,6 +321,25 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
         return operableBlocks.size() > 4;
     }
 
+    private boolean isHeatingTimerRunning()
+    {
+        return temperature > 0 && heatingCount >= 4 && Math.abs(temperature - burnTemperature) <= BellowsBlockEntity.MAX_DEVICE_AIR_TICKS + 1;
+    }
+
+    private void updateOperableBlocks()
+    {
+        assert level != null;
+        needsFloodfill = false;
+        final int oldCap = heatingCount;
+        operableBlocks = floodfill(level, worldPosition, this);
+        if (oldCap != operableBlocks.size())
+        {
+            heatingCount = operableBlocks.size();
+            heatingTimestamp = Calendars.SERVER.getTicks();
+            markForSync();
+        }
+    }
+
     public void extinguish(BlockState state)
     {
         assert level != null;
@@ -322,17 +370,26 @@ public class FireboxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
         assert level != null;
         if (ticks <= 0)
         {
-            return; // The calendar is paused, so no time has passed - see the note in serverTick()
+            return; // The calendar is paused
         }
 
         final BlockState state = level.getBlockState(worldPosition);
         if (state.getValue(FireboxBlock.LIT))
         {
+            final boolean wasHeating = isHeatingTimerRunning();
+
             HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, inventory, burnTicks, burnTemperature, 0, SLOTS - 1);
 
             burnTicks = remainder.burnTicks();
             burnTemperature = remainder.burnTemperature();
             needsSlotUpdate = true;
+
+            final long fuelRanOutTick = Calendars.SERVER.getTicks() - remainder.ticks();
+            if (wasHeating && heatingTimestamp + getTimeToHeat() <= fuelRanOutTick)
+            {
+                updateOperableBlocks();
+                performSkippedHeating(level, this, remainder.ticks());
+            }
 
             if (remainder.ticks() > 0)
             {
