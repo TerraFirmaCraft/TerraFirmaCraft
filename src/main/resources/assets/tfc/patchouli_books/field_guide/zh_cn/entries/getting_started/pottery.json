@@ -49,7 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "The small vessel is one such item. Like all pottery items, it must be $(l:https://en.wikipedia.org/wiki/Pottery)fired$() before it can be used. Firing is a process of $(l:core_mechanics/heating)heating$() the item up to a point where the clay will turn into a hard $(thing)Ceramic$() material, which requires heating to $(cfg:pitKilnTemperature), or $(bold)$(cfg:pitKilnHeat)$().$(br2)In order to do this in the early game, you will need to use a $(l:getting_started/pit_kiln)Pit Kiln$().",
+      "text": "小缸就是这样一种物品。和其他陶器一样，它必须先$(l:https://en.wikipedia.org/wiki/Pottery)烧制$()才能使用。烧制需要将黏土$(l:core_mechanics/heating)加热$()到$(cfg:pitKilnTemperature)，即$(bold)$(cfg:pitKilnHeat)$()，使其变成坚硬的$(thing)陶器$()。$(br2)在游戏初期，你可以用$(l:getting_started/pit_kiln)坑窑$()来烧制。",
       "title": "小缸"
     },
     {
@@ -144,7 +144,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "A $(thing)Hoe$() used for planting and maintaining $(l:food/crops)Crops$()."
+      "text": "$(thing)锄头$()用于种植和照料$(l:food/crops)作物$()。"
     },
     {
       "type": "tfc:knapping_recipe",

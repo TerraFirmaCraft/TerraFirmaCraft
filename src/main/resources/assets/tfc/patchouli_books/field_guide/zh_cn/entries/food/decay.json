@@ -46,7 +46,7 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/food/cooked_mutton",
-      "text": "Instead, a $(l:food/grill)Grill$() can even provide a buff for using it! Cooking mutton (pictured above) in a $(thing)Grill$() gives it the $(thing)Wood Grilled$() trait, multiplying its remaining lifetime by $(cfg:traitWoodGrilledModifier)x. Cooking in a $(l:metalworking/charcoal_forge)Charcoal Forge$() instead gives the $(thing)Charcoal Grilled$() trait, which multiplies its lifetime by $(cfg:traitCharcoalGrilledModifier)x."
+      "text": "使用$(l:food/grill)烤架$()烹饪甚至还能延长食物的保质期！上图的羊肉在$(thing)烤架$()上烹饪后，会获得$(thing)原木烤制$()特性，使剩余保质期变为原来的 $(cfg:traitWoodGrilledModifier) 倍。在$(l:metalworking/charcoal_forge)木炭炉$()中烹饪则会获得$(thing)木炭烤制$()特性，使剩余保质期变为原来的 $(cfg:traitCharcoalGrilledModifier) 倍。"
     },
     {
       "type": "patchouli:text",
