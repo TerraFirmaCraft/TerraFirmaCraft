@@ -38,7 +38,7 @@ public final class FruitBlocks
 
     public static WaterloggedBerryBushBlock createCranberry()
     {
-        return new WaterloggedBerryBushBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH).blockEntity(TFCBlockEntities.BERRY_BUSH).flammableLikeLeaves(), TFCItems.FOOD.get(Food.CRANBERRY), CRANBERRY_STAGES, ClimateRanges.CRANBERRY_BUSH);
+        return new WaterloggedBerryBushBlock(ExtendedProperties.of(MapColor.PLANT).strength(0.6f).noOcclusion().randomTicks().sound(SoundType.SWEET_BERRY_BUSH).blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammableLikeLeaves(), TFCItems.FOOD.get(Food.CRANBERRY), CRANBERRY_STAGES, ClimateRanges.CRANBERRY_BUSH);
     }
 
     public static Block createBananaSapling()

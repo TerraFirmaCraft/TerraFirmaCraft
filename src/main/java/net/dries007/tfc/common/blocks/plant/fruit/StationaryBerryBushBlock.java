@@ -188,7 +188,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
      */
     protected BlockState growAndPropagate(Level level, BlockPos pos, RandomSource random, BlockState state)
     {
-        if (state.getValue(LIFECYCLE).active())
+        if (!state.getValue(LIFECYCLE).active())
         {
             return state; // Only grow when active
         }
@@ -223,7 +223,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         {
             cursor.setWithOffset(pos, Helpers.triangle(random, 3), Helpers.triangle(random, 2), Helpers.triangle(random, 3));
             final BlockState placementState = getNewState(level, cursor);
-            if (canPlaceNewBushAt(level, pos, placementState))
+            if (canPlaceNewBushAt(level, cursor, placementState))
             {
                 level.setBlockAndUpdate(cursor, placementState);
                 return newState;
