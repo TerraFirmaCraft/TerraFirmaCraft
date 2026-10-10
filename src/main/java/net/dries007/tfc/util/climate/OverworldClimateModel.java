@@ -124,10 +124,10 @@ public class OverworldClimateModel implements ClimateModel
     public float getAverageTemperature(LevelReader level, BlockPos pos)
     {
         final int y = pos.getY();
-        final float averageTemperature =  ChunkData.get(level, pos).getAverageSeaLevelTemp(pos);
-        if(y > 0)
+        final float averageTemperature = ChunkData.get(level, pos).getAverageSeaLevelTemp(pos);
+        if (y > 0)
         {
-            return Helpers.adjustAverageTemperatureByElevation(pos.getY(),averageTemperature, SEA_LEVEL);
+            return Helpers.adjustAverageTemperatureByElevation(pos.getY(), averageTemperature, SEA_LEVEL);
         }
         else
         {
@@ -166,7 +166,7 @@ public class OverworldClimateModel implements ClimateModel
     }
 
     /**
-    * For positive values of variance, drought in January/rain in July, for negative values drought in summer, the opposite
+     * For positive values of variance, drought in January/rain in July, for negative values drought in summer, the opposite
      */
     @Override
     public float getInstantRainfall(LevelReader level, BlockPos pos, long calendarTicks, int daysInMonth)
@@ -388,6 +388,7 @@ public class OverworldClimateModel implements ClimateModel
 
     /**
      * Calculates the average monthly temperature for a location and given calendar month.
+     *
      * @param ignoreHemispheres will scale the temperature by the given month factor without inverting it if it is in a Southern Hemisphere.
      *                          For instance, with this true, passing in the factor for June will always return the factor for Early Summer, never for Early Winter
      */
