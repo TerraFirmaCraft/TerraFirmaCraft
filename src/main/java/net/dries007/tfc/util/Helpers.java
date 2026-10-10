@@ -133,6 +133,7 @@ import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
+import static net.dries007.tfc.util.climate.OverworldClimateModel.*;
 
 public final class Helpers
 {
@@ -1666,11 +1667,18 @@ public final class Helpers
     }
 
     /**
-     * @return The average annual temperature adjusted for elevation above sea level
+     * @return The average annual temperature adjusted for elevation above sea level or below y=0
      */
     public static float adjustAverageTemperatureByElevation(int y, float averageTemperature, float seaLevel)
     {
-        return averageTemperature - Mth.clamp((y - seaLevel) * 0.16225f, 0, 17.822f);
+        if (y > 0)
+        {
+            return averageTemperature - Mth.clamp((y - seaLevel) * 0.16225f, 0, 17.822f);
+        }
+
+        // Account for lava level influence
+        final float depthInfluence = Helpers.inverseLerp(y, DEPTH_LEVEL, 0);
+        return Mth.lerp(depthInfluence, LAVA_LEVEL_TEMPERATURE, averageTemperature);
     }
 
     /**
