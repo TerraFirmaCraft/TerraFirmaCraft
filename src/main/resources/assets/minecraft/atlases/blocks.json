@@ -117,7 +117,17 @@
         "gold_tfc": "tfc:color_palettes/trims/gold",
         "silver_tfc": "tfc:color_palettes/trims/silver",
         "sterling_silver_tfc": "tfc:color_palettes/trims/sterling_silver",
-        "bismuth_tfc": "tfc:color_palettes/trims/bismuth"
+        "bismuth_tfc": "tfc:color_palettes/trims/bismuth",
+        "amethyst": "minecraft:trims/color_palettes/amethyst",
+        "copper": "minecraft:trims/color_palettes/copper",
+        "diamond": "minecraft:trims/color_palettes/diamond",
+        "emerald": "minecraft:trims/color_palettes/emerald",
+        "gold": "minecraft:trims/color_palettes/gold",
+        "iron": "minecraft:trims/color_palettes/iron",
+        "lapis": "minecraft:trims/color_palettes/lapis",
+        "quartz": "minecraft:trims/color_palettes/quartz",
+        "netherite": "minecraft:trims/color_palettes/netherite",
+        "redstone": "minecraft:trims/color_palettes/redstone"
       }
     },
     {
