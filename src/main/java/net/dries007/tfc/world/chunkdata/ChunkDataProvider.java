@@ -135,7 +135,11 @@ public final class ChunkDataProvider
 
     public void promotePartial(ProtoChunk protoChunk, LevelChunk levelChunk)
     {
-        ChunkData.update(levelChunk, partialChunkData.remove(protoChunk));
+        final ChunkData data = partialChunkData.remove(protoChunk);
+        if (data != null)
+        {
+            ChunkData.update(levelChunk, data);
+        }
     }
 
     public ChunkData create(ChunkPos pos)
