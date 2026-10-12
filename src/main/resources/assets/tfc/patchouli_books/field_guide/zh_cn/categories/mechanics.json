@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "杂项",
-  "description": "Advanced and miscellaneous sections of the tech tree.$(br2)$(br)$(bold)Note:$() you can search entries simply by starting to type anywhere!",
+  "description": "技术树中较高级及其他杂项内容。$(br2)$(br)$(bold)提示：$()在任意位置直接输入文字，即可搜索词条！",
   "icon": "tfc:metal/helmet/blue_steel",
   "sortnum": 6
 }

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Core Mechanics",
-  "description": "An introduction to the core gameplay mechanics and systems present in TerraFirmaCraft.",
+  "name": "核心机制",
+  "description": "介绍群峦传说的核心玩法机制与系统。",
   "icon": "tfc:calendar_clock",
   "sortnum": 1
 }

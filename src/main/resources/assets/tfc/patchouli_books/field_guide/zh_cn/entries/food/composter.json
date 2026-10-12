@@ -65,7 +65,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The composter takes $(cfg:composterTicks) to complete in average conditions. When it is ready, it will have a dirt-like color and gray particles will be emitted from the top of it. The compost can then be retrieved with  $(item)$(k:key.use)$() and  $(item)$(k:key.sneak)$() with an empty hand. Adding things like $(c)meat$() and $(c)bones$() to compost spoils it, turning it reddish and causing it to emit gross particles. The rotten compost can be removed in the same way as good compost. When used on a crop, it instantly kills it."
+      "text": "在一般条件下，堆肥桶需要 $(cfg:composterTicks) 才能完成堆肥。完成后，堆肥桶会呈现泥土般的颜色，顶部冒出灰色颗粒。空手按$(item)$(k:key.sneak)$()并按$(item)$(k:key.use)$()即可取出堆肥。加入$(c)肉$()或$(c)骨头$()等物品会使堆肥腐败，颜色转红，并冒出难看的颗粒。腐败堆肥也可以用相同方式取出，但对作物使用会立即使其死亡。"
     },
     {
       "type": "patchouli:multiblock",
