@@ -7,18 +7,6 @@
 	},
 	"elements": [
 		{
-			"from": [6, 0, 6],
-			"to": [10, 16, 10],
-			"faces": {
-				"north": {"uv": [0, 0, 4, 16], "texture": "#texture"},
-				"east": {"uv": [0, 0, 4, 16], "texture": "#texture"},
-				"south": {"uv": [0, 0, 4, 16], "texture": "#texture"},
-				"west": {"uv": [0, 0, 4, 16], "texture": "#texture"},
-				"up": {"uv": [0, 0, 4, 4], "texture": "#texture", "cullface": "up"},
-				"down": {"uv": [0, 0, 4, 4], "texture": "#texture", "cullface": "down"}
-			}
-		},
-		{
 			"from": [7, 0, 0],
 			"to": [9, 2, 6],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 1, -2]},
@@ -46,12 +34,11 @@
 		}
 	],
 	"groups": [
-		0,
 		{
 			"name": "horizontal_rope",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": [1, 2]
+			"children": [0, 1]
 		}
 	]
 }
