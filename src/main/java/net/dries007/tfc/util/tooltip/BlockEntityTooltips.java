@@ -58,6 +58,7 @@ import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
 import net.dries007.tfc.common.blockentities.ThermometerBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blockentities.TickingPlantBlockEntity;
@@ -100,6 +101,7 @@ import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.PowerLoomBlock;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.devices.ThermometerBlock;
 import net.dries007.tfc.common.blocks.devices.VaneBlock;
@@ -124,6 +126,7 @@ import net.dries007.tfc.common.items.Powder;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.TemperatureDisplayStyle;
 import net.dries007.tfc.util.Helpers;
@@ -185,6 +188,7 @@ public final class BlockEntityTooltips
         callback.register("anemometer", ANEMOMETER, AnemometerBlock.class);
         callback.register("vane", VANE, VaneBlock.class);
         callback.register("trip_hammer", TRIP_HAMMER, TripHammerBlock.class);
+        callback.register("scraping", SCRAPING, ScrapingBlock.class);
     }
 
     public static final BlockEntityTooltip HOT_POURED_GLASS = (level, state, pos, entity, tooltip) -> {
@@ -661,6 +665,18 @@ public final class BlockEntityTooltips
                     final int remaining = stack.getMaxDamage() - stack.getDamageValue();
                     tooltip.accept(Component.translatable("item.durability", remaining, total));
                 }
+            }
+        }
+    };
+
+    public static final BlockEntityTooltip SCRAPING = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof ScrapingBlockEntity scraping && !scraping.isComplete())
+        {
+            final ItemStack stack = scraping.getInventory().getStackInSlot(0);
+            final ScrapingRecipe recipe = ScrapingRecipe.getRecipe(stack);
+            if (recipe != null)
+            {
+                tooltip.accept(Component.empty().append(stack.getHoverName()).append(" > ").append(recipe.assemble(stack).getHoverName()));
             }
         }
     };

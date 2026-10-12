@@ -1528,6 +1528,7 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.loom': 'Loom',
     'config.jade.plugin_tfc.power_loom': 'Power Loom',
     'config.jade.plugin_tfc.trip_hammer': 'Trip Hammer',
+    'config.jade.plugin_tfc.scraping': 'Scraping',
     'config.jade.plugin_tfc.ingot_pile': 'Ingot Pile',
     'config.jade.plugin_tfc.axle': 'Axle',
     'config.jade.plugin_tfc.encased_axle': 'Encased Axle',
