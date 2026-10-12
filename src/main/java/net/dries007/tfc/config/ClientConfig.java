@@ -33,8 +33,8 @@ public class ClientConfig extends BaseConfig
     public final Supplier<HealthDisplayStyle> healthDisplayStyle;
     public final Supplier<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final Supplier<Integer> foodExpiryOverlayColor;
-    public final Supplier<TemperatureDisplayStyle> heatTooltipStyle;
-    public final Supplier<TemperatureDisplayStyle> climateTooltipStyle;
+    public final Supplier<ItemTemperatureDisplayStyle> heatTooltipStyle;
+    public final Supplier<ClimateTemperatureDisplayStyle> climateTooltipStyle;
     public final Supplier<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
     public final Supplier<DisabledExperienceBarStyle> disabledExperienceBarStyle;
     public final Supplier<Boolean> sendProspectResultsToActionbar;
@@ -102,8 +102,8 @@ public class ClientConfig extends BaseConfig
             "  RANKINE = Exact degrees Rankine"
         };
 
-        heatTooltipStyle = builder.comment("The style to display all heat tooltips in.").comment(temperatureDisplayStyle).define("heatTooltipStyle", TemperatureDisplayStyle.COLOR);
-        climateTooltipStyle = builder.comment("The style to display all external (i.e. climate) temperature in.").comment(temperatureDisplayStyle).define("climateTooltipStyle", TemperatureDisplayStyle.CELSIUS);
+        heatTooltipStyle = builder.comment("The style to display all heat tooltips in.").comment(temperatureDisplayStyle).define("heatTooltipStyle", ItemTemperatureDisplayStyle.COLOR);
+        climateTooltipStyle = builder.comment("The style to display all external (i.e. climate) temperature in.").comment(temperatureDisplayStyle).define("climateTooltipStyle", ClimateTemperatureDisplayStyle.CELSIUS);
 
         timeDeltaTooltipStyle = builder.comment(
             "The style to display all time delta / duration tooltips in.",

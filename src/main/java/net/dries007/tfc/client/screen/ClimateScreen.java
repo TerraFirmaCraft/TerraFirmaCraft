@@ -22,7 +22,7 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.config.TemperatureDisplayStyle;
+import net.dries007.tfc.config.ClimateTemperatureDisplayStyle;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
@@ -74,7 +74,7 @@ public class ClimateScreen extends TFCContainerScreen<Container>
         final float currentTemp = ClimateRenderCache.INSTANCE.getInstantTemperature();
         final float currentRainfall = ClimateRenderCache.INSTANCE.getInstantRainfall();
 
-        final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
+        final ClimateTemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
 
         drawLine(stack, Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, averageRainfall, rainVar, ClientHelpers.inNorthernHemisphere())), CENTER, 18);
 

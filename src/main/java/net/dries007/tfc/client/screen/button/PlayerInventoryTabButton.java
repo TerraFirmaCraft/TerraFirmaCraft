@@ -26,7 +26,7 @@ import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.config.TemperatureDisplayStyle;
+import net.dries007.tfc.config.ClimateTemperatureDisplayStyle;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.Month;
@@ -187,7 +187,7 @@ public class PlayerInventoryTabButton extends Button
                 }
                 case CLIMATE ->
                 {
-                    final TemperatureDisplayStyle tempStyle = TFCConfig.CLIENT.climateTooltipStyle.get();
+                    final ClimateTemperatureDisplayStyle tempStyle = TFCConfig.CLIENT.climateTooltipStyle.get();
                     final Component title = Component.translatable("tfc.screen.climate");
                     final float getAvgTemp = ClimateRenderCache.INSTANCE.getInstantTemperature();
                     final float getAvgRain = ClimateRenderCache.INSTANCE.getInstantRainfall();

@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import net.dries007.tfc.common.component.heat.Heat;
 import net.dries007.tfc.util.Helpers;
 
-public enum TemperatureDisplayStyle
+public enum ItemTemperatureDisplayStyle
 {
     COLOR(temperature -> {
         final Heat heat = Heat.getHeat(temperature);
@@ -40,7 +40,7 @@ public enum TemperatureDisplayStyle
 
     private final Function formatter;
 
-    TemperatureDisplayStyle(Function formatter)
+    ItemTemperatureDisplayStyle(Function formatter)
     {
         this.formatter = formatter;
     }
