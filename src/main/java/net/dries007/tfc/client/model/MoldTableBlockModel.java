@@ -48,6 +48,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class MoldTableBlockModel implements IDynamicBakedModel, IUnbakedGeometry<MoldTableBlockModel>
@@ -179,7 +180,7 @@ public class MoldTableBlockModel implements IDynamicBakedModel, IUnbakedGeometry
                 (item) -> {
                     ResourceLocation moldLocation = BuiltInRegistries.ITEM.getKey(item.value());
                     ModelResourceLocation modelLocation = RenderHelpers.modelId(
-                        ResourceLocation.fromNamespaceAndPath(
+                        Helpers.resourceLocation(
                             moldLocation.getNamespace(),
                             "block/mold/" + moldLocation.getPath()
                         )

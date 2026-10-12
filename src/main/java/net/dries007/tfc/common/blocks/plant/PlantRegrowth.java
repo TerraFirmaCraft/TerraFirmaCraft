@@ -106,7 +106,7 @@ public final class PlantRegrowth
         {
             return;
         }
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         if (WorldgenRandom.seedSlimeChunk(chunkPos.x, chunkPos.z, level.getSeed(), 6942069420L).nextInt(5) != 0)
         {
             return;

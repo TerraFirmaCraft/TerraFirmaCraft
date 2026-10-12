@@ -73,6 +73,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
@@ -133,6 +134,7 @@ import net.dries007.tfc.util.tooltip.Tooltips;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
+import static net.dries007.tfc.util.climate.OverworldClimateModel.*;
 
 public final class Helpers
 {
@@ -177,6 +179,21 @@ public final class Helpers
     public static ResourceLocation resourceLocation(String domain, String path)
     {
         return ResourceLocation.fromNamespaceAndPath(domain, path);
+    }
+
+    public static ChunkPos chunkPos(BlockPos pos)
+    {
+        return new ChunkPos(pos);
+    }
+
+    public static ChunkPos chunkPos(long packed)
+    {
+        return new ChunkPos(packed);
+    }
+
+    public static long packChunkPos(int x, int z)
+    {
+        return ChunkPos.asLong(x, z);
     }
 
     public static Vec3 getRandomSpeedRanges(RandomSource random)
@@ -1666,11 +1683,18 @@ public final class Helpers
     }
 
     /**
-     * @return The average annual temperature adjusted for elevation above sea level
+     * @return The average annual temperature adjusted for elevation above sea level or below y=0
      */
     public static float adjustAverageTemperatureByElevation(int y, float averageTemperature, float seaLevel)
     {
-        return averageTemperature - Mth.clamp((y - seaLevel) * 0.16225f, 0, 17.822f);
+        if (y > 0)
+        {
+            return averageTemperature - Mth.clamp((y - seaLevel) * 0.16225f, 0, 17.822f);
+        }
+
+        // Account for lava level influence
+        final float depthInfluence = Helpers.inverseLerp(y, DEPTH_LEVEL, 0);
+        return Mth.lerp(depthInfluence, LAVA_LEVEL_TEMPERATURE, averageTemperature);
     }
 
     /**

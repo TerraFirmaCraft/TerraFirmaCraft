@@ -17,6 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.util.Helpers;
+
 public abstract class TFCBlockEntity extends BlockEntity
 {
     protected TFCBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
@@ -102,13 +104,19 @@ public abstract class TFCBlockEntity extends BlockEntity
      * Override to save block entity specific data.
      */
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.saveAdditional(tag, provider);
+    }
 
     /**
      * Override to load block entity specific data.
      */
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {}
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider)
+    {
+        super.loadAdditional(tag, provider);
+    }
 
     /**
      * Marks a block entity as having changed, and syncs the change to client. Also updates neighbors that this block entity has
@@ -137,7 +145,7 @@ public abstract class TFCBlockEntity extends BlockEntity
         final BlockPos pos = getBlockPos();
         if (packet != null && level instanceof ServerLevel serverLevel)
         {
-            serverLevel.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(e -> e.connection.send(packet));
+            serverLevel.getChunkSource().chunkMap.getPlayers(Helpers.chunkPos(pos), false).forEach(e -> e.connection.send(packet));
         }
     }
 }

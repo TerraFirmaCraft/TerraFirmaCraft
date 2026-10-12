@@ -18,6 +18,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
+import net.dries007.tfc.util.Helpers;
+
 public class StackedTreeFeature extends Feature<StackedTreeConfig>
 {
     public StackedTreeFeature(Codec<StackedTreeConfig> codec)
@@ -33,7 +35,7 @@ public class StackedTreeFeature extends Feature<StackedTreeConfig>
         final RandomSource random = context.random();
         final StackedTreeConfig config = context.config();
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
         final StructureTemplateManager manager = TreeHelpers.getStructureManager(level);
         final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);

@@ -23,6 +23,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * This fills in natural depressions using a localized flood fill.
@@ -43,7 +44,7 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         BlockPos pos = context.origin();
         final FloodFillLakeConfig config = context.config();
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final BoundingBox box = new BoundingBox(chunkPos.getMinBlockX() - 14, Integer.MIN_VALUE, chunkPos.getMinBlockZ() - 14, chunkPos.getMaxBlockX() + 14, Integer.MAX_VALUE, chunkPos.getMaxBlockZ() + 14); // Leeway so we can check outside this box
 
         final Set<BlockPos> filled = new HashSet<>();

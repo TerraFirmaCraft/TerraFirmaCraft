@@ -265,7 +265,7 @@ public final class ForgeEventHandler
             final ChunkGenerator generator = extension.self();
             final ServerLevelData levelData = event.getSettings();
             final RandomSource random = new XoroshiroRandomSource(level.getSeed());
-            final ChunkPos chunkPos = new ChunkPos(extension.findSpawnBiome(random));
+            final ChunkPos chunkPos = Helpers.chunkPos(extension.findSpawnBiome(random));
 
             levelData.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(level), 8), 0.0F);
             boolean foundExactSpawn = false;

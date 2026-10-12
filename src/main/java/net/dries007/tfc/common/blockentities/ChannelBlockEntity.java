@@ -52,7 +52,7 @@ public class ChannelBlockEntity extends TFCBlockEntity
     private int numFlows = 0;
 
     /*** Fluid to render */
-    private ResourceLocation fluid = ResourceLocation.fromNamespaceAndPath("", "");
+    private ResourceLocation fluid = Helpers.resourceLocation("", "");
 
     private boolean recursionVisiting = false;
 

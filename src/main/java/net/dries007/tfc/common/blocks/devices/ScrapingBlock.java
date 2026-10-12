@@ -86,10 +86,16 @@ public class ScrapingBlock extends DeviceBlock
             }
             else if (Helpers.isItem(stack.getItem(), TFCTags.Items.TOOLS_KNIFE))
             {
-                scraping.onClicked((float) point.x, (float) point.z);
-                Helpers.damageItem(stack, player, hand);
-                doParticles(level, pos, scraping, point);
-                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                if (scraping.onClicked((float) point.x, (float) point.z))
+                {
+                    Helpers.damageItem(stack, player, hand);
+                    doParticles(level, pos, scraping, point);
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                }
+                else
+                {
+                    return ItemInteractionResult.FAIL;
+                }
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

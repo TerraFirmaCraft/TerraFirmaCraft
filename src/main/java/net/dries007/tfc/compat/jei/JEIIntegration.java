@@ -151,7 +151,7 @@ public final class JEIIntegration implements IModPlugin
 
     private static <T extends Recipe<?>> RecipeType<RecipeHolder<T>> type(String name, Class<T> kind)
     {
-        return RecipeType.createRecipeHolderType(ResourceLocation.fromNamespaceAndPath(TerraFirmaCraft.MOD_ID, name));
+        return RecipeType.createRecipeHolderType(Helpers.resourceLocation(TerraFirmaCraft.MOD_ID, name));
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> recipes(Supplier<net.minecraft.world.item.crafting.RecipeType<T>> type)

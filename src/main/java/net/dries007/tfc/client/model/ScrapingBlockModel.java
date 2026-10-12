@@ -59,7 +59,7 @@ public enum ScrapingBlockModel implements SimpleStaticBlockEntityModel<ScrapingB
             for (int zOffset = 0; zOffset < 4; zOffset++)
             {
                 // Checks the nth bit of positions
-                if ((((positions >> (xOffset + 4 * zOffset)) & 1) == condition))
+                if (ScrapingBlockEntity.checkPosition(positions, xOffset, zOffset, condition))
                 {
                     buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F).setColor(color).setUv(sprite.getU(xOffset * 4f / 16f), sprite.getV(zOffset * 4f / 16f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);
                     buffer.addVertex(mat, xOffset / 4.0F, 0.01F, zOffset / 4.0F + 0.25F).setColor(color).setUv(sprite.getU((xOffset * 4f) / 16f), sprite.getV((zOffset * 4f + 4f) / 16f)).setOverlay(packedOverlay).setLight(packedLight).setNormal(0, 0, 1);

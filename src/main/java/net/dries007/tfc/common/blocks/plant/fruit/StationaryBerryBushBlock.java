@@ -221,12 +221,11 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         final BlockPos.MutableBlockPos cursor = pos.mutable();
         for (int tries = 0; tries < 3; tries++)
         {
-            cursor.setWithOffset(pos, Helpers.triangle(random, 3), 0, Helpers.triangle(random, 3));
-            final BlockPos newPos = level.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, cursor);
-            final BlockState placementState = getNewState(level, newPos);
-            if (canPlaceNewBushAt(level, newPos, placementState))
+            cursor.setWithOffset(pos, Helpers.triangle(random, 3), Helpers.triangle(random, 1), Helpers.triangle(random, 3));
+            final BlockState placementState = getNewState(level, cursor);
+            if (canPlaceNewBushAt(level, cursor, placementState))
             {
-                placeBlockAndResetCounter(level, newPos, placementState, cycles, growthsRemaining - random.nextInt(1, 3));
+                placeBlockAndResetCounter(level, cursor, placementState, cycles, growthsRemaining - random.nextInt(1, 3));
                 return;
             }
         }

@@ -7,9 +7,14 @@
 package net.dries007.tfc.compat.jade;
 
 import java.util.List;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.FloatTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import snownee.jade.addon.harvest.HarvestToolProvider;
 import snownee.jade.addon.harvest.SimpleToolHandler;
@@ -17,15 +22,20 @@ import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IEntityComponentProvider;
+import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.IWailaClientRegistration;
+import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.JadeIds;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
 
+import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
+import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.tooltip.BlockEntityTooltip;
 import net.dries007.tfc.util.tooltip.BlockEntityTooltips;
@@ -76,6 +86,12 @@ public class JadeIntegration implements IWailaPlugin
     }
 
     @Override
+    public void register(IWailaCommonRegistration registry)
+    {
+        registry.registerBlockDataProvider(PlacedItemProvider.INSTANCE, PlacedItemBlockEntity.class);
+    }
+
+    @Override
     public void registerClient(IWailaClientRegistration registry)
     {
         BlockEntityTooltips.register((name, tooltip, block) -> register(registry, name, tooltip, block));
@@ -84,6 +100,11 @@ public class JadeIntegration implements IWailaPlugin
 
     private void register(IWailaClientRegistration registry, ResourceLocation name, BlockEntityTooltip blockEntityTooltip, Class<? extends Block> block)
     {
+        if (blockEntityTooltip == BlockEntityTooltips.PLACED_ITEM)
+        {
+            registry.registerBlockComponent(PlacedItemProvider.INSTANCE, block);
+            return;
+        }
         registry.registerBlockComponent(new IBlockComponentProvider() {
             @Override
             public void appendTooltip(ITooltip tooltip, BlockAccessor access, IPluginConfig config)
@@ -114,5 +135,53 @@ public class JadeIntegration implements IWailaPlugin
                 return name;
             }
         }, entityClass);
+    }
+
+    /**
+     * Placed items can be heated (i.e. in a kiln) without being synced, so their temperatures are requested from the server while being looked at.
+     */
+    private enum PlacedItemProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor>
+    {
+        INSTANCE;
+
+        private static final ResourceLocation UID = Helpers.identifier("placed_item");
+        private static final String TEMPERATURES = "tfc:temperatures";
+
+        @Override
+        public void appendTooltip(ITooltip tooltip, BlockAccessor access, IPluginConfig config)
+        {
+            float[] temperatures = null;
+            final CompoundTag data = access.getServerData();
+            if (data.contains(TEMPERATURES, Tag.TAG_LIST))
+            {
+                final ListTag list = data.getList(TEMPERATURES, Tag.TAG_FLOAT);
+                temperatures = new float[list.size()];
+                for (int i = 0; i < temperatures.length; i++)
+                {
+                    temperatures[i] = list.getFloat(i);
+                }
+            }
+            BlockEntityTooltips.placedItem(access.getBlockEntity(), tooltip::add, temperatures);
+        }
+
+        @Override
+        public void appendServerData(CompoundTag data, BlockAccessor access)
+        {
+            if (access.getBlockEntity() instanceof PlacedItemBlockEntity placedItem)
+            {
+                final ListTag list = new ListTag();
+                for (ItemStack stack : Helpers.iterate(placedItem.getInventory()))
+                {
+                    list.add(FloatTag.valueOf(HeatCapability.getTemperature(stack)));
+                }
+                data.put(TEMPERATURES, list);
+            }
+        }
+
+        @Override
+        public ResourceLocation getUid()
+        {
+            return UID;
+        }
     }
 }

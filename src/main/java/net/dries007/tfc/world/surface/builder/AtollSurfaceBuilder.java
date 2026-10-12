@@ -79,6 +79,13 @@ public class AtollSurfaceBuilder implements SurfaceBuilder
                 }
 
                 final SurfaceState rockState = Helpers.hashDouble(cell.noise(), 624) > 0.7 ? SurfaceStates.DOLOMITE : SurfaceStates.LIMESTONE;
+                
+                // Place a single floating layer of fresh water in 100% enclosed lagoons
+                // Important that the easing threshold matches the beachDist variable in the atoll shape function
+                if (CenteredFeatureNoise.getAtollIntegrity(cell) >= 1 && easing > 0.58 && context.getBlockState(seaLevel - 1).is(TFCFluids.SALT_WATER.createSourceBlock().getBlock()))
+                {
+                    context.setBlockState(seaLevel - 1, Fluids.WATER.getSource().defaultFluidState().createLegacyBlock());
+                }
 
                 final int oceanFloorY = context.chunk().getHeight(Heightmap.Types.OCEAN_FLOOR_WG, context.pos().getX(), context.pos().getZ());
                 if (oceanFloorY > maxDepth + 2)
@@ -90,12 +97,6 @@ public class AtollSurfaceBuilder implements SurfaceBuilder
                         if (stateAt.isAir())
                         {
                             surfaceDepth = -1; // Reached air, reset surface depth
-                        }
-                        // Important that the easing threshold matches the beachDist variable in the atoll shape function
-                        else if (y == seaLevel - 1 && CenteredFeatureNoise.getAtollIntegrity(cell) >= 1 && easing > 0.58 && stateAt.is(TFCFluids.SALT_WATER.createSourceBlock().getBlock()))
-                        {
-                            // Place a single floating layer of fresh water in 100% enclosed lagoons
-                            context.setBlockState(y, Fluids.WATER.getSource().defaultFluidState().createLegacyBlock());
                         }
                         else if (context.isDefaultBlock(stateAt))
                         {

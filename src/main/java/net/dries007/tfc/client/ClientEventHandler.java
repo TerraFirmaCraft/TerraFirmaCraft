@@ -852,7 +852,7 @@ public final class ClientEventHandler
         {
             String path = model.getPath();
             path = path.substring("models/".length(), path.length() - ".json".length());
-            register(event, ResourceLocation.fromNamespaceAndPath(model.getNamespace(), path));
+            register(event, Helpers.resourceLocation(model.getNamespace(), path));
         }
 
         TFCConfig.CLIENT.additionalSpecialModels.get().forEach(s -> register(event, Helpers.resourceLocation(s)));

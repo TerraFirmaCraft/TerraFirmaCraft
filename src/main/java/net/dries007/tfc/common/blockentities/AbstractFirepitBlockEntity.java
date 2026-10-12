@@ -222,7 +222,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         {
             return; // The calendar is paused, so no time has passed - see the note in serverTick()
         }
-        if (level.getBlockState(worldPosition).getValue(FirepitBlock.LIT))
+        // The block entity may outlive its block if something replaced it without removing the block entity
+        final BlockState state = level.getBlockState(worldPosition);
+        if (state.hasProperty(FirepitBlock.LIT) && state.getValue(FirepitBlock.LIT))
         {
             final HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, inventory, burnTicks, burnTemperature, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT);
 
@@ -231,7 +233,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
             needsSlotUpdate = true;
             if (remainder.ticks() > 0) // Consumed all fuel, so extinguish and cool instantly
             {
-                extinguish(level.getBlockState(worldPosition));
+                extinguish(state);
                 coolInstantly();
             }
         }

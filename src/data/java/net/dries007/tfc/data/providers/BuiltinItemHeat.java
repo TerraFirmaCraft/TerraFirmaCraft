@@ -24,6 +24,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.GroundcoverBlockType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.rock.Ore;
@@ -195,7 +196,8 @@ public class BuiltinItemHeat extends DataManagerProvider<HeatDefinition> impleme
             TFCItems.FOOD.get(Food.FRESH_SEAWEED),
             TFCItems.FOOD.get(Food.DRIED_SEAWEED),
             TFCItems.FOOD.get(Food.DRIED_KELP),
-            TFCBlocks.PLANTS.get(Plant.GIANT_KELP_FLOWER)
+            TFCBlocks.PLANTS.get(Plant.GIANT_KELP_FLOWER),
+            TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.SEAWEED)
         ), 1.0f);
         add(TFCItems.FOOD.get(Food.POTATO), 1.0f);
         add(TFCItems.FOOD.get(Food.CASSAVA), 1.0f);

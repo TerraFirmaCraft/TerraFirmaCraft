@@ -92,7 +92,7 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+        return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
     }
 
     @Override

@@ -24,10 +24,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.ClimateRenderCache;
@@ -56,6 +58,7 @@ import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
 import net.dries007.tfc.common.blockentities.ThermometerBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blockentities.TickingPlantBlockEntity;
@@ -98,6 +101,7 @@ import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.blocks.devices.PowerLoomBlock;
 import net.dries007.tfc.common.blocks.devices.QuernBlock;
+import net.dries007.tfc.common.blocks.devices.ScrapingBlock;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.devices.ThermometerBlock;
 import net.dries007.tfc.common.blocks.devices.VaneBlock;
@@ -123,6 +127,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.config.ItemTemperatureDisplayStyle;
+import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.ClimateTemperatureDisplayStyle;
 import net.dries007.tfc.util.Helpers;
@@ -184,6 +189,7 @@ public final class BlockEntityTooltips
         callback.register("anemometer", ANEMOMETER, AnemometerBlock.class);
         callback.register("vane", VANE, VaneBlock.class);
         callback.register("trip_hammer", TRIP_HAMMER, TripHammerBlock.class);
+        callback.register("scraping", SCRAPING, ScrapingBlock.class);
     }
 
     public static final BlockEntityTooltip HOT_POURED_GLASS = (level, state, pos, entity, tooltip) -> {
@@ -627,16 +633,25 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip PLACED_ITEM = (level, state, pos, entity, tooltip) -> {
+    public static final BlockEntityTooltip PLACED_ITEM = (level, state, pos, entity, tooltip) -> placedItem(entity, tooltip, null);
+
+    public static void placedItem(@Nullable BlockEntity entity, Consumer<Component> tooltip, float @Nullable [] temperatures)
+    {
         if (entity instanceof PlacedItemBlockEntity placedItem)
         {
-            for (ItemStack stack : Helpers.iterate(placedItem.getInventory()))
+            final IItemHandler inventory = placedItem.getInventory();
+            for (int slot = 0; slot < inventory.getSlots(); slot++)
             {
+                final ItemStack stack = inventory.getStackInSlot(slot);
                 if (!stack.isEmpty())
+                {
                     tooltip.accept(stack.getHoverName());
+
+                    heat(tooltip, temperatures != null && slot < temperatures.length ? temperatures[slot] : HeatCapability.getTemperature(stack));
+                }
             }
         }
-    };
+    }
 
     public static final BlockEntityTooltip TRIP_HAMMER = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TripHammerBlockEntity tripHammer)
@@ -651,6 +666,18 @@ public final class BlockEntityTooltips
                     final int remaining = stack.getMaxDamage() - stack.getDamageValue();
                     tooltip.accept(Component.translatable("item.durability", remaining, total));
                 }
+            }
+        }
+    };
+
+    public static final BlockEntityTooltip SCRAPING = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof ScrapingBlockEntity scraping && !scraping.isComplete())
+        {
+            final ItemStack stack = scraping.getInventory().getStackInSlot(0);
+            final ScrapingRecipe recipe = ScrapingRecipe.getRecipe(stack);
+            if (recipe != null)
+            {
+                tooltip.accept(Component.empty().append(stack.getHoverName()).append(" > ").append(recipe.assemble(stack).getHoverName()));
             }
         }
     };

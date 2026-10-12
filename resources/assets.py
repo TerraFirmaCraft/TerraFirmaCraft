@@ -2655,7 +2655,10 @@ def generate(rm: ResourceManager):
         atlases.palette(
             key='trims/color_palettes/trim_palette',
             textures=['tfc:item/%s_trim' % section for section in TFC_ARMOR_SECTIONS],
-            permutations=dict((mat + '_tfc', 'tfc:color_palettes/trims/%s' % mat) for mat in TRIM_MATERIALS)
+            permutations={
+                **{mat + '_tfc': f'tfc:color_palettes/trims/{mat}' for mat in TRIM_MATERIALS},
+                **{mat: f'minecraft:trims/color_palettes/{mat}' for mat in VANILLA_TRIM_MATERIALS},
+            }
         ),
         atlases.directory('entity/bell')
     )

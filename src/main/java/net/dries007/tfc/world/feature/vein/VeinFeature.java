@@ -46,7 +46,7 @@ public abstract class VeinFeature<C extends IVeinConfig, V extends IVein> extend
         final C config = context.config();
         final WorldGenerationContext generationContext = new WorldGenerationContext(context.chunkGenerator(), level);
 
-        final ChunkPos chunkPos = new ChunkPos(pos);
+        final ChunkPos chunkPos = Helpers.chunkPos(pos);
         final List<V> veins = getNearbyVeins(level, generationContext, chunkPos, config.chunkRadius(), config);
         if (!veins.isEmpty())
         {

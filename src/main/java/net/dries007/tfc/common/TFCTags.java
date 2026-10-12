@@ -8,7 +8,6 @@ package net.dries007.tfc.common;
 
 import java.util.Map;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
@@ -386,7 +385,7 @@ public class TFCTags
 
         private static TagKey<Block> commonTag(String name)
         {
-            return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", name));
+            return TagKey.create(Registries.BLOCK, Helpers.resourceLocation("c", name));
         }
     }
 
@@ -835,7 +834,7 @@ public class TFCTags
 
         private static TagKey<Item> commonTag(String name)
         {
-            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", name));
+            return TagKey.create(Registries.ITEM, Helpers.resourceLocation("c", name));
         }
     }
 
