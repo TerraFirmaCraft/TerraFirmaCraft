@@ -104,7 +104,9 @@ public final class TFCCraftingExtensions
                 // displays more items than the ingredient itself matches, will not line up, and simply displays without the link.
                 if (outputItems.size() == inputs.get(primaryIndex).size())
                 {
-                    builder.createFocusLink(inputSlots.get(primaryIndex), outputSlot);
+                    // JEI always creates nine slots, and places shapeless recipes of 1 and 2-4 ingredients in a 1x1 or 2x2 grid
+                    final int slotIndex = inputs.size() == 1 ? 4 : inputs.size() <= 4 ? (primaryIndex / 2) * 3 + primaryIndex % 2 : primaryIndex;
+                    builder.createFocusLink(inputSlots.get(slotIndex), outputSlot);
                 }
 
                 recipe.getRemainder().ifPresent(r -> r.modifiers().forEach(mod -> {
