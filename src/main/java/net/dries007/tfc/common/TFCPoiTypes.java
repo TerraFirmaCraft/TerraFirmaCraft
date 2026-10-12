@@ -16,6 +16,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.blocks.LobsterTrapBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
 public final class TFCPoiTypes
@@ -29,6 +30,14 @@ public final class TFCPoiTypes
             .addAll(states(TFCBlocks.ICE_PILE.get()))
             .addAll(states(TFCBlocks.ICICLE.get()))
             .build(),
+        0, 1
+    ));
+
+    public static final DeferredHolder<PoiType, PoiType> BAITED_LOBSTER_TRAP = TYPES.register("baited_lobster_trap", () -> new PoiType(
+        TFCBlocks.LOBSTER_TRAP.get().getStateDefinition().getPossibleStates()
+            .stream()
+            .filter(state -> state.getValue(LobsterTrapBlock.TRAP) == LobsterTrapBlock.TrapState.BAITED)
+            .collect(ImmutableSet.toImmutableSet()),
         0, 1
     ));
 

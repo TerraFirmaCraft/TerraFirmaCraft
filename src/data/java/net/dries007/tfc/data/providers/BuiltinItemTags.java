@@ -241,7 +241,10 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .addTag(Tags.Items.SEEDS)
             .add(Food.SHELLFISH);
         tag(LARGE_FISHING_BAIT)
-            .add(Food.COD, Food.SALMON, Food.TROPICAL_FISH, Food.BLUEGILL);
+            .addTag(RAW_FISH);
+        tag(LOBSTER_BAIT)
+            .addTag(RAW_FISH)
+            .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MUSSEL));
         tag(HOLDS_SMALL_FISHING_BAIT)
             .addTag(HOLDS_LARGE_FISHING_BAIT).add(
             TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD),
@@ -376,6 +379,11 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
             .add(TFCBlocks.PLANTS.get(Plant.BARNACLES).get());
         tag(METAL_PLATED_BLOCKS)
             .add(TFCBlocks.METALS, Metal.BlockType.BLOCK);
+        tag(METAL_GRATES)
+            .add(TFCBlocks.METALS, Metal.BlockType.GRATE)
+            .add(TFCBlocks.METALS, Metal.BlockType.EXPOSED_GRATE)
+            .add(TFCBlocks.METALS, Metal.BlockType.WEATHERED_GRATE)
+            .add(TFCBlocks.METALS, Metal.BlockType.OXIDIZED_GRATE);
 
         // Vanilla Armor Tags
         tag(ItemTags.HEAD_ARMOR).add(TFCItems.METAL_ITEMS, Metal.ItemType.HELMET);

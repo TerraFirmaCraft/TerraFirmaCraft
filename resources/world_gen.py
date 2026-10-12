@@ -1952,7 +1952,7 @@ SALT_MARSH_AMBIENT: Dict[str, Dict[str, Any]] = {
 
 OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
     'isopod': spawner('tfc:isopod'),
-    'lobster': spawner('tfc:lobster'),
+    'lobster': spawner('tfc:lobster', weight=3),
     'horseshoe_crab': spawner('tfc:horseshoe_crab'),
     'cod': spawner('tfc:cod', weight=10),
     'pufferfish': spawner('tfc:pufferfish', max_count=2),

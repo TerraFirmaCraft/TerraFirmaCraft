@@ -132,6 +132,14 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.JELLYFISH.get()
             );
 
+        tag(CAUGHT_IN_LOBSTER_TRAPS)
+            .add(
+                TFCEntities.ISOPOD.get(),
+                TFCEntities.LOBSTER.get(),
+                TFCEntities.CRAYFISH.get(),
+                TFCEntities.HORSESHOE_CRAB.get()
+            );
+
         tag(NEEDS_LARGE_FISHING_BAIT)
             .add(
                 TFCEntities.ORCA.get(),

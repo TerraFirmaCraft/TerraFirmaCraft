@@ -1,0 +1,54 @@
+{
+  "ingredient": [
+    {
+      "item": "tfc:buoy/white"
+    },
+    {
+      "item": "tfc:buoy/orange"
+    },
+    {
+      "item": "tfc:buoy/magenta"
+    },
+    {
+      "item": "tfc:buoy/light_blue"
+    },
+    {
+      "item": "tfc:buoy/yellow"
+    },
+    {
+      "item": "tfc:buoy/lime"
+    },
+    {
+      "item": "tfc:buoy/pink"
+    },
+    {
+      "item": "tfc:buoy/gray"
+    },
+    {
+      "item": "tfc:buoy/light_gray"
+    },
+    {
+      "item": "tfc:buoy/cyan"
+    },
+    {
+      "item": "tfc:buoy/purple"
+    },
+    {
+      "item": "tfc:buoy/blue"
+    },
+    {
+      "item": "tfc:buoy/brown"
+    },
+    {
+      "item": "tfc:buoy/green"
+    },
+    {
+      "item": "tfc:buoy/red"
+    },
+    {
+      "item": "tfc:buoy/black"
+    }
+  ],
+  "size": "normal",
+  "weight": "light"
+}

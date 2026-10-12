@@ -659,6 +659,8 @@ public final class TFCCreativeTabs
         out.accept(TFCBlocks.ANEMOMETER);
         out.accept(TFCBlocks.CALENDAR_CLOCK);
         out.accept(TFCBlocks.THERMOMETER);
+        TFCBlocks.BUOYS.values().forEach(out::accept);
+        out.accept(TFCBlocks.LOBSTER_TRAP);
 
         out.accept(TFCBlocks.BELLOWS);
         out.accept(TFCBlocks.CRUCIBLE);

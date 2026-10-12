@@ -186,6 +186,7 @@ import net.dries007.tfc.client.render.blockentity.BarrelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BellowsBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BladedAxleBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.BowlBlockEntityRenderer;
+import net.dries007.tfc.client.render.blockentity.BuoyBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CalendarClockBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.ChannelBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.CharcoalForgeBlockEntityRenderer;
@@ -197,6 +198,7 @@ import net.dries007.tfc.client.render.blockentity.GlassBasinBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.GrillBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.HotPouredGlassBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
+import net.dries007.tfc.client.render.blockentity.LobsterTrapBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.LoomBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.MoldBlockEntityRenderer;
 import net.dries007.tfc.client.render.blockentity.NestBoxBlockEntityRenderer;
@@ -508,6 +510,7 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ROPE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.HANGING_ROPE.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.STEEL_ROPE_ANCHOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.LOBSTER_TRAP.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
@@ -727,6 +730,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.MOLD_TABLE.get(), ctx -> new MoldBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CALENDAR_CLOCK.get(), CalendarClockBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.POWDERKEG.get(), ctx -> new PowderkegBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.BUOY.get(), ctx -> new BuoyBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.LOBSTER_TRAP.get(), ctx -> new LobsterTrapBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)

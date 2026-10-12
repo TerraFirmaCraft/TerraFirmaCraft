@@ -40,6 +40,7 @@ import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.BuoyBlockEntity;
 import net.dries007.tfc.common.blockentities.CalendarClockBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
@@ -63,6 +64,7 @@ import net.dries007.tfc.common.blockentities.ThermometerBlockEntity;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blockentities.TickingPlantBlockEntity;
 import net.dries007.tfc.common.blockentities.VaneBlockEntity;
+import net.dries007.tfc.common.blockentities.LobsterTrapBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.PowerLoomBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.RotatingBlockEntity;
 import net.dries007.tfc.common.blockentities.rotation.TripHammerBlockEntity;
@@ -77,6 +79,7 @@ import net.dries007.tfc.common.blocks.TFCCandleCakeBlock;
 import net.dries007.tfc.common.blocks.TFCTorchBlock;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.TripHammerBlock;
+import net.dries007.tfc.common.blocks.BuoyBlock;
 import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.crop.DoubleCropBlock;
@@ -94,6 +97,7 @@ import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.JackOLanternBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
+import net.dries007.tfc.common.blocks.LobsterTrapBlock;
 import net.dries007.tfc.common.blocks.devices.MoldTableBlock;
 import net.dries007.tfc.common.blocks.devices.NestBoxBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
@@ -190,6 +194,8 @@ public final class BlockEntityTooltips
         callback.register("vane", VANE, VaneBlock.class);
         callback.register("trip_hammer", TRIP_HAMMER, TripHammerBlock.class);
         callback.register("scraping", SCRAPING, ScrapingBlock.class);
+        callback.register("buoy", BUOY, BuoyBlock.class);
+        callback.register("lobster_trap", LOBSTER_TRAP, LobsterTrapBlock.class);
     }
 
     public static final BlockEntityTooltip HOT_POURED_GLASS = (level, state, pos, entity, tooltip) -> {
@@ -679,6 +685,31 @@ public final class BlockEntityTooltips
             {
                 tooltip.accept(Component.empty().append(stack.getHoverName()).append(" > ").append(recipe.assemble(stack).getHoverName()));
             }
+        }
+    };
+
+    public static final BlockEntityTooltip BUOY = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof BuoyBlockEntity buoy)
+        {
+            if (!buoy.hasTrap())
+            {
+                tooltip.accept(Component.translatable("tfc.jade.buoy.no_trap"));
+            }
+            else if (buoy.isTrapDisconnected())
+            {
+                tooltip.accept(Component.translatable("tfc.jade.buoy.line_broken", buoy.getRopes()));
+            }
+            else
+            {
+                tooltip.accept(Component.translatable("tfc.jade.buoy.trap", buoy.getRopes()));
+            }
+        }
+    };
+
+    public static final BlockEntityTooltip LOBSTER_TRAP = (level, state, pos, entity, tooltip) -> {
+        if (entity instanceof LobsterTrapBlockEntity trap)
+        {
+            tooltip.accept(Component.translatable("tfc.jade.lobster_trap.bait", trap.getBait(), LobsterTrapBlockEntity.BAIT_PER_ITEM));
         }
     };
 

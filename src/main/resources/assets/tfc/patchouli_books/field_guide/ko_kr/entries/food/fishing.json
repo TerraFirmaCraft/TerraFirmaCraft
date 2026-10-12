@@ -21,7 +21,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "낚싯대에 미끼가 없다면 아무 쓸모가 없습니다. 미끼는 작업대를 통해 달 수 있습니다. 일반적인 물고기를 잡으려면 $(thing)씨앗$()이나 $(thing)가재$()가 필요합니다. $(thing)돌고래$()나 $(thing)범고래$() 같은 더 큰 물고기들을 잡으려면 $(item)대구$(), $(item)연어$(), $(item)열대어$(), 또는 $(item)블루길$()이 필요합니다."
+      "text": "Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need raw fish."
     },
     {
       "type": "patchouli:text",
@@ -34,6 +34,28 @@
       ],
       "text": "낚시 중에 경험치 바 대신 표시되는 낚시 게이지.",
       "border": true
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "trapping",
+      "recipe": "tfc:crafting/lobster_trap",
+      "title": "Trapping",
+      "text": "The $(thing)Lobster Trap$() catches $(thing)Lobsters$(), $(thing)Crayfish$(), $(thing)Isopods$(), and $(thing)Horseshoe Crabs$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Place a trap underwater and $(item)$(k:key.use)$() it with $(thing)raw fish$() or $(thing)mussels$() to bait it. Nearby critters will crawl in and be caught. One bait lasts for three catches. When it is full or out of bait, the trap closes.$(br2)$(item)$(k:key.use)$() with an empty hand to collect the catch. A trap must be emptied before it can be baited again."
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "buoys",
+      "recipe": "tfc:crafting/buoy/red",
+      "title": "Buoys",
+      "text": "A $(thing)Buoy$() floats on the surface of water, and can be used to lower traps into deep water."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(item)$(k:key.use)$() a buoy with a lobster trap to place the trap in the water below it. Then $(item)$(k:key.use)$() the buoy with $(thing)Rope$() to sink the trap one block per rope. $(item)$(k:key.use)$() the buoy with an empty hand to pull the trap back up and recover the rope."
     }
   ],
   "read_by_default": true,

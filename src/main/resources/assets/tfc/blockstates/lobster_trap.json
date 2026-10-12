@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=north,trap=open": {
+      "model": "tfc:block/lobster_trap"
+    },
+    "facing=north,trap=baited": {
+      "model": "tfc:block/lobster_trap_bait"
+    },
+    "facing=north,trap=closed": {
+      "model": "tfc:block/lobster_trap_closed"
+    },
+    "facing=east,trap=open": {
+      "model": "tfc:block/lobster_trap",
+      "y": 90
+    },
+    "facing=east,trap=baited": {
+      "model": "tfc:block/lobster_trap_bait",
+      "y": 90
+    },
+    "facing=east,trap=closed": {
+      "model": "tfc:block/lobster_trap_closed",
+      "y": 90
+    },
+    "facing=south,trap=open": {
+      "model": "tfc:block/lobster_trap",
+      "y": 180
+    },
+    "facing=south,trap=baited": {
+      "model": "tfc:block/lobster_trap_bait",
+      "y": 180
+    },
+    "facing=south,trap=closed": {
+      "model": "tfc:block/lobster_trap_closed",
+      "y": 180
+    },
+    "facing=west,trap=open": {
+      "model": "tfc:block/lobster_trap",
+      "y": 270
+    },
+    "facing=west,trap=baited": {
+      "model": "tfc:block/lobster_trap_bait",
+      "y": 270
+    },
+    "facing=west,trap=closed": {
+      "model": "tfc:block/lobster_trap_closed",
+      "y": 270
+    }
+  }
+}

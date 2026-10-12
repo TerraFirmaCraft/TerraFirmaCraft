@@ -19,6 +19,7 @@ import net.minecraft.world.item.BedItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
@@ -56,6 +57,7 @@ import net.dries007.tfc.common.blockentities.AnemometerBlockEntity;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
+import net.dries007.tfc.common.blockentities.BuoyBlockEntity;
 import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.CalendarClockBlockEntity;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
@@ -503,6 +505,11 @@ public final class TFCBlocks
     public static final Id<Block> ANEMOMETER = register("anemometer", () -> new AnemometerBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.ANEMOMETER).requiresCorrectToolForDrops().<AnemometerBlockEntity>ticks(AnemometerBlockEntity::serverTick, AnemometerBlockEntity::clientTick)));
     public static final Id<Block> CALENDAR_CLOCK = register("calendar_clock", () -> new CalendarClockBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.CALENDAR_CLOCK).requiresCorrectToolForDrops().<CalendarClockBlockEntity>ticks(CalendarClockBlockEntity::serverTick, CalendarClockBlockEntity::clientTick)));
     public static final Id<Block> THERMOMETER = register("thermometer", () -> new ThermometerBlock(ExtendedProperties.of(MapColor.METAL).strength(3).sound(SoundType.METAL).blockEntity(TFCBlockEntities.THERMOMETER).requiresCorrectToolForDrops().<ThermometerBlockEntity>serverTicks(ThermometerBlockEntity::serverTick)));
+
+    public static final Map<DyeColor, Id<Block>> BUOYS = Helpers.mapOf(DyeColor.class, color ->
+        register("buoy/" + color.getName(), () -> new BuoyBlock(ExtendedProperties.of(color.getMapColor()).strength(1f).sound(SoundType.WOOD).noOcclusion().blockEntity(TFCBlockEntities.BUOY).clientTicks(BuoyBlockEntity::clientTick)), b -> new PlaceOnWaterBlockItem(b, new Item.Properties()))
+    );
+    public static final Id<Block> LOBSTER_TRAP = register("lobster_trap", () -> new LobsterTrapBlock(ExtendedProperties.of(MapColor.METAL).strength(3f).sound(SoundType.METAL).noOcclusion().blockEntity(TFCBlockEntities.LOBSTER_TRAP)));
 
     public static final Map<DyeColor, Id<Block>> DYED_CANDLE_CAKES = Helpers.mapOf(DyeColor.class, color ->
         registerNoItem("candle_cake/" + color.getName(), () -> new TFCCandleCakeBlock(ExtendedProperties.of(MapColor.SAND).randomTicks().noOcclusion().strength(0.5F).sound(SoundType.WOOL).lightLevel(litBlockEmission(3)).blockEntity(TFCBlockEntities.TICK_COUNTER).cloneItem(Blocks.CAKE)))

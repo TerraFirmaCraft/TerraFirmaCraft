@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/buoy",
+  "textures": {
+    "texture": "tfc:block/buoy/red",
+    "particle": "tfc:block/buoy/red"
+  }
+}

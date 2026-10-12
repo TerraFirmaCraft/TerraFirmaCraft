@@ -1,8 +1,5 @@
 {
   "values": [
-    "tfc:food/cod",
-    "tfc:food/salmon",
-    "tfc:food/tropical_fish",
-    "tfc:food/bluegill"
+    "#c:foods/raw_fish"
   ]
 }

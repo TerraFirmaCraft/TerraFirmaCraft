@@ -31,6 +31,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.dries007.tfc.common.TFCDamageTypes;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.data.providers.BuiltinBiomeTags;
 import net.dries007.tfc.data.providers.BuiltinBlockTags;
 import net.dries007.tfc.data.providers.BuiltinClimateRanges;
@@ -108,8 +109,10 @@ public final class DataEntryPoint
                 TFCDamageTypes.DEHYDRATION,
                 TFCDamageTypes.GRILL,
                 TFCDamageTypes.PLUCK,
-                TFCDamageTypes.POT
+                TFCDamageTypes.POT,
+                TFCDamageTypes.LOBSTER_TRAP
             );
+            tags.tag(TFCTags.DamageTypes.COUNTS_AS_PLAYER_KILL).add(TFCDamageTypes.LOBSTER_TRAP);
             tags.tag(PhysicalDamageType.IS_CRUSHING).add(
                 DamageTypes.IN_WALL,
                 DamageTypes.CRAMMING,

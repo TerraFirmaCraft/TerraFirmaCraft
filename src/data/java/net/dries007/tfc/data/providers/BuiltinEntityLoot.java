@@ -7,6 +7,8 @@
 package net.dries007.tfc.data.providers;
 
 import java.util.stream.Stream;
+import net.minecraft.advancements.critereon.DamageSourcePredicate;
+import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.EntityLootSubProvider;
@@ -15,12 +17,16 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
 import net.dries007.tfc.common.items.Food;
@@ -235,7 +241,15 @@ public class BuiltinEntityLoot extends EntityLootSubProvider
     private static LootTable.Builder killedByPlayerFood(Food food)
     {
         return lootTable()
-            .withPool(lootPool().add(lootTableItem(TFCItems.FOOD.get(food))).when(LootItemKilledByPlayerCondition.killedByPlayer()));
+            .withPool(lootPool().add(lootTableItem(TFCItems.FOOD.get(food))).when(killedByPlayerOrDevice()));
+    }
+
+    private static LootItemCondition.Builder killedByPlayerOrDevice()
+    {
+        return AnyOfCondition.anyOf(
+            LootItemKilledByPlayerCondition.killedByPlayer(),
+            DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(TFCTags.DamageTypes.COUNTS_AS_PLAYER_KILL)))
+        );
     }
 
     private static LootTable.Builder blubberMammal(int minBlubber, int maxBlubber, int bones)

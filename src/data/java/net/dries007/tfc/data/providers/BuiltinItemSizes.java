@@ -7,6 +7,7 @@
 package net.dries007.tfc.data.providers;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
@@ -85,6 +86,8 @@ public class BuiltinItemSizes extends DataManagerProvider<ItemSizeDefinition> im
         add("alabaster_brick", TFCItems.ALABASTER_BRICK, Size.SMALL, Weight.LIGHT);
         add("glue", TFCItems.GLUE, Size.TINY, Weight.LIGHT);
         add("brass_mechanisms", TFCItems.BRASS_MECHANISMS, Size.NORMAL, Weight.LIGHT);
+        add("buoys", Ingredient.of(TFCBlocks.BUOYS.values().stream().map(Supplier::get).toArray(ItemLike[]::new)), Size.NORMAL, Weight.LIGHT);
+        add("lobster_trap", TFCBlocks.LOBSTER_TRAP, Size.LARGE, Weight.HEAVY);
         add("grill", TFCBlocks.GRILL, Size.LARGE, Weight.HEAVY);
         add("soups", TFCTags.Items.SOUPS, Size.VERY_SMALL, Weight.MEDIUM);
         add("salads", TFCTags.Items.SALADS, Size.VERY_SMALL, Weight.MEDIUM);

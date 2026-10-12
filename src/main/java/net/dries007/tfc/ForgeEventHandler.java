@@ -1238,6 +1238,7 @@ public final class ForgeEventHandler
             // - Right-click a chest underwater -> it should open the chest, not drink
             // - Try and remove the filter from a Create 'Basin', by right-clicking with an empty hand (create cancels this event)
             final ItemInteractionResult useBlockResult = state.useItemOn(stack, level, event.getEntity(), event.getHand(), event.getHitVec());
+            boolean interacted = false;
             if (useBlockResult.consumesAction())
             {
                 if (event.getEntity() instanceof ServerPlayer serverPlayer)
@@ -1246,8 +1247,25 @@ public final class ForgeEventHandler
                 }
                 event.setCanceled(true);
                 event.setCancellationResult(useBlockResult.result());
+                interacted = true;
             }
-            else
+            else if (useBlockResult == ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION)
+            {
+                // Mirror vanilla, which tries the empty hand interaction when the item interaction passes
+                final InteractionResult useWithoutItemResult = state.useWithoutItem(level, event.getEntity(), event.getHitVec());
+                if (useWithoutItemResult.consumesAction())
+                {
+                    if (event.getEntity() instanceof ServerPlayer serverPlayer)
+                    {
+                        CriteriaTriggers.DEFAULT_BLOCK_USE.trigger(serverPlayer, event.getPos());
+                    }
+                    event.setCanceled(true);
+                    event.setCancellationResult(useWithoutItemResult);
+                    interacted = true;
+                }
+            }
+
+            if (!interacted && !Helpers.isBlock(state, TFCTags.Blocks.BLOCKS_DRINK))
             {
                 // If we haven't already interacted with a block, then we can attempt drinking.
                 final InteractionResult result = Drinkable.attemptDrink(level, event.getEntity(), true);

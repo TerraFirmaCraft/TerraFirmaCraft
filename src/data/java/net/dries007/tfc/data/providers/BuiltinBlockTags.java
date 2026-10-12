@@ -176,6 +176,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.FRUIT_TREE_BRANCHES)
             .add(TFCBlocks.FRUIT_TREE_GROWING_BRANCHES)
             .add(TFCBlocks.STAINED_WATTLE)
+            .add(TFCBlocks.BUOYS)
             .add(
                 TFCBlocks.PALM_MOSAIC,
                 TFCBlocks.PALM_MOSAIC_SLAB,
@@ -296,6 +297,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .add(TFCBlocks.CHANNEL)
             .add(TFCBlocks.CALENDAR_CLOCK)
             .add(TFCBlocks.THERMOMETER)
+            .add(TFCBlocks.LOBSTER_TRAP)
             .add(TFCBlocks.CREATIVE_MOTOR);
         tag(BlockTags.MINEABLE_WITH_SHOVEL)
             .add2(TFCBlocks.SOIL)
@@ -682,6 +684,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             Tags.Blocks.GRAVELS,
             Tags.Blocks.SANDS
         );
+        tag(BLOCKS_DRINK).add(TFCBlocks.LOBSTER_TRAP);
 
         tag(TREE_GROWS_ON).addTag(BlockTags.DIRT);
         tag(WILD_CROP_GROWS_ON).addTag(BlockTags.DIRT);

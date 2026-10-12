@@ -2513,6 +2513,18 @@ def generate(rm: ResourceManager):
     block.with_lang(lang('precision clock')).with_block_loot('tfc:calendar_clock')
     rm.item_model('calendar_clock')
 
+    for color in COLORS:
+        block = rm.blockstate('buoy/%s' % color).with_block_model({'texture': 'tfc:block/buoy/%s' % color, 'particle': 'tfc:block/buoy/%s' % color}, parent='tfc:block/buoy')
+        block.with_lang(lang('%s buoy', color)).with_block_loot('tfc:buoy/%s' % color).with_item_model()
+
+    trap_models = {'open': 'tfc:block/lobster_trap', 'baited': 'tfc:block/lobster_trap_bait', 'closed': 'tfc:block/lobster_trap_closed'}
+    rm.blockstate('lobster_trap', variants=dict(
+        ('facing=%s,trap=%s' % (facing, trap), {'model': model, 'y': rot} if rot else {'model': model})
+        for facing, rot in (('north', 0), ('east', 90), ('south', 180), ('west', 270))
+        for trap, model in trap_models.items()
+    ), use_default_model=False).with_lang(lang('lobster trap')).with_block_loot('tfc:lobster_trap')
+    rm.item_model('lobster_trap', parent='tfc:block/lobster_trap', no_textures=True)
+
     # Candles
     for color in [None, *COLORS]:
         namespace = 'tfc:candle' + ('/' + color if color else '')

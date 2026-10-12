@@ -1,0 +1,25 @@
+{
+  "values": [
+    "tfc:metal/grate/bismuth_bronze",
+    "tfc:metal/grate/black_bronze",
+    "tfc:metal/grate/bronze",
+    "tfc:metal/grate/copper",
+    "tfc:metal/grate/wrought_iron",
+    "tfc:metal/grate/steel",
+    "tfc:metal/grate/black_steel",
+    "tfc:metal/grate/blue_steel",
+    "tfc:metal/grate/red_steel",
+    "tfc:metal/exposed_grate/bronze",
+    "tfc:metal/exposed_grate/copper",
+    "tfc:metal/exposed_grate/wrought_iron",
+    "tfc:metal/exposed_grate/steel",
+    "tfc:metal/weathered_grate/bronze",
+    "tfc:metal/weathered_grate/copper",
+    "tfc:metal/weathered_grate/wrought_iron",
+    "tfc:metal/weathered_grate/steel",
+    "tfc:metal/oxidized_grate/bronze",
+    "tfc:metal/oxidized_grate/copper",
+    "tfc:metal/oxidized_grate/wrought_iron",
+    "tfc:metal/oxidized_grate/steel"
+  ]
+}

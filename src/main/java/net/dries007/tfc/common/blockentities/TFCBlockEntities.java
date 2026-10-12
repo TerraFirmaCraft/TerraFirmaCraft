@@ -57,6 +57,8 @@ public final class TFCBlockEntities
     public static final Id<FireboxBlockEntity> FIREBOX = register("firebox", FireboxBlockEntity::new, TFCBlocks.FIREBOX);
     public static final Id<CalendarClockBlockEntity> CALENDAR_CLOCK = register("calendar_clock", CalendarClockBlockEntity::new, TFCBlocks.CALENDAR_CLOCK);
     public static final Id<ThermometerBlockEntity> THERMOMETER = register("thermometer", ThermometerBlockEntity::new, TFCBlocks.THERMOMETER);
+    public static final Id<LobsterTrapBlockEntity> LOBSTER_TRAP = register("lobster_trap", LobsterTrapBlockEntity::new, TFCBlocks.LOBSTER_TRAP);
+    public static final Id<BuoyBlockEntity> BUOY = register("buoy", BuoyBlockEntity::new, TFCBlocks.BUOYS.values().stream());
 
     public static final Id<TickCounterBlockEntity> TICK_COUNTER = register("tick_counter", TickCounterBlockEntity::new, Stream.of(
             woodBlocks(Wood.BlockType.SAPLING),

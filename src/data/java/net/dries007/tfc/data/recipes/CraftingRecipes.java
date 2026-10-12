@@ -1397,6 +1397,21 @@ public interface CraftingRecipes extends Recipes
             .input('S', TFCItems.METAL_ITEMS.get(Metal.BRASS).get(Metal.ItemType.SHEET))
             .pattern(" G ", "RBR", " S ")
             .shaped(TFCBlocks.THERMOMETER);
+
+        for (DyeColor color : DyeColor.values())
+        {
+            recipe()
+                .input('S', Tags.Items.RODS_WOODEN)
+                .input('P', ItemTags.PLANKS)
+                .input('D', dyeOf(color))
+                .pattern("S", "P", "D")
+                .shaped(TFCBlocks.BUOYS.get(color));
+        }
+        recipe()
+            .input('M', TFCItems.BRASS_MECHANISMS)
+            .input('G', TFCTags.Items.METAL_GRATES)
+            .pattern("MGM")
+            .shaped(TFCBlocks.LOBSTER_TRAP);
     }
 
     /**

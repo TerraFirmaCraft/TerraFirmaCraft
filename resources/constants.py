@@ -930,7 +930,7 @@ NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'leopard_seal', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'dromedary_camel', 'bactrian_camel', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'bison', 'peafowl', 'jerboa', 'lemming', 'mongoose', 'armadillo', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'crate', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox', 'mold_table', 'channel', 'power_loom')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'crate', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox', 'mold_table', 'channel', 'power_loom', 'lobster_trap', 'buoy')
 
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
@@ -1013,6 +1013,8 @@ DEFAULT_LANG = {
     'death.attack.tfc.coral.player': '%1$s impaled themself on a coral reef while trying to escape %2$s',
     'death.attack.tfc.pluck': '%1$s was plucked to death.',
     'death.attack.tfc.pluck.player': '%1$s was plucked to death by %2$s, which is surprising, because people don\'t typically grow feathers.',
+    'death.attack.tfc.lobster_trap': '%1$s was caught in a lobster trap.',
+    'death.attack.tfc.lobster_trap.player': '%1$s was stuffed into a lobster trap by %2$s.',
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',
     'effect.tfc.overburdened': 'Overburdened',
@@ -1466,6 +1468,10 @@ DEFAULT_LANG = {
     'tfc.jade.time_left': 'Time left: %s',
     'tfc.jade.ready_to_grow': 'Ready to Grow',
     'tfc.jade.animal_wear': 'Wear & Tear: %s',
+    'tfc.jade.buoy.no_trap': 'No trap attached',
+    'tfc.jade.buoy.trap': 'Trap attached, %s rope',
+    'tfc.jade.buoy.line_broken': 'Line broken, holding %s rope',
+    'tfc.jade.lobster_trap.bait': 'Bait: %s / %s',
     'tfc.jade.familiarity': 'Familiarity: %s',
     'tfc.jade.adulthood_progress': 'Becomes adult in %s',
     'tfc.jade.juvenile': 'Juvenile',
@@ -1529,6 +1535,8 @@ DEFAULT_LANG = {
     'config.jade.plugin_tfc.power_loom': 'Power Loom',
     'config.jade.plugin_tfc.trip_hammer': 'Trip Hammer',
     'config.jade.plugin_tfc.scraping': 'Scraping',
+    'config.jade.plugin_tfc.buoy': 'Buoy',
+    'config.jade.plugin_tfc.lobster_trap': 'Lobster Trap',
     'config.jade.plugin_tfc.ingot_pile': 'Ingot Pile',
     'config.jade.plugin_tfc.axle': 'Axle',
     'config.jade.plugin_tfc.encased_axle': 'Encased Axle',

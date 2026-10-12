@@ -21,7 +21,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "釣魚必須要有魚餌才行。每次釣魚成功後，魚餌都有一定機率被消耗掉。可以使用工作臺將魚餌新增到釣魚竿上。普通的魚用$(thing)種子$()或$(thing)貝類$()就行了。而更大的魚，例如$(thing)海豚$()和$(thing)逆戟鯨$()，就需要$(item)鱈魚$()、$(item)三文魚$()、$(item)熱帶魚$()或$(item)藍鰓魚$()。"
+      "text": "Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need raw fish."
     },
     {
       "type": "patchouli:text",
@@ -34,6 +34,28 @@
       ],
       "text": "釣魚時蓄力條會取代經驗條。",
       "border": true
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "trapping",
+      "recipe": "tfc:crafting/lobster_trap",
+      "title": "Trapping",
+      "text": "The $(thing)Lobster Trap$() catches $(thing)Lobsters$(), $(thing)Crayfish$(), $(thing)Isopods$(), and $(thing)Horseshoe Crabs$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Place a trap underwater and $(item)$(k:key.use)$() it with $(thing)raw fish$() or $(thing)mussels$() to bait it. Nearby critters will crawl in and be caught. One bait lasts for three catches. When it is full or out of bait, the trap closes.$(br2)$(item)$(k:key.use)$() with an empty hand to collect the catch. A trap must be emptied before it can be baited again."
+    },
+    {
+      "type": "patchouli:crafting",
+      "anchor": "buoys",
+      "recipe": "tfc:crafting/buoy/red",
+      "title": "Buoys",
+      "text": "A $(thing)Buoy$() floats on the surface of water, and can be used to lower traps into deep water."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(item)$(k:key.use)$() a buoy with a lobster trap to place the trap in the water below it. Then $(item)$(k:key.use)$() the buoy with $(thing)Rope$() to sink the trap one block per rope. $(item)$(k:key.use)$() the buoy with an empty hand to pull the trap back up and recover the rope."
     }
   ],
   "read_by_default": true,

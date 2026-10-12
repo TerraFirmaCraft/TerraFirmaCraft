@@ -23,6 +23,7 @@ public class TFCDamageTypes
     public static final ResourceKey<DamageType> POT = ResourceKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("pot"));
     public static final ResourceKey<DamageType> DEHYDRATION = ResourceKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("dehydration"));
     public static final ResourceKey<DamageType> PLUCK = ResourceKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("pluck"));
+    public static final ResourceKey<DamageType> LOBSTER_TRAP = ResourceKey.create(Registries.DAMAGE_TYPE, Helpers.identifier("lobster_trap"));
 
     public static void grill(Entity entity, float amount)
     {
@@ -42,6 +43,11 @@ public class TFCDamageTypes
     public static void dehydration(Entity entity, float amount)
     {
         entity.hurt(new DamageSource(fetch(DEHYDRATION, entity.level())), amount);
+    }
+
+    public static DamageSource lobsterTrap(Level level)
+    {
+        return new DamageSource(fetch(LOBSTER_TRAP, level));
     }
 
     private static Holder<DamageType> fetch(ResourceKey<DamageType> type, Level level)
