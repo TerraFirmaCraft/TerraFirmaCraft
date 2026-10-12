@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Metalworking",
-  "description": "Processing more advanced types of metals, from bronzes to steels.",
+  "name": "金属加工",
+  "description": "加工从青铜到钢等更高级的金属。",
   "icon": "tfc:metal/anvil/bronze",
   "sortnum": 3
 }

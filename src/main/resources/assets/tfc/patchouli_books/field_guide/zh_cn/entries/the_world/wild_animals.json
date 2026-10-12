@@ -37,7 +37,7 @@
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "黑熊",
-      "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:core_mechanics/climate#temperature)temperature$() $(cfg:temperature:5) to $(cfg:temperature:20) and at least 250mm of $(l:core_mechanics/climate#rainfall)rainfall$()."
+      "text": "黑熊生成于温暖潮湿的森林中：$(l:core_mechanics/climate#temperature)温度$()介于 $(cfg:temperature:5) 与 $(cfg:temperature:20) 之间，且$(l:core_mechanics/climate#rainfall)降雨量$()至少为 250mm。"
     },
     {
       "type": "patchouli:entity",
@@ -208,8 +208,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:armadillo",
       "scale": 0.7,
-      "name": "Armadillo",
-      "text": "The armadillo sheds scutes every 30 hours. It can be found at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:12), and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 400mm."
+      "name": "犰狳",
+      "text": "犰狳每 30 小时会掉落一次鳞甲。它们分布在$(l:core_mechanics/climate#temperature)温度$()高于 $(cfg:temperature:12)、$(l:core_mechanics/climate#rainfall)降雨量$()介于 100 至 400mm 的地区。"
     },
     {
       "type": "patchouli:empty"
@@ -404,21 +404,21 @@
       "entity": "tfc:isopod",
       "scale": 0.7,
       "name": "等足虫",
-      "text": "Isopods spawn in deeper sections of oceans of $(l:core_mechanics/climate#temperature)temperature$() at most $(cfg:temperature:14)."
+      "text": "等足虫生成于$(l:core_mechanics/climate#temperature)温度$()不高于 $(cfg:temperature:14) 的深海区域。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "龙虾",
-      "text": "Lobster spawn in any ocean that is at most of a $(l:core_mechanics/climate#temperature)temperature$() of $(cfg:temperature:21)."
+      "text": "龙虾生成于$(l:core_mechanics/climate#temperature)温度$()不高于 $(cfg:temperature:21) 的海洋中。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "小龙虾",
-      "text": "Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:5) and a $(l:core_mechanics/climate#rainfall)rainfall$() of at least 125mm."
+      "text": "小龙虾与龙虾相似，但生成在河流和湖泊中。它们需要至少 $(cfg:temperature:5) 的$(l:core_mechanics/climate#temperature)温度$()和至少 125mm 的$(l:core_mechanics/climate#rainfall)降雨量$()。"
     },
     {
       "type": "patchouli:entity",
