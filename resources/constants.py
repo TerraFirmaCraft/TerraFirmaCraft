@@ -477,6 +477,7 @@ KAOLIN_CLAY_TYPES = ('red', 'pink', 'white')
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
 TRIM_MATERIALS = (*GEMS, 'rose_gold', 'gold', 'silver', 'sterling_silver', 'bismuth')
+VANILLA_TRIM_MATERIALS = ('amethyst', 'copper', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'quartz', 'netherite', 'redstone')
 MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'feather', 'flint', 'guano', 'humus', 'obsidian_shard', 'rotten_flesh', 'salt_lick', 'sea_urchin', 'pumice')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 NON_WHITE_COLORS = COLORS[1:]
