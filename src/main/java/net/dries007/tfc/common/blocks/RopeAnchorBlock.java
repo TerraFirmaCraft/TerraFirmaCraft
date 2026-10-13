@@ -121,8 +121,7 @@ public abstract class RopeAnchorBlock extends AbstractRopeBlock implements IFlui
     }
 
     /**
-     * Recalls any rope hanging from this anchor (returning it to the player) and reverts the anchor to its un-roped
-     * form. Also used to cancel an in-progress throw, where there is no rope yet, so the recall is a no-op.
+     * Recalls any rope hanging from this anchor (returning it to the player) and reverts the anchor to its un-roped form.
      */
     public void removeRope(Level level, BlockPos pos, BlockState state, Player player)
     {
