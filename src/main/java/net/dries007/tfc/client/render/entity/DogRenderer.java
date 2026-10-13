@@ -37,4 +37,10 @@ public class DogRenderer extends SimpleMobRenderer<Dog, DogModel>
             stack.mulPose(Axis.ZP.rotationDegrees(90f));
         }
     }
+
+    @Override
+    public ResourceLocation getTextureLocation(Dog entity)
+    {
+        return entity.getTexture();
+    }
 }
