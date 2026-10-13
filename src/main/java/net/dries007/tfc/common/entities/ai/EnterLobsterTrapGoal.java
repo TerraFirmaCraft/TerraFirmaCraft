@@ -31,7 +31,7 @@ import net.dries007.tfc.util.Helpers;
  */
 public class EnterLobsterTrapGoal extends MoveToBlockGoal
 {
-    private static final int SEARCH_RANGE = 20;
+    private static final int SEARCH_RANGE = 16;
 
     public EnterLobsterTrapGoal(PathfinderMob mob)
     {
