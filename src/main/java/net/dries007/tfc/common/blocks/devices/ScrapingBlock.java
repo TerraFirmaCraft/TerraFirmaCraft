@@ -90,7 +90,12 @@ public class ScrapingBlock extends DeviceBlock
             }
             else if (Helpers.isItem(stack.getItem(), TFCTags.Items.KNIVES))
             {
+                final short previousPositions = scraping.getScrapedPositions();
                 scraping.onClicked((float) point.x, (float) point.z);
+                if (scraping.getScrapedPositions() == previousPositions)
+                {
+                    return InteractionResult.FAIL;
+                }
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
                 doParticles(level, pos, scraping, point);
                 return InteractionResult.sidedSuccess(level.isClientSide);
