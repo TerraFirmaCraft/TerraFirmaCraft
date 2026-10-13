@@ -22,8 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.blocks.RopeAnchorBlock;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.items.RopeItem;
 import net.dries007.tfc.common.items.TFCItems;
 
 public class RopeKnot extends LeashFenceKnotEntity implements Leashable
@@ -94,7 +94,7 @@ public class RopeKnot extends LeashFenceKnotEntity implements Leashable
             return false;
         if (holder.distanceToSqr(this) > 16 * 16)
             return false;
-        return level().getBlockState(pos).getBlock() instanceof RopeAnchorBlock;
+        return RopeItem.canPlaceRopeOn(level(), pos, level().getBlockState(pos));
     }
 
     @Override

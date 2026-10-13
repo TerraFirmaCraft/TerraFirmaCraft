@@ -1,20 +1,46 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "variants": {
-    "facing=east": {
-      "model": "tfc:block/rock/rope_anchor/shale",
-      "y": 90
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/rock/spike/shale_tip"
+      }
     },
-    "facing=north": {
-      "model": "tfc:block/rock/rope_anchor/shale"
+    {
+      "when": {
+        "facing": "north"
+      },
+      "apply": {
+        "model": "tfc:block/rock/rope_anchor/shale",
+        "y": 0
+      }
     },
-    "facing=south": {
-      "model": "tfc:block/rock/rope_anchor/shale",
-      "y": 180
+    {
+      "when": {
+        "facing": "east"
+      },
+      "apply": {
+        "model": "tfc:block/rock/rope_anchor/shale",
+        "y": 90
+      }
     },
-    "facing=west": {
-      "model": "tfc:block/rock/rope_anchor/shale",
-      "y": 270
+    {
+      "when": {
+        "facing": "south"
+      },
+      "apply": {
+        "model": "tfc:block/rock/rope_anchor/shale",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "west"
+      },
+      "apply": {
+        "model": "tfc:block/rock/rope_anchor/shale",
+        "y": 270
+      }
     }
-  }
+  ]
 }

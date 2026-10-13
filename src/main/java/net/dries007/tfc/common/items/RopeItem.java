@@ -55,20 +55,8 @@ public class RopeItem extends Item
         {
             return InteractionResult.PASS;
         }
-        if (state.getBlock() instanceof RockSpikeBlock spike && canPlaceRopeOn(level, blockpos, state))
+        if (canPlaceRopeOn(level, blockpos, state))
         {
-            if (!level.isClientSide && player != null)
-            {
-                // Convert the spike tip into an anchor, then hand the player a knot to throw. The anchor's facing is
-                // re-aligned to the throw direction in placeRopes(), so the value here only matters until then.
-                level.setBlockAndUpdate(blockpos, spike.getAnchor().defaultBlockState().setValue(AbstractRopeBlock.FACING, player.getDirection()));
-                bindToAnchor(player, level, blockpos);
-            }
-            return InteractionResult.sidedSuccess(level.isClientSide);
-        }
-        else
-        {
-            if (state.getBlock() instanceof MetalRopeAnchorBlock&& !state.getValue(TFCBlockStateProperties.HAS_ROPE) && state.getFluidState().isEmpty())
             {
                 if (!level.isClientSide && player != null)
                 {
@@ -91,19 +79,9 @@ public class RopeItem extends Item
         }
         if (!level.isClientSide)
         {
-            final BlockPos anchorPos = knot.blockPosition();
-            if (player.isShiftKeyDown())
+            if (!player.isShiftKeyDown()) // Holding shift cancels the throw
             {
-                // Cancel the throw: drop the knot and revert the anchor without laying any rope.
-                final BlockState anchorState = level.getBlockState(anchorPos);
-                if (anchorState.getBlock() instanceof RopeAnchorBlock anchor)
-                {
-                    anchor.removeRope(level, anchorPos, anchorState, player);
-                }
-            }
-            else
-            {
-                placeRopes(level, player, stack, anchorPos);
+                placeRopes(level, player, stack, knot.blockPosition());
             }
             knot.discard();
         }
@@ -138,7 +116,9 @@ public class RopeItem extends Item
 
     public static boolean canPlaceRopeOn(Level level, BlockPos pos, BlockState state)
     {
-        return state.getBlock() instanceof RockSpikeBlock && state.getValue(RockSpikeBlock.PART) == RockSpikeBlock.Part.TIP && level.getFluidState(pos).isEmpty() && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP, SupportType.CENTER);
+        return state.getFluidState().isEmpty() && 
+            (state.getBlock() instanceof RockSpikeBlock && state.getValue(RockSpikeBlock.PART) == RockSpikeBlock.Part.TIP && level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP, SupportType.CENTER)
+            || (state.getBlock() instanceof MetalRopeAnchorBlock && !state.getValue(TFCBlockStateProperties.HAS_ROPE)));
     }
 
     public static void placeRopes(Level level, Player player, ItemStack stack, BlockPos origin)
@@ -154,11 +134,17 @@ public class RopeItem extends Item
 
         BlockState state = level.getBlockState(cursor);
         RopeState previous = RopeState.HORIZONTAL;
-        if (state.getBlock() instanceof RopeAnchorBlock)
+
+        BlockState anchorState = state;
+        if (state.getBlock() instanceof RockSpikeBlock spike)
+        {
+            anchorState = spike.getAnchor().defaultBlockState();
+        }
+        if (anchorState.getBlock() instanceof RopeAnchorBlock)
         {
             // The anchor was already placed (spike conversion, or a free-standing anchor); re-align it to the throw
             // direction and, for anchors that track it, mark that a rope is now attached.
-            BlockState anchorState = state.setValue(facing, dir);
+            anchorState = anchorState.setValue(facing, dir);
             if (anchorState.hasProperty(TFCBlockStateProperties.HAS_ROPE))
             {
                 anchorState = anchorState.setValue(TFCBlockStateProperties.HAS_ROPE, true);
