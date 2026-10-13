@@ -69,7 +69,7 @@ public class FireboxBlock extends DeviceBlock implements IBellowsConsumer
             }
             else if (stack.isEmpty() && player.isShiftKeyDown() && !inv.getStackInSlot(0).isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, inv.getStackInSlot(0));
+                ItemHandlerHelper.giveItemToPlayer(player, Helpers.removeStack(inv, 0));
                 return ItemInteractionResult.SUCCESS;
             }
             else if (player instanceof ServerPlayer serverPlayer)

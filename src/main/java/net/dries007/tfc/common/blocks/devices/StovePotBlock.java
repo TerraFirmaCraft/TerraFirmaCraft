@@ -82,22 +82,17 @@ public class StovePotBlock extends PotBlock
         final PotBlockEntity pot = level.getBlockEntity(pos, TFCBlockEntities.POT.get()).orElse(null);
         if (pot != null)
         {
-            if (!pot.isBoiling() && stack.isEmpty() && player.isShiftKeyDown())
+            if (!pot.isBoiling() && stack.isEmpty() && player.isShiftKeyDown() && (state.getValue(LIT) || pot.getAsh() <= 0))
             {
-                if (!(!state.getValue(LIT) && !pot.isBoiling() && pot.getAsh() > 0))
-                {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POT.get()));
-                    AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.STOVE.get());
-                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                }
+                ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POT.get()));
+                AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.STOVE.get());
                 if (state.getValue(LIT))
                 {
                     TFCDamageTypes.pot(player, 1f);
                     Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
-                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
-
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }

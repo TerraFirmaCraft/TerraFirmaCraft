@@ -123,26 +123,22 @@ public class GrillBlock extends FirepitBlock implements IHighlightHandler
             }
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                if (!level.isClientSide)
+                if (!state.getValue(LIT) && grill.getAsh() > 0)
                 {
-                    if (!state.getValue(LIT) && grill.getAsh() > 0)
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), grill.getAsh()));
-                        grill.setAsh(0);
-                        Helpers.playSound(level, pos, SoundEvents.SAND_BREAK);
-                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                    }
-                    else
-                    {
-                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
-                        AbstractFirepitBlockEntity.convertTo(level, pos, state, grill, TFCBlocks.FIREPIT.get());
-                    }
-                    if (state.getValue(LIT))
-                    {
-                        TFCDamageTypes.grill(player, 1f);
-                        Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
-                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                    }
+                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), grill.getAsh()));
+                    grill.setAsh(0);
+                    Helpers.playSound(level, pos, SoundEvents.SAND_BREAK);
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                }
+                else
+                {
+                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
+                    AbstractFirepitBlockEntity.convertTo(level, pos, state, grill, TFCBlocks.FIREPIT.get());
+                }
+                if (state.getValue(LIT))
+                {
+                    TFCDamageTypes.grill(player, 1f);
+                    Helpers.playSound(level, pos, TFCSounds.ITEM_COOL.get());
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }

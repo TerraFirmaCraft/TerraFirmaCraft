@@ -69,14 +69,17 @@ public class ShelfBlock extends PlacedItemBlock
             // N.B. We don't have to handle interacting with shelf or placed item, because if so, the model makes it impossible
             // for us to hit the top of a shelf below, without interacting with the shelf above
             final BlockPos above = pos.above();
-            if (level.isEmptyBlock(above))
+            if (!stack.isEmpty() && level.isEmptyBlock(above))
             {
                 final BlockState toPlace = PlacedItemBlock.updateStateValues(level, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState());
                 if (!PlacedItemBlock.isEmptyContents(toPlace))
                 {
                     level.setBlockAndUpdate(above, toPlace);
-                    level.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, hitResult));
-                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                    if (level.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).map(e -> e.insertItem(player, stack, hitResult)).orElse(false))
+                    {
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                    }
+                    level.removeBlock(above, false);
                 }
             }
         }

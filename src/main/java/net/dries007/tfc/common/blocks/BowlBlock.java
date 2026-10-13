@@ -63,7 +63,7 @@ public class BowlBlock extends BottomSupportedDeviceBlock
                 if (op != null)
                 {
                     GlassWorking.apply(held, op);
-                    inventory.getStackInSlot(0).shrink(1);
+                    inventory.extractItem(0, 1, false);
                     Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
                     player.getCooldowns().addCooldown(held.getItem(), 10);
                     return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -95,7 +95,7 @@ public class BowlBlock extends BottomSupportedDeviceBlock
 
                     FoodCapability.applyTrait(salted, FoodTraits.SALTED);
                     ItemHandlerHelper.giveItemToPlayer(player, salted);
-                    inventory.getStackInSlot(0).shrink(toSalt);
+                    inventory.extractItem(0, toSalt, false);
                     Helpers.playSound(level, pos, SoundEvents.SAND_PLACE);
                     return ItemInteractionResult.sidedSuccess(level.isClientSide);
                 }
