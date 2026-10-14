@@ -134,4 +134,12 @@ public class PotRecipe implements ISimpleRecipe<IPotInventory>
     {
         return PotOutput.EMPTY_INSTANCE;
     }
+
+    /**
+     * @return true if this recipe should only be used when no other non-fallback recipe matches.
+     */
+    public boolean isFallback()
+    {
+        return false;
+    }
 }

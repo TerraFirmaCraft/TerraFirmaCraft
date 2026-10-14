@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.Comparator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -240,8 +241,11 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         assert level != null;
         cachedRecipe = level.getRecipeManager()
-            .getRecipeFor(TFCRecipeTypes.POT.get(), inventory, level)
+            .getAllRecipesFor(TFCRecipeTypes.POT.get())
+            .stream()
             .map(RecipeHolder::value)
+            .filter(recipe -> recipe.matches(inventory, level))
+            .min(Comparator.comparing(PotRecipe::isFallback))
             .orElse(null);
     }
 

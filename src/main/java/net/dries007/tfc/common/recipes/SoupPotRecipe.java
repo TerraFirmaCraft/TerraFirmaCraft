@@ -120,6 +120,12 @@ public class SoupPotRecipe extends PotRecipe
     }
 
     @Override
+    public boolean isFallback()
+    {
+        return true;
+    }
+
+    @Override
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.POT_SOUP.get();
