@@ -48,6 +48,7 @@ import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.OcelotRenderer;
 import net.minecraft.client.renderer.entity.PandaRenderer;
+import net.minecraft.client.renderer.entity.ParrotRenderer;
 import net.minecraft.client.renderer.entity.RabbitRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -665,6 +666,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
         event.registerEntityRenderer(TFCEntities.PANDA.get(), PandaRenderer::new);
         event.registerEntityRenderer(TFCEntities.OCELOT.get(), OcelotRenderer::new);
+        event.registerEntityRenderer(TFCEntities.PARROT.get(), ParrotRenderer::new);
         event.registerEntityRenderer(TFCEntities.BONGO.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BongoModel::new, "bongo").shadow(0.6f).build());
         event.registerEntityRenderer(TFCEntities.CARIBOU.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, CaribouModel::new, "caribou").shadow(0.6f).build());
         event.registerEntityRenderer(TFCEntities.DEER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DeerModel::new, "deer").shadow(0.6f).hasBabyTexture().build());

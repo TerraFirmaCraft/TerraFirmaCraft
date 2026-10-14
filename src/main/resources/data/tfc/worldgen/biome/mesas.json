@@ -318,6 +318,12 @@
         "maxCount": 3
       },
       {
+        "type": "tfc:parrot",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
         "type": "tfc:frog",
         "weight": 1,
         "minCount": 2,

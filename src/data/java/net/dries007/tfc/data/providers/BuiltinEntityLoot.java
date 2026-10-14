@@ -230,6 +230,7 @@ public class BuiltinEntityLoot extends EntityLootSubProvider
         add(TFCEntities.JELLYFISH.get(), lootTable());
         add(TFCEntities.PANDA.get(), lootTable());
         add(TFCEntities.OCELOT.get(), lootTable());
+        add(TFCEntities.PARROT.get(), wildBird(Food.PARROT, 1, 1, 1, 2, 6));
         add(TFCEntities.RAT.get(), lootTable());
         add(TFCEntities.LEMMING.get(), lootTable());
         add(TFCEntities.MONGOOSE.get(), lootTable());

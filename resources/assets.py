@@ -1670,6 +1670,8 @@ def generate(rm: ResourceManager):
     for meat in MEATS:
         rm.item_model(('food', meat)).with_lang(lang('raw %s', meat))
         rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
+    rm.item_model(('food', 'parrot'), 'tfc:item/food/quail').with_lang(lang('raw parrot'))
+    rm.item_model(('food', 'cooked_parrot'), 'tfc:item/food/cooked_quail').with_lang(lang('cooked parrot'))
     for veg in MISC_FOODS:
         rm.item_model(('food', veg)).with_lang(lang(veg))
 
@@ -2586,6 +2588,7 @@ def generate(rm: ResourceManager):
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:
         rm.item_model('spawn_egg/%s' % creature).with_lang(lang('%s Spawn Egg', creature))
+    rm.item_model('spawn_egg/parrot', parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('Parrot Spawn Egg'))
     for creature in BUCKETABLE_FISH:
         rm.item_model('bucket/%s' % creature).with_lang(lang('%s Bucket', creature))
 
