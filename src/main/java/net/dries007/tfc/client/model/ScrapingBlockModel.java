@@ -25,15 +25,17 @@ public enum ScrapingBlockModel implements SimpleStaticBlockEntityModel<ScrapingB
     @Override
     public TextureAtlasSprite render(ScrapingBlockEntity scraping, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay)
     {
-        if (scraping.getInputTexture() != null && scraping.getOutputTexture() != null)
+        final ResourceLocation input = scraping.getInputTexture();
+        final ResourceLocation output = scraping.getOutputTexture();
+        if (input != null && output != null)
         {
             final short positions = scraping.getScrapedPositions();
-            drawTiles(buffer, poseStack, scraping.getInputTexture(), positions, 0, packedLight, packedOverlay, scraping.getColor1());
-            drawTiles(buffer, poseStack, scraping.getOutputTexture(), positions, 1, packedLight, packedOverlay, scraping.getColor2());
+            drawTiles(buffer, poseStack, input, positions, 0, packedLight, packedOverlay, scraping.getColor1());
+            drawTiles(buffer, poseStack, output, positions, 1, packedLight, packedOverlay, scraping.getColor2());
         }
-        if (scraping.getOutputTexture() != null)
+        if (output != null)
         {
-            return Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(scraping.getOutputTexture());
+            return Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(output);
         }
         return RenderHelpers.missingTexture();
     }
