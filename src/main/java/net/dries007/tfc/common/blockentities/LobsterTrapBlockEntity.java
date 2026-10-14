@@ -34,6 +34,7 @@ public class LobsterTrapBlockEntity extends InventoryBlockEntity<ItemStackHandle
 {
     public static final int CATCH_SLOTS = 6;
     public static final int BAIT_PER_ITEM = 3;
+    public static final float JUNK_CHANCE = 0.1f;
 
     private int bait = 0;
 
@@ -99,16 +100,23 @@ public class LobsterTrapBlockEntity extends InventoryBlockEntity<ItemStackHandle
      */
     public void catchEntity(ServerLevel level, Mob mob)
     {
-        final LootTable table = level.getServer().reloadableRegistries().getLootTable(mob.getLootTable());
-        final LootParams params = new LootParams.Builder(level)
-            .withParameter(LootContextParams.THIS_ENTITY, mob)
-            .withParameter(LootContextParams.ORIGIN, mob.position())
-            .withParameter(LootContextParams.DAMAGE_SOURCE, TFCDamageTypes.lobsterTrap(level))
-            .create(LootContextParamSets.ENTITY);
-
-        for (ItemStack stack : table.getRandomItems(params))
+        if (level.random.nextFloat() < JUNK_CHANCE)
         {
-            Helpers.insertAllSlots(inventory, stack);
+            Helpers.randomItem(TFCTags.Items.LOBSTER_TRAP_JUNK, level.random).ifPresent(item -> Helpers.insertAllSlots(inventory, new ItemStack(item)));
+        }
+        else
+        {
+            final LootTable table = level.getServer().reloadableRegistries().getLootTable(mob.getLootTable());
+            final LootParams params = new LootParams.Builder(level)
+                .withParameter(LootContextParams.THIS_ENTITY, mob)
+                .withParameter(LootContextParams.ORIGIN, mob.position())
+                .withParameter(LootContextParams.DAMAGE_SOURCE, TFCDamageTypes.lobsterTrap(level))
+                .create(LootContextParamSets.ENTITY);
+
+            for (ItemStack stack : table.getRandomItems(params))
+            {
+                Helpers.insertAllSlots(inventory, stack);
+            }
         }
 
         bait = Math.max(0, bait - 1);

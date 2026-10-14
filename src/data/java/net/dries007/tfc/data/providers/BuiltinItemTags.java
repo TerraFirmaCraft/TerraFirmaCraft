@@ -245,6 +245,8 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(LOBSTER_BAIT)
             .addTag(RAW_FISH)
             .add(TFCBlocks.GROUNDCOVER.get(GroundcoverBlockType.MUSSEL));
+        tag(LOBSTER_TRAP_JUNK)
+            .add(Food.FRESH_SEAWEED);
         tag(HOLDS_SMALL_FISHING_BAIT)
             .addTag(HOLDS_LARGE_FISHING_BAIT).add(
             TFCItems.METAL_ITEMS.get(Metal.COPPER).get(Metal.ItemType.FISHING_ROD),

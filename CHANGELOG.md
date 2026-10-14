@@ -1,22 +1,32 @@
 ### Changes
-- Added more info to inventory tab tooltips (#3729)
-- Show the survival inventory tabs in creative mode (#3728)
-- Barrel dyeing recipes for terracotta now use plain terracotta as the input, allowing you to make white terracotta (#3714)
-- Welding recipes no longer display an anvil tier requirement in JEI/EMI when they have no minimum tier (#3695)
-- Flower cuttings now display all possible flowers in JEI/EMI instead of an empty item (#3736)
-- Exposed `airTicks` on more devices (#3734)
+
+- Added Buoys and Lobster Traps. Bait traps with raw fish or mussels to catch lobsters and other critters. Buoys lower traps into deep water using rope.
+- Seaweed found on beaches can now be heated into soda ash.
+- When a pot holds ingredients that match both soup and another recipe, it now makes the other recipe.
+- Tool racks can now be waterlogged in all fluids.
+- Scraping no longer damages the knife when you click a spot that's already scraped, and Jade now shows what's being scraped. (#3753)
+- Mobs no longer spawn on thatch. (#3682)
+- Below y=0, temperature now gets warmer as you approach lava level. No more ice in lava caves...
+- Updated hoe climate tooltip styling.
+- Lobsters now look for traps in a smaller range (16 blocks, was 20).
+- Updated the Simplified Chinese localization.
+- You can take items off of querns while they're grinding something else.
 
 ### Fixes
-- Fix a crash with bamboo (#3704)
-- Fix the Globe Trotter advancement being impossible to complete in some cases (#3722)
-- Fix javelins not dealing variable thrown damage (#3724)
-- Fix several field guide typos (#3715)
-- Fix the berry bush config item (#3731)
-- Fix prey animals not fleeing from predators (#3726) (#3727)
-- Fix crushing damage (#3725)
-- Fix firepits consuming fuel while the calendar is paused (#3733)
-- Fix plants rendering in their non-blooming state outside the world, such as in the field guide or in JEI/EMI (#3186)
-- Fix a crash when using Vivecraft (most likely)
-- Fix incorrect Rankine calculation (#3738)
-- Fix falling blocks getting stuck on boats (#3700)
-- Fix an issue with addons/other mods adding food items and it crashing with creative tabs (#3711)
+
+- Fixed several kiln issues. (#3293)
+- Fixes to tamed animal AI. (#3325)
+- Fixed mold tables sometimes not rendering correctly after a chunk reloads. (#3598)
+- Fixed rope anchors visually rotating with the placed rope (#3640), and rock rope anchors showing an extra rope while being thrown.
+- Fixed water at the surface of enclosed atolls. (#3719)
+- Fixed a missing texture on TFC armor with vanilla trim materials. (#3748)
+- Fixed NeoForge block entity data not being saved. (#3754)
+- Fixed advanced shapeless recipes in JEI. (#3755)
+- Fixed a rare scraping crash. (#3758)
+- Fixed the farmland temperature tooltip showing "null" below 0.
+- Fixed a crash with banana plants.
+- Fixed possible crashes when a firepit, forge, bloomery, blast furnace or firebox block was replaced.
+- Fixed issues with underwater berry bushes.
+- Fixed error when attempting to spawn squids, possibly.
+- Fixed typo in Russian translation.
+- Fixed some rare dupes/block interaction bugs.

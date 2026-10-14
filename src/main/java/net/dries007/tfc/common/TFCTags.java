@@ -550,6 +550,7 @@ public class TFCTags
         public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = tag("holds_small_fishing_bait");
         public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = tag("holds_large_fishing_bait");
         public static final TagKey<Item> LOBSTER_BAIT = tag("lobster_bait");
+        public static final TagKey<Item> LOBSTER_TRAP_JUNK = tag("lobster_trap_junk");
 
         public static final TagKey<Item> PLANTS = tag("plants");
         public static final TagKey<Item> WILD_CROPS = tag("wild_crops");
