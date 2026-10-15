@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities.prey;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -25,12 +26,19 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class TFCParrot extends Parrot
 {
+    private static final float LEAVE_TEMPERATURE = 10f;
+
     public static List<Variant> getClimateVariants(LevelReader level, BlockPos pos)
     {
         final ChunkData data = ChunkData.get(level, pos);
@@ -46,6 +54,15 @@ public class TFCParrot extends Parrot
         if (temperature >= 12 && temperature <= 30 && groundwater >= 60 && groundwater <= 200 && forest <= 1) variants.add(Variant.GRAY);
         return variants;
     }
+
+    private static boolean isTooCold(ClimateModel model, LevelReader level, BlockPos pos)
+    {
+        final ICalendar calendar = Calendars.get(level);
+        final long calendarTicks = calendar.getCalendarTicks();
+        return model.getTimeAverageTemperature(level, pos, calendarTicks - ICalendar.CALENDAR_TICKS_IN_DAY, calendarTicks, calendar.getCalendarDaysInMonth()) < LEAVE_TEMPERATURE;
+    }
+
+    private long nextLeaveCheckTick = Long.MIN_VALUE;
 
     public TFCParrot(EntityType<? extends Parrot> type, Level level)
     {
@@ -73,7 +90,40 @@ public class TFCParrot extends Parrot
         return pos.getY() >= surfaceY
             && level.getFluidState(pos.atY(surfaceY - 1)).isEmpty()
             && !getClimateVariants(level, pos).isEmpty()
+            && !isTooCold(Climate.get(level()), level, pos)
             && super.checkSpawnRules(level, spawnType);
+    }
+
+    @Override
+    protected void customServerAiStep()
+    {
+        super.customServerAiStep();
+        if (isTame() || isPersistenceRequired()) return;
+
+        final ICalendar calendar = Calendars.get(level());
+        final long ticks = calendar.getTicks();
+        if (ticks < nextLeaveCheckTick) return;
+        nextLeaveCheckTick = ticks + calendar.getTicksInHour() * ICalendar.HOURS_IN_DAY;
+
+        // Wild parrots leave for the winter, and normal spawning brings them back once it warms up again
+        if (isTooCold(Climate.get(level()), level(), blockPosition()) && level().getNearestPlayer(this, 32) == null)
+        {
+            discard();
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag)
+    {
+        super.addAdditionalSaveData(tag);
+        tag.putLong("nextLeaveCheck", nextLeaveCheckTick);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag)
+    {
+        super.readAdditionalSaveData(tag);
+        nextLeaveCheckTick = EntityHelpers.getLongOrDefault(tag, "nextLeaveCheck", Long.MIN_VALUE);
     }
 
     @Override
