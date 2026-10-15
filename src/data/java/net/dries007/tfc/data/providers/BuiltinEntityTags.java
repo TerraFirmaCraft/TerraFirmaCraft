@@ -351,5 +351,8 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
         tag(IGNORES_SNOW)
             .add(TFCEntities.BACTRIAN_CAMEL.get());
 
+        tag(PERCHES_ON_LEAVES)
+            .add(TFCEntities.PARROT.get());
+
     }
 }

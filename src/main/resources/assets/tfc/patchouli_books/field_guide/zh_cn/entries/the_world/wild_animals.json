@@ -212,7 +212,11 @@
       "text": "犰狳每 30 小时会掉落一次鳞甲。它们分布在$(l:core_mechanics/climate#temperature)温度$()高于 $(cfg:temperature:12)、$(l:core_mechanics/climate#rainfall)降雨量$()介于 100 至 400mm 的地区。"
     },
     {
-      "type": "patchouli:empty"
+      "type": "patchouli:entity",
+      "entity": "tfc:parrot",
+      "scale": 0.7,
+      "name": "Parrot",
+      "text": "Parrots are the only animals light enough to stand on leaves. They live in warm climates, with an average $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:12) and at least 60mm of $(l:core_mechanics/climate#rainfall)rainfall$(), and their color depends on the local climate. They cannot be tamed, and fly away when the average temperature drops below $(cfg:temperature:10)."
     },
     {
       "type": "patchouli:text",

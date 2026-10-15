@@ -9,23 +9,31 @@ package net.dries007.tfc.common.entities.prey;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -67,6 +75,14 @@ public class TFCParrot extends Parrot
     public TFCParrot(EntityType<? extends Parrot> type, Level level)
     {
         super(type, level);
+    }
+
+    @Override
+    protected void registerGoals()
+    {
+        super.registerGoals();
+        goalSelector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof WaterAvoidingRandomFlyingGoal); // vanilla wander goal, which only perches on vanilla leaves
+        goalSelector.addGoal(2, new TFCParrotWanderGoal(this, 1.0));
     }
 
     @Nullable
@@ -140,5 +156,40 @@ public class TFCParrot extends Parrot
             return InteractionResult.PASS; // wild parrots cannot be tamed
         }
         return super.mobInteract(player, hand);
+    }
+
+    static class TFCParrotWanderGoal extends WaterAvoidingRandomFlyingGoal
+    {
+        TFCParrotWanderGoal(PathfinderMob mob, double speedModifier)
+        {
+            super(mob, speedModifier);
+        }
+
+        @Nullable
+        @Override
+        protected Vec3 getPosition()
+        {
+            Vec3 pos = mob.isInWater() ? LandRandomPos.getPos(mob, 15, 15) : null;
+            if (mob.getRandom().nextFloat() >= probability)
+            {
+                pos = getTreePos();
+            }
+            return pos == null ? super.getPosition() : pos;
+        }
+
+        @Nullable
+        private Vec3 getTreePos()
+        {
+            final BlockPos origin = mob.blockPosition();
+            for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-3, -6, -3), origin.offset(3, 6, 3)))
+            {
+                final BlockState below = mob.level().getBlockState(pos.relative(Direction.DOWN));
+                if (!pos.equals(origin) && (below.getBlock() instanceof ILeavesBlock || Helpers.isBlock(below, BlockTags.LOGS)) && mob.level().isEmptyBlock(pos) && mob.level().isEmptyBlock(pos.above()))
+                {
+                    return Vec3.atBottomCenterOf(pos);
+                }
+            }
+            return null;
+        }
     }
 }
