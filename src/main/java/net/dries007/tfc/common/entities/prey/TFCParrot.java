@@ -8,15 +8,18 @@ package net.dries007.tfc.common.entities.prey;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -27,6 +30,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Parrot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -40,10 +44,15 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.PathfindingContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
+import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -72,11 +81,26 @@ public class TFCParrot extends Parrot
         return variants;
     }
 
+    /**
+     * Vanilla only renders and plays sounds for shoulder entities with the exact vanilla parrot id
+     */
+    public static Optional<EntityType<?>> asVanillaParrot(Optional<EntityType<?>> type)
+    {
+        return type.map(t -> t == TFCEntities.PARROT.get() ? EntityType.PARROT : t);
+    }
+
     private static boolean isTooCold(ClimateModel model, LevelReader level, BlockPos pos)
     {
         final ICalendar calendar = Calendars.get(level);
         final long calendarTicks = calendar.getCalendarTicks();
         return model.getTimeAverageTemperature(level, pos, calendarTicks - ICalendar.CALENDAR_TICKS_IN_DAY, calendarTicks, calendar.getCalendarDaysInMonth()) < LEAVE_TEMPERATURE;
+    }
+
+    private static float getFoodHealing(ItemStack stack)
+    {
+        if (Helpers.isItem(stack, Tags.Items.SEEDS)) return 1f;
+        if (Helpers.isItem(stack, TFCTags.Items.GRAINS)) return 2f;
+        return 3f; // berries
     }
 
     private long nextLeaveCheckTick = Long.MIN_VALUE;
@@ -176,9 +200,36 @@ public class TFCParrot extends Parrot
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        if (!isTame() && Helpers.isItem(player.getItemInHand(hand), ItemTags.PARROT_FOOD))
+        final ItemStack stack = player.getItemInHand(hand);
+        if (Helpers.isItem(stack, TFCTags.Items.PARROT_FOOD) && !FoodCapability.isRotten(stack) && (!isTame() || getHealth() < getMaxHealth()))
         {
-            return InteractionResult.PASS; // wild parrots cannot be tamed
+            // Same as vanilla taming, but with TFC food, which also heals
+            if (!level().isClientSide)
+            {
+                heal(getFoodHealing(stack));
+            }
+            stack.consume(1, player);
+            if (!isSilent())
+            {
+                level().playSound(null, getX(), getY(), getZ(), SoundEvents.PARROT_EAT, getSoundSource(), 1f, 1f + (random.nextFloat() - random.nextFloat()) * 0.2f);
+            }
+            if (!level().isClientSide && !isTame())
+            {
+                if (random.nextInt(10) == 0 && !EventHooks.onAnimalTame(this, player))
+                {
+                    tame(player);
+                    level().broadcastEntityEvent(this, EntityEvent.TAMING_SUCCEEDED);
+                }
+                else
+                {
+                    level().broadcastEntityEvent(this, EntityEvent.TAMING_FAILED);
+                }
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide);
+        }
+        if (!isTame() && Helpers.isItem(stack, ItemTags.PARROT_FOOD))
+        {
+            return InteractionResult.PASS; // only TFC parrot food tames, not the vanilla tag
         }
         return super.mobInteract(player, hand);
     }

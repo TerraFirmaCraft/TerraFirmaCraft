@@ -193,6 +193,7 @@ public class BuiltinItemTags extends TagsProvider<Item> implements Accessors
         tag(CHICKEN_FOOD).addTags(GRAINS, FRUITS, VEGETABLES, Tags.Items.SEEDS, BREAD);
         tag(DUCK_FOOD).addTag(CHICKEN_FOOD);
         tag(QUAIL_FOOD).addTag(CHICKEN_FOOD);
+        tag(PARROT_FOOD).addTags(GRAINS, Tags.Items.SEEDS).add(Food.BLACKBERRY, Food.BLUEBERRY, Food.BUNCHBERRY, Food.CLOUDBERRY, Food.CRANBERRY, Food.ELDERBERRY, Food.GOOSEBERRY, Food.RASPBERRY, Food.SNOWBERRY, Food.STRAWBERRY, Food.WINTERGREEN_BERRY);
         tag(DONKEY_FOOD).addTag(HORSE_FOOD);
         tag(MULE_FOOD).addTag(HORSE_FOOD);
         tag(HORSE_FOOD).addTags(GRAINS, FRUITS);

@@ -1,0 +1,17 @@
+{
+  "values": [
+    "#c:foods/grain",
+    "#c:seeds",
+    "tfc:food/blackberry",
+    "tfc:food/blueberry",
+    "tfc:food/bunchberry",
+    "tfc:food/cloudberry",
+    "tfc:food/cranberry",
+    "tfc:food/elderberry",
+    "tfc:food/gooseberry",
+    "tfc:food/raspberry",
+    "tfc:food/snowberry",
+    "tfc:food/strawberry",
+    "tfc:food/wintergreen_berry"
+  ]
+}

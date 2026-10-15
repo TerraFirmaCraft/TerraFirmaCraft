@@ -66,6 +66,7 @@
     "client.ItemColorsMixin",
     "client.LiquidBlockRendererMixin",
     "client.MinecraftMixin",
+    "client.ParrotOnShoulderLayerMixin",
     "client.PlayerItemInHandLayerMixin",
     "client.SkeletonModelMixin",
     "client.SoundEngineMixin",
