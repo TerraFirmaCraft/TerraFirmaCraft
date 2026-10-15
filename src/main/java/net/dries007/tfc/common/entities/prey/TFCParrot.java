@@ -69,7 +69,9 @@ public class TFCParrot extends Parrot
     public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType)
     {
         final BlockPos pos = blockPosition();
-        return pos.getY() >= level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ())
+        final int surfaceY = level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ());
+        return pos.getY() >= surfaceY
+            && level.getFluidState(pos.atY(surfaceY - 1)).isEmpty()
             && !getClimateVariants(level, pos).isEmpty()
             && super.checkSpawnRules(level, spawnType);
     }

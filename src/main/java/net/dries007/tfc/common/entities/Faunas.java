@@ -110,7 +110,7 @@ public class Faunas
     public static final Id<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
     public static final Id<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
     public static final Id<TFCOcelot> OCELOT = registerAnimal(TFCEntities.OCELOT);
-    public static final Id<TFCParrot> PARROT = register(TFCEntities.PARROT, SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING);
+    public static final Id<TFCParrot> PARROT = register(TFCEntities.PARROT, SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.WORLD_SURFACE);
     public static final Id<RammingPrey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final Id<RammingPrey> WILDEBEEST = registerAnimal(TFCEntities.WILDEBEEST);
     public static final Id<RammingPrey> BISON = registerAnimal(TFCEntities.BISON);
