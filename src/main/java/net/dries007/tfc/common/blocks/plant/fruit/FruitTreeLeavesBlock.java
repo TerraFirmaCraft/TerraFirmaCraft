@@ -93,7 +93,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return ILeavesBlock.getCollisionShape(pos, context);
+        return ILeavesBlock.getCollisionShape(context);
     }
 
     @Override

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
@@ -25,13 +24,13 @@ import net.dries007.tfc.util.Helpers;
 public interface ILeavesBlock extends IBlockRain
 {
     /**
-     * Leaves are solid only for entities in {@link TFCTags.Entities#PERCHES_ON_LEAVES} that are standing on top of them.
+     * Leaves are solid for entities in {@link TFCTags.Entities#PERCHES_ON_LEAVES}, so they can perch on tree tops. If one of them ends up inside leaves anyway, they stay passable for it until it is out.
      */
-    static VoxelShape getCollisionShape(BlockPos pos, CollisionContext context)
+    static VoxelShape getCollisionShape(CollisionContext context)
     {
         return context instanceof EntityCollisionContext entityContext
             && entityContext.getEntity() instanceof Entity entity
             && Helpers.isEntity(entity, TFCTags.Entities.PERCHES_ON_LEAVES)
-            && context.isAbove(Shapes.block(), pos, false) ? Shapes.block() : Shapes.empty();
+            && !(entity.getInBlockState().getBlock() instanceof ILeavesBlock) ? Shapes.block() : Shapes.empty();
     }
 }
