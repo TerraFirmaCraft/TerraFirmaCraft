@@ -65,7 +65,7 @@ public class TFCParrot extends Parrot
 {
     private static final float LEAVE_TEMPERATURE = 10f;
 
-    public static List<Variant> getClimateVariants(LevelReader level, BlockPos pos)
+    private static List<Variant> getClimateVariants(LevelReader level, BlockPos pos)
     {
         final ChunkData data = ChunkData.get(level, pos);
         final float temperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), data.getAverageSeaLevelTemp(pos));
@@ -73,11 +73,11 @@ public class TFCParrot extends Parrot
         final int forest = data.getForestType().getDensity();
 
         final List<Variant> variants = new ArrayList<>();
-        if (temperature >= 21 && groundwater >= 250 && forest >= 2) variants.add(Variant.RED_BLUE);
-        if (temperature >= 20 && groundwater >= 150 && groundwater <= 300 && forest <= 2) variants.add(Variant.BLUE);
-        if (temperature >= 18 && groundwater >= 350 && forest >= 3) variants.add(Variant.GREEN);
-        if (temperature >= 21 && groundwater >= 350) variants.add(Variant.YELLOW_BLUE);
-        if (temperature >= 12 && temperature <= 30 && groundwater >= 60 && groundwater <= 200 && forest <= 1) variants.add(Variant.GRAY);
+        if (temperature >= 21 && groundwater >= 250 && forest >= 2) variants.add(Variant.RED_BLUE); // scarlet macaw
+        if (temperature >= 20 && groundwater >= 150 && groundwater <= 300 && forest <= 2) variants.add(Variant.BLUE); // hyacinth macaw
+        if (temperature >= 18 && groundwater >= 350 && forest >= 3) variants.add(Variant.GREEN); // amazon
+        if (temperature >= 21 && groundwater >= 350) variants.add(Variant.YELLOW_BLUE); // blue-and-yellow macaw
+        if (temperature >= 12 && temperature <= 30 && groundwater >= 60 && groundwater <= 200 && forest <= 1) variants.add(Variant.GRAY); // cockatiel
         return variants;
     }
 
@@ -144,6 +144,7 @@ public class TFCParrot extends Parrot
     @Override
     public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType)
     {
+        // Natural spawning picks a random y, which may be underground
         final BlockPos pos = blockPosition();
         final int surfaceY = level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ());
         return pos.getY() >= surfaceY
@@ -163,7 +164,7 @@ public class TFCParrot extends Parrot
             final Vec3 motion = getDeltaMovement();
             setDeltaMovement(motion.x, 0.2, motion.z);
         }
-        if (isTame() || isPersistenceRequired()) return;
+        if (isTame() || isPersistenceRequired() || isLeashed()) return;
 
         final ICalendar calendar = Calendars.get(level());
         final long ticks = calendar.getTicks();
@@ -338,19 +339,21 @@ public class TFCParrot extends Parrot
         @Override
         protected PathFinder createPathFinder(int maxVisitedNodes)
         {
-            this.nodeEvaluator = new TFCParrotNodeEvaluator();
-            this.nodeEvaluator.setCanPassDoors(true);
-            return new PathFinder(this.nodeEvaluator, maxVisitedNodes);
+            nodeEvaluator = new TFCParrotNodeEvaluator();
+            nodeEvaluator.setCanPassDoors(true);
+            return new PathFinder(nodeEvaluator, maxVisitedNodes);
         }
     }
 
     static class TFCParrotNodeEvaluator extends FlyNodeEvaluator
     {
+        private final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+
         @Override
         public PathType getPathType(PathfindingContext context, int x, int y, int z)
         {
             // Leaves are solid for parrots, so avoid them like vanilla parrots avoid vanilla leaves
-            return context.getBlockState(new BlockPos(x, y, z)).getBlock() instanceof ILeavesBlock ? PathType.LEAVES : super.getPathType(context, x, y, z);
+            return context.getBlockState(cursor.set(x, y, z)).getBlock() instanceof ILeavesBlock ? PathType.LEAVES : super.getPathType(context, x, y, z);
         }
     }
 }

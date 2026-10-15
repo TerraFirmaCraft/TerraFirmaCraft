@@ -209,7 +209,7 @@
       "entity": "tfc:parrot",
       "scale": 0.7,
       "name": "Parrot",
-      "text": "The parrot can stand on leaves and migrates when it gets cold. It can be found at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:12), and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 60mm. Feeding a parrot seeds, grains, or berries may tame it."
+      "text": "The parrot perches on leaves and migrates when it gets cold. It lives in open land at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:12) with $(l:core_mechanics/climate#rainfall)rainfall$() between 60 and 200mm, or anywhere above $(cfg:temperature:20) with at least 150mm. Feeding a parrot seeds, grains, or berries may tame it."
     },
     {
       "type": "patchouli:entity",
