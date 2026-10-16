@@ -490,7 +490,7 @@ public class TFCParrot extends Parrot
 
     public enum IdleAnimation
     {
-        PREEN, WING_PREEN, WING_STRETCH, TAIL_FLICK, FLUFF;
+        PREEN, WING_PREEN, WING_STRETCH, TAIL_FLICK, FLUFF, DOUBLE_WING_STRETCH;
 
         public static final IdleAnimation[] VALUES = values();
     }
