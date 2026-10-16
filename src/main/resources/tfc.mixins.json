@@ -50,6 +50,7 @@
     "accessor.HorseAccessor",
     "accessor.OcelotAccessor",
     "accessor.PatchedDataComponentMapAccessor",
+    "accessor.PlayerAccessor",
     "accessor.PoiSectionAccessor",
     "accessor.RecipeManagerAccessor",
     "accessor.SectionStorageAccessor",

@@ -20,11 +20,13 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -70,6 +72,8 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 public class TFCParrot extends Parrot
 {
     private static final EntityDataAccessor<Integer> DATA_SPECIES = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.INT);
+    private static final byte IDLE_ANIMATION_EVENT = 70; // One event per IdleAnimation, above the vanilla ids
+    private static final int MAX_IDLE_ANIMATION_TICKS = 100;
 
     /**
      * @return The species which live in the climate at {@code pos}, and for which it is not currently too cold
@@ -115,7 +119,12 @@ public class TFCParrot extends Parrot
         return 3f; // berries
     }
 
+    public final AnimationState idleAnimationState = new AnimationState();
+
     private long nextLeaveCheckTick = Long.MIN_VALUE;
+    private IdleAnimation idleAnimation = IdleAnimation.PREEN;
+    private int idleAnimationTicks, idleAnimationCooldown;
+    private float idleAnimationWeight, prevIdleAnimationWeight;
 
     public TFCParrot(EntityType<? extends Parrot> type, Level level)
     {
@@ -130,6 +139,50 @@ public class TFCParrot extends Parrot
     public void setSpecies(Species species)
     {
         entityData.set(DATA_SPECIES, species.ordinal());
+    }
+
+    public IdleAnimation getIdleAnimation()
+    {
+        return idleAnimation;
+    }
+
+    /**
+     * Idle animations fade out while the parrot is moving, and back in when it stops, so they never snap
+     */
+    public float getIdleAnimationWeight(float partialTick)
+    {
+        return Mth.lerp(partialTick, prevIdleAnimationWeight, idleAnimationWeight);
+    }
+
+    @Override
+    public void tick()
+    {
+        super.tick();
+        if (level().isClientSide)
+        {
+            final boolean still = (onGround() || isInSittingPose()) && !isPartyParrot() && distanceToSqr(xo, getY(), zo) < 1.0E-4;
+            prevIdleAnimationWeight = idleAnimationWeight;
+            idleAnimationWeight = Mth.approach(idleAnimationWeight, still ? 1f : 0f, 0.2f);
+            if (idleAnimationState.isStarted() && ++idleAnimationTicks > MAX_IDLE_ANIMATION_TICKS)
+            {
+                idleAnimationState.stop();
+            }
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte id)
+    {
+        if (id >= IDLE_ANIMATION_EVENT && id < IDLE_ANIMATION_EVENT + IdleAnimation.VALUES.length)
+        {
+            idleAnimation = IdleAnimation.VALUES[id - IDLE_ANIMATION_EVENT];
+            idleAnimationState.start(tickCount);
+            idleAnimationTicks = 0;
+        }
+        else
+        {
+            super.handleEntityEvent(id);
+        }
     }
 
     @Override
@@ -199,6 +252,16 @@ public class TFCParrot extends Parrot
             // Stuck inside leaves, which it can't path through, so fly straight up and out of the canopy
             final Vec3 motion = getDeltaMovement();
             setDeltaMovement(motion.x, 0.2, motion.z);
+        }
+        if (idleAnimationCooldown > 0)
+        {
+            idleAnimationCooldown--;
+        }
+        else if ((onGround() || isInSittingPose()) && getNavigation().isDone() && !isPartyParrot())
+        {
+            // Picked on the server, so every player sees the same idle at the same time
+            idleAnimationCooldown = 100 + random.nextInt(200);
+            level().broadcastEntityEvent(this, (byte) (IDLE_ANIMATION_EVENT + random.nextInt(IdleAnimation.VALUES.length)));
         }
         if (isTame() || isPersistenceRequired() || isLeashed()) return;
 
@@ -330,6 +393,13 @@ public class TFCParrot extends Parrot
         {
             return serializedName;
         }
+    }
+
+    public enum IdleAnimation
+    {
+        PREEN, HEAD_TILT, WING_STRETCH, TAIL_FLICK, FLUFF;
+
+        public static final IdleAnimation[] VALUES = values();
     }
 
     static class SpeciesGroupData extends AgeableMob.AgeableMobGroupData

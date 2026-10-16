@@ -14,6 +14,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -28,6 +29,7 @@ public class WallParrotPerchBlock extends ParrotPerchBlock
         Helpers.rotateShape(dir, 5, 5, 15, 11, 13, 16),
         Helpers.rotateShape(dir, 7, 8, 2, 9, 10, 15)
     ));
+    private static final Vec3[] SEATS = {new Vec3(8, 10, 8.5)};
 
     public WallParrotPerchBlock(ExtendedProperties properties)
     {
@@ -38,6 +40,18 @@ public class WallParrotPerchBlock extends ParrotPerchBlock
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES[state.getValue(FACING).get2DDataValue()];
+    }
+
+    @Override
+    protected Vec3[] getSeats()
+    {
+        return SEATS;
+    }
+
+    @Override
+    protected float getPerchedYaw(Direction facing)
+    {
+        return facing.getClockWise().toYRot();
     }
 
     @Override
