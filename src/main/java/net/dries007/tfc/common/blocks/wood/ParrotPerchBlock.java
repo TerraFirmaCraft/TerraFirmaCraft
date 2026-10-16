@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import java.util.List;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -84,42 +86,50 @@ public class ParrotPerchBlock extends HorizontalDirectionalBlock implements IFor
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)
     {
+        // Place a parrot from the player's shoulder on a free seat, or else pick one of the player's parrots back up
         final boolean left = isPerchableParrot(player.getShoulderEntityLeft());
-        if (!left && !isPerchableParrot(player.getShoulderEntityRight()))
+        if (left || isPerchableParrot(player.getShoulderEntityRight()))
         {
-            return InteractionResult.PASS;
+            final Direction facing = state.getValue(FACING);
+            for (Vec3 seat : getSeats())
+            {
+                final Vec3 seatPos = Vec3.atLowerCornerOf(pos).add(rotateSeat(facing, seat).scale(1 / 16f));
+                if (level.getEntitiesOfClass(TFCParrot.class, AABB.ofSize(seatPos, 0.4, 0.4, 0.4).move(0, 0.2, 0)).isEmpty())
+                {
+                    if (level instanceof ServerLevel serverLevel)
+                    {
+                        final CompoundTag shoulder = left ? player.getShoulderEntityLeft() : player.getShoulderEntityRight();
+                        EntityType.create(shoulder, level).ifPresent(entity -> {
+                            if (entity instanceof TFCParrot parrot)
+                            {
+                                parrot.setOwnerUUID(player.getUUID());
+                                parrot.perchOn(seatPos, getPerchedYaw(facing));
+                                serverLevel.addWithUUID(parrot);
+                            }
+                        });
+                        if (left)
+                        {
+                            ((PlayerAccessor) player).invoke$setShoulderEntityLeft(new CompoundTag());
+                        }
+                        else
+                        {
+                            ((PlayerAccessor) player).invoke$setShoulderEntityRight(new CompoundTag());
+                        }
+                        level.playSound(null, seatPos.x, seatPos.y, seatPos.z, SoundEvents.PARROT_FLY, SoundSource.NEUTRAL, 1f, 1f);
+                    }
+                    return InteractionResult.sidedSuccess(level.isClientSide);
+                }
+            }
         }
 
-        final Direction facing = state.getValue(FACING);
-        for (Vec3 seat : getSeats())
+        if (TFCParrot.canCarryOnShoulder(player))
         {
-            final Vec3 seatPos = Vec3.atLowerCornerOf(pos).add(rotateSeat(facing, seat).scale(1 / 16f));
-            if (level.getEntitiesOfClass(TFCParrot.class, AABB.ofSize(seatPos, 0.4, 0.4, 0.4).move(0, 0.2, 0)).isEmpty())
+            final List<TFCParrot> perched = level.getEntitiesOfClass(TFCParrot.class, new AABB(pos).expandTowards(0, 0.5, 0), parrot -> parrot.isPerched() && parrot.isOwnedBy(player));
+            if (!perched.isEmpty())
             {
-                if (level instanceof ServerLevel serverLevel)
+                if (player instanceof ServerPlayer serverPlayer)
                 {
-                    final CompoundTag shoulder = left ? player.getShoulderEntityLeft() : player.getShoulderEntityRight();
-                    EntityType.create(shoulder, level).ifPresent(entity -> {
-                        if (entity instanceof TFCParrot parrot)
-                        {
-                            parrot.setOwnerUUID(player.getUUID());
-                            parrot.moveTo(seatPos.x, seatPos.y, seatPos.z, getPerchedYaw(facing), 0);
-                            parrot.setYHeadRot(parrot.getYRot());
-                            parrot.setYBodyRot(parrot.getYRot());
-                            parrot.setOrderedToSit(true);
-                            parrot.setInSittingPose(true);
-                            serverLevel.addWithUUID(parrot);
-                        }
-                    });
-                    if (left)
-                    {
-                        ((PlayerAccessor) player).invoke$setShoulderEntityLeft(new CompoundTag());
-                    }
-                    else
-                    {
-                        ((PlayerAccessor) player).invoke$setShoulderEntityRight(new CompoundTag());
-                    }
-                    level.playSound(null, seatPos.x, seatPos.y, seatPos.z, SoundEvents.PARROT_FLY, SoundSource.NEUTRAL, 1f, 1f);
+                    perched.getFirst().pickUpFromPerch(serverPlayer);
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }

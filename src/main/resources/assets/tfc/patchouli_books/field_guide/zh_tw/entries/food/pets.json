@@ -67,7 +67,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Parrot Perch$() gives tamed parrots a place to rest in your home. It is crafted from two $(thing)Lumber$() of the same wood. Arranged diagonally, they make a $(thing)Wall Parrot Perch$() that hangs on the side of a block.$(br2)Using $(item)$(k:key.use)$() on a perch with an empty hand moves a parrot from your shoulder onto it, one at a time. A standing perch holds two parrots, and a wall perch holds one."
+      "text": "A $(thing)Parrot Perch$() gives tamed parrots a place to rest in your home. It is crafted from two $(thing)Lumber$() of the same wood. Arranged diagonally, they make a $(thing)Wall Parrot Perch$() that hangs on the side of a block.$(br2)Using $(item)$(k:key.use)$() on a perch with an empty hand moves a parrot from your shoulder onto it, one at a time. A standing perch holds two parrots, and a wall perch holds one. Use $(item)$(k:key.use)$() on a perched parrot, or on the perch, to take it back."
     }
   ],
   "read_by_default": true,

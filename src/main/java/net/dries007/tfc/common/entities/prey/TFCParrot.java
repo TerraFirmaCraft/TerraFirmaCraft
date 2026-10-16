@@ -14,9 +14,12 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -58,6 +61,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
+import net.dries007.tfc.common.blocks.wood.ParrotPerchBlock;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
@@ -72,6 +76,7 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 public class TFCParrot extends Parrot
 {
     private static final EntityDataAccessor<Integer> DATA_SPECIES = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_PERCHED = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.BOOLEAN);
     private static final byte IDLE_ANIMATION_EVENT = 70; // One event per IdleAnimation, above the vanilla ids
     private static final int MAX_IDLE_ANIMATION_TICKS = 100;
 
@@ -105,6 +110,15 @@ public class TFCParrot extends Parrot
         return type.map(t -> t == TFCEntities.PARROT.get() ? EntityType.PARROT : t);
     }
 
+    /**
+     * Same checks as {@link Player#setEntityOnShoulder(CompoundTag)}
+     */
+    public static boolean canCarryOnShoulder(Player player)
+    {
+        return !player.isPassenger() && player.onGround() && !player.isInWater() && !player.isInPowderSnow
+            && (player.getShoulderEntityLeft().isEmpty() || player.getShoulderEntityRight().isEmpty());
+    }
+
     private static float getDailyTemperature(ClimateModel model, LevelReader level, BlockPos pos)
     {
         final ICalendar calendar = Calendars.get(level);
@@ -122,6 +136,7 @@ public class TFCParrot extends Parrot
     public final AnimationState idleAnimationState = new AnimationState();
 
     private long nextLeaveCheckTick = Long.MIN_VALUE;
+    private @Nullable Vec3 perchSeat;
     private IdleAnimation idleAnimation = IdleAnimation.PREEN;
     private int idleAnimationTicks, idleAnimationCooldown;
     private float idleAnimationWeight, prevIdleAnimationWeight;
@@ -158,6 +173,18 @@ public class TFCParrot extends Parrot
     public void tick()
     {
         super.tick();
+        if (!level().isClientSide && perchSeat != null)
+        {
+            if (isOrderedToSit() && level().getBlockState(BlockPos.containing(perchSeat)).getBlock() instanceof ParrotPerchBlock)
+            {
+                setPos(perchSeat);
+                setDeltaMovement(Vec3.ZERO);
+            }
+            else
+            {
+                setPerchSeat(null);
+            }
+        }
         if (level().isClientSide)
         {
             final boolean still = (onGround() || isInSittingPose()) && !isPartyParrot() && distanceToSqr(xo, getY(), zo) < 1.0E-4;
@@ -190,6 +217,7 @@ public class TFCParrot extends Parrot
     {
         super.defineSynchedData(builder);
         builder.define(DATA_SPECIES, 0);
+        builder.define(DATA_PERCHED, false);
     }
 
     @Override
@@ -283,6 +311,10 @@ public class TFCParrot extends Parrot
         super.addAdditionalSaveData(tag);
         tag.putLong("nextLeaveCheck", nextLeaveCheckTick);
         tag.putString("species", getSpecies().getSerializedName());
+        if (perchSeat != null)
+        {
+            tag.put("perch", newDoubleList(perchSeat.x, perchSeat.y, perchSeat.z));
+        }
     }
 
     @Override
@@ -291,6 +323,65 @@ public class TFCParrot extends Parrot
         super.readAdditionalSaveData(tag);
         nextLeaveCheckTick = EntityHelpers.getLongOrDefault(tag, "nextLeaveCheck", Long.MIN_VALUE);
         setSpecies(Species.byName(tag.getString("species")));
+        if (tag.contains("perch", Tag.TAG_LIST))
+        {
+            final ListTag perch = tag.getList("perch", Tag.TAG_DOUBLE);
+            setPerchSeat(new Vec3(perch.getDouble(0), perch.getDouble(1), perch.getDouble(2)));
+        }
+    }
+
+    public boolean isPerched()
+    {
+        return entityData.get(DATA_PERCHED);
+    }
+
+    /**
+     * Sits on a {@link ParrotPerchBlock} seat, and stays there until picked up, ordered to stand, or the perch is removed
+     */
+    public void perchOn(Vec3 seat, float yaw)
+    {
+        moveTo(seat.x, seat.y, seat.z, yaw, 0);
+        setYHeadRot(yaw);
+        setYBodyRot(yaw);
+        setOrderedToSit(true);
+        setInSittingPose(true);
+        setPerchSeat(seat);
+    }
+
+    /**
+     * Moves a perched parrot onto the player's shoulder, if there is room
+     */
+    public boolean pickUpFromPerch(ServerPlayer player)
+    {
+        if (!canCarryOnShoulder(player))
+        {
+            return false;
+        }
+        setPerchSeat(null);
+        setOrderedToSit(false);
+        setInSittingPose(false);
+        return setEntityOnShoulder(player);
+    }
+
+    @Override
+    public boolean isPushable()
+    {
+        return !isPerched() && super.isPushable();
+    }
+
+    @Override
+    public void push(double x, double y, double z)
+    {
+        if (!isPerched())
+        {
+            super.push(x, y, z);
+        }
+    }
+
+    private void setPerchSeat(@Nullable Vec3 seat)
+    {
+        perchSeat = seat;
+        entityData.set(DATA_PERCHED, seat != null);
     }
 
     @Override
@@ -326,6 +417,18 @@ public class TFCParrot extends Parrot
                 {
                     level().broadcastEntityEvent(this, EntityEvent.TAMING_FAILED);
                 }
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide);
+        }
+        if (isPerched() && isOwnedBy(player) && stack.isEmpty())
+        {
+            if (!canCarryOnShoulder(player))
+            {
+                return InteractionResult.CONSUME; // stays glued to the perch, rather than standing up
+            }
+            if (player instanceof ServerPlayer serverPlayer)
+            {
+                pickUpFromPerch(serverPlayer);
             }
             return InteractionResult.sidedSuccess(level().isClientSide);
         }
