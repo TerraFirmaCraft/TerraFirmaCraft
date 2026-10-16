@@ -76,6 +76,7 @@
     "client.accessor.BiomeColorsAccessor",
     "client.accessor.LevelRendererAccessor",
     "client.accessor.LocalPlayerAccessor",
+    "client.accessor.ParrotModelAccessor",
     "client.accessor.SignRendererAccessor",
     "client.compat.jade.NextEntityDropProviderMixin",
     "client.compat.patchouli.GuiBookMixin",

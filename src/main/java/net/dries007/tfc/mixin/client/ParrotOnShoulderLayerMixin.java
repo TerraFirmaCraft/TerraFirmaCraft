@@ -8,14 +8,21 @@ package net.dries007.tfc.mixin.client;
 
 import java.util.Optional;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.ParrotModel;
 import net.minecraft.client.renderer.entity.layers.ParrotOnShoulderLayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+import net.dries007.tfc.client.model.entity.TFCParrotModel;
 import net.dries007.tfc.client.render.entity.TFCParrotRenderer;
 import net.dries007.tfc.common.entities.prey.TFCParrot;
 
@@ -32,5 +39,18 @@ public abstract class ParrotOnShoulderLayerMixin
     private ResourceLocation useTFCParrotSpeciesTexture(ResourceLocation texture, @Local(argsOnly = true) CompoundTag tag)
     {
         return tag.contains("species") ? TFCParrotRenderer.getTexture(TFCParrot.Species.byName(tag.getString("species"))) : texture;
+    }
+
+    @WrapOperation(method = "lambda$render$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ParrotModel;renderOnShoulder(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFFI)V"))
+    private void renderTFCParrotIdleOnShoulder(ParrotModel model, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float limbSwing, float limbSwingAmount, float netHeadYaw, float headPitch, int tickCount, Operation<Void> original, @Local(argsOnly = true) CompoundTag tag, @Local(argsOnly = true) Player player, @Local(argsOnly = true) boolean leftShoulder)
+    {
+        if (tag.contains("species"))
+        {
+            TFCParrotModel.renderOnShoulder(model, poseStack, buffer, packedLight, packedOverlay, limbSwing, limbSwingAmount, netHeadYaw, headPitch, player, tag, leftShoulder);
+        }
+        else
+        {
+            original.call(model, poseStack, buffer, packedLight, packedOverlay, limbSwing, limbSwingAmount, netHeadYaw, headPitch, tickCount);
+        }
     }
 }

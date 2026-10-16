@@ -78,7 +78,7 @@ public class TFCParrot extends Parrot
     private static final EntityDataAccessor<Integer> DATA_SPECIES = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_PERCHED = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.BOOLEAN);
     private static final byte IDLE_ANIMATION_EVENT = 70; // One event per IdleAnimation, above the vanilla ids
-    private static final int MAX_IDLE_ANIMATION_TICKS = 100;
+    public static final int MAX_IDLE_ANIMATION_TICKS = 100;
 
     /**
      * @return The species which live in the climate at {@code pos}, and for which it is not currently too cold
@@ -500,7 +500,7 @@ public class TFCParrot extends Parrot
 
     public enum IdleAnimation
     {
-        PREEN, HEAD_TILT, WING_STRETCH, TAIL_FLICK, FLUFF;
+        PREEN, WING_PREEN, WING_STRETCH, TAIL_FLICK, FLUFF;
 
         public static final IdleAnimation[] VALUES = values();
     }
