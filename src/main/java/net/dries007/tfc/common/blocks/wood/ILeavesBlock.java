@@ -24,7 +24,7 @@ import net.dries007.tfc.util.Helpers;
 public interface ILeavesBlock extends IBlockRain
 {
     /**
-     * Leaves are solid for entities in {@link TFCTags.Entities#PERCHES_ON_LEAVES}, so they can perch on tree tops. If one of them ends up inside leaves anyway, they stay passable for it until it is out.
+     * Solid for {@link TFCTags.Entities#PERCHES_ON_LEAVES}, unless the entity is already inside leaves
      */
     static VoxelShape getCollisionShape(CollisionContext context)
     {

@@ -2600,6 +2600,7 @@ def generate(rm: ResourceManager):
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:
         rm.item_model('spawn_egg/%s' % creature).with_lang(lang('%s Spawn Egg', creature))
+    rm.item_model('spawn_egg/parrot', parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('parrot spawn egg'))
     for creature in BUCKETABLE_FISH:
         rm.item_model('bucket/%s' % creature).with_lang(lang('%s Bucket', creature))
 

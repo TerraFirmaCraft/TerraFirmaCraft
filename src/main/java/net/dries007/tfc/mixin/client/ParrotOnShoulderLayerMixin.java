@@ -38,13 +38,13 @@ public abstract class ParrotOnShoulderLayerMixin
     @ModifyExpressionValue(method = "lambda$render$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ParrotRenderer;getVariantTexture(Lnet/minecraft/world/entity/animal/Parrot$Variant;)Lnet/minecraft/resources/ResourceLocation;"))
     private ResourceLocation useTFCParrotSpeciesTexture(ResourceLocation texture, @Local(argsOnly = true) CompoundTag tag)
     {
-        return tag.contains("species") ? TFCParrotRenderer.getTexture(TFCParrot.Species.byName(tag.getString("species"))) : texture;
+        return TFCParrot.isTFCParrot(tag) ? TFCParrotRenderer.getTexture(TFCParrot.Species.byName(tag.getString("species"))) : texture;
     }
 
     @WrapOperation(method = "lambda$render$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ParrotModel;renderOnShoulder(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFFI)V"))
     private void renderTFCParrotIdleOnShoulder(ParrotModel model, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float limbSwing, float limbSwingAmount, float netHeadYaw, float headPitch, int tickCount, Operation<Void> original, @Local(argsOnly = true) CompoundTag tag, @Local(argsOnly = true) Player player, @Local(argsOnly = true) boolean leftShoulder)
     {
-        if (tag.contains("species"))
+        if (TFCParrot.isTFCParrot(tag))
         {
             TFCParrotModel.renderOnShoulder(model, poseStack, buffer, packedLight, packedOverlay, limbSwing, limbSwingAmount, netHeadYaw, headPitch, player, tag, leftShoulder);
         }

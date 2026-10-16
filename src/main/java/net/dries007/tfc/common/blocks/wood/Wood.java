@@ -238,8 +238,8 @@ public enum Wood implements RegistryWood
         WINDMILL((self, wood) -> new WindmillBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WINDMILL).ticks(WindmillBlockEntity::serverTick, WindmillBlockEntity::clientTick), getBlock(wood, self.axle()))),
         WATER_WHEEL((self, wood) -> new WaterWheelBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.WATER_WHEEL).ticks(WaterWheelBlockEntity::serverTick, WaterWheelBlockEntity::clientTick), getBlock(wood, self.axle()), self.waterWheelTexture(wood))),
         CRATE((self, wood) -> new CrateBlock(properties(wood).strength(9f).noOcclusion().blockEntity(TFCBlockEntities.CRATE))),
-        PARROT_PERCH(wood -> new ParrotPerchBlock(properties(wood).strength(2.0F).noOcclusion().flammableLikePlanks())),
-        WALL_PARROT_PERCH(wood -> new WallParrotPerchBlock(properties(wood).strength(2.0F).noOcclusion().flammableLikePlanks()));
+        PARROT_PERCH(wood -> new ParrotPerchBlock(properties(wood).strength(2f).noOcclusion().flammableLikePlanks())),
+        WALL_PARROT_PERCH(wood -> new WallParrotPerchBlock(properties(wood).strength(2f).noOcclusion().flammableLikePlanks()));
 
         private static ExtendedProperties properties(RegistryWood wood)
         {

@@ -33,12 +33,12 @@ import net.dries007.tfc.mixin.client.accessor.ParrotModelAccessor;
 public class TFCParrotModel extends ParrotModel
 {
     private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
-    private static final int SHOULDER_IDLE_WINDOW = 200; // One idle per window, starting in its first half, so they're 5-15 s apart like a parrot on its own
+    private static final int SHOULDER_IDLE_WINDOW = 200; // one idle per window, starting in its first half
     private static final Map<TFCParrot.IdleAnimation, AnimationDefinition> MIRRORED = new EnumMap<>(TFCParrot.IdleAnimation.class);
 
     /**
-     * Shoulder parrots are not entities, so their idles are scheduled from the game time and the parrot's UUID, which every client agrees on.
-     * The animations lean to the parrot's left, so on the right shoulder they're mirrored, to always move away from the player's head.
+     * Shoulder parrots are not entities, so idles are scheduled from game time and UUID, which every client agrees on.
+     * Animations lean left, so they're mirrored on the right shoulder to stay clear of the player's head.
      */
     public static void renderOnShoulder(ParrotModel model, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float limbSwing, float limbSwingAmount, float netHeadYaw, float headPitch, Player player, CompoundTag tag, boolean leftShoulder)
     {
@@ -48,7 +48,7 @@ public class TFCParrotModel extends ParrotModel
         accessor.invoke$setupAnim(ParrotModel.State.ON_SHOULDER, player.tickCount, limbSwing, limbSwingAmount, 0f, netHeadYaw, headPitch);
 
         final Minecraft mc = Minecraft.getInstance();
-        if (player != mc.player || !mc.options.getCameraType().isFirstPerson()) // Never in the holder's own view, where a wing could swing into the screen
+        if (player != mc.player || !mc.options.getCameraType().isFirstPerson()) // a wing could swing into the holder's screen
         {
             final int seed = tag.hasUUID("UUID") ? tag.getUUID("UUID").hashCode() : player.getUUID().hashCode() + (leftShoulder ? 1 : 0);
             final float time = player.level().getGameTime() + mc.getTimer().getGameTimeDeltaPartialTick(false);
@@ -82,9 +82,6 @@ public class TFCParrotModel extends ParrotModel
         return bone;
     }
 
-    /**
-     * Mirrors across the parrot's center plane: x positions, and y and z rotations, flip
-     */
     private static AnimationChannel mirror(AnimationChannel channel)
     {
         final Vector3f flip = channel.target() == AnimationChannel.Targets.POSITION ? new Vector3f(-1, 1, 1)
@@ -105,7 +102,7 @@ public class TFCParrotModel extends ParrotModel
     @Override
     public void prepareMobModel(Parrot entity, float limbSwing, float limbSwingAmount, float partialTick)
     {
-        // Vanilla only sets the parts it animates, so reset everything the idle animations may have offset last frame
+        // Vanilla only sets the parts it animates
         root().getAllParts().forEach(ModelPart::resetPose);
         super.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
         this.partialTick = partialTick;
@@ -117,7 +114,7 @@ public class TFCParrotModel extends ParrotModel
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         if (entity instanceof TFCParrot parrot)
         {
-            // The renderer passes the wing flap as ageInTicks, so animations are timed from tickCount instead
+            // The renderer passes the wing flap as ageInTicks
             parrot.idleAnimationState.updateTime(parrot.tickCount + partialTick, 1f);
             final float weight = parrot.getIdleAnimationWeight(partialTick);
             if (weight > 0f)

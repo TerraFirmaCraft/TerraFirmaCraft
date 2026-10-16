@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.prey.TFCParrot;
 import net.dries007.tfc.mixin.accessor.PlayerAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -49,14 +48,6 @@ public class ParrotPerchBlock extends HorizontalDirectionalBlock implements IFor
     ));
     private static final Vec3[] SEATS = {new Vec3(3.5, 15, 8), new Vec3(12, 15, 8)};
 
-    private static boolean isPerchableParrot(CompoundTag shoulder)
-    {
-        return EntityType.by(shoulder).filter(type -> type == TFCEntities.PARROT.get()).isPresent();
-    }
-
-    /**
-     * Rotates a seat position, in pixels, from the NORTH facing model. Matches {@link Helpers#rotateShape}.
-     */
     private static Vec3 rotateSeat(Direction facing, Vec3 seat)
     {
         return switch (facing)
@@ -86,9 +77,8 @@ public class ParrotPerchBlock extends HorizontalDirectionalBlock implements IFor
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)
     {
-        // Place a parrot from the player's shoulder on a free seat, or else pick one of the player's parrots back up
-        final boolean left = isPerchableParrot(player.getShoulderEntityLeft());
-        if (left || isPerchableParrot(player.getShoulderEntityRight()))
+        final boolean left = TFCParrot.isTFCParrot(player.getShoulderEntityLeft());
+        if (left || TFCParrot.isTFCParrot(player.getShoulderEntityRight()))
         {
             final Direction facing = state.getValue(FACING);
             for (Vec3 seat : getSeats())
@@ -102,7 +92,6 @@ public class ParrotPerchBlock extends HorizontalDirectionalBlock implements IFor
                         EntityType.create(shoulder, level).ifPresent(entity -> {
                             if (entity instanceof TFCParrot parrot)
                             {
-                                parrot.setOwnerUUID(player.getUUID());
                                 parrot.perchOn(seatPos, getPerchedYaw(facing));
                                 serverLevel.addWithUUID(parrot);
                             }
@@ -137,9 +126,6 @@ public class ParrotPerchBlock extends HorizontalDirectionalBlock implements IFor
         return InteractionResult.PASS;
     }
 
-    /**
-     * Seat positions in pixels, for the NORTH facing model.
-     */
     protected Vec3[] getSeats()
     {
         return SEATS;

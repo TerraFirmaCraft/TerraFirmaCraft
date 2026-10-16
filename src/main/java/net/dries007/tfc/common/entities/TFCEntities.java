@@ -306,7 +306,7 @@ public class TFCEntities
         event.put(DOG.get(), Dog.createAttributes().build());
         event.put(PANDA.get(), TFCPanda.createAttributes().add(Attributes.STEP_HEIGHT, 1.0F).build());
         event.put(OCELOT.get(), TFCOcelot.createAttributes().build());
-        event.put(PARROT.get(), TFCParrot.createAttributes().add(Attributes.FOLLOW_RANGE, 24).build()); // reach the top of TFC trees
+        event.put(PARROT.get(), TFCParrot.createAttributes().add(Attributes.FOLLOW_RANGE, 24).build()); // TFC trees are tall
         event.put(ARMADILLO.get(), TFCArmadillo.createAttributes().build());
     }
 

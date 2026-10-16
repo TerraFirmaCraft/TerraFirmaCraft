@@ -77,12 +77,9 @@ public class TFCParrot extends Parrot
 {
     private static final EntityDataAccessor<Integer> DATA_SPECIES = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_PERCHED = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.BOOLEAN);
-    private static final byte IDLE_ANIMATION_EVENT = 70; // One event per IdleAnimation, above the vanilla ids
+    private static final byte IDLE_ANIMATION_EVENT = 70; // above the vanilla ids
     public static final int MAX_IDLE_ANIMATION_TICKS = 100;
 
-    /**
-     * @return The species which live in the climate at {@code pos}, and for which it is not currently too cold
-     */
     private static List<Species> getClimateSpecies(ClimateModel model, LevelReader level, BlockPos pos)
     {
         final ChunkData data = ChunkData.get(level, pos);
@@ -110,9 +107,11 @@ public class TFCParrot extends Parrot
         return type.map(t -> t == TFCEntities.PARROT.get() ? EntityType.PARROT : t);
     }
 
-    /**
-     * Same checks as {@link Player#setEntityOnShoulder(CompoundTag)}
-     */
+    public static boolean isTFCParrot(CompoundTag tag)
+    {
+        return EntityType.by(tag).filter(type -> type == TFCEntities.PARROT.get()).isPresent();
+    }
+
     public static boolean canCarryOnShoulder(Player player)
     {
         return !player.isPassenger() && player.onGround() && !player.isInWater() && !player.isInPowderSnow
@@ -130,7 +129,7 @@ public class TFCParrot extends Parrot
     {
         if (Helpers.isItem(stack, Tags.Items.SEEDS)) return 1f;
         if (Helpers.isItem(stack, TFCTags.Items.GRAINS)) return 2f;
-        return 3f; // berries
+        return 3f;
     }
 
     public final AnimationState idleAnimationState = new AnimationState();
@@ -161,9 +160,6 @@ public class TFCParrot extends Parrot
         return idleAnimation;
     }
 
-    /**
-     * Idle animations fade out while the parrot is moving, and back in when it stops, so they never snap
-     */
     public float getIdleAnimationWeight(float partialTick)
     {
         return Mth.lerp(partialTick, prevIdleAnimationWeight, idleAnimationWeight);
@@ -183,6 +179,8 @@ public class TFCParrot extends Parrot
             else
             {
                 setPerchSeat(null);
+                setOrderedToSit(false);
+                setInSittingPose(false);
             }
         }
         if (level().isClientSide)
@@ -224,7 +222,7 @@ public class TFCParrot extends Parrot
     protected void registerGoals()
     {
         super.registerGoals();
-        goalSelector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof WaterAvoidingRandomFlyingGoal); // vanilla wander goal, which only perches on vanilla leaves
+        goalSelector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof WaterAvoidingRandomFlyingGoal); // only perches on vanilla leaves
         goalSelector.addGoal(2, new TFCParrotWanderGoal(this, 1.0));
     }
 
@@ -242,7 +240,6 @@ public class TFCParrot extends Parrot
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        // A spawned group is a flock of a single species
         if (spawnData instanceof SpeciesGroupData group)
         {
             setSpecies(group.species);
@@ -277,7 +274,7 @@ public class TFCParrot extends Parrot
         super.customServerAiStep();
         if (getInBlockState().getBlock() instanceof ILeavesBlock)
         {
-            // Stuck inside leaves, which it can't path through, so fly straight up and out of the canopy
+            // Stuck in leaves, which it can't path through
             final Vec3 motion = getDeltaMovement();
             setDeltaMovement(motion.x, 0.2, motion.z);
         }
@@ -287,7 +284,7 @@ public class TFCParrot extends Parrot
         }
         else if ((onGround() || isInSittingPose()) && getNavigation().isDone() && !isPartyParrot())
         {
-            // Picked on the server, so every player sees the same idle at the same time
+            // Picked on the server, so every player sees the same idle
             idleAnimationCooldown = 100 + random.nextInt(200);
             level().broadcastEntityEvent(this, (byte) (IDLE_ANIMATION_EVENT + random.nextInt(IdleAnimation.VALUES.length)));
         }
@@ -298,7 +295,7 @@ public class TFCParrot extends Parrot
         if (ticks < nextLeaveCheckTick) return;
         nextLeaveCheckTick = ticks + calendar.getTicksInHour() * ICalendar.HOURS_IN_DAY;
 
-        // Wild parrots leave for the winter, and normal spawning brings them back once it warms up again
+        // Wild parrots leave for the winter, and spawning brings them back
         if (getDailyTemperature(Climate.get(level()), level(), blockPosition()) < getSpecies().leaveTemperature && level().getNearestPlayer(this, 32) == null)
         {
             discard();
@@ -335,9 +332,6 @@ public class TFCParrot extends Parrot
         return entityData.get(DATA_PERCHED);
     }
 
-    /**
-     * Sits on a {@link ParrotPerchBlock} seat, and stays there until picked up, ordered to stand, or the perch is removed
-     */
     public void perchOn(Vec3 seat, float yaw)
     {
         moveTo(seat.x, seat.y, seat.z, yaw, 0);
@@ -348,9 +342,6 @@ public class TFCParrot extends Parrot
         setPerchSeat(seat);
     }
 
-    /**
-     * Moves a perched parrot onto the player's shoulder, if there is room
-     */
     public boolean pickUpFromPerch(ServerPlayer player)
     {
         if (!canCarryOnShoulder(player))
@@ -396,7 +387,6 @@ public class TFCParrot extends Parrot
         final ItemStack stack = player.getItemInHand(hand);
         if (Helpers.isItem(stack, TFCTags.Items.PARROT_FOOD) && !FoodCapability.isRotten(stack) && (!isTame() || getHealth() < getMaxHealth()))
         {
-            // Same as vanilla taming, but with TFC food, which also heals
             if (!level().isClientSide)
             {
                 heal(getFoodHealing(stack));
@@ -424,7 +414,7 @@ public class TFCParrot extends Parrot
         {
             if (!canCarryOnShoulder(player))
             {
-                return InteractionResult.CONSUME; // stays glued to the perch, rather than standing up
+                return InteractionResult.CONSUME;
             }
             if (player instanceof ServerPlayer serverPlayer)
             {
@@ -434,7 +424,7 @@ public class TFCParrot extends Parrot
         }
         if (!isTame() && Helpers.isItem(stack, ItemTags.PARROT_FOOD))
         {
-            return InteractionResult.PASS; // only TFC parrot food tames, not the vanilla tag
+            return InteractionResult.PASS;
         }
         return super.mobInteract(player, hand);
     }
@@ -470,7 +460,7 @@ public class TFCParrot extends Parrot
         private final String serializedName;
         private final float minTemperature, maxTemperature, minGroundwater, maxGroundwater;
         private final int minForest, maxForest;
-        private final float leaveTemperature; // wild parrots leave, and don't spawn, when the past day's average temperature is below this
+        private final float leaveTemperature;
 
         Species(float minTemperature, float maxTemperature, float minGroundwater, float maxGroundwater, int minForest, int maxForest, float leaveTemperature)
         {
@@ -586,7 +576,7 @@ public class TFCParrot extends Parrot
             }
             if (perches.isEmpty()) return null;
 
-            // Spread out over the canopy in random order, instead of every parrot picking the same nearest perch, and skip perches that are already taken
+            // Random order, so a flock spreads over the canopy instead of all picking the nearest perch
             final List<TFCParrot> others = mob.level().getEntitiesOfClass(TFCParrot.class, AABB.encapsulatingFullBlocks(min, max).inflate(1), parrot -> parrot != mob);
             Util.shuffle(perches, mob.getRandom());
             int attempts = 0;
@@ -594,7 +584,7 @@ public class TFCParrot extends Parrot
             {
                 if (countParrotsAt(others, pos) >= MAX_PARROTS_PER_PERCH) continue;
 
-                // Leaves block parrots, so a perch is only usable if the path reaches it, not a partial path ending below the canopy
+                // Partial paths end below the canopy, as leaves are solid for parrots
                 final Path path = mob.getNavigation().createPath(pos, 0);
                 if (path != null && path.canReach())
                 {
@@ -633,7 +623,6 @@ public class TFCParrot extends Parrot
         @Override
         public PathType getPathType(PathfindingContext context, int x, int y, int z)
         {
-            // Leaves are solid for parrots, so avoid them like vanilla parrots avoid vanilla leaves
             return context.getBlockState(cursor.set(x, y, z)).getBlock() instanceof ILeavesBlock ? PathType.LEAVES : super.getPathType(context, x, y, z);
         }
     }

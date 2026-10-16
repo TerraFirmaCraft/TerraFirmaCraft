@@ -332,7 +332,7 @@ public final class TFCItems
     public static final ItemId WILDEBEEST_EGG = registerSpawnEgg(TFCEntities.WILDEBEEST);
     public static final ItemId BISON_EGG = registerSpawnEgg(TFCEntities.BISON);
     public static final ItemId OCELOT_EGG = registerSpawnEgg(TFCEntities.OCELOT);
-    public static final ItemId PARROT_EGG = registerSpawnEgg(TFCEntities.PARROT);
+    public static final ItemId PARROT_EGG = registerSpawnEgg(TFCEntities.PARROT, 0x0DA70B, 0xFF0000);
     public static final ItemId BONGO_EGG = registerSpawnEgg(TFCEntities.BONGO);
     public static final ItemId CARIBOU_EGG = registerSpawnEgg(TFCEntities.CARIBOU);
     public static final ItemId DEER_EGG = registerSpawnEgg(TFCEntities.DEER);
