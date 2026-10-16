@@ -61,8 +61,17 @@ public class TFCParrotModel extends ParrotModel
                 KeyframeAnimations.animate(model, leftShoulder ? ParrotAnimation.get(animation) : mirrored(animation), (long) (elapsed * 50), 1f, ANIMATION_VECTOR_CACHE);
             }
         }
+        narrowTail(model);
         model.root().render(poseStack, buffer, packedLight, packedOverlay);
         model.root().getAllParts().forEach(ModelPart::resetPose); // The layer shares this model with vanilla parrots, which don't reset it
+    }
+
+    /**
+     * The tail is exactly as wide as the body, so their sides are coplanar and z-fight
+     */
+    private static void narrowTail(ParrotModel model)
+    {
+        model.root().getChild("tail").xScale *= 0.99f;
     }
 
     private static AnimationDefinition mirrored(TFCParrot.IdleAnimation animation)
@@ -122,5 +131,6 @@ public class TFCParrotModel extends ParrotModel
                 parrot.idleAnimationState.ifStarted(state -> KeyframeAnimations.animate(this, ParrotAnimation.get(parrot.getIdleAnimation()), state.getAccumulatedTime(), weight, ANIMATION_VECTOR_CACHE));
             }
         }
+        narrowTail(this);
     }
 }
