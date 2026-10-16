@@ -8,17 +8,23 @@ package net.dries007.tfc.common.entities.prey;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -63,22 +69,28 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class TFCParrot extends Parrot
 {
-    private static final float LEAVE_TEMPERATURE = 10f;
+    private static final EntityDataAccessor<Integer> DATA_SPECIES = SynchedEntityData.defineId(TFCParrot.class, EntityDataSerializers.INT);
 
-    private static List<Variant> getClimateVariants(LevelReader level, BlockPos pos)
+    /**
+     * @return The species which live in the climate at {@code pos}, and for which it is not currently too cold
+     */
+    private static List<Species> getClimateSpecies(ClimateModel model, LevelReader level, BlockPos pos)
     {
         final ChunkData data = ChunkData.get(level, pos);
         final float temperature = EnvironmentHelpers.adjustAvgTempForElev(pos.getY(), data.getAverageSeaLevelTemp(pos));
         final float groundwater = data.getAverageGroundwater(pos);
         final int forest = data.getForestType().getDensity();
+        final float currentTemperature = getDailyTemperature(model, level, pos);
 
-        final List<Variant> variants = new ArrayList<>();
-        if (temperature >= 21 && groundwater >= 250 && forest >= 2) variants.add(Variant.RED_BLUE); // scarlet macaw
-        if (temperature >= 20 && groundwater >= 150 && groundwater <= 300 && forest <= 2) variants.add(Variant.BLUE); // hyacinth macaw
-        if (temperature >= 18 && groundwater >= 350 && forest >= 3) variants.add(Variant.GREEN); // amazon
-        if (temperature >= 21 && groundwater >= 350) variants.add(Variant.YELLOW_BLUE); // blue-and-yellow macaw
-        if (temperature >= 12 && temperature <= 30 && groundwater >= 60 && groundwater <= 200 && forest <= 1) variants.add(Variant.GRAY); // cockatiel
-        return variants;
+        final List<Species> species = new ArrayList<>();
+        for (Species value : Species.VALUES)
+        {
+            if (value.livesIn(temperature, groundwater, forest) && currentTemperature >= value.leaveTemperature)
+            {
+                species.add(value);
+            }
+        }
+        return species;
     }
 
     /**
@@ -89,11 +101,11 @@ public class TFCParrot extends Parrot
         return type.map(t -> t == TFCEntities.PARROT.get() ? EntityType.PARROT : t);
     }
 
-    private static boolean isTooCold(ClimateModel model, LevelReader level, BlockPos pos)
+    private static float getDailyTemperature(ClimateModel model, LevelReader level, BlockPos pos)
     {
         final ICalendar calendar = Calendars.get(level);
         final long calendarTicks = calendar.getCalendarTicks();
-        return model.getTimeAverageTemperature(level, pos, calendarTicks - ICalendar.CALENDAR_TICKS_IN_DAY, calendarTicks, calendar.getCalendarDaysInMonth()) < LEAVE_TEMPERATURE;
+        return model.getTimeAverageTemperature(level, pos, calendarTicks - ICalendar.CALENDAR_TICKS_IN_DAY, calendarTicks, calendar.getCalendarDaysInMonth());
     }
 
     private static float getFoodHealing(ItemStack stack)
@@ -108,6 +120,23 @@ public class TFCParrot extends Parrot
     public TFCParrot(EntityType<? extends Parrot> type, Level level)
     {
         super(type, level);
+    }
+
+    public Species getSpecies()
+    {
+        return Species.VALUES[entityData.get(DATA_SPECIES)];
+    }
+
+    public void setSpecies(Species species)
+    {
+        entityData.set(DATA_SPECIES, species.ordinal());
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
+    {
+        super.defineSynchedData(builder);
+        builder.define(DATA_SPECIES, 0);
     }
 
     @Override
@@ -132,13 +161,21 @@ public class TFCParrot extends Parrot
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnData)
     {
-        spawnData = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
-        final List<Variant> variants = getClimateVariants(level, blockPosition());
-        if (!variants.isEmpty())
+        // A spawned group is a flock of a single species
+        if (spawnData instanceof SpeciesGroupData group)
         {
-            setVariant(variants.get(random.nextInt(variants.size())));
+            setSpecies(group.species);
         }
-        return spawnData;
+        else
+        {
+            final List<Species> species = getClimateSpecies(Climate.get(level()), level, blockPosition());
+            setSpecies(species.isEmpty() ? Util.getRandom(Species.VALUES, random) : species.get(random.nextInt(species.size())));
+            if (spawnData == null)
+            {
+                spawnData = new SpeciesGroupData(getSpecies());
+            }
+        }
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
     }
 
     @Override
@@ -149,8 +186,7 @@ public class TFCParrot extends Parrot
         final int surfaceY = level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ());
         return pos.getY() >= surfaceY
             && level.getFluidState(pos.atY(surfaceY - 1)).isEmpty()
-            && !getClimateVariants(level, pos).isEmpty()
-            && !isTooCold(Climate.get(level()), level, pos)
+            && !getClimateSpecies(Climate.get(level()), level, pos).isEmpty()
             && super.checkSpawnRules(level, spawnType);
     }
 
@@ -172,7 +208,7 @@ public class TFCParrot extends Parrot
         nextLeaveCheckTick = ticks + calendar.getTicksInHour() * ICalendar.HOURS_IN_DAY;
 
         // Wild parrots leave for the winter, and normal spawning brings them back once it warms up again
-        if (isTooCold(Climate.get(level()), level(), blockPosition()) && level().getNearestPlayer(this, 32) == null)
+        if (getDailyTemperature(Climate.get(level()), level(), blockPosition()) < getSpecies().leaveTemperature && level().getNearestPlayer(this, 32) == null)
         {
             discard();
         }
@@ -183,6 +219,7 @@ public class TFCParrot extends Parrot
     {
         super.addAdditionalSaveData(tag);
         tag.putLong("nextLeaveCheck", nextLeaveCheckTick);
+        tag.putString("species", getSpecies().getSerializedName());
     }
 
     @Override
@@ -190,6 +227,7 @@ public class TFCParrot extends Parrot
     {
         super.readAdditionalSaveData(tag);
         nextLeaveCheckTick = EntityHelpers.getLongOrDefault(tag, "nextLeaveCheck", Long.MIN_VALUE);
+        setSpecies(Species.byName(tag.getString("species")));
     }
 
     @Override
@@ -233,6 +271,76 @@ public class TFCParrot extends Parrot
             return InteractionResult.PASS; // only TFC parrot food tames, not the vanilla tag
         }
         return super.mobInteract(player, hand);
+    }
+
+    public enum Species implements StringRepresentable
+    {
+        // Vanilla colours
+        SCARLET_MACAW(21, 40, 250, 500, 2, 4, 10),
+        HYACINTH_MACAW(20, 40, 150, 300, 0, 2, 10),
+        MILITARY_MACAW(16, 26, 150, 350, 1, 4, 10),
+        BLUE_AND_YELLOW_MACAW(21, 40, 350, 500, 0, 4, 10),
+        COCKATIEL(12, 30, 60, 200, 0, 1, 10),
+        // Arid
+        BUDGERIGAR(20, 40, 0, 150, 0, 1, 10),
+        GALAH(15, 40, 50, 250, 0, 1, 5),
+        ROSY_FACED_LOVEBIRD(20, 40, 30, 150, 0, 1, 10),
+        // Tropical
+        SUN_CONURE(22, 40, 150, 350, 1, 4, 10),
+        RAINBOW_LORIKEET(18, 40, 250, 500, 1, 4, 10),
+        AFRICAN_GREY(22, 40, 350, 500, 2, 4, 10),
+        // Temperate
+        MONK_PARAKEET(6, 24, 80, 300, 0, 2, -5),
+        SULPHUR_CRESTED_COCKATOO(8, 28, 200, 450, 1, 4, 0);
+
+        public static final Species[] VALUES = values();
+        public static final StringRepresentable.EnumCodec<Species> CODEC = StringRepresentable.fromEnum(Species::values);
+
+        public static Species byName(String name)
+        {
+            return CODEC.byName(name, SCARLET_MACAW);
+        }
+
+        private final String serializedName;
+        private final float minTemperature, maxTemperature, minGroundwater, maxGroundwater;
+        private final int minForest, maxForest;
+        private final float leaveTemperature; // wild parrots leave, and don't spawn, when the past day's average temperature is below this
+
+        Species(float minTemperature, float maxTemperature, float minGroundwater, float maxGroundwater, int minForest, int maxForest, float leaveTemperature)
+        {
+            this.serializedName = name().toLowerCase(Locale.ROOT);
+            this.minTemperature = minTemperature;
+            this.maxTemperature = maxTemperature;
+            this.minGroundwater = minGroundwater;
+            this.maxGroundwater = maxGroundwater;
+            this.minForest = minForest;
+            this.maxForest = maxForest;
+            this.leaveTemperature = leaveTemperature;
+        }
+
+        public boolean livesIn(float temperature, float groundwater, int forest)
+        {
+            return temperature >= minTemperature && temperature <= maxTemperature
+                && groundwater >= minGroundwater && groundwater <= maxGroundwater
+                && forest >= minForest && forest <= maxForest;
+        }
+
+        @Override
+        public String getSerializedName()
+        {
+            return serializedName;
+        }
+    }
+
+    static class SpeciesGroupData extends AgeableMob.AgeableMobGroupData
+    {
+        private final Species species;
+
+        SpeciesGroupData(Species species)
+        {
+            super(false);
+            this.species = species;
+        }
     }
 
     static class TFCParrotWanderGoal extends WaterAvoidingRandomFlyingGoal

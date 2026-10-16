@@ -1,4 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/template_spawn_egg"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/spawn_egg/parrot"
+  }
 }

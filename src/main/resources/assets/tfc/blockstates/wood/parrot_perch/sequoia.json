@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "tfc:block/wood/parrot_perch/sequoia",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "tfc:block/wood/parrot_perch/sequoia"
+    },
+    "facing=south": {
+      "model": "tfc:block/wood/parrot_perch/sequoia",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tfc:block/wood/parrot_perch/sequoia",
+      "y": 270
+    }
+  }
+}

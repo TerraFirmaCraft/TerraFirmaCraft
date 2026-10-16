@@ -2104,6 +2104,18 @@ def generate(rm: ResourceManager):
         block.with_block_loot('tfc:wood/tool_rack/%s' % wood)
         block.with_item_model()
 
+        # Parrot Perches
+        for perch, name in (('parrot_perch', '%s Parrot Perch'), ('wall_parrot_perch', '%s Wall Parrot Perch')):
+            block = rm.blockstate('tfc:wood/%s/%s' % (perch, wood), model='tfc:block/wood/%s/%s' % (perch, wood), variants=four_rotations('tfc:block/wood/%s/%s' % (perch, wood), (90, None, 180, 270)))
+            block.with_block_model(textures={
+                'log': 'tfc:block/wood/log/%s' % wood,
+                'log_top': 'tfc:block/wood/log_top/%s' % wood,
+                'particle': 'tfc:block/wood/log/%s' % wood
+            }, parent='tfc:block/%s' % perch)
+            block.with_lang(lang(name, wood))
+            block.with_block_loot('tfc:wood/%s/%s' % (perch, wood))
+            block.with_item_model()
+
         # Loom
         block = rm.blockstate('tfc:wood/loom/%s' % wood, model='tfc:block/wood/loom/%s' % wood, variants=four_rotations('tfc:block/wood/loom/%s' % wood, (270, 180, None, 90)))
         block.with_block_model(textures={
@@ -2588,7 +2600,6 @@ def generate(rm: ResourceManager):
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:
         rm.item_model('spawn_egg/%s' % creature).with_lang(lang('%s Spawn Egg', creature))
-    rm.item_model('spawn_egg/parrot', parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('Parrot Spawn Egg'))
     for creature in BUCKETABLE_FISH:
         rm.item_model('bucket/%s' % creature).with_lang(lang('%s Bucket', creature))
 

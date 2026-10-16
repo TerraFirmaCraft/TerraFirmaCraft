@@ -709,6 +709,8 @@ public final class TFCCreativeTabs
             out.accept(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.BOOKSHELF));
             out.accept(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SHELF));
             out.accept(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.TOOL_RACK));
+            out.accept(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.PARROT_PERCH));
+            out.accept(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_PARROT_PERCH));
             accept(out, TFCItems.SUPPORTS, wood);
             out.accept(TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SIGN));
             for (Metal metal : Metal.values())
