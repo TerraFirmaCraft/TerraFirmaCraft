@@ -17,6 +17,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec2;
@@ -45,6 +47,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.blocks.plant.KrummholzBlock;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.mixin.accessor.ChunkMapAccessor;
 import net.dries007.tfc.mixin.accessor.PoiSectionAccessor;
 import net.dries007.tfc.mixin.accessor.SectionStorageAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -220,14 +223,14 @@ public final class WeatherHelpers
         final ChunkData data = ChunkData.get(chunk);
         final long currentTick = Calendars.SERVER.getTicks();
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
-        final long lastRandomTick = data.getLastRandomTick();
-        final long timeSinceTick = currentTick - lastRandomTick;
+        final long weatherSimulatedUntil = data.getWeatherSimulatedUntil();
+        final long timeSinceTick = currentTick - weatherSimulatedUntil;
 
         final ChunkPos chunkPos = chunk.getPos();
         final BlockPos snowPlacementSurfacePos = getSequentialSurfacePos(level, chunkPos, chunk, data, false);
         final BlockPos climateCheckSurfacePos = getRandomSurfacePos(level, chunkPos);
 
-        final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, lastRandomTick, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
+        final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, weatherSimulatedUntil, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
         final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
 
         if (timeSinceTick > 4_000)
@@ -297,7 +300,32 @@ public final class WeatherHelpers
             }
         }
 
-        data.setLastRandomTick(chunk, currentTick);
+        data.setWeatherSimulatedUntil(chunk, currentTick);
+    }
+
+    /**
+     * Handles loaded chunks that couldnt be random ticked.
+     */
+    public static void tickCatchUp(ServerLevel level)
+    {
+        final WorldTracker tracker = WorldTracker.get(level);
+        if (!tracker.isWeatherEnabled() || !tracker.getClimateModel().supportsRain())
+        {
+            return;
+        }
+
+        final int maxStaleChunks = TFCConfig.SERVER.snowMaxCatchUpChunksPerTick.get();
+        final List<LevelChunk> staleChunks = new ArrayList<>();
+        for (ChunkHolder holder : ((ChunkMapAccessor) level.getChunkSource().chunkMap).invoke$getChunks())
+        {
+            final LevelChunk chunk = holder.getTickingChunk();
+            if (chunk != null && Calendars.SERVER.getTicks() - ChunkData.get(chunk).getWeatherSimulatedUntil() > 4_000)
+            {
+                staleChunks.add(chunk);
+                if (staleChunks.size() >= maxStaleChunks) break;
+            }
+        }
+        staleChunks.forEach(chunk -> onTickChunk(level, chunk));
     }
 
     private static BlockPos getSequentialSurfacePos(ServerLevel level, ChunkPos chunkPos, ChunkAccess access, ChunkData data, boolean updateChunk)
