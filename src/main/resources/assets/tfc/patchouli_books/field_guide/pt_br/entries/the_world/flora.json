@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for $(l:mechanics/dye)Dye$()."
+      "text": "Existem muitos, muitos, $(italic)muitos$() tipos diferentes de plantas em TerraFirmaCraft.$(br2)Diferentes plantas aparecem em diferentes $(l:the_world/climate)Climas$(), e sua aparência pode mudar ao longo da estação - passando por ciclos de floração e dormência, ou mudando a cor conforme a temperatura local varia. Flores coloridas geralmente podem ser trituradas em uma $(l:mechanics/quern)Pedra Mó$() para produzir $(l:mechanics/dye)Corante$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -23,8 +23,8 @@
           "X": "tfc:plant/anthurium"
         }
       },
-      "name": "Standard",
-      "text": "As plantas padrão são como flores pequenas. Eles crescem na grama, sujeira e terras agrícolas.",
+      "name": "Padrão",
+      "text": "Plantas padrão são como pequenas flores. Elas crescem em grama, terra e terra arada.",
       "enable_visualize": false
     },
     {
@@ -42,8 +42,8 @@
           "X": "tfc:plant/sagebrush"
         }
       },
-      "name": "Dry",
-      "text": "As plantas secas são como plantas padrão, mas podem crescer na areia. Isso geralmente só aparece em áreas com baixa chuva.",
+      "name": "Seco",
+      "text": "Plantas secas são como plantas padrão, mas podem crescer na areia. Estas geralmente só aparece em áreas com baixa precipitação.",
       "enable_visualize": false
     },
     {
@@ -66,8 +66,8 @@
           "Y": "tfc:plant/barrel_cactus[part=lower]"
         }
       },
-      "name": "Cacti",
-      "text": "Os cactos podem crescer dois quarteirões de altura e eles vão danificá -lo!",
+      "name": "Cactos",
+      "text": "Cactos podem crescer dois blocos de altura, e eles vão machucá-lo!",
       "enable_visualize": false
     },
     {
@@ -85,8 +85,8 @@
           "X": "tfc:plant/moss[down=true]"
         }
       },
-      "name": "Creeping",
-      "text": "As plantas rastejantes tomam a forma dos rostos do bloco circundante. Eles aparecem principalmente em bolhas no chão",
+      "name": "Rastejante",
+      "text": "Plantas rastejantes assumem a forma das faces dos blocos ao redor. Elas aparecem principalmente em aglomerados no chão",
       "enable_visualize": false
     },
     {
@@ -105,8 +105,8 @@
           "Y": "tfc:plant/licorice_fern[facing=south]"
         }
       },
-      "name": "Epiphyte",
-      "text": "Os epífitos vivem apenas nas laterais dos troncos.",
+      "name": "Epífita",
+      "text": "Epífitas vivem apenas nas laterais de troncos.",
       "enable_visualize": false
     },
     {
@@ -124,8 +124,8 @@
           "X": "tfc:plant/bluegrass"
         }
       },
-      "name": "Short Grass",
-      "text": "Os blocos de grama curtos crescem mais altos com a idade. Eles também são capazes de crescer em turfa e lama.",
+      "name": "Grama Baixa",
+      "text": "Blocos de grama baixa crescem mais com o tempo. Eles também são capazes de crescer em turfa e lama.",
       "enable_visualize": false
     },
     {
@@ -147,8 +147,8 @@
           "Y": "tfc:plant/king_fern[part=lower]"
         }
       },
-      "name": "Tall Grass",
-      "text": "Os altos blocos de grama são altos o suficiente para bloquear seu campo de visão.",
+      "name": "Grama Alta",
+      "text": "blocos de grama alta são altos o suficiente para bloquear seu campo de visão.",
       "enable_visualize": false
     },
     {
@@ -166,8 +166,8 @@
           "X": "tfc:plant/ivy[up=true,north=true]"
         }
       },
-      "name": "Vines",
-      "text": "Os blocos de videira se espalham pelo mundo por conta própria, se estiver quente o suficiente.",
+      "name": "Trepadeira",
+      "text": "Os blocos de trepadeira se espalham pelo mundo por conta própria, se estiver quente o suficiente.",
       "enable_visualize": false
     },
     {
@@ -189,8 +189,8 @@
           "Y": "tfc:plant/liana"
         }
       },
-      "name": "Weeping Vines",
-      "text": "Videiras chorando crescem a partir de um bloco de ancoragem.",
+      "name": "Trepadeiras Choronas",
+      "text": "Trepadeiras choronas crescem para baixo a partir de um bloco de ancoragem.",
       "enable_visualize": false
     },
     {
@@ -212,14 +212,14 @@
           "Y": "tfc:plant/arundo_plant"
         }
       },
-      "name": "Twisting Vines",
-      "text": "Torcendo as videiras torcendo para cima da terra. Eles podem vir em uma variante sólida.",
+      "name": "Trepadeiras Retorcidas",
+      "text": "Trepadeiras retorcidas crescem para cima a partir do chão. Elas podem existir em uma variante sólida.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "As plantas de água são restritas a gerar água fresca ou salgada. Caso contrário, eles crescem e agem como as plantas que você vê na superfície. Algumas plantas de água podem ser cozidas para comida.",
-      "title": "Plantas aquáticas"
+      "text": "Plantas aquáticas só podem surgir em água doce ou salgada. Fora isso, elas crescem e se comportam como as plantas da superfície. Algumas plantas aquáticas podem ser cozidas e consumidas como alimento.",
+      "title": "Plantas Aquáticas"
     },
     {
       "type": "patchouli:multiblock",
@@ -236,8 +236,8 @@
           "X": "tfc:plant/sago[fluid=water]"
         }
       },
-      "name": "Standard Water",
-      "text": "Plantas de água padrão podem ser quebradas com um $(thing)$()Faca$() obter $(thing)Seaweed$().",
+      "name": "Plantas Aquáticas Padrão",
+      "text": "Plantas aquáticas padrão podem ser quebradas com uma $(thing)$()Faca$() obter $(thing)Alga$().",
       "enable_visualize": false
     },
     {
@@ -255,8 +255,8 @@
           "X": "tfc:plant/manatee_grass[fluid=salt_water]"
         }
       },
-      "name": "Water Grass",
-      "text": "Gramíneas de água são gramíneas que crescem sob a água.",
+      "name": "Grama Aquática",
+      "text": "Gramas aquáticas são gramíneas que crescem sob a água.",
       "enable_visualize": false
     },
     {
@@ -278,8 +278,8 @@
           "Y": "tfc:plant/cattail[part=lower,fluid=water]"
         }
       },
-      "name": "Tall Water Plant",
-      "text": "Plantas altas de água podem crescer com apenas o bloco inferior na água. $(thing)Water Taro$() e $()Cattail$() pode ser quebrado com um $(thing)Faca$() para $(thing)Roots$().",
+      "name": "Plantas Aquáticas Altas",
+      "text": "Plantas aquáticas altas podem crescer com apenas o bloco do fundo na água. $(thing)Inhame-d'água$() e $()Taboa$() podem ser quebrados com uma $(thing)Faca$() para coletar suas $(thing)Raízes$().",
       "enable_visualize": false
     },
     {
@@ -301,8 +301,8 @@
           "Y": "minecraft:water"
         }
       },
-      "name": "Floating",
-      "text": "Plantas flutuantes sentam -se em cima da água. Os barcos os quebrarão em contato.",
+      "name": "Flutuantes",
+      "text": "Plantas flutuantes apoiam-se em cima da água. Os barcos os quebrarão em contato.",
       "enable_visualize": false
     },
     {
@@ -324,8 +324,8 @@
           "Y": "tfc:plant/winged_kelp_plant[fluid=salt_water]"
         }
       },
-      "name": "Kelp",
-      "text": "As algas estão torcendo as videiras que crescem debaixo d'água.",
+      "name": "Algas",
+      "text": "Algas são trepadeiras sinuosas que crescem debaixo d'água.",
       "enable_visualize": false
     },
     {
@@ -347,8 +347,8 @@
           "Y": "tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]"
         }
       },
-      "name": "Tree Kelp",
-      "text": "As algas de árvore crescem em árvores intrincadas debaixo d'água. As flores podem ser colhidas com um $(thing)Faca$().",
+      "name": "Algas Arbóreas",
+      "text": "As algas marinhas crescem e formam árvores intrincadas debaixo d'água. As flores podem ser colhidas com uma $(thing)Faca$().",
       "enable_visualize": false
     }
   ],

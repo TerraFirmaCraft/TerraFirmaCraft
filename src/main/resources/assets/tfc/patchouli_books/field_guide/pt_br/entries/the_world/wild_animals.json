@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Wild Animals",
+  "name": "Animais Selvagens",
   "category": "tfc:the_world",
   "icon": "tfc:medium_raw_hide",
   "pages": [
@@ -30,14 +30,14 @@
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
       "name": "Urso pardo",
-      "text": "O urso pardo aparece em florestas de climas moderados, com uma $(l:the_world/climate#temperature)temperature$() faixa de -15 a 15°C e pelo menos 200 mm de $(l:the_world/climate#rainfall)chuva$()."
+      "text": "O urso pardo aparece em florestas de climas moderados, com uma $(l:the_world/climate#temperature)temperature$() faixa de -15 a 15°C e pelo menos 200mm de $(l:the_world/climate#rainfall)chuva$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "Urso preto",
-      "text": "O urso preto aparece em florestas de climas mais quentes e úmidos, de $(l:the_world/climate#tempertemperaturarature$() 5 a 20°C e pelo menos 250 mm de $(l:the_world/climate#rainfall)chuva$()."
+      "text": "O urso preto aparece em florestas de climas mais quentes e úmidos, de $(l:the_world/climate#tempertemperaturarature$() 5 a 20°C e pelo menos 250mm de $(l:the_world/climate#rainfall)chuva$()."
     },
     {
       "type": "patchouli:entity",
@@ -51,14 +51,14 @@
       "entity": "tfc:panther",
       "scale": 0.6,
       "name": "Pantera",
-      "text": "TEle Pantera prefere a maioria dos climas moderados, com $(l:the_world/climate#temperature)temperatura$() de -10 a 21°C e pelo menos 150 mm de $(l:the_world/climate#rainfall)chuva$()."
+      "text": "TEle Pantera prefere a maioria dos climas moderados, com $(l:the_world/climate#temperature)temperatura$() de -10 a 21°C e pelo menos 150mm de $(l:the_world/climate#rainfall)chuva$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "Leoa",
-      "text": "O leão aparece em planícies com uma média $(l:the_world/climate#temperature)temperature$() de pelo menos 16°C e $(l:the_world/climate#rainfall)chuva$() entre 50 e 300 mm."
+      "text": "O leão aparece em planícies com uma média $(l:the_world/climate#temperature)temperature$() de pelo menos 16°C e $(l:the_world/climate#rainfall)chuva$() entre 50 e 300mm."
     },
     {
       "type": "patchouli:entity",
@@ -72,7 +72,7 @@
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "Sabertooth",
-      "text": "O Sabertooth aparece em qualquer $(l:the_world/climate#temperature)temperatura$() acima de 0°C e qualquer $(l:the_world/climate#rainfall)chuva$() acima de 250 mm."
+      "text": "O Sabertooth aparece em qualquer $(l:the_world/climate#temperature)temperatura$() acima de 0°C e qualquer $(l:the_world/climate#rainfall)chuva$() acima de 250mm."
     },
     {
       "type": "patchouli:entity",

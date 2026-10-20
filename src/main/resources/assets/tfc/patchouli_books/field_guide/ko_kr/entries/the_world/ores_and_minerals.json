@@ -1117,7 +1117,7 @@
       "item": "tfc:ore/opal",
       "title": "Opal",
       "link_recipes": false,
-      "text": "Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
+      "text": "Opal is a decorative $(thing)Mineral$(). It can be found in $(thing)Sedimentary$() and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
     },
     {
       "type": "patchouli:multiblock",

@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Culturas selvagens",
+  "name": "Culturas Selvagens",
   "category": "tfc:the_world",
   "icon": "tfc:textures/gui/book/icons/wild_crops.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Culturas selvagens$() Pode ser encontrado espalhado pelo mundo, crescendo em pequenos manchas. Eles podem ser colhidos para alimentos e sementes, que podem ser cultivados na forma não-wild.$(br2)A colheita de culturas selvagens pode ser feita com os punhos ou com um $(thing)Faca$() ou outra ferramenta nítida. Quando quebrado, eles vão caiSementeshing)Seeds$() e alguns $(thing)Produtos$()."
+      "text": "$(thing)Culturas Selvagens$() podem ser encontradas espalhadas pelo mundo, crescendo em pequenos agrupamentos. Elas podem ser colhidas para obter alimentos e sementes, que depois podem ser cultivadas na forma não selvagem.$(br2)A colheita de culturas selvagens pode ser feita com as mãos ou com uma $(thing)Faca$() ou outra ferramenta afiada. Quando quebradas, elas deixam cair $(thing)Sementes$() e alguns $(thing)Produtos$()."
     },
     {
       "type": "patchouli:multiblock",
@@ -23,17 +23,17 @@
           "X": "tfc:wild_crop/wheat[mature=true]"
         }
       },
-      "name": "Wild Wheat",
-      "text": "Um exemplo de uma colheita selvagem, neste caso $(l:mechanics/crops#wheat)Trigo$().",
+      "name": "Trigo Selvagem",
+      "text": "Um exemplo de uma cultura selvagem, neste caso $(l:mechanics/crops#wheat)Trigo$().",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Every $(l:mechanics/crops)crop$() that can be cultivated can also be found in the wild. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops are only mature from June to October. Otherwise, they appear dead until the next Summer."
+      "text": "Toda $(l:mechanics/crops)cultura$() que pode ser cultivada também pode ser encontrada na natureza. Culturas selvagens se parecem com as cultivadas, mas ficam mais escondidas na grama. Culturas selvagens amadurecem apenas de Junho até Outubro. De outra forma, elas parecem mortas até o próximo Verão."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Todas as diferentes variedades de colheita selvagem",
+      "text": "Todas as diferentes variedades de culturas selvagens",
       "multiblocks": [
         {
           "pattern": [
@@ -319,12 +319,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated. However, unlike $(l:mechanics/crops)Crops$() that the player has planted, wild crops do not require $(l:mechanics/hydration)Hydration$(). Instead, they are found in areas depending on the average $()Temperature$() and $()Rainfall$().",
-      "title": "Finding Wild Crops"
+      "text": "Culturas selvagens surgem em climas próximos onde a cultura pode ser cultivada. Se estiver procurando uma cultura específica, procure no clima adequado para o cultivo dela. No entanto, ao contrário das $(l:mechanics/crops)Culturas$() plantadas pelo jogador, culturas selvagens não precisam de $(l:mechanics/hydration)Hidratação$(). Em vez disso, aparecem em áreas conforme a $()Temperatura$() e $()Precipitação$() médias.",
+      "title": "Encontrando Culturas Selvagens"
     },
     {
       "type": "patchouli:text",
-      "text": "The next pages show a table of the environments where wild crops can be found."
+      "text": "As próximas páginas mostram uma tabela com os ambientes onde culturas selvagens podem ser encontradas."
     },
     {
       "type": "tfc:table",
@@ -451,7 +451,7 @@
         }
       ],
       "text": "",
-      "title": "Wild Crop Requirements",
+      "title": "Requisitos das Culturas Selvagens",
       "legend": [],
       "columns": 2,
       "first_column_width": 80,
@@ -581,7 +581,7 @@
         }
       ],
       "text": "",
-      "title": "Wild Crop Requirements",
+      "title": "Requisitos das Culturas Selvagens",
       "legend": [],
       "columns": 2,
       "first_column_width": 80,

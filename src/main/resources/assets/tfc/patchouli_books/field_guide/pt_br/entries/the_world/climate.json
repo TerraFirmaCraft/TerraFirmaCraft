@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Calendário e clima",
+  "name": "Calendário e Clima",
   "category": "tfc:the_world",
   "icon": "tfc:textures/gui/book/icons/thermometer.png",
   "pages": [
@@ -42,21 +42,21 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "A temperatura em Terrafirmacraft é influenciada por uma série de fatores:$(br)$(li)Em primeiro lugar, a região, especialmente a latitude (Coordenada Z) desempenhará o maior papel.$(li)Em segundo lugar, a estação atual influenciará a temperatura - será mais quente durante o verão e mais frio durante o inverno.$(li)Finalmente, a temperatura pode ser diferente de um dia para o outro, bem como variar de hora para hora."
+      "text": "A temperatura em TerraFirmaCraft é influenciada por uma série de fatores:$(br)$(li)Em primeiro lugar, a região, especialmente a latitude (coordenada Z) tem o maior impacto.$(li)Em segundo lugar, a estação atual influenciará a temperatura - sendo mais quente durante o Verão e mais frio durante o Inverno.$(li)Finalmente, a temperatura pode ser diferente de um dia para o outro, assim como de hora em hora."
     },
     {
       "type": "patchouli:text",
-      "text": "A última linha mostra a temperatura atual, incluindo todos esses fatores mencionados acima.$(br2)A temperatura pode influenciar muitas coisas: se as colheitas e as plantas crescerão, se a neve e o gelo irão formar ou derreter e muito mais."
+      "text": "A última linha mostra a temperatura atual, incluindo todos esses fatores mencionados anteriormente.$(br2)A temperatura pode influenciar muitas coisas: se plantações e plantas vão crescer, se a neve e o gelo vão se formar ou derreter, e muito mais."
     },
     {
       "type": "patchouli:text",
       "anchor": "rainfall",
-      "text": "A precipitação é outro valor climático que pode variar dependendo de onde você está no mundo. A precipitação anual é medida em milímetros (mm) e pode estar entre 0 mm e 500 mm. A precipitação afeta os tipos de flora que são encontrados em uma área e também os tipos de solo, de areia e cactos, até barro, ou lodo e árvores sumaúma.",
+      "text": "A precipitação é outro valor climático que pode variar dependendo de onde você está no mundo. A precipitação anual é medida em milímetros (mm) e pode variar entre 0mm e 500mm. A precipitação afeta os tipos de flora que são encontrados em uma área, e também os tipos de solo, desde areia e cactos, até terra fértil, silte e árvores sumaúma.",
       "title": "Precipitação"
     },
     {
       "type": "patchouli:text",
-      "text": "As chuvas também são importantes, pois afeta o que as coisas podem ser cultivadas em uma área. As chuvas são um dos principais contribuintes para $(l:mechanics/hydration)Hidratação$(), que é uma medida exata de quão molhado o solo está em um determinado local e é usado por $(l:mechanics/crops)Plantações$(), $(l:the_world/wild_fruits#fruit_trees)Árvores frutiferas$(), e $(l:the_world/wild_fruits#tall_bushes)Arbustos de bagas$() para determinar se eles podem crescer."
+      "text": "A precipitação também é importante, pois afeta que coisas podem ser cultivadas em uma área. A precipitação é um dos principais contribuintes para $(l:mechanics/hydration)Hidratação$(), que é uma medida exata de quão molhado o solo está em um determinado local, e é usado por $(l:mechanics/crops)Plantações$(), $(l:the_world/wild_fruits#fruit_trees)Árvores Frutíferas$() e $(l:the_world/wild_fruits#tall_bushes)Arbustos de Bagas$() para determinar se eles podem crescer."
     }
   ],
   "read_by_default": true,

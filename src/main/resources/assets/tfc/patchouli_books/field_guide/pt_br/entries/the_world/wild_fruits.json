@@ -1,22 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Frutas selvagens",
+  "name": "Frutas Selvagens",
   "category": "tfc:the_world",
   "icon": "tfc:textures/item/food/elderberry.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Muitas variedades diferentes de frutas selvagens podem ser encontradas crescendo no mundo. Estes podem ser coletados para serem consumidos ou cultivados, com o equipamento certo. Estes podem ser encontrados em diferentes variedades de arbustos ou árvores. Em geral, frutas podem ser encontradas em três tipos de plantas: $(l:the_world/wild_fruits#fruit_trees)Árvores frutiferas$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), e $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)Todas as plantas de frutificação têm um ciclo de vida comum. Eles vão crescer, formar flores, brotar frutas e depois ficarem adormecidos em um ciclo anual."
+      "text": "Muitas variedades de frutas selvagens podem ser encontradas pelo mundo. Estas podem ser coletadas para consumo ou cultivadas, com o equipamento adequado. Podem ser encontradas em diferentes tipos de arbustos ou árvores. Em geral, frutas aparecem em três tipos de plantas: $(l:the_world/wild_fruits#fruit_trees)Árvores Frutíferas$(), $(l:the_world/wild_fruits#tall_bushes)Arbustos Altos$() e $(l:the_world/wild_fruits#small_bushes)Arbustos Pequenos$().$(br2)Todas as plantas frutíferas seguem um ciclo de vida comum: crescem, florescem, dão frutos e depois entram em dormência em um ciclo anual."
     },
     {
       "type": "patchouli:text",
-      "text": "As plantas de frutas são sazonais. Durante a temporada fria, essas plantas parecerão marrom e sem vida. Na primavera, eles se tornam verdes e saudáveis, preparando-se para produzir frutas e crescer. Os momentos exatos que isso acontece varia de acordo com a fruta. Plantas de frutas também podem morrer: da velhice e de condições climáticas impróprias."
+      "text": "Plantas frutíferas são sazonais. Durante a estação fria, ficam marrons e sem vida. Na primavera, ficam verdes e saudáveis, se preparando para dar frutos e crescer. O momento exato em que isso acontece varia conforme a fruta. Plantas frutíferas também podem morrer, seja por idade avançada ou por condições climáticas inadequadas."
     },
     {
       "type": "patchouli:text",
       "anchor": "fruit_trees",
-      "text": "$(thing)Árvores frutiferas$() Cresça de pequenas mudas em árvores grandes e florescentes. Os galhos das árvores frutíferas são seu coração e crescerão enquanto as condições climáticas estiverem certas. À medida que as árvores frutíferas amadurecem, elas crescerão $(thing)folhas$() todos os seus galhos. As folhas podem florescer e frutas, dependendo da estação.",
-      "title": "Árvores frutiferas"
+      "text": "$(thing)Árvores Frutíferas$() crescem de pequenas mudas até se tornarem grandes árvores floridas. Os galhos são seu coração dessas árvores e continuam crescendo enquanto as condições climáticas forem adequadas. À medida que amadurecem, desenvolvem $(thing)folhas$() ao longo dos galhos. As folhas podem florescer e dar frutos, dependendo da estação.",
+      "title": "Árvores Frutíferas"
     },
     {
       "type": "patchouli:image",
@@ -28,21 +28,21 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Árvores frutíferas começam em $(thing)Mudas$(). As mudas só começarão a crescer, colocando sua primeira peça da árvore, se não for a estação adormecida para essa fruta. O tamanho da árvore acabado é pouco determinado por quantos mudas estão no bloco de mudas original. Mais mudas significa uma árvore maior.$(br)Mais mudas podem ser adicionadas a um único bloco através $(thing)Splicing$(). Para ceder uma muda em outro, apenas $(item)$(k:key.use)$() nele enquanto segurava um muda e um $(thing)Faca$() na sua mão."
+      "text": "Árvores frutíferas começam como $(thing)Mudas$(). As mudas só começam a crescer, gerando o primeiro bloco da árvore, se não estiverem na estação de dormência dessa fruta. O tamanho final da árvore é parcialmente determinado pela quantidade de mudas no bloco inicial. Mais mudas resultam em uma árvore maior.$(br)Mais mudas podem ser adicionadas a um único bloco através de $(thing)Enxertia$(). Para enxertar uma muda em outra, use $(item)$(k:key.use)$() nela enquanto segura uma muda e uma $(thing)Faca$() na mão secundária."
     },
     {
       "type": "patchouli:text",
-      "text": "To get saplings from a fruit tree, break the 'elbow' blocks (branch blocks that are attached to a block on one side and above) tree with an $(thing)Axe$(). Saplings can also be placed on these 'elbow' sections, if they are not too high up in the tree. This allows one fruit tree to grow multiple fruits. Harvesting fruit is done with $(item)$(k:key.use)$() when the leaf block is bearing fruit. This will give one fruit, and revert the plant back to its growing stage, until it goes dormant for the winter."
+      "text": "Para obter mudas de uma árvore frutífera, quebre os blocos de 'cotovelo' (galhos conectados a um bloco lateral e outro acima) com um $(thing)Machado$(). Mudas também podem ser colocadas nesses pontos de 'cotovelo', desde que não estejam muito altos na árvore. Isso permite que uma única árvore produza vários frutos. A colheita é feita com $(item)$(k:key.use)$() quando o bloco de folhas estiver com frutos. Isso concede um fruto e faz a planta voltar ao estágio de crescimento, até entrar em dormência no inverno."
     },
     {
       "type": "patchouli:text",
       "anchor": "cherry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 350mm$(br2)Cherry trees grow in the months of January through March, start flowering in April and May, and bear fruit in June.",
-      "title": "Árvore de cereja"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 100 - 350mm$(br2)Cerejeiras crescem de Janeiro a Março, começam a florescer em Abril e Maio e dão frutos em Junho.",
+      "title": "Cerejeira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example cherry tree.",
+      "text": "Um exemplo de cerejeira.",
       "multiblocks": [
         {
           "pattern": [
@@ -261,12 +261,12 @@
     {
       "type": "patchouli:text",
       "anchor": "green_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 110 - 280mm$(br2)Green apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
-      "title": "Green Apple Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 110 - 280mm$(br2)Macieiras de maçã verde crescem de Março a Julho, começam a florescer em Agosto e Setembro e dão frutos em Outubro.",
+      "title": "Macieira de Maçã Verde"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example green apple tree.",
+      "text": "Um exemplo de macieira de maçã verde.",
       "multiblocks": [
         {
           "pattern": [
@@ -485,12 +485,12 @@
     {
       "type": "patchouli:text",
       "anchor": "lemon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 180 - 470mm$(br2)Lemon trees grow from February to May, start flowering in June and July, and bear fruit in August.",
-      "title": "Lemon Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 180 - 470mm$(br2)Limoeiros crescem de Fevereiro a Maio, começam a florescer em Junho e Julho e dão frutos em Agosto.",
+      "title": "Limoeiro"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example lemon tree.",
+      "text": "Um exemplo de limoeiro.",
       "multiblocks": [
         {
           "pattern": [
@@ -709,12 +709,12 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 150 - 500mm$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.$(br2)Olives can be used to produce $(l:mechanics/lamps#olives)Olive Oil$(), which can be used as a fuel for lamps.",
-      "title": "Olive Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 150 - 500mm$(br2)Oliveiras crescem de Março a Julho, começam a florescer em Agosto e Setembro e dão frutos em Outubro.$(br2)Azeitonas podem ser usadas para produzir $(l:mechanics/lamps#olives)Azeite$(), que pode ser usado como combustível para lampiões.",
+      "title": "Oliveira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example olive tree.",
+      "text": "Um exemplo de oliveira.",
       "multiblocks": [
         {
           "pattern": [
@@ -933,12 +933,12 @@
     {
       "type": "patchouli:text",
       "anchor": "orange",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 500mm$(br2)Orange trees grow from March to June, start flowering in July and August, and bear fruit in September.",
-      "title": "Orange Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 250 - 500mm$(br2)Laranjeiras crescem de Março a Junho, começam a florescer em Julho e Agosto e dão frutos em Setembro.",
+      "title": "Laranjeira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example orange tree.",
+      "text": "Um exemplo de laranjeira.",
       "multiblocks": [
         {
           "pattern": [
@@ -1157,12 +1157,12 @@
     {
       "type": "patchouli:text",
       "anchor": "peach",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 60 - 230mm$(br2)Peach trees grow from December to March, start flowering in April and May, and bear fruit in June.",
-      "title": "Peach Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 60 - 230mm$(br2)Pessegueiros crescem de Dezembro a Março, começam a florescer em Abril e Maio e dão frutos em Junho.",
+      "title": "Pessegueiro"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example peach tree.",
+      "text": "Um exemplo de pessegueiro.",
       "multiblocks": [
         {
           "pattern": [
@@ -1381,12 +1381,12 @@
     {
       "type": "patchouli:text",
       "anchor": "plum",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 400mm$(br2)Plum trees grow from January to April, start flowering in May and June, and bear fruit in July.",
-      "title": "Plum Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 250 - 400mm$(br2)Ameixeiras crescem de Janeiro a Abril, começam a florescer em Maio e Junho e dão frutos em Julho.",
+      "title": "Ameixeira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example plum tree.",
+      "text": "Um exemplo de ameixeira.",
       "multiblocks": [
         {
           "pattern": [
@@ -1605,12 +1605,12 @@
     {
       "type": "patchouli:text",
       "anchor": "red_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 280mm$(br2)Red Apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
-      "title": "Red Apple Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 100 - 280mm$(br2)Macieiras de maçã vermelha crescem de Março a Julho, começam a florescer em Agosto e Setembro e dão frutos em Outubro.",
+      "title": "Macieira de Maçã Vermelha"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example red apple tree.",
+      "text": "Um exemplo de macieira de maçã vermelha.",
       "multiblocks": [
         {
           "pattern": [
@@ -1829,12 +1829,12 @@
     {
       "type": "patchouli:text",
       "anchor": "banana",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 280 - 500mm$(br2)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.",
-      "title": "Banana Tree"
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperatura$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Precipitação$(): 280 - 500mm$(br2)Bananeiras são um tipo especial de planta frutífera. Crescem apenas na vertical, não possuem folhas e só dão frutos no bloco mais alto. As mudas são obtidas da parte florida da planta. Depois de colhida, a bananeira morre e não produz mais frutos. Ela precisa ser replantada na primavera.",
+      "title": "Bananeira"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example banana tree.",
+      "text": "Um exemplo de bananeira.",
       "multiblocks": [
         {
           "pattern": [
@@ -2289,8 +2289,8 @@
           "fill": "0xa8986a"
         }
       ],
-      "text": "The fruiting calendar for fruit trees.",
-      "title": "Árvores frutiferas",
+      "text": "Calendário de frutificação para árvores frutíferas.",
+      "title": "Árvores Frutíferas",
       "legend": [
         {
           "text": "Dormant",
@@ -3182,11 +3182,11 @@
       "type": "patchouli:text",
       "anchor": "cranberry",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 17 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 100 %$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.",
-      "title": "Cranberry Bush"
+      "title": "Arbusto de Cranberry"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a cranberry bush.",
+      "text": "As fases mensais de um arbusto de cranberry.",
       "multiblocks": [
         {
           "pattern": [
@@ -3558,8 +3558,8 @@
           "fill": "0xa8986a"
         }
       ],
-      "text": "The fruiting calendar for berry bushes.",
-      "title": "Berry Bushes",
+      "text": "Calendário de frutificação para arbustos de bagas.",
+      "title": "Arbustos de Bagas",
       "legend": [
         {
           "text": "Dormant",
