@@ -60,8 +60,18 @@ public class LoomBlockEntity extends TickableInventoryBlockEntity<ItemStackHandl
             {
                 if (level.getGameTime() - loom.lastPushed >= 20)
                 {
+                    // Current order of operations when needsProgressUpdate == true:
+                    // 1. client loads current progress from server
+                    // 2. server runs this and increments progress by 1
+                    // 3. client loads current progress again, this time incremented
+                    // 4. client runs this
+                    // Without checking if this is the client, it increments the already changed value on the server and gets desynced
+                    // Causes this https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/3276 (actually a bug)
                     loom.needsProgressUpdate = false;
-                    loom.progress++;
+                    if (!level.isClientSide)
+                    {
+                        loom.progress++;
+                    }
 
                     if (loom.progress == recipe.getStepCount())
                     {
