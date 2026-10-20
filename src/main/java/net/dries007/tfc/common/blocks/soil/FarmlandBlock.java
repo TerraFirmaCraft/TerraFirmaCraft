@@ -38,6 +38,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.crop.CropHelpers;
+import net.dries007.tfc.config.ClimateTemperatureDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
@@ -80,15 +81,15 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, float temperature, boolean allowWiggle, String translationKey)
     {
-        final var style = TFCConfig.CLIENT.climateTooltipStyle.get();
-        final MutableComponent tooltip = Component.translatable(translationKey, style.format(temperature, true));
+        final ClimateTemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
+        final MutableComponent tooltip = Component.translatable(translationKey, style.formatRange(temperature));
 
         tooltip.append(switch (validRange.checkTemperature(temperature, allowWiggle))
-            {
-                case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
-                case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", style.format(validRange.getMinTemperature(allowWiggle), true));
-                case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", style.format(validRange.getMaxTemperature(allowWiggle), true));
-            });
+        {
+            case VALID -> Component.translatable("tfc.tooltip.farmland.just_right");
+            case LOW -> Component.translatable("tfc.tooltip.farmland.temperature_too_low", style.formatRange(validRange.getMinTemperature(allowWiggle)));
+            case HIGH -> Component.translatable("tfc.tooltip.farmland.temperature_too_high", style.formatRange(validRange.getMaxTemperature(allowWiggle)));
+        });
         return tooltip;
     }
 

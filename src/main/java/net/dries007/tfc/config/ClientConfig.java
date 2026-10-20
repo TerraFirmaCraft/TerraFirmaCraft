@@ -34,8 +34,8 @@ public class ClientConfig
     public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
     public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
-    public final ForgeConfigSpec.EnumValue<TemperatureDisplayStyle> heatTooltipStyle;
-    public final ForgeConfigSpec.EnumValue<TemperatureDisplayStyle> climateTooltipStyle;
+    public final ForgeConfigSpec.EnumValue<ItemTemperatureDisplayStyle> heatTooltipStyle;
+    public final ForgeConfigSpec.EnumValue<ClimateTemperatureDisplayStyle> climateTooltipStyle;
     public final ForgeConfigSpec.EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
     public final ForgeConfigSpec.EnumValue<DisabledExperienceBarStyle> disabledExperienceBarStyle;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
@@ -99,8 +99,8 @@ public class ClientConfig
             "  RANKINE = Exact degrees Rankine"
         };
 
-        heatTooltipStyle = builder.comment("The style to display all heat tooltips in.").comment(temperatureDisplayStyle).define("heatTooltipStyle", TemperatureDisplayStyle.COLOR);
-        climateTooltipStyle = builder.comment("The style to display all external (i.e. climate) temperature in.").comment(temperatureDisplayStyle).define("climateTooltipStyle", TemperatureDisplayStyle.CELSIUS);
+        heatTooltipStyle = builder.comment("The style to display all heat tooltips in.").comment(temperatureDisplayStyle).define("heatTooltipStyle", ItemTemperatureDisplayStyle.COLOR);
+        climateTooltipStyle = builder.comment("The style to display all external (i.e. climate) temperature in.").comment(temperatureDisplayStyle).define("climateTooltipStyle", ClimateTemperatureDisplayStyle.CELSIUS);
 
         timeDeltaTooltipStyle = builder.comment(
             "The style to display all time delta / duration tooltips in.",

@@ -19,7 +19,7 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.container.Container;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.config.TemperatureDisplayStyle;
+import net.dries007.tfc.config.ClimateTemperatureDisplayStyle;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Helpers;
@@ -60,11 +60,11 @@ public class ClimateScreen extends TFCContainerScreen<Container>
         final float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
         final float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
 
-        final TemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
+        final ClimateTemperatureDisplayStyle style = TFCConfig.CLIENT.climateTooltipStyle.get();
 
         drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_koppen_climate_classification", Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, rainfall))), 19);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_average_temperature", style.format(averageTemp, true)), 30);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_average_temperature", style.formatRange(averageTemp)), 30);
         drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall)), 41);
-        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_current_temp", style.format(currentTemp, true)), 52);
+        drawCenteredLine(stack, Component.translatable("tfc.tooltip.climate_current_temp", style.formatRange(currentTemp)), 52);
     }
 }
