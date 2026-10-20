@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "鋼はツールや $(l:mechanics/armor)防具$() の作成に使用できる高度な素材で、$(thing)鋼$()、$(thing)黒鋼$()、$(thing)赤鋼$()、$(thing)青鋼$()などのいくつかの種類があります。$(br2)鋼 を作成するには、まず $(thing)銑鉄$() を(l:mechanics/blast_furnace)高炉$()で $(thing)インゴット$() に鋳造する必要があります。"
+      "text": "鋼はツールや $(l:mechanics/armor)防具$() の作成に使用できる高度な素材で、$(thing)鋼$()、$(thing)黒鋼$()、$(thing)赤鋼$()、$(thing)青鋼$()などのいくつかの種類があります。$(br2)鋼 を作成するには、まず $(thing)銑鉄$() を$(l:mechanics/blast_furnace)高炉$()で $(thing)インゴット$() に鋳造する必要があります。"
     },
     {
       "type": "tfc:anvil_recipe",
@@ -46,7 +46,7 @@
       "item": "tfc:metal/ingot/weak_blue_steel",
       "title": "軟青鋼",
       "link_recipes": false,
-      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$ ()$(li)10 - 15 % : $(thing)蒼鉛青銅$()$(li)10 - 15 % : $(thing)スターリングシルバー$()$(br2)"
+      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$()$(li)10 - 15 % : $(thing)蒼鉛青銅$()$(li)10 - 15 % : $(thing)スターリングシルバー$()$(br2)"
     },
     {
       "type": "tfc:welding_recipe",
@@ -68,7 +68,7 @@
       "item": "tfc:metal/ingot/weak_red_steel",
       "title": "軟赤鋼",
       "link_recipes": false,
-      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$ ()$(li)10 - 15 % : $(thing)真鍮$()$(li)10 - 15 % : $(thing)ローズゴールド$()$(br2)"
+      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$()$(li)10 - 15 % : $(thing)真鍮$()$(li)10 - 15 % : $(thing)ローズゴールド$()$(br2)"
     },
     {
       "type": "tfc:welding_recipe",

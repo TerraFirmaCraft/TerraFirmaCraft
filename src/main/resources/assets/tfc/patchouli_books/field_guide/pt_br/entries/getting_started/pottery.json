@@ -36,7 +36,7 @@
     {
       "type": "patchouli:text",
       "anchor": "knapping",
-      "text": "$(thing)Athyrium longe$(), $(thingCannaa$(), $(thing)Goldenrod$(), $(thing)Grama de pampas$(), $(thing)Perovskia$(), e $(thing)Canna de água$() Todos indicam a presença de argila nas proximidades. A argila também pode ser encontrada em depósitos menores próximos a fontes de água, como rios, lagos ou lagoas.$(br2)Como nas rochas, a argila pode ser usada para formar novos itens. Requer cinco argila na sua mão para remar. Ao contrário das rochas, se você cometer um erro, poderá simplesmente fechar o knapping interface, remodelar seu barro e tente novamente."
+      "text": "$(thing)Athyrium longe$(), $(thing)Canna$(), $(thing)Goldenrod$(), $(thing)Grama de pampas$(), $(thing)Perovskia$(), e $(thing)Canna de água$() Todos indicam a presença de argila nas proximidades. A argila também pode ser encontrada em depósitos menores próximos a fontes de água, como rios, lagos ou lagoas.$(br2)Como nas rochas, a argila pode ser usada para formar novos itens. Requer cinco argila na sua mão para remar. Ao contrário das rochas, se você cometer um erro, poderá simplesmente fechar o knapping interface, remodelar seu barro e tente novamente."
     },
     {
       "type": "patchouli:image",

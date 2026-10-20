@@ -24,7 +24,7 @@
         }
       },
       "name": "Wild Wheat",
-      "text": "Um exemplo de uma colheita selvagem, neste caso $(l:food/crops#wheat)Trigo$",
+      "text": "Um exemplo de uma colheita selvagem, neste caso $(l:food/crops#wheat)Trigo$()",
       "enable_visualize": false
     },
     {

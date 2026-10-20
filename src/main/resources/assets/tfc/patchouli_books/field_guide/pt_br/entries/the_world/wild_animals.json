@@ -37,7 +37,7 @@
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "Urso preto",
-      "text": "O urso preto aparece em florestas de climas mais quentes e úmidos, de $(l:core_mechanics/climate#tempertemperaturarature$() $(cfg:temperature:5) a $(cfg:temperature:20) e pelo menos 250 mm de $(l:core_mechanics/climate#rainfall)chuva$()."
+      "text": "O urso preto aparece em florestas de climas mais quentes e úmidos, de $(l:core_mechanics/climate#temperature)temperatura$() $(cfg:temperature:5) a $(cfg:temperature:20) e pelo menos 250 mm de $(l:core_mechanics/climate#rainfall)chuva$()."
     },
     {
       "type": "patchouli:entity",

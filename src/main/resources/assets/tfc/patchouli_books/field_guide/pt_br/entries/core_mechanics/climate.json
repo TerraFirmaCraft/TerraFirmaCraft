@@ -19,7 +19,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Há estações, e o clima e o clima mudarão junto com eles! Há quatro temporadas em Terrafirmacraft, cada uma dividida em $(thing)Cedo$(), $(thing)MID$() e $(thing)Tarde$() meses. As quatro estações são:$(br)$(li)$(bold)Primavera$(): Março - Maio$(li)$(bold)Verão$(): Junho -Agostot$(li)$(bold)Outono$(): Setembro - Novembro(li)$(bold)Inverno$(): Dezembro - Fevereiro"
+      "text": "Há estações, e o clima e o clima mudarão junto com eles! Há quatro temporadas em Terrafirmacraft, cada uma dividida em $(thing)Cedo$(), $(thing)MID$() e $(thing)Tarde$() meses. As quatro estações são:$(br)$(li)$(bold)Primavera$(): Março - Maio$(li)$(bold)Verão$(): Junho -Agostot$(li)$(bold)Outono$(): Setembro - Novembro$(li)$(bold)Inverno$(): Dezembro - Fevereiro"
     },
     {
       "type": "patchouli:text",

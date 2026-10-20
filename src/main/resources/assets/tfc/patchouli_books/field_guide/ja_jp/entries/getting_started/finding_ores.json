@@ -65,7 +65,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "必要なもの:$(br)$(li)$(l:getting_started/pottery#vessel)小さな壺$()$(li)$(l:getting_started/pit_kiln)穴窯$()に必要な材料。 $(li)溶融金属を鋳造するための 1 つ以上の $(l:getting_started/pottery#mold)鋳造型。$(li)鋳造に適した合計 100 mB 以上の金属 : $(thing)銅$()、その 3 つの鉱石形態のうちの 1 つまたは複数。$(br2)$(br)$(italic)注: 鋳造は、一部の $(l:getting_started/primitive_alloys) 合金 $()でも行うことができます。"
+      "text": "必要なもの:$(br)$(li)$(l:getting_started/pottery#vessel)小さな壺$()$(li)$(l:getting_started/pit_kiln)穴窯$()に必要な材料。 $(li)溶融金属を鋳造するための 1 つ以上の $(l:getting_started/pottery#mold)鋳造型$()。$(li)鋳造に適した合計 100 mB 以上の金属 : $(thing)銅$()、その 3 つの鉱石形態のうちの 1 つまたは複数。$(br2)$(br)$(italic)注: 鋳造は、一部の $(l:getting_started/primitive_alloys) 合金 $()でも行うことができます。"
     },
     {
       "type": "patchouli:text",

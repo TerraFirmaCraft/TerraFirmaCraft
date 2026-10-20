@@ -138,7 +138,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
       ],
-      "text": "$(thing)ドーブ(壁材)を$(thing)ワトルに使用$() することでワトルが完成します。",
+      "text": "$(thing)ドーブ(壁材)$()を$(thing)ワトルに使用$() することでワトルが完成します。",
       "border": true
     },
     {
