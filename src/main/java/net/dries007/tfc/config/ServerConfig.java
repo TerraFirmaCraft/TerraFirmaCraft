@@ -350,7 +350,7 @@ public class ServerConfig extends BaseConfig
 
         enableSnowSlowEntities = builder.comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey.").define("enableSnowSlowEntities", true);
         snowMaxAccumulationOnUpdate = builder.comment("[Requires MC Restart] The maximum number of snow blocks that can be placed when entering an unloaded chunk. Higher values = matches nearby loaded chunks better, but more lag when entering these chunks.").define("snowMaxAccumulationOnUpdate", 256, 0, 256);
-        snowMaxCatchUpChunksPerTick = builder.comment("[Requires MC Restart] The maximum number of chunks per tick that can run the weather catchup simulation.").define("snowMaxCatchUpChunksPerTick", 4, 1, 16);
+        snowMaxCatchUpChunksPerTick = builder.comment("The maximum number of chunks per tick that can run the weather catchup simulation.").define("snowMaxCatchUpChunksPerTick", 4, 1, 16);
         ticksPerSnowAccumulation = builder.comment("[Requires MC Restart] The number of game ticks between attempts at snow accumulation. Lower = faster accumulation, but more lag. Default: 80 Vanilla: 16").define("ticksPerSnowAccumulation", 80, 1, Integer.MAX_VALUE);
         snowMeltMultiplier = builder.comment("[Requires MC Restart] How many times faster snow should melt than accumulate. Default: 3").define("snowMeltMultiplier", 3, 1, Integer.MAX_VALUE);
 

@@ -79,6 +79,8 @@ public final class WeatherHelpers
     // The maximum number of single tick updates that can be scheduled to happen
     private static final int MAX_UPDATES_PER_TICK = TFCConfig.SERVER.snowMaxAccumulationOnUpdate.get();
 
+    private static final int CATCH_UP_THRESHOLD_TICKS = 4_000;
+
     /**
      * Replaces a call to {@link Biome#getPrecipitationAt(BlockPos)} with one that is aware of both the local climate,
      * and the local rainfall. Note that of all the biome climate based methods, this is the only one we need to
@@ -187,24 +189,6 @@ public final class WeatherHelpers
      * Handles chunk ticking. This occurs on chunks that are within a radius of the player (128 blocks), which is notably smaller
      * than chunks that are loaded. We need this to be *accurate*, and *fast*. We handle a number of possible mechanics in order
      * to try and keep the effects of weather (snow, ice, and icicles), up-to-date.
-     *
-     * <h3>Simulation</h3>
-     * In order to properly handle simulation of chunks that have not been random ticked in a while, we support multiple methods of
-     * "simulating" if snow should have accumulated, or melted. By default, vanilla will do snow proportional to {@code randomTickSpeed / 48}
-     * blocks per tick, or once every 16 ticks, per chunk. We start with a baseline of half that speed (snow every 50 ticks).
-     * <p>
-     * Snow melting happens slower, since it's always happening, at a rate of roughly 1 per 200 ticks.
-     * <ul>
-     *     <li>Over short times, such as less than 1000 ticks, we do basic "catch-up". We calculate some number of additional chunk
-     *     ticks to run, and execute them based on historical data for rainfall/temperature.</li>
-     *     <li>Over longer times, we do a less accurate simulation of the weather, which tries to extrapolate how much the chunk should
-     *     be melted, or covered in snow. This then does the same "catch-up", but with a specific end-goal in mind.</li>
-     * </ul>
-     *
-     * <h3>Snow Accumulation and Melting</h3>
-     * We use the POI system for snow, in order to have an accurate and fast count of the amount of snow (or ice or icicles) in a chunk, and
-     * we do a very basic counting of previous ticks, how many times we should have been raining (accumulating snow), or positive temperature
-     * (melting). Note that we do melting much slower than we do accumulation, which affects how we simulate.
      */
     public static void onTickChunk(ServerLevel level, ChunkAccess chunk)
     {
@@ -232,7 +216,7 @@ public final class WeatherHelpers
 
         final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, weatherSimulatedUntil, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
 
-        if (timeSinceTick > 4_000)
+        if (timeSinceTick > CATCH_UP_THRESHOLD_TICKS)
         {
             return;
         }
@@ -261,11 +245,31 @@ public final class WeatherHelpers
 
     /**
      * Handles loaded chunks that couldnt be random ticked.
+     *
+     * <h3>Simulation</h3>
+     * In order to properly handle simulation of chunks that have not been random ticked in a while, we support multiple methods of
+     * "simulating" if snow should have accumulated, or melted. By default, vanilla will do snow proportional to {@code randomTickSpeed / 48}
+     * blocks per tick, or once every 16 ticks, per chunk. We start with a baseline of half that speed (snow every 50 ticks).
+     * <p>
+     * Snow melting happens slower, since it's always happening, at a rate of roughly 1 per 200 ticks.
+     * <ul>
+     *     <li>Over short times, such as less than 1000 ticks, we do basic "catch-up". We calculate some number of additional chunk
+     *     ticks to run, and execute them based on historical data for rainfall/temperature.</li>
+     *     <li>Over longer times, we do a less accurate simulation of the weather, which tries to extrapolate how much the chunk should
+     *     be melted, or covered in snow. This then does the same "catch-up", but with a specific end-goal in mind.</li>
+     * </ul>
+     *
+     * <h3>Snow Accumulation and Melting</h3>
+     * We use the POI system for snow, in order to have an accurate and fast count of the amount of snow (or ice or icicles) in a chunk, and
+     * we do a very basic counting of previous ticks, how many times we should have been raining (accumulating snow), or positive temperature
+     * (melting). Note that we do melting much slower than we do accumulation, which affects how we simulate.
      */
     public static void tickCatchUp(ServerLevel level)
     {
         final WorldTracker tracker = WorldTracker.get(level);
         final ClimateModel model = tracker.getClimateModel();
+        final long currentTick = Calendars.SERVER.getTicks();
+
         if (!tracker.isWeatherEnabled() || !model.supportsRain())
         {
             return;
@@ -276,16 +280,13 @@ public final class WeatherHelpers
         for (ChunkHolder holder : ((ChunkMapAccessor) level.getChunkSource().chunkMap).invoke$getChunks())
         {
             final LevelChunk chunk = holder.getTickingChunk();
-            if (chunk != null && Calendars.SERVER.getTicks() - ChunkData.get(chunk).getLastRandomTick() > 4_000)
+            if (chunk != null && currentTick - ChunkData.get(chunk).getLastRandomTick() > CATCH_UP_THRESHOLD_TICKS)
             {
                 staleChunks.add(chunk);
                 if (staleChunks.size() >= maxStaleChunks) break;
             }
         }
-        staleChunks.forEach(chunk -> onTickChunk(level, chunk));
 
-        
-        final long currentTick = Calendars.SERVER.getTicks();
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
         final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
 
@@ -298,7 +299,7 @@ public final class WeatherHelpers
             final BlockPos snowPlacementSurfacePos = getSequentialSurfacePos(level, chunkPos, chunk, data, false);
             final BlockPos climateCheckSurfacePos = getRandomSurfacePos(level, chunkPos);
             
-            final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, lastRandomTick, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
+            final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, lastRandomTick, currentTick, daysInMonth);
 
             // We have not ticked this chunk in a short while, so run catch-up ticks to see if we missed anything
             // First, we need to check for what we might've missed
