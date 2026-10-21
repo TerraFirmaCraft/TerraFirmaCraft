@@ -43,6 +43,7 @@ public class DelegatingTemptingSensor extends Sensor<PathfinderMob>
             .filter(p -> TEMPT_TARGETING.test(animal, p))
             .filter(p -> animal.closerThan(p, TEMPTATION_RANGE))
             .filter(p -> playerHoldingTemptation(p, animal))
+            .filter(p -> !animal.hasPassenger(p))
             .sorted(Comparator.comparingDouble(animal::distanceToSqr))
             .toList();
         if (!list.isEmpty())

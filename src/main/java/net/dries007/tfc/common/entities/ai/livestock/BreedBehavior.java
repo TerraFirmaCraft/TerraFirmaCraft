@@ -87,6 +87,12 @@ public class BreedBehavior<T extends Animal & BrainAnimalBehavior> extends Behav
     protected void stop(ServerLevel level, T animal, long speed)
     {
         animal.setLastMatedNow();
+        animal.getBrain().getMemory(MemoryModuleType.BREED_TARGET).ifPresent(target -> {
+            if (target.getBrain().getMemory(MemoryModuleType.BREED_TARGET).filter(t -> t == animal).isPresent())
+            {
+                target.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
+            }
+        });
         animal.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);

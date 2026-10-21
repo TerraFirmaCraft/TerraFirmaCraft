@@ -406,7 +406,7 @@ public final class ForgeEventHandler
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
         final Level level = event.getLevel();
-        if (!level.isClientSide)
+        if (!level.isClientSide && TFCConfig.SERVER.enableExplosionCollapsing.get() && TFCConfig.SERVER.enableBlockCollapsing.get())
         {
             WorldTracker.get(level).addCollapsePositions(BlockPos.containing(event.getExplosion().center()), event.getExplosion().getToBlow());
         }

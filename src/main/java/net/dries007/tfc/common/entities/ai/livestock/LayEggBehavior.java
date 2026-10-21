@@ -28,7 +28,17 @@ public class LayEggBehavior extends MoveOntoBlockBehavior<OviparousAnimal>
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, OviparousAnimal animal)
     {
-        return animal.isReadyForAnimalProduct() && super.checkExtraStartConditions(level, animal);
+        if (!animal.isReadyForAnimalProduct())
+        {
+            return false;
+        }
+        final Optional<BlockPos> target = getNearestTarget(animal);
+        if (target.isPresent() && !isTargetAt(level, target.get()))
+        {
+            animal.getBrain().eraseMemory(TFCBrain.NEST_BOX_MEMORY.get());
+            return false;
+        }
+        return super.checkExtraStartConditions(level, animal);
     }
 
     @Override

@@ -38,7 +38,6 @@ public class TFCLoot
     public static final Id<LootItemConditionType> IS_BURNT_OUT = lootCondition("is_burnt_out", MapCodec.unit(IsBurntOutCondition.INSTANCE));
     public static final Id<LootItemConditionType> IS_SLUICE = lootCondition("is_sluice", MapCodec.unit(IsSluiceCondition.INSTANCE));
     public static final Id<LootItemConditionType> IS_MALE = lootCondition("is_male", MapCodec.unit(IsMaleCondition.INSTANCE));
-    public static final Id<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", MapCodec.unit(AlwaysTrueCondition.INSTANCE));
     public static final Id<LootItemConditionType> NOT_PREDATED = lootCondition("not_predated", MapCodec.unit(NotPredatedCondition.INSTANCE));
     public static final Id<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", MinMaxProvider.codec(CropYieldProvider::new));
     public static final Id<LootNumberProviderType> ANIMAL_YIELD = numberProvider("animal_yield", MinMaxProvider.codec(AnimalYieldProvider::new));
