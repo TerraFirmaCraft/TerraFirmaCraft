@@ -74,7 +74,7 @@ public class AmphibiousSetWalkTargetAwayFrom
                         Vec3 destination = DefaultRandomPos.getPosAway(mob, 10, 7, escapeFromPos);
                         if (destination != null)
                         {
-                            final BlockPos pos = new BlockPos((int) destination.x, (int) destination.y, (int) destination.z);
+                            final BlockPos pos = BlockPos.containing(destination);
                             final BlockState state = level.getBlockState(pos.above());
                             if (Helpers.isFluid(state.getFluidState(), TFCTags.Fluids.ANY_INFINITE_WATER))
                             {

@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.TFCTags;
@@ -56,6 +55,6 @@ public class TamableFindSleepPos
     private static boolean wantsToSitAt(ServerLevel level, BlockPos pos)
     {
         BlockState state = level.getBlockState(pos);
-        return Helpers.isBlock(state, TFCTags.Blocks.PET_SITS_ON) && state.isPathfindable(PathComputationType.LAND) && level.getBlockState(pos.above()).isAir();
+        return Helpers.isBlock(state, TFCTags.Blocks.PET_SITS_ON) && level.getBlockState(pos.above()).isAir();
     }
 }
