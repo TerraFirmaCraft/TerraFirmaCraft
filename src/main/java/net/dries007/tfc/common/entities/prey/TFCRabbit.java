@@ -39,7 +39,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
@@ -137,9 +136,9 @@ public class TFCRabbit extends Rabbit implements MammalProperties
     public void createGenes(CompoundTag tag, TFCAnimalProperties male)
     {
         MammalProperties.super.createGenes(tag, male);
-        tag.putString("variant1", getVariant().getSerializedName());
+        tag.putInt("variant1", getVariant().id());
         if (male instanceof TFCRabbit rabbit)
-            tag.putString("variant2", rabbit.getVariant().getSerializedName());
+            tag.putInt("variant2", rabbit.getVariant().id());
     }
 
     @Override
@@ -409,8 +408,7 @@ public class TFCRabbit extends Rabbit implements MammalProperties
                 Block aboveBlock = aboveState.getBlock();
                 if (canRaid && Helpers.isBlock(aboveBlock, TFCTags.Blocks.RABBIT_RAIDABLE))
                 {
-                    level.setBlock(abovePos, Blocks.AIR.defaultBlockState(), 2);
-                    level.destroyBlock(abovePos, true, rabbit);
+                    level.destroyBlock(abovePos, false, rabbit);
                     rabbit.moreCarrotTicks = 40;
                 }
 

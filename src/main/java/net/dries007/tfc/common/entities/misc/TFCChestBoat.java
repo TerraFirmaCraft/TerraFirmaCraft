@@ -97,7 +97,7 @@ public class TFCChestBoat extends ChestBoat implements ISlotCallback
     protected void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.put("chestItem", getChestItem().save(level().registryAccess()));
+        tag.put("chestItem", getChestItem().saveOptional(level().registryAccess()));
     }
 
     @Override

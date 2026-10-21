@@ -103,7 +103,7 @@ public class HoldingMinecart extends AbstractMinecart
     protected void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.put("holdItem", getHoldItem().save(registryAccess()));
+        tag.put("holdItem", getHoldItem().saveOptional(registryAccess()));
         tag.putInt("TNTFuse", fuse);
     }
 

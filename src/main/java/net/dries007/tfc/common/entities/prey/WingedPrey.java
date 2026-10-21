@@ -39,7 +39,7 @@ public class WingedPrey extends Prey implements Pluckable
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        EntityHelpers.getLongOrDefault(tag, "plucked", Long.MIN_VALUE);
+        setLastPluckedTick(EntityHelpers.getLongOrDefault(tag, "plucked", Long.MIN_VALUE));
     }
 
     @Override
