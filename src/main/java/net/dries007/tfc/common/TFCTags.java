@@ -532,6 +532,7 @@ public class TFCTags
         public static final TagKey<Item> FROG_FOOD = tag("frog_food");
         public static final TagKey<Item> SEAL_FOOD = tag("seal_food");
         public static final TagKey<Item> RABBIT_FOOD = tag("rabbit_food");
+        public static final TagKey<Item> PARROT_FOOD = tag("parrot_food");
 
         // Compost
         public static final TagKey<Item> COMPOST_GREENS = tag("compost_greens");
@@ -857,6 +858,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> DEALS_CRUSHING_DAMAGE = tag("deals_crushing_damage");
         public static final TagKey<EntityType<?>> HORSES = tag("horses");
         public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = tag("destroyed_by_leaves");
+        public static final TagKey<EntityType<?>> PERCHES_ON_LEAVES = tag("perches_on_leaves"); // leaves are solid for these. only TFCParrot's navigation paths around them
         public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = tag("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
         public static final TagKey<EntityType<?>> PESTS = tag("pests");
         public static final TagKey<EntityType<?>> UNIVERSAL_PESTS = tag("universal_pests"); // spawned during infestations everywhere but the coldest biomes

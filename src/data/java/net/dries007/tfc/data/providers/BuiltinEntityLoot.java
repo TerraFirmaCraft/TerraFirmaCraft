@@ -214,6 +214,7 @@ public class BuiltinEntityLoot extends EntityLootSubProvider
         add(TFCEntities.PHEASANT.get(), wildBird(Food.PHEASANT, 2, 3, 2, 4, 10));
         add(TFCEntities.TURKEY.get(), wildBird(Food.TURKEY, 2, 4, 2, 6, 10));
         add(TFCEntities.PEAFOWL.get(), wildBird(Food.PEAFOWL, 2, 4, 2, 8, 14));
+        add(TFCEntities.PARROT.get(), wildBird(Food.PARROT, 1, 1, 1, 2, 6));
 
         // Equines
         add(TFCEntities.DONKEY.get(), livestock(Food.HORSE_MEAT, 4, 15, 21, Size.MEDIUM, 6));

@@ -1,0 +1,258 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "#log"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        2,
+        12
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#log_top",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            12,
+            12
+          ],
+          "texture": "#log_top"
+        },
+        "north": {
+          "uv": [
+            4,
+            0,
+            12,
+            2
+          ],
+          "texture": "#log"
+        },
+        "south": {
+          "uv": [
+            4,
+            0,
+            12,
+            2
+          ],
+          "texture": "#log"
+        },
+        "west": {
+          "uv": [
+            4,
+            0,
+            12,
+            2
+          ],
+          "texture": "#log"
+        },
+        "east": {
+          "uv": [
+            4,
+            0,
+            12,
+            2
+          ],
+          "texture": "#log"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        2,
+        7
+      ],
+      "to": [
+        9,
+        13,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7,
+            3,
+            9,
+            14
+          ],
+          "texture": "#log"
+        },
+        "south": {
+          "uv": [
+            3,
+            3,
+            5,
+            14
+          ],
+          "texture": "#log"
+        },
+        "west": {
+          "uv": [
+            11,
+            3,
+            13,
+            14
+          ],
+          "texture": "#log"
+        },
+        "east": {
+          "uv": [
+            1,
+            3,
+            3,
+            14
+          ],
+          "texture": "#log"
+        }
+      }
+    },
+    {
+      "from": [
+        9,
+        7,
+        7.5
+      ],
+      "to": [
+        10,
+        8,
+        8.5
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            5,
+            5,
+            6,
+            6
+          ],
+          "texture": "#log"
+        },
+        "up": {
+          "uv": [
+            5,
+            5,
+            6,
+            6
+          ],
+          "texture": "#log"
+        },
+        "north": {
+          "uv": [
+            5,
+            5,
+            6,
+            6
+          ],
+          "texture": "#log"
+        },
+        "south": {
+          "uv": [
+            5,
+            5,
+            6,
+            6
+          ],
+          "texture": "#log"
+        },
+        "east": {
+          "uv": [
+            7,
+            7,
+            8,
+            8
+          ],
+          "texture": "#log_top"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        13,
+        7
+      ],
+      "to": [
+        15,
+        15,
+        9
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            7,
+            1,
+            9,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#log"
+        },
+        "up": {
+          "uv": [
+            4,
+            1,
+            6,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#log"
+        },
+        "north": {
+          "uv": [
+            10,
+            1,
+            12,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#log"
+        },
+        "south": {
+          "uv": [
+            1,
+            1,
+            3,
+            15
+          ],
+          "rotation": 90,
+          "texture": "#log"
+        },
+        "west": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#log_top"
+        },
+        "east": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#log_top"
+        }
+      }
+    }
+  ]
+}

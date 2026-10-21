@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.mixin;
 
+import java.util.Optional;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +27,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.dries007.tfc.common.entities.prey.TFCParrot;
 import net.dries007.tfc.common.player.IPlayerInfo;
 import net.dries007.tfc.common.player.PlayerBridge;
 import net.dries007.tfc.common.player.PlayerInfo;
@@ -70,5 +73,11 @@ public abstract class PlayerMixin extends Entity implements PlayerBridge
         return key == GameRules.RULE_NATURAL_REGENERATION
             ? original.call(instance, key) && !level().isClientSide
             : original.call(instance, key);
+    }
+
+    @ModifyExpressionValue(method = "playShoulderEntityAmbientSound", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityType;byString(Ljava/lang/String;)Ljava/util/Optional;"))
+    private Optional<EntityType<?>> playTFCParrotShoulderSound(Optional<EntityType<?>> type)
+    {
+        return TFCParrot.asVanillaParrot(type);
     }
 }

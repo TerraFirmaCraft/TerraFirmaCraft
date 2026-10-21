@@ -332,6 +332,7 @@ public final class TFCItems
     public static final ItemId WILDEBEEST_EGG = registerSpawnEgg(TFCEntities.WILDEBEEST);
     public static final ItemId BISON_EGG = registerSpawnEgg(TFCEntities.BISON);
     public static final ItemId OCELOT_EGG = registerSpawnEgg(TFCEntities.OCELOT);
+    public static final ItemId PARROT_EGG = registerSpawnEgg(TFCEntities.PARROT, 0x0DA70B, 0xFF0000); // felt like doing it this way is faster
     public static final ItemId BONGO_EGG = registerSpawnEgg(TFCEntities.BONGO);
     public static final ItemId CARIBOU_EGG = registerSpawnEgg(TFCEntities.CARIBOU);
     public static final ItemId DEER_EGG = registerSpawnEgg(TFCEntities.DEER);
@@ -431,7 +432,12 @@ public final class TFCItems
 
     private static <T extends Mob> ItemId registerSpawnEgg(IdHolder<EntityType<T>> entity)
     {
-        return register("spawn_egg/" + entity.getId().getPath(), () -> new DeferredSpawnEggItem(entity.holder(), 0xffffff, 0xffffff, new Properties()));
+        return registerSpawnEgg(entity, 0xffffff, 0xffffff);
+    }
+
+    private static <T extends Mob> ItemId registerSpawnEgg(IdHolder<EntityType<T>> entity, int backgroundColor, int highlightColor)
+    {
+        return register("spawn_egg/" + entity.getId().getPath(), () -> new DeferredSpawnEggItem(entity.holder(), backgroundColor, highlightColor, new Properties()));
     }
 
     private static ItemId register(String name)

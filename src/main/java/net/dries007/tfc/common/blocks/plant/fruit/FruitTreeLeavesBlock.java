@@ -91,6 +91,12 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return ILeavesBlock.getCollisionShape(context);
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         final FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
