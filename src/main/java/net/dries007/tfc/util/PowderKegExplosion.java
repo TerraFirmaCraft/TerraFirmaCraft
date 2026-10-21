@@ -6,26 +6,22 @@
 
 package net.dries007.tfc.util;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import com.mojang.datafixers.util.Pair;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundExplodePacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -65,52 +61,44 @@ public class PowderKegExplosion extends Explosion
     {
         assert !level.isClientSide;
 
-        final List<BlockPos> affectedBlockPositions = this.getToBlow();
-        final ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops = new ObjectArrayList<>();
-        Collections.shuffle(affectedBlockPositions, new Random());
-
+        final List<Pair<ItemStack, BlockPos>> allDrops = new ArrayList<>();
         final boolean easyMode = TFCConfig.SERVER.powderKegOnlyBreaksNaturalBlocks.get();
 
-        for (BlockPos pos : affectedBlockPositions)
+        level.getProfiler().push("explosion_blocks");
+        Util.shuffle(getToBlow(), level.random);
+
+        for (BlockPos pos : getToBlow())
         {
             final BlockState state = level.getBlockState(pos);
+            if (easyMode ? !Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_CAN_BREAK) : Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_CANNOT_BREAK))
+                continue;
 
-            if (!easyMode)
-            {
-                if (Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_CANNOT_BREAK))
-                    continue;
-            }
-            else
-            {
-                if (!Helpers.isBlock(state, TFCTags.Blocks.POWDERKEG_CAN_BREAK))
-                    continue;
-            }
-
-            if (!state.isAir())
-            {
-                final BlockPos dropPos = pos.immutable();
-                this.level.getProfiler().push("explosion_blocks");
-                if (state.canDropFromExplosion(this.level, pos, this) && this.level instanceof ServerLevel)
-                {
-                    final BlockEntity blockentity = state.hasBlockEntity() ? this.level.getBlockEntity(pos) : null;
-                    final LootParams.Builder lootContext = (new LootParams.Builder((ServerLevel) this.level)).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity).withOptionalParameter(LootContextParams.THIS_ENTITY, this.source);
-
-                    state.getDrops(lootContext).forEach((drop) -> addBlockDrops(allDrops, drop, dropPos));
-                }
-
-                state.onBlockExploded(this.level, pos, this);
-                this.level.getProfiler().pop();
-            }
-
+            state.onExplosionHit(level, pos, this, (drop, dropPos) -> addBlockDrops(allDrops, drop, dropPos));
         }
 
         for (Pair<ItemStack, BlockPos> pair : allDrops)
         {
-            Block.popResource(this.level, pair.getSecond(), pair.getFirst());
+            Block.popResource(level, pair.getSecond(), pair.getFirst());
         }
+
+        level.getProfiler().pop();
     }
 
-    private static void addBlockDrops(ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops, ItemStack drop, BlockPos dropPos)
+    @Nullable
+    @Override
+    public Entity getDirectSourceEntity()
+    {
+        return source;
+    }
+
+    @Nullable
+    @Override
+    public LivingEntity getIndirectSourceEntity()
+    {
+        return source instanceof LivingEntity living ? living : null;
+    }
+
+    private static void addBlockDrops(List<Pair<ItemStack, BlockPos>> allDrops, ItemStack drop, BlockPos dropPos)
     {
         int i = allDrops.size();
 
