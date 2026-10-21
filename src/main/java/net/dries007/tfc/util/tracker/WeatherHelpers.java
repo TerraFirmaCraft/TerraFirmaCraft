@@ -207,20 +207,20 @@ public final class WeatherHelpers
         final ChunkData data = ChunkData.get(chunk);
         final long currentTick = Calendars.SERVER.getTicks();
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
-        final long weatherSimulatedUntil = data.getLastRandomTick();
-        final long timeSinceTick = currentTick - weatherSimulatedUntil;
-
-        final ChunkPos chunkPos = chunk.getPos();
-        final BlockPos snowPlacementSurfacePos = getSequentialSurfacePos(level, chunkPos, chunk, data, false);
-        final BlockPos climateCheckSurfacePos = getRandomSurfacePos(level, chunkPos);
-
-        final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, weatherSimulatedUntil, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
+        final long lastRandomTick = data.getLastRandomTick();
+        final long timeSinceTick = currentTick - lastRandomTick;
 
         if (timeSinceTick > CATCH_UP_THRESHOLD_TICKS)
         {
             return;
         }
-        else if (level.random.nextInt(TICKS_PER_SNOW_ACCUMULATION) == 0)
+
+        final ChunkPos chunkPos = chunk.getPos();
+        final BlockPos snowPlacementSurfacePos = getSequentialSurfacePos(level, chunkPos, chunk, data, false);
+        final BlockPos climateCheckSurfacePos = getRandomSurfacePos(level, chunkPos);
+
+        final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, lastRandomTick, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
+        if (level.random.nextInt(TICKS_PER_SNOW_ACCUMULATION) == 0)
         {
             // Trigger either accumulation event or snow melt
             final float realTemperature = model.getInstantTemperature(level, snowPlacementSurfacePos);
@@ -290,7 +290,8 @@ public final class WeatherHelpers
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
         final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
 
-        for(LevelChunk chunk : staleChunks) {
+        for(LevelChunk chunk : staleChunks)
+        {
             final ChunkData data = ChunkData.get(chunk);
             final long lastRandomTick = data.getLastRandomTick();
             final long timeSinceTick = currentTick - lastRandomTick;
