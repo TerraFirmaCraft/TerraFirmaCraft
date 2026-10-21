@@ -2254,6 +2254,7 @@ DEFAULT_LANG = {
     'tfc.config.server.enableSmallVesselInventoryInteraction': 'Enable Small Vessel Inventory Interaction',
     'tfc.config.server.enableSnowSlowEntities': 'Enable Snow Slow Entities',
     'tfc.config.server.snowMaxAccumulationOnUpdate': 'Max Snow Accumulation on Update',
+    'tfc.config.server.snowMaxCatchUpChunksPerTick': 'Max Snow Catch-Up Chunks per Tick',
     'tfc.config.server.ticksPerSnowAccumulation': 'Ticks Per Snow Accumulation',
     'tfc.config.server.snowMeltMultiplier': 'Snow Melt Multiplier',
     'tfc.config.server.enableThatchBedSleeping': 'Enable Thatch Bed Sleeping',
