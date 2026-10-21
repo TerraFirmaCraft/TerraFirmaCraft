@@ -223,7 +223,7 @@ public final class WeatherHelpers
         final ChunkData data = ChunkData.get(chunk);
         final long currentTick = Calendars.SERVER.getTicks();
         final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
-        final long weatherSimulatedUntil = data.getWeatherSimulatedUntil();
+        final long weatherSimulatedUntil = data.getLastRandomTick();
         final long timeSinceTick = currentTick - weatherSimulatedUntil;
 
         final ChunkPos chunkPos = chunk.getPos();
@@ -231,10 +231,75 @@ public final class WeatherHelpers
         final BlockPos climateCheckSurfacePos = getRandomSurfacePos(level, chunkPos);
 
         final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, weatherSimulatedUntil, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
-        final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
 
         if (timeSinceTick > 4_000)
         {
+            return;
+        }
+        else if (level.random.nextInt(TICKS_PER_SNOW_ACCUMULATION) == 0)
+        {
+            // Trigger either accumulation event or snow melt
+            final float realTemperature = model.getInstantTemperature(level, snowPlacementSurfacePos);
+            // Use the actual temperature for accumulation to avoid placing snow somewhere too warm
+            if (realTemperature < -2f && isPrecipitating(model.getRain(currentCalendarTick), rainfall))
+            {
+                // Trigger accumulation
+                handleSnowAccumulation(level, snowPlacementSurfacePos);
+                // We delay iterating the position until we know whether snow will actually get placed
+                data.iterateSnowPos(chunk);
+            }
+            // Use the random surface pos for melting to avoid getting stuck on a block
+            else if (model.getInstantTemperature(level, climateCheckSurfacePos) > 2f && level.random.nextInt(TICKS_PER_SNOW_MELT_PER_SNOW_ACCUMULATION) == 0)
+            {
+                // Trigger melting
+                handleSnowMelting(level, chunkPos, 1);
+            }
+        }
+
+        data.setLastRandomTick(chunk, currentTick);
+    }
+
+    /**
+     * Handles loaded chunks that couldnt be random ticked.
+     */
+    public static void tickCatchUp(ServerLevel level)
+    {
+        final WorldTracker tracker = WorldTracker.get(level);
+        final ClimateModel model = tracker.getClimateModel();
+        if (!tracker.isWeatherEnabled() || !model.supportsRain())
+        {
+            return;
+        }
+
+        final int maxStaleChunks = TFCConfig.SERVER.snowMaxCatchUpChunksPerTick.get();
+        final List<LevelChunk> staleChunks = new ArrayList<>();
+        for (ChunkHolder holder : ((ChunkMapAccessor) level.getChunkSource().chunkMap).invoke$getChunks())
+        {
+            final LevelChunk chunk = holder.getTickingChunk();
+            if (chunk != null && Calendars.SERVER.getTicks() - ChunkData.get(chunk).getLastRandomTick() > 4_000)
+            {
+                staleChunks.add(chunk);
+                if (staleChunks.size() >= maxStaleChunks) break;
+            }
+        }
+        staleChunks.forEach(chunk -> onTickChunk(level, chunk));
+
+        
+        final long currentTick = Calendars.SERVER.getTicks();
+        final long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
+        final int daysInMonth = Calendars.SERVER.getCalendarDaysInMonth();
+
+        for(LevelChunk chunk : staleChunks) {
+            final ChunkData data = ChunkData.get(chunk);
+            final long lastRandomTick = data.getLastRandomTick();
+            final long timeSinceTick = currentTick - lastRandomTick;
+
+            final ChunkPos chunkPos = chunk.getPos();
+            final BlockPos snowPlacementSurfacePos = getSequentialSurfacePos(level, chunkPos, chunk, data, false);
+            final BlockPos climateCheckSurfacePos = getRandomSurfacePos(level, chunkPos);
+            
+            final float rainfall = model.getTimeAverageRainfall(level, climateCheckSurfacePos, lastRandomTick, currentTick, Calendars.SERVER.getCalendarDaysInMonth());
+
             // We have not ticked this chunk in a short while, so run catch-up ticks to see if we missed anything
             // First, we need to check for what we might've missed
 
@@ -279,53 +344,8 @@ public final class WeatherHelpers
                 netChangeInSnow = Math.min(MAX_UPDATES_PER_TICK, -netChangeInSnow * meltFactor);
                 handleSnowMelting(level, chunkPos, netChangeInSnow);
             }
+            data.setLastRandomTick(chunk, currentTick);
         }
-        else if (level.random.nextInt(TICKS_PER_SNOW_ACCUMULATION) == 0)
-        {
-            // Trigger either accumulation event or snow melt
-            final float realTemperature = model.getInstantTemperature(level, snowPlacementSurfacePos);
-            // Use the actual temperature for accumulation to avoid placing snow somewhere too warm
-            if (realTemperature < -2f && isPrecipitating(model.getRain(currentCalendarTick), rainfall))
-            {
-                // Trigger accumulation
-                handleSnowAccumulation(level, snowPlacementSurfacePos);
-                // We delay iterating the position until we know whether snow will actually get placed
-                data.iterateSnowPos(chunk);
-            }
-            // Use the random surface pos for melting to avoid getting stuck on a block
-            else if (model.getInstantTemperature(level, climateCheckSurfacePos) > 2f && level.random.nextInt(TICKS_PER_SNOW_MELT_PER_SNOW_ACCUMULATION) == 0)
-            {
-                // Trigger melting
-                handleSnowMelting(level, chunkPos, 1);
-            }
-        }
-
-        data.setWeatherSimulatedUntil(chunk, currentTick);
-    }
-
-    /**
-     * Handles loaded chunks that couldnt be random ticked.
-     */
-    public static void tickCatchUp(ServerLevel level)
-    {
-        final WorldTracker tracker = WorldTracker.get(level);
-        if (!tracker.isWeatherEnabled() || !tracker.getClimateModel().supportsRain())
-        {
-            return;
-        }
-
-        final int maxStaleChunks = TFCConfig.SERVER.snowMaxCatchUpChunksPerTick.get();
-        final List<LevelChunk> staleChunks = new ArrayList<>();
-        for (ChunkHolder holder : ((ChunkMapAccessor) level.getChunkSource().chunkMap).invoke$getChunks())
-        {
-            final LevelChunk chunk = holder.getTickingChunk();
-            if (chunk != null && Calendars.SERVER.getTicks() - ChunkData.get(chunk).getWeatherSimulatedUntil() > 4_000)
-            {
-                staleChunks.add(chunk);
-                if (staleChunks.size() >= maxStaleChunks) break;
-            }
-        }
-        staleChunks.forEach(chunk -> onTickChunk(level, chunk));
     }
 
     private static BlockPos getSequentialSurfacePos(ServerLevel level, ChunkPos chunkPos, ChunkAccess access, ChunkData data, boolean updateChunk)

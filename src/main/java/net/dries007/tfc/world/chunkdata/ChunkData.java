@@ -97,7 +97,7 @@ public sealed class ChunkData
     private ForestType forestType;
     private final byte[] shuffledBlockPositions = getShuffledByteArray();
 
-    private long weatherSimulatedUntil;
+    private long lastRandomTick; //The name no longer makes sense, as the weather catchup function no longer uses random ticks but standard ticking. TODO: Change name to reflect new usage
     private byte nextSnowPosition;
 
     public ChunkData(ChunkPos pos)
@@ -112,7 +112,7 @@ public sealed class ChunkData
         this.status = Status.EMPTY;
         this.rockData = new RockData(generator);
         this.forestType = ForestType.GRASSLAND;
-        this.weatherSimulatedUntil = Integer.MIN_VALUE;
+        this.lastRandomTick = Integer.MIN_VALUE;
         this.nextSnowPosition = 0;
     }
 
@@ -229,14 +229,14 @@ public sealed class ChunkData
         return status;
     }
 
-    public long getWeatherSimulatedUntil()
+    public long getLastRandomTick()
     {
-        return weatherSimulatedUntil;
+        return lastRandomTick;
     }
 
-    public void setWeatherSimulatedUntil(ChunkAccess chunk, long tick)
+    public void setLastRandomTick(ChunkAccess chunk, long tick)
     {
-        this.weatherSimulatedUntil = tick;
+        this.lastRandomTick = tick;
         chunk.setUnsaved(true); // Flag the chunk, since we need to re-save the data
     }
 
@@ -350,7 +350,7 @@ public sealed class ChunkData
             nbt.put("baseGroundwater", baseGroundwaterLayer.write());
             nbt.put("temperature", temperatureLayer.write());
             nbt.putByte("forestType", (byte) forestType.ordinal());
-            nbt.putLong("lastRandomTick", weatherSimulatedUntil); // Old key, kept for save compatibility
+            nbt.putLong("lastRandomTick", lastRandomTick);
             nbt.putByte("nextSnowPosition", nextSnowPosition);
         }
         return nbt;
@@ -373,7 +373,7 @@ public sealed class ChunkData
             baseGroundwaterLayer = new LerpFloatLayer(nbt.getCompound("baseGroundwater"));
             temperatureLayer = new LerpFloatLayer(nbt.getCompound("temperature"));
             forestType = ForestType.valueOf(nbt.getByte("forestType"));
-            weatherSimulatedUntil = nbt.getLong("lastRandomTick");
+            lastRandomTick = nbt.getLong("lastRandomTick");
             nextSnowPosition = nbt.getByte("nextSnowPosition");
         }
     }
