@@ -380,9 +380,9 @@ def generate(rm: ResourceManager):
         rm.item_model('golden_bamboo_block', parent='tfc:block/golden_bamboo_y', no_textures=True)
 
     for name in ('pumpkin', 'melon'):
-        # Loot table for the non-rotten block is done via code, as we need to select rotten/not via tile entity
+        # Actual loot for the non-rotten block is done via code with dynamic drops, as we need to select rotten/not via tile entity
         rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
-        rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name))
+        rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name)).with_block_loot({"type": "minecraft:dynamic", 'name': 'tfc:decaying'})
         rm.item_model(name, 'tfc:item/food/%s' % name)
         rm.block_model('rotten_' + name, parent='minecraft:block/%s' % name, textures={'side': 'tfc:block/crop/rotten_%s_side' % name, 'end': 'tfc:block/crop/rotten_%s_top' % name})
         rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_lang(lang('rotten %s', name)).with_block_loot({'name': 'tfc:%s' % name, 'functions': ['tfc:rotten']})
