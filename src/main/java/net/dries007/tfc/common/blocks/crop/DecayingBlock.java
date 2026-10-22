@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
+import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +18,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
@@ -25,7 +28,6 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.component.food.FoodCapability;
 import net.dries007.tfc.common.component.food.IFood;
-import net.dries007.tfc.util.Helpers;
 
 public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
 {
@@ -63,14 +65,14 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params)
     {
-        final BlockEntity entity = level.getBlockEntity(pos);
-        if (entity instanceof DecayingBlockEntity decaying && !(Helpers.isBlock(state, newState.getBlock())))
+        BlockEntity blockentity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockentity instanceof DecayingBlockEntity be)
         {
-            Helpers.spawnItem(level, pos, decaying.getStack());
+            return List.of(be.getStack());
         }
-        super.onRemove(state, level, pos, newState, isMoving);
+        return super.getDrops(state, params);
     }
 
     @Nullable
