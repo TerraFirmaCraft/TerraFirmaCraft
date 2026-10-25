@@ -1369,6 +1369,9 @@ def generate(rm: ResourceManager):
 
     # Underground decoration
     configured_placed_feature(rm, 'underground_loose_rocks', 'tfc:loose_rock', decorate_carving_mask(), decorate_chance(0.05), decorate_count(25), decorate_range(-32, 59), decorate_scanner('down', 12), decorate_random_offset(0, 1))
+    rm.configured_feature('cave_guano', 'minecraft:simple_block', {'to_place': {'type': 'minecraft:simple_state_provider', 'state': utils.block_state('tfc:groundcover/guano[fluid=empty]')}})
+    rm.placed_feature('cave_guano', 'tfc:cave_guano', decorate_underground(), decorate_replaceable(), decorate_would_survive('tfc:groundcover/guano[fluid=empty]'))
+    configured_placed_feature(rm, 'cave_guano_patch', 'minecraft:random_patch', {'tries': 24, 'xz_spread': 4, 'y_spread': 1, 'feature': 'tfc:cave_guano'}, decorate_carving_mask(utils.vertical_anchor(25, 'above_bottom'), 60), decorate_chance(0.0002), decorate_climate(min_temp=4, min_water=150, fuzzy=True), decorate_scanner('down', 12), decorate_random_offset(0, 1))
     rm.configured_feature('geode', 'minecraft:geode', {
         'blocks': {
             'filling_provider': {'type': 'minecraft:simple_state_provider', 'state': {'Name': 'minecraft:air'}},
@@ -2133,6 +2136,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     if 'salt_marsh' == name or 'tower_karst_bay' == name:
         spawners['water_ambient'] = [entity for entity in SALT_MARSH_AMBIENT.values()]
     spawners['monster'] = [entity for entity in VANILLA_MONSTERS.values()]
+    spawners['ambient'] = [spawner('minecraft:bat', weight=10, min_count=8, max_count=8)]
 
     if reef_features:
         large_features.append('tfc:coral_mushroom')

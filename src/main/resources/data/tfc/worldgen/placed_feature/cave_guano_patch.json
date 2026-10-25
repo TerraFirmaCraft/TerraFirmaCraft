@@ -1,0 +1,45 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:cave_guano_patch",
+  "placement": [
+    {
+      "type": "tfc:carving_mask",
+      "step": "air",
+      "min_y": {
+        "above_bottom": 25
+      },
+      "max_y": {
+        "absolute": 60
+      }
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 5000
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 4,
+      "min_groundwater": 150,
+      "fuzzy": true
+    },
+    {
+      "type": "minecraft:environment_scan",
+      "max_steps": 12,
+      "direction_of_search": "down",
+      "target_condition": {
+        "type": "minecraft:solid"
+      },
+      "allowed_search_condition": {
+        "type": "minecraft:matching_blocks",
+        "blocks": [
+          "minecraft:air"
+        ]
+      }
+    },
+    {
+      "xz_spread": 0,
+      "y_spread": 1,
+      "type": "minecraft:random_offset"
+    }
+  ]
+}

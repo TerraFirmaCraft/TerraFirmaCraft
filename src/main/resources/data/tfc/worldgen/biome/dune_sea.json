@@ -62,6 +62,14 @@
         "minCount": 4,
         "maxCount": 4
       }
+    ],
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "weight": 10,
+        "minCount": 8,
+        "maxCount": 8
+      }
     ]
   },
   "creature_spawn_probability": 0.1,
