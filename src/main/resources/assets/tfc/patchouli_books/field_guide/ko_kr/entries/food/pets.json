@@ -47,6 +47,27 @@
     {
       "type": "patchouli:text",
       "text": "$(thing)사냥해$()는 반려동물이 당신을 따라오게 만들고, 당신이 공격하거나 공격받으면 싸움에 참여합니다. 반려동물은 자신이 사냥할 수 있는 동물만 공격합니다. (예를 들면, 고양이는 곰을 공격하지 않습니다.)$(br2)$(thing)따라와$()는 $(thing)사냥해$()와 비슷하지만, 공격하거나 공격받아도 싸움에 참가하지는 않습니다."
+    },
+    {
+      "type": "patchouli:entity",
+      "anchor": "parrots",
+      "entity": "tfc:parrot",
+      "scale": 0.7,
+      "text": "A parrot."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l:the_world/wild_animals#prey)Parrots$() are tamed differently from other pets. Instead of using the $(thing)Pet Screen$(), using $(item)$(k:key.use)$() on your parrot tells it to sit or stand. A parrot that is not sitting follows you around, and will hop onto your shoulder. You can carry two parrots at once.",
+      "title": "Parrots"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/parrot_perch/oak",
+      "recipe2": "tfc:crafting/wood/wall_parrot_perch/oak"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A $(thing)Parrot Perch$() gives tamed parrots a place to rest in your home. It is crafted from two $(thing)Lumber$() of the same wood. Arranged diagonally, they make a $(thing)Wall Parrot Perch$() that hangs on the side of a block.$(br2)Using $(item)$(k:key.use)$() on a perch with an empty hand moves a parrot from your shoulder onto it, one at a time. A standing perch holds two parrots, and a wall perch holds one. Use $(item)$(k:key.use)$() on a perched parrot, or on the perch, to take it back."
     }
   ],
   "read_by_default": true,

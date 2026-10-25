@@ -56,7 +56,8 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.TURKEY.get(),
                 TFCEntities.PEAFOWL.get(),
                 TFCEntities.CAT.get(),
-                TFCEntities.OCELOT.get()
+                TFCEntities.OCELOT.get(),
+                TFCEntities.PARROT.get()
             );
 
         // ===== Common Tags ===== //
@@ -247,7 +248,8 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
             .add(TFCEntities.PHEASANT.get())
             .add(TFCEntities.TURKEY.get())
             .add(TFCEntities.PEAFOWL.get())
-            .add(TFCEntities.ARMADILLO.get());
+            .add(TFCEntities.ARMADILLO.get())
+            .add(TFCEntities.PARROT.get());
 
         tag(ANIMALS)
             .addTag(LAND_PREDATORS)
@@ -288,7 +290,8 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.CHICKEN.get(),
                 TFCEntities.PENGUIN.get(),
                 TFCEntities.QUAIL.get(),
-                TFCEntities.DUCK.get()
+                TFCEntities.DUCK.get(),
+                TFCEntities.PARROT.get()
             );
 
         tag(LARGE_PREY)
@@ -347,6 +350,9 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
 
         tag(IGNORES_SNOW)
             .add(TFCEntities.BACTRIAN_CAMEL.get());
+
+        tag(PERCHES_ON_LEAVES)
+            .add(TFCEntities.PARROT.get());
 
     }
 }

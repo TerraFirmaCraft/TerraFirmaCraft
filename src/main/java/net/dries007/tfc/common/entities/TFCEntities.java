@@ -84,6 +84,7 @@ import net.dries007.tfc.common.entities.prey.TFCArmadillo;
 import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCFrog;
 import net.dries007.tfc.common.entities.prey.TFCPanda;
+import net.dries007.tfc.common.entities.prey.TFCParrot;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.common.items.TFCItems;
@@ -192,6 +193,7 @@ public class TFCEntities
     public static final Id<TFCFox> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).eyeHeight(0.4F).clientTrackingRange(8));
     public static final Id<TFCPanda> PANDA = register("panda", EntityType.Builder.of(TFCPanda::new, MobCategory.CREATURE).sized(1.3F, 1.25F).clientTrackingRange(10));
     public static final Id<TFCOcelot> OCELOT = register("ocelot", EntityType.Builder.of(TFCOcelot::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(10));
+    public static final Id<TFCParrot> PARROT = register("parrot", EntityType.Builder.of(TFCParrot::new, MobCategory.CREATURE).sized(0.5F, 0.9F).eyeHeight(0.54F).passengerAttachments(0.4625F).clientTrackingRange(8));
     public static final Id<Prey> DEER = register("deer", EntityType.Builder.of(TFCEntities::makeDeer, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
     public static final Id<Prey> CARIBOU = register("caribou", EntityType.Builder.of(TFCEntities::makeCaribou, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
     public static final Id<Prey> BONGO = register("bongo", EntityType.Builder.of(TFCEntities::makeBongo, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
@@ -304,6 +306,7 @@ public class TFCEntities
         event.put(DOG.get(), Dog.createAttributes().build());
         event.put(PANDA.get(), TFCPanda.createAttributes().add(Attributes.STEP_HEIGHT, 1.0F).build());
         event.put(OCELOT.get(), TFCOcelot.createAttributes().build());
+        event.put(PARROT.get(), TFCParrot.createAttributes().add(Attributes.FOLLOW_RANGE, 24).build()); // TFC trees are tall
         event.put(ARMADILLO.get(), TFCArmadillo.createAttributes().build());
     }
 

@@ -1,0 +1,138 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "#log"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        5,
+        15
+      ],
+      "to": [
+        11,
+        13,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            5,
+            7,
+            11,
+            8
+          ],
+          "texture": "#log_top"
+        },
+        "up": {
+          "uv": [
+            5,
+            8,
+            11,
+            9
+          ],
+          "texture": "#log_top"
+        },
+        "north": {
+          "uv": [
+            5,
+            4,
+            11,
+            12
+          ],
+          "texture": "#log"
+        },
+        "south": {
+          "uv": [
+            5,
+            4,
+            11,
+            12
+          ],
+          "texture": "#log",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            7,
+            7,
+            8,
+            15
+          ],
+          "texture": "#log_top"
+        },
+        "east": {
+          "uv": [
+            8,
+            7,
+            9,
+            15
+          ],
+          "texture": "#log_top"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        8,
+        2
+      ],
+      "to": [
+        9,
+        10,
+        15
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            7,
+            1,
+            9,
+            14
+          ],
+          "texture": "#log"
+        },
+        "up": {
+          "uv": [
+            3,
+            1,
+            5,
+            14
+          ],
+          "texture": "#log"
+        },
+        "west": {
+          "uv": [
+            10,
+            1,
+            12,
+            14
+          ],
+          "rotation": 90,
+          "texture": "#log"
+        },
+        "east": {
+          "uv": [
+            1,
+            1,
+            3,
+            14
+          ],
+          "rotation": 90,
+          "texture": "#log"
+        },
+        "north": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#log_top"
+        }
+      }
+    }
+  ]
+}
