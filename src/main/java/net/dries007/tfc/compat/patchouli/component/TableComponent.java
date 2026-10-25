@@ -132,7 +132,7 @@ public class TableComponent extends CustomComponent
             final int leftStart = leftBuffer;
             final int regularWidth = columnWidth;
             final int totalWidth = (columns) * regularWidth + firstColumnWidth;
-            final int totalHeight = (Mth.ceil(((float) entries.size()) / columns) - 1) * rowHeight;
+            final int totalHeight = Mth.ceil(((float) entries.size()) / (columns + 1)) * rowHeight;
 
             int xo = leftStart;
             int yo = topBuffer;
