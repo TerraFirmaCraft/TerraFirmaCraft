@@ -98,7 +98,7 @@ public sealed class ChunkData
     private ForestType forestType;
     private final byte[] shuffledBlockPositions = getShuffledByteArray();
 
-    private long lastRandomTick;
+    private long lastRandomTick; //The name no longer makes sense, as the weather catchup function no longer uses random ticks but standard ticking. TODO: Change name to reflect new usage
     private byte nextSnowPosition;
 
     public ChunkData(ChunkPos pos)
@@ -235,9 +235,9 @@ public sealed class ChunkData
         return lastRandomTick;
     }
 
-    public void setLastRandomTick(ChunkAccess chunk, long lastRandomTick)
+    public void setLastRandomTick(ChunkAccess chunk, long tick)
     {
-        this.lastRandomTick = lastRandomTick;
+        this.lastRandomTick = tick;
         chunk.setUnsaved(true); // Flag the chunk, since we need to re-save the data
     }
 
