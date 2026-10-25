@@ -1436,6 +1436,7 @@
   "tfc.config.server.enableSmallVesselInventoryInteraction": "Включить взаимодействие с инвентарем малого сосуда",
   "tfc.config.server.enableSnowSlowEntities": "Включить замедление сущностей в снегу",
   "tfc.config.server.snowMaxAccumulationOnUpdate": "Макс. слоёв снега с обновлением чанка",
+  "tfc.config.server.snowMaxCatchUpChunksPerTick": "Max Snow Catch-Up Chunks per Tick",
   "tfc.config.server.ticksPerSnowAccumulation": "Тиков между появлениями слоя снега",
   "tfc.config.server.snowMeltMultiplier": "Множитель таяния снега",
   "tfc.config.server.enableThatchBedSleeping": "Включить сон на кроватях из соломы",

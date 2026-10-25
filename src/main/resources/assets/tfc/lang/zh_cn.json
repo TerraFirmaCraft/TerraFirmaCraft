@@ -1444,6 +1444,7 @@
   "tfc.config.server.enableSmallVesselInventoryInteraction": "启用小缸物品栏交互",
   "tfc.config.server.enableSnowSlowEntities": "启用雪减速实体",
   "tfc.config.server.snowMaxAccumulationOnUpdate": "更新时最大积雪量",
+  "tfc.config.server.snowMaxCatchUpChunksPerTick": "Max Snow Catch-Up Chunks per Tick",
   "tfc.config.server.ticksPerSnowAccumulation": "每次积雪刻数",
   "tfc.config.server.snowMeltMultiplier": "融雪倍率",
   "tfc.config.server.enableThatchBedSleeping": "启用茅草床睡觉",
