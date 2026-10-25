@@ -1135,7 +1135,7 @@ def generate(rm: ResourceManager):
                 'functions': crop_yield(0, (6, 10))
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom,part=bottom]' % crop)
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom]' % crop)
             })
 
             block = rm.blockstate(('dead_crop', crop), variants={
@@ -1174,10 +1174,6 @@ def generate(rm: ResourceManager):
                     rm.block_model(('crop', '%s_age_%d_bottom' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_bottom' % (crop, i)}, parent='block/crop')
                     rm.block_model(('crop', '%s_age_%d_top' % (crop, i)), textures={'crop': 'tfc:block/crop/%s_%d_top' % (crop, i)}, parent='block/crop')
 
-            stick_loot = {
-                'name': 'minecraft:stick',
-                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom,stick=true]' % crop)
-            }
             block.with_block_loot({
                 'name': name,
                 'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s,part=bottom]' % (crop, crop_data.stages - 1)),
@@ -1185,7 +1181,10 @@ def generate(rm: ResourceManager):
             }, {
                 'name': 'tfc:seeds/%s' % crop,
                 'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom]' % crop)
-            }, stick_loot)
+            }, {
+                'name': 'minecraft:stick',
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom,stick=true]' % crop)
+            })
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=false,stick=false': {'model': 'tfc:block/dead_crop/%s_young' % crop},
@@ -1205,7 +1204,10 @@ def generate(rm: ResourceManager):
             }, {
                 'name': 'tfc:seeds/%s' % crop,
                 'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false,part=bottom]' % crop)
-            }), stick_loot)
+            }), {
+                'name': 'minecraft:stick',
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[part=bottom,stick=true]' % crop)
+            })
 
         rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop)).with_tag('seeds')
         if crop_data.type == 'double' or crop_data.type == 'double_stick':
