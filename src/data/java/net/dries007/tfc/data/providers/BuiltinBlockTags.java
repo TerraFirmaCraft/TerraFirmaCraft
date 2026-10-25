@@ -244,6 +244,7 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
             .addAll2(TFCBlocks.ROCK_DECORATIONS)
             .add(TFCBlocks.ROCK_ANVILS)
             .add(TFCBlocks.MAGMA_BLOCKS)
+            .add(TFCBlocks.HYDROTHERMAL_VENT)
             .add2(TFCBlocks.METALS)
             .add2(TFCBlocks.CORAL)
             .add(TFCBlocks.RAW_ALABASTER)

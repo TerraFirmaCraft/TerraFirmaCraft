@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "tfc:block/hydrothermal_vent_side",
+    "bottom": "tfc:block/hydrothermal_vent_side",
+    "top": "tfc:block/hydrothermal_vent_top"
+  }
+}

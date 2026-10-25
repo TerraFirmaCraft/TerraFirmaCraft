@@ -490,6 +490,8 @@ def generate(rm: ResourceManager):
     igneous_rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive'])
     rm.configured_feature('ocean_ridge_rivulet', 'tfc:rivulet', {'states': [{'replace': 'tfc:rock/%s/%s' % (var, rock), 'with': 'tfc:rock/magma/%s' % rock} for var in ('raw', 'hardened') for rock in igneous_rocks]})
     rm.placed_feature('ocean_ridge_rivulet', 'tfc:ocean_ridge_rivulet', decorate_count(2), decorate_square(), ('tfc:ocean_ridge', {'min_distance': 0, 'max_distance': 32}))
+    configured_placed_feature(rm, 'hydrothermal_vent', 'minecraft:simple_block', {'to_place': simple_state_provider('tfc:hydrothermal_vent')}, decorate_heightmap('ocean_floor_wg'), decorate_replaceable(), decorate_would_survive('tfc:hydrothermal_vent'))
+    configured_placed_feature(rm, 'hydrothermal_vent_patch', 'minecraft:random_patch', {'tries': 8, 'xz_spread': 4, 'y_spread': 2, 'feature': 'tfc:hydrothermal_vent'}, decorate_chance(12), decorate_square(), ('tfc:ocean_ridge', {'min_distance': 0, 'max_distance': 32}))
 
     # Atoll Features
     for coral in ('tree', 'mushroom', 'claw'):
@@ -2082,6 +2084,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     # Oceans
     if name == 'ocean_ridge':
         large_features.append('tfc:ocean_ridge_rivulet')
+        surface_decorations.append('tfc:hydrothermal_vent_patch')
 
     if ocean_features:
         if name != 'tidal_flats' and 'deep_ocean' not in name and name != 'ocean_ridge':

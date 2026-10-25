@@ -769,6 +769,8 @@ def generate(rm: ResourceManager):
     rm.item_model(block.res, parent='tfc:block/reinforced_fire_bricks', no_textures=True)
     rm.block_model('reinforced_fire_bricks', {'side': 'tfc:block/reinforced_fire_bricks', 'end': 'tfc:block/fire_bricks', 'particle': 'tfc:block/reinforced_fire_bricks'}, 'block/cube_column')
 
+    rm.blockstate('hydrothermal_vent').with_block_model({'side': 'tfc:block/hydrothermal_vent_side', 'bottom': 'tfc:block/hydrothermal_vent_side', 'top': 'tfc:block/hydrothermal_vent_top'}, 'minecraft:block/cube_bottom_top').with_item_model().with_lang(lang('hydrothermal vent'))
+
     rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
     rm.blockstate('scraping', 'tfc:block/scraping').with_lang(lang('scraped item'))
     rm.custom_block_model('scraping', 'tfc:scraping', {})

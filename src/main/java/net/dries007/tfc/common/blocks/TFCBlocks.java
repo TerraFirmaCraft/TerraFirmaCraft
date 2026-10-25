@@ -279,6 +279,8 @@ public final class TFCBlocks
         register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(ExtendedProperties.of().pathType(PathType.LAVA).mapColor(MapColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)), b -> new BlockItem(b, rock.createItemProperties()))
     );
 
+    public static final Id<Block> HYDROTHERMAL_VENT = register("hydrothermal_vent", () -> new HydrothermalVentBlock(ExtendedProperties.of().pathType(PathType.DAMAGE_FIRE).mapColor(MapColor.COLOR_GRAY).noLootTable().strength(4f).isValidSpawn((state, level, pos, type) -> type.fireImmune())));
+
     // Metals
 
     public static final Map<Metal, Map<Metal.BlockType, Id<Block>>> METALS = Helpers.mapOf(Metal.class, metal ->
