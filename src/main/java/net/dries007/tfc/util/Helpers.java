@@ -818,6 +818,18 @@ public final class Helpers
     }
 
     /**
+     * Initializes or updates the Food Capability of {@code stack}
+     */
+    public static ItemStack initOrUpdateFoodCapability(ItemStack stack)
+    {
+        if (!stack.isEmpty() && !FoodCapability.CACHE.getAll(stack.getItem()).isEmpty())
+        {
+            FoodCapability.updateFoodDecayOnCreate(stack);
+        }
+        return stack;
+    }
+
+    /**
      * Inserts {@code stack} into the inventory ignoring any difference in creation date.
      *
      * @param stack The stack to insert. Will be modified (and returned).
