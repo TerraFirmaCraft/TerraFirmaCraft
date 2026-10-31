@@ -29,6 +29,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
@@ -103,7 +104,8 @@ public abstract class PickableCropBlock extends DefaultCropBlock
 
     private ItemStack yieldItemStack(Item item, float yield, RandomSource random)
     {
-        return new ItemStack(item, Mth.floor(Mth.lerp(yield, 1f, 5f) + random.nextInt(2)));
+        ItemStack stack = new ItemStack(item, Mth.floor(Mth.lerp(yield, 1f, 5f) + random.nextInt(2)));
+        return Helpers.initOrUpdateFoodCapability(stack);
     }
 
 }
