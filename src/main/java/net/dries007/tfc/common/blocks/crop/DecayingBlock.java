@@ -6,8 +6,10 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
+import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +19,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
@@ -29,6 +33,8 @@ import net.dries007.tfc.util.Helpers;
 
 public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
 {
+    public static final ResourceLocation DECAYING_DYNAMIC_DROP_ID = Helpers.identifier("decaying");
+
     public static boolean isRotten(Level level, BlockPos pos)
     {
         return level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying && decaying.isRotten();
@@ -64,14 +70,16 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder params)
     {
-        final BlockEntity entity = level.getBlockEntity(pos);
-        if (entity instanceof DecayingBlockEntity decaying && !(Helpers.isBlock(state, newState.getBlock())))
+        BlockEntity blockentity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockentity instanceof DecayingBlockEntity be)
         {
-            Helpers.spawnItem(level, pos, decaying.getStack());
+            params.withDynamicDrop(DECAYING_DYNAMIC_DROP_ID, dynamicDrop -> {
+                dynamicDrop.accept(be.getStack());
+            });
         }
-        super.onRemove(state, level, pos, newState, isMoving);
+        return super.getDrops(state, params);
     }
 
     @Nullable
