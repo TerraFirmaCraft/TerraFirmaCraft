@@ -168,7 +168,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
 
         final float sinZenith = Mth.sin(zenith);
         final float x = 100f * sinZenith * Mth.cos(azimuth);
-        final float z = 100f * sinZenith * Mth.sin(azimuth);
+        final float z = -100f * sinZenith * Mth.sin(azimuth);
         final float y = 100f * Mth.cos(zenith);
 
         final Vector3f pos = new Vector3f(x, y, z);
