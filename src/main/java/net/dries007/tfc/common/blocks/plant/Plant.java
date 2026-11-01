@@ -477,7 +477,7 @@ public enum Plant implements RegistryPlant
         SHORT_SHRUB((plant, type) -> PlantBlock.createShortShrub(plant, fire(nonSolid(plant)))),
         SHRUB((plant, type) -> PlantBlock.createShrub(plant, fire(nonSolid(plant)))),
         FLOWERBED((plant, type) -> PlantBlock.createFlowerbed(plant, fire(nonSolid(plant)))),
-        CACTUSBED((plant, type) -> TFCCactusBedBlock.createBarrel(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL).offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()))),
+        CACTUSBED((plant, type) -> TFCCactusBedBlock.createCactusBed(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL).dynamicShape()))),
         CACTUS_FLOWER((plant, type) -> PlantBlock.createCactusFlower(plant, fire(nonSolid(plant)).sound(SoundType.CROP))),
         CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)).pathType(PathType.DAMAGE_OTHER))),
         PASSABLE_CACTUS((plant, type) -> TFCPassableCactusBlock.create(plant, fire(nonSolid(plant).strength(0.25F).sound(SoundType.WOOL)).pathType(PathType.DAMAGE_OTHER))),
