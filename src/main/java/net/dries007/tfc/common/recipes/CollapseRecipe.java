@@ -69,6 +69,8 @@ public class CollapseRecipe extends SimpleBlockRecipe
     @SuppressWarnings("deprecation") // Level.isAreaLoaded
     public static boolean tryTriggerCollapse(Level level, BlockPos pos)
     {
+        if (!TFCConfig.SERVER.enableBlockCollapsing.get())
+            return false;
         final RandomSource random = level.getRandom();
         if (!level.isClientSide() && level.isAreaLoaded(pos, 32))
         {

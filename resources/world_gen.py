@@ -546,7 +546,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'pine_large'), 'tfc:random_tree', random_config('pine', 9, 1, trunk=[3, 5, 1], place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'pine_dead'), 'tfc:random_tree', random_config('pine', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'rosewood'), 'tfc:random_tree', random_config('rosewood', 18, 1, place=tree_placement_config(1, 9)))
-    configured_placed_feature(rm, ('tree', 'rosewood_large'), 'tfc:random_tree', random_config('rosewood', 8, 1, '_large', place=tree_placement_config(1, 9, 'submerged')))
+    configured_placed_feature(rm, ('tree', 'rosewood_large'), 'tfc:random_tree', random_config('rosewood', 8, 1, '_large', place=tree_placement_config(1, 9)))
     configured_placed_feature(rm, ('tree', 'rosewood_dead'), 'tfc:random_tree', random_config('rosewood', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'sequoia'), 'tfc:random_tree', random_config('sequoia', 7, place=tree_placement_config(1, 3), roots=root_config(4, 2, 15)))
     configured_placed_feature(rm, ('tree', 'sequoia_large'), 'tfc:stacked_tree', stacked_config('sequoia', 8, 16, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, '_large', place=tree_placement_config(2, 7), roots=root_config(6, 3, 33)))

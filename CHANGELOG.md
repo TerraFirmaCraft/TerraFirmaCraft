@@ -1,10 +1,6 @@
 ### Changes
-- Fix issue with bears swimming.
-- Prevent double high blocks from breaking bedrock.
-- Fix farmland temperature showing null below freezing.
-- Fix an issue with squid spawning.
-- Fix issues with berry bushes.
-- Fix a rare crash with chunk data.
-- Skip knife damage when scraping makes no progress.
-- Fix client desync for loom progress.
-- Updated the Portuguese localization.
+- Fix issue with stick loot drops from double crops.
+- Fix issue with field guide tables drawing backgrounds off the page.
+- Fix several issues with food capabilities not being activated with loot drops from mobs/crops, some due to a conflict with modern fix.
+- Prevent rosewood generating underwater.
+- Fix collapse config options not working.
