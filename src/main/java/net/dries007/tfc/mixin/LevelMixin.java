@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.dries007.tfc.client.ClimateRenderCache;
 import net.dries007.tfc.client.overworld.ClientSolarCalculatorBridge;
+import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
 
 @Mixin(Level.class)
@@ -48,6 +49,21 @@ public abstract class LevelMixin
         {
             cir.setReturnValue(ClimateRenderCache.INSTANCE.getRainLevel(partialTick));
         }
+    }
+
+    /**
+     * On server, the rain and thunder levels are set if it is raining anywhere in the climate model, so they should not darken the sky everywhere.
+     */
+    @WrapOperation(method = "updateSkyBrightness", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getRainLevel(F)F"))
+    private float ignoreGlobalRainInSkyBrightnessOnServer(Level level, float partialTick, Operation<Float> original)
+    {
+        return !level.isClientSide() && Climate.get(level).supportsRain() ? 0f : original.call(level, partialTick);
+    }
+
+    @WrapOperation(method = "updateSkyBrightness", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getThunderLevel(F)F"))
+    private float ignoreGlobalThunderInSkyBrightnessOnServer(Level level, float partialTick, Operation<Float> original)
+    {
+        return !level.isClientSide() && Climate.get(level).supportsRain() ? 0f : original.call(level, partialTick);
     }
 
     @Inject(method = "getDayTime", at = @At("HEAD"), cancellable = true)

@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 
@@ -162,6 +163,38 @@ public final class SolarCalculator
     public static float getLatitude(int z, float hemisphereScale)
     {
         return Helpers.triangle(-Mth.HALF_PI, 0, 1 / (4 * hemisphereScale), z - 0.5f * hemisphereScale);
+    }
+
+    /**
+     * A position-aware equivalent of {@link Level#getSkyDarken()}
+     * Note that this does NOT include weather. Burning mobs already check if it's raining locally.
+     * The calc/parameters are from {@link Level#updateSkyBrightness()}
+     *
+     * @return A sky darken value, in {@code [0, 11]}, where values {@code < 4} are considered day.
+     */
+    public static int getSkyDarken(Level level, BlockPos pos)
+    {
+        if (level.dimension() != Level.OVERWORLD)
+            return level.getSkyDarken();
+        final double brightness = 0.5 + 2.0 * Mth.clamp(Mth.cos(getTimeOfDay(level, pos) * Mth.TWO_PI), -0.25, 0.25);
+        return (int) ((1.0 - brightness) * 11.0);
+    }
+
+    /**
+     * A position-aware equivalent of {@link Level#getSunAngle(float)}
+     */
+    public static float getSunAngle(Level level, BlockPos pos)
+    {
+        if (level.dimension() != Level.OVERWORLD)
+            return level.getSunAngle(1f);
+        return getTimeOfDay(level, pos) * Mth.TWO_PI;
+    }
+
+    private static float getTimeOfDay(Level level, BlockPos pos)
+    {
+        final ICalendar calendar = Calendars.get(level);
+        final int dayTime = getSunBasedDayTime(pos.getZ(), Climate.get(level).hemisphereScale(), calendar.getCalendarFractionOfYear(), calendar.getCalendarFractionOfDay());
+        return level.dimensionType().timeOfDay(dayTime);
     }
 
     /**
