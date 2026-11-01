@@ -97,7 +97,7 @@ public enum Plant implements RegistryPlant
     CORDGRASS(BlockType.TALL_WATER, 0.6F, false, 0F, 0.27F, 0.39F, 0.5F, 0.666F, 0.92F),
     CORNFLOWER(BlockType.STANDARD, 1F, false, -0.1F, 0.28F, 0.46F, 0.57F, 0.71F, 0.93F),
     DANDELION(BlockType.STANDARD, 1F, false, -0.15F, 0.28F, 0.46F, 0.57F, 0.71F, 0.93F),
-    DEAD_BUSH(BlockType.DRY, 0.7F),
+    DEAD_BUSH(BlockType.DEAD_BUSH, 0.7F),
     DESERT_FLAME(BlockType.STANDARD, 1F, true, -0.5F, 0.33F, 0.420F, 0.5F, 0.833F, 0.92F),
     DRY_GRASS(BlockType.DRY, 0.9F),
     DUCKWEED(BlockType.FLOATING_FRESH, 0.7F),
@@ -106,7 +106,7 @@ public enum Plant implements RegistryPlant
     ELEGANT_SUNBURST_LICHEN(BlockType.CREEPING_STONE, 1.0F),
     FAN_PALM(BlockType.TALL_GRASS, 0.6f),
     FIELD_HORSETAIL(BlockType.STANDARD, 0.9F),
-    FOXGLOVE(BlockType.TALL_GRASS, 0.6F, false, -0.087F, 0.333F, 0.43F, 0.5F, 0.072F, 0.091F),
+    FOXGLOVE(BlockType.TALL_GRASS, 0.6F, false, -0.087F, 0.333F, 0.43F, 0.5F, 0.72F, 0.91F),
     GRAPE_HYACINTH(BlockType.STANDARD, 1F, false, -0.333F, 0.25F, 0.38F, 0.63F, 0.72F, 0.93F),
     GREEN_ALGAE(BlockType.FLOATING_FRESH, 0.7F),
     GUTWEED(BlockType.WATER, 0.8F),
@@ -141,7 +141,7 @@ public enum Plant implements RegistryPlant
     PENWORTEL(BlockType.SHRUB, 0.4f, true, 0.3f, 0.25f, 0.35f, 0.45f, 0.6f, 0.8f),
     PHILODENDRON(BlockType.CREEPING, 0.7F),
     PHRAGMITE(BlockType.TALL_WATER_FRESH, 0.6F, false, 0.06F, 0.23F, 0.34F, 0.43F, 0.66F, 0.88F),
-    PICKERELWEED(BlockType.TALL_WATER_FRESH, 0.6F, false, -0.9F, 0.32F, 0.43F, 0.52F, 0.77F, 0.91F),
+    PICKERELWEED(BlockType.TALL_WATER_FRESH, 0.6F, false, -0.09F, 0.32F, 0.43F, 0.52F, 0.77F, 0.91F),
     PISTIA(BlockType.FLOATING_FRESH, 0.8F),
     POPPY(BlockType.STANDARD, 1F, false, -0.25F, 0.23F, 0.33F, 0.58F, 0.79F, 0.92F),
     PRICKLY_PEAR(BlockType.PASSABLE_CACTUS, 0.3F, true, -0.13F, 0.16F, 0.32F, 0.5F, 0.75F, 0.92F),
@@ -417,7 +417,7 @@ public enum Plant implements RegistryPlant
 
     public boolean hasFlowerPot()
     {
-        return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.CACTUS_FLOWER || type == BlockType.BAMBOO || SPECIAL_POTTED_PLANTS.contains(this);
+        return type == BlockType.STANDARD || type == BlockType.FLOWERBED || type == BlockType.DRY || type == BlockType.DEAD_BUSH || type == BlockType.CACTUS_FLOWER || type == BlockType.BAMBOO || SPECIAL_POTTED_PLANTS.contains(this);
     }
 
     @Nullable
@@ -482,6 +482,7 @@ public enum Plant implements RegistryPlant
         CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)).pathType(PathType.DAMAGE_OTHER))),
         PASSABLE_CACTUS((plant, type) -> TFCPassableCactusBlock.create(plant, fire(nonSolid(plant).strength(0.25F).sound(SoundType.WOOL)).pathType(PathType.DAMAGE_OTHER))),
         DRY((plant, type) -> PlantBlock.createDry(plant, fire(nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ)))),
+        DEAD_BUSH((plant, type) -> PlantBlock.createDeadBush(plant, fire(nonSolid(plant).offsetType(BlockBehaviour.OffsetType.XZ)))),
         CREEPING((plant, type) -> CreepingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))), // Post process ensures shape is updated after world gen
         CREEPING_STONE((plant, type) -> CreepingPlantBlock.createStone(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),

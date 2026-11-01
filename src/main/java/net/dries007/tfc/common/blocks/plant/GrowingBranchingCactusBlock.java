@@ -53,7 +53,7 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand)
     {
-        if (rand.nextFloat() > TFCConfig.SERVER.plantGrowthChance.get())
+        if (rand.nextFloat() < TFCConfig.SERVER.plantGrowthChance.get())
         {
             growthTick(level, pos, state);
         }
@@ -83,6 +83,11 @@ public class GrowingBranchingCactusBlock extends BranchingCactusBlock
                 tryFruit(level, pos.above());
                 return;
             }
+        }
+
+        if (!level.getBlockState(pos.above()).canBeReplaced())
+        {
+            return;
         }
 
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos().set(pos);

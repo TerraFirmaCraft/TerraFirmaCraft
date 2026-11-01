@@ -97,7 +97,12 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements HoeOverlayBl
         }
         else
         {
-            kill(level, pos);
+            final BlockPos.MutableBlockPos cursor = pos.mutable();
+            while (Helpers.isBlock(level.getBlockState(cursor), this))
+            {
+                cursor.move(Direction.UP);
+            }
+            kill(level, cursor);
         }
     }
 

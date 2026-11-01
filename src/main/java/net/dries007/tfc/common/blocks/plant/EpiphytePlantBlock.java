@@ -28,7 +28,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
@@ -75,8 +74,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        // Must be attached to a log
-        if (direction.getOpposite() == state.getValue(FACING) && !Helpers.isBlock(facingState, BlockTags.LOGS))
+        if (direction.getOpposite() == state.getValue(FACING) && !canSurvive(state, level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -87,7 +85,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockState attachedState = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        return Helpers.isBlock(attachedState, TFCTags.Blocks.EPIPHYTE_PLANTABLE_ON);
+        return Helpers.isBlock(attachedState, BlockTags.LOGS);
     }
 
     @Override

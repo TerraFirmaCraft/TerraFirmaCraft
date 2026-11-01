@@ -24,7 +24,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -181,7 +180,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         {
             TFCLeavesBlock.doParticles(server, currentPos.getX() + level.getRandom().nextFloat(), currentPos.getY() + level.getRandom().nextFloat(), currentPos.getZ() + level.getRandom().nextFloat(), 1);
         }
-        return Blocks.AIR.defaultBlockState();
+        return state.getFluidState().createLegacyBlock();
     }
 
     @Override
