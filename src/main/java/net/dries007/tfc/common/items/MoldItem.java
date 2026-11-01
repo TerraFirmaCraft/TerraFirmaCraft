@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
@@ -218,10 +217,11 @@ public class MoldItem extends Item
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag tooltipFlag)
     {
-        final FluidStack fluid = FluidHelpers.getContainedFluidInTank(stack);
-        if (!fluid.isEmpty())
+        final IMold mold = IMold.get(stack);
+        if (mold != null && !mold.getFluidInTank(0).isEmpty())
         {
-            tooltip.add(Tooltips.fluidUnitsAndCapacityOf(fluid, containerInfo.fluidCapacity()));
+            tooltip.add(Tooltips.fluidUnitsAndCapacityOf(mold.getFluidInTank(0), containerInfo.fluidCapacity())
+                .append(Tooltips.moltenOrSolid(mold.isMolten())));
         }
     }
 }
