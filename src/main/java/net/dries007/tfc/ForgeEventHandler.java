@@ -868,6 +868,11 @@ public final class ForgeEventHandler
         final LevelAccessor level = event.getLevel();
         final MobSpawnType spawn = event.getSpawnType();
 
+        if (!(event.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension))
+        {
+            return;
+        }
+
         // we only care about "natural" spawns
         if (spawn == MobSpawnType.NATURAL || spawn == MobSpawnType.CHUNK_GENERATION || spawn == MobSpawnType.REINFORCEMENT)
         {
