@@ -164,7 +164,7 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
         final float zenith = star.zenith();
         final float azimuth = star.azimuth();
         final int color = 0xff000000 | star.color();
-        final float size = Mth.clampedMap(star.apparentMagnitude(), -1, 6, 0.4f, 0.1f);
+        final float size = Mth.clampedMap(star.apparentMagnitude(), -1, 6, 0.4f, 0.15f);
 
         final float sinZenith = Mth.sin(zenith);
         final float x = 100f * sinZenith * Mth.cos(azimuth);
