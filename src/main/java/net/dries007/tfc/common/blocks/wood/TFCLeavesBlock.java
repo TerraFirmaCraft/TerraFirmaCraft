@@ -146,7 +146,7 @@ public class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockEx
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return Shapes.empty();
+        return ILeavesBlock.getCollisionShape(context);
     }
 
     @Override

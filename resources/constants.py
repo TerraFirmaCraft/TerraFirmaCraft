@@ -1704,6 +1704,7 @@ DEFAULT_LANG = {
     'entity.tfc.wildebeest': 'Wildebeest',
     'entity.tfc.bison': 'Bison',
     'entity.tfc.ocelot': 'Ocelot',
+    'entity.tfc.parrot': 'Parrot',
     'entity.tfc.bongo': 'Bongo',
     'entity.tfc.caribou': 'Caribou',
     'entity.tfc.deer': 'Deer',

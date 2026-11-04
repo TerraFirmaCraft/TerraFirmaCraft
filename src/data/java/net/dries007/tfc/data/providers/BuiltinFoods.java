@@ -178,6 +178,7 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(Food.GRAN_FELINE, of(3).protein(0.5f));
         add(Food.CAMELIDAE, of(3).protein(0.5f));
         add(Food.ARMADILLO, of(3).protein(0.5F));
+        add(Food.PARROT, of(3).protein(0.5f));
         add(Food.COOKED_BEEF, ofFood(2, 0, 1.5f).protein(2.5f));
         add(Food.COOKED_PORK, ofFood(2, 0, 1.5f).protein(2.5f));
         add(Food.COOKED_CHICKEN, ofFood(2, 0, 2.25f).protein(2.5f));
@@ -222,6 +223,7 @@ public class BuiltinFoods extends DataManagerProvider<FoodDefinition> implements
         add(Food.COOKED_GRAN_FELINE, ofFood(2, 0, 2.25f).protein(2.5f));
         add(Food.COOKED_CAMELIDAE, ofFood(2, 0, 2.25f).protein(2.5f));
         add(Food.COOKED_ARMADILLO, ofFood(1, 0, 2.25f).protein(1.5f));
+        add(Food.COOKED_PARROT, ofFood(1, 0, 2.25f).protein(2f));
 
         add(TFCTags.Items.SEALED_PRESERVES, ofFood(0, 0, 0.1f), false);
         add(TFCItems.FRUIT_PRESERVES.get(Food.PEANUT), ofFood(0, 0, 0.1f), false);

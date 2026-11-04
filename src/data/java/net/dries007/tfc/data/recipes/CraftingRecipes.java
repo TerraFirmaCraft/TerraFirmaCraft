@@ -611,6 +611,14 @@ public interface CraftingRecipes extends Recipes
                 .shaped(blocks.get(Wood.BlockType.TOOL_RACK));
             recipe()
                 .input('L', lumber)
+                .pattern("L", "L")
+                .shaped(blocks.get(Wood.BlockType.PARROT_PERCH));
+            recipe()
+                .input('L', lumber)
+                .pattern("L ", " L")
+                .shaped(blocks.get(Wood.BlockType.WALL_PARROT_PERCH));
+            recipe()
+                .input('L', lumber)
                 .pattern("LLL", "LLL")
                 .shaped(blocks.get(Wood.BlockType.TRAPDOOR), 2);
             recipe()

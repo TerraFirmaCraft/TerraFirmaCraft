@@ -238,6 +238,7 @@ import net.dries007.tfc.client.render.entity.TFCChestedHorseRenderer;
 import net.dries007.tfc.client.render.entity.TFCCodRenderer;
 import net.dries007.tfc.client.render.entity.TFCFishingHookRenderer;
 import net.dries007.tfc.client.render.entity.TFCHorseRenderer;
+import net.dries007.tfc.client.render.entity.TFCParrotRenderer;
 import net.dries007.tfc.client.render.entity.TFCPufferfishRenderer;
 import net.dries007.tfc.client.render.entity.TFCSalmonRenderer;
 import net.dries007.tfc.client.render.entity.TFCSquidRenderer;
@@ -665,6 +666,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
         event.registerEntityRenderer(TFCEntities.PANDA.get(), PandaRenderer::new);
         event.registerEntityRenderer(TFCEntities.OCELOT.get(), OcelotRenderer::new);
+        event.registerEntityRenderer(TFCEntities.PARROT.get(), TFCParrotRenderer::new);
         event.registerEntityRenderer(TFCEntities.BONGO.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BongoModel::new, "bongo").shadow(0.6f).build());
         event.registerEntityRenderer(TFCEntities.CARIBOU.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, CaribouModel::new, "caribou").shadow(0.6f).build());
         event.registerEntityRenderer(TFCEntities.DEER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, DeerModel::new, "deer").shadow(0.6f).hasBabyTexture().build());

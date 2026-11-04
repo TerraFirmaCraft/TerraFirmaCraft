@@ -79,8 +79,8 @@ public record Fauna(
         public Builder maxRainVariance(float max) { return rainVariance(-1f, max, false); }
         public Builder rainVariance(float min, float max, boolean isAbsolute)
         {
-            minRainfall = min;
-            maxRainfall = max;
+            minRainVariance = min;
+            maxRainVariance = max;
             rainVarianceAbsolute = isAbsolute;
 
             return this;

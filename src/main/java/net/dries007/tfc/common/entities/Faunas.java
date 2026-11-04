@@ -55,6 +55,7 @@ import net.dries007.tfc.common.entities.prey.TFCArmadillo;
 import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCFrog;
 import net.dries007.tfc.common.entities.prey.TFCPanda;
+import net.dries007.tfc.common.entities.prey.TFCParrot;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.entities.prey.WingedPrey;
 import net.dries007.tfc.util.Helpers;
@@ -109,6 +110,7 @@ public class Faunas
     public static final Id<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
     public static final Id<TFCPanda> PANDA = registerAnimal(TFCEntities.PANDA);
     public static final Id<TFCOcelot> OCELOT = registerAnimal(TFCEntities.OCELOT);
+    public static final Id<TFCParrot> PARROT = register(TFCEntities.PARROT, SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.WORLD_SURFACE);
     public static final Id<RammingPrey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final Id<RammingPrey> WILDEBEEST = registerAnimal(TFCEntities.WILDEBEEST);
     public static final Id<RammingPrey> BISON = registerAnimal(TFCEntities.BISON);
@@ -171,6 +173,7 @@ public class Faunas
         registerSpawnPlacement(event, FOX);
         registerSpawnPlacement(event, PANDA);
         registerSpawnPlacement(event, OCELOT);
+        registerSpawnPlacement(event, PARROT);
         registerSpawnPlacement(event, BOAR);
         registerSpawnPlacement(event, WILDEBEEST);
         registerSpawnPlacement(event, BISON);

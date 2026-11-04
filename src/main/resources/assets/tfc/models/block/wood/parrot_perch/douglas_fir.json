@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/parrot_perch",
+  "textures": {
+    "log": "tfc:block/wood/log/douglas_fir",
+    "log_top": "tfc:block/wood/log_top/douglas_fir",
+    "particle": "tfc:block/wood/log/douglas_fir"
+  }
+}
