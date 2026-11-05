@@ -161,8 +161,11 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     {
         final float zenith = star.zenith();
         final float azimuth = star.azimuth();
-        final int color = 0xff000000 | star.color();
-        final float size = Mth.clampedMap(star.apparentMagnitude(), -1, 6, 0.4f, 0.15f);
+        final float magnitude = star.apparentMagnitude();
+        // drop alpha exponentially starting at mag 2.5, min 15%
+        final float alpha = Mth.clamp((float) Math.pow(10, -0.25 * (magnitude - 2.5)), 0.15f, 1f);
+        final int color = (int) (alpha * 255) << 24 | star.color();
+        final float size = Mth.clampedMap(magnitude, -1, 4, 0.4f, 0.2f);
 
         final float sinZenith = Mth.sin(zenith);
         final float x = 100f * sinZenith * Mth.cos(azimuth);
