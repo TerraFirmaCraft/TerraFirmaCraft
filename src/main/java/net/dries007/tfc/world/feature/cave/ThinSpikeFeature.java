@@ -40,13 +40,13 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
 
         for (int attempt = 0; attempt < config.tries(); attempt++)
         {
-            mutablePos.setWithOffset(pos, rand.nextInt(config.radius()) - rand.nextInt(config.radius()), rand.nextInt(config.radius() - rand.nextInt(config.radius())), rand.nextInt(config.radius()) - rand.nextInt(config.radius()));
+            mutablePos.setWithOffset(pos, rand.nextInt(config.radius()) - rand.nextInt(config.radius()), rand.nextInt(config.radius()) - rand.nextInt(config.radius()), rand.nextInt(config.radius()) - rand.nextInt(config.radius()));
 
             // Move upwards to find a suitable spot
             for (int i = 0; i < 7; i++)
             {
                 mutablePos.move(0, 1, 0);
-                if (isEmptyBlock(config, level.getBlockState(mutablePos)))
+                if (!isEmptyBlock(config, level.getBlockState(mutablePos)))
                 {
                     mutablePos.move(0, -1, 0);
                     break;

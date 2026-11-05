@@ -55,7 +55,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         {
             // Switch directions and try again
             direction = direction.getOpposite();
-            wallState = level.getBlockState(pos.relative(direction));
+            wallState = level.getBlockState(pos.relative(direction.getOpposite()));
             wallRock = rockSettings.getRock(wallState.getBlock());
             if (wallRock != null && wallRock.isRawOrHardened(wallState))
             {
@@ -77,12 +77,11 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 
     protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, float sizeWeight)
     {
-        // Replace the block above from raw -> hardened, if necessary
-        final BlockPos above = pos.above();
-        final BlockState stateAbove = level.getBlockState(pos.above());
-        if (Helpers.isBlock(stateAbove, BlockTags.BASE_STONE_OVERWORLD))
+        // Replace the wall block from raw -> hardened, if necessary
+        final BlockPos wall = pos.relative(direction.getOpposite());
+        if (Helpers.isBlock(level.getBlockState(wall), BlockTags.BASE_STONE_OVERWORLD))
         {
-            level.setBlock(above, raw, 2);
+            level.setBlock(wall, raw, 2);
         }
 
         // Build a spike starting downwards from the target block
