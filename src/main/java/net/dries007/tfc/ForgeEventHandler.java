@@ -488,6 +488,11 @@ public final class ForgeEventHandler
             event.setCanConvert(false); // Waterlogged aqueducts do not count as the source when creating source blocks
         }
 
+        if (!Helpers.isFluid(state.getFluidState(), TFCTags.Fluids.USABLE_IN_SLUICE))
+        {
+            return; // Sluices only output fresh water, so this cannot be a sluice output
+        }
+
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             final BlockPos relPos = pos.relative(direction).above();

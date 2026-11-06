@@ -11,6 +11,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -128,6 +129,23 @@ public class TFCSquid extends Squid implements AquaticMob
         {
             instance.setBaseValue(size / 128f * 5f);
         }
+        applyScale();
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag)
+    {
+        super.readAdditionalSaveData(tag);
+        applyScale();
+    }
+
+    /**
+     * Vanilla only applies scale changes on tick, after {@code firstTick} is cleared, which triggers an expensive {@link #fudgePositionAfterSizeChange} search.
+     */
+    private void applyScale()
+    {
+        appliedScale = getScale();
+        refreshDimensions();
     }
 
     public static class RandomMovementGoal extends Goal
