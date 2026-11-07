@@ -1,34 +1,34 @@
 ### Changes
 
-- Added hydrothermal vents to deep ocean ridges.
-- Added more guano to caves.
-- Added bats. (These are just vanilla bats, no special features right now)
-- Improved the snow "catch up" system to allow all rendered chunks to decide whether to be snowed or not.
-- Attempted to improve addon compat for the config text parser.
-- Some fixes to how the day/night cycle interacts with vanilla systems (#3771):
-  - Daylight sensors now should respond better away from the equator.
-  - Mobs should now burn when it is actually daytime.
-  - Mobs should now spawn when it is actually night (and the config option is enabled).
-  - The global sky darkening from vanilla's global rain state is now disabled.
-  - In general, rain/thunderstorms should also cause the expected behaviors (eg. prevent mobs from burning, allow more spawns) but in order to keep the changes less invasive it won't work EXACTLY like vanilla's system does.
+- Added Pond Turtles
+- New models/animations/textures:
+  - Jellyfish
+  - Orca
+  - Manatee
+  - Milfoil
+  - Banana Plants
+- Wind particles die down at the middle of the night.
+- Changed the look of stars in the night sky slightly. Constellations may be easier to identify now.
+- Made some optimizations to oceans that should slightly improve worldgen speed.
+- Increased depth requirement for Octopoteuthis spawns.
 
 ### Fixes
 
-- Made many internal fixes to entity AI.
-- Made powderkeg explosions more closely follow vanilla systems.
-- Fixed pluckable mobs not saving the last plucked tick.
-- Fixed familiarity not decaying properly.
-- Fixed glow squids not glowing.
-- Fixed fluid transfer issue with mules.
-- Fix possible crash with holding minecarts.
-- Fix pests (rats) not playing sounds on the client.
-- Fix fox breeding not working properly.
-- Fix rabbit breeding not working properly.
-- Fix some animals not playing ambient sounds.
-- Removed unused config options.
-- Fixed collapse-related configs not working.
-- Removed several unneeded mixins.
-- Fixed issue with field guide tables running off the page at certain row counts (#3766)
-- Fixed rare worldgen issue with roses being placed outside loaded chunks.
-- Fixed stick loot from double crops not working properly.
-- Fixed bad lang key for raw alabaster barrel recipes.
+- Fixed TFC cancelling spawns in other dimensions than the overworld.
+- Fixed the night sky being mirrored.
+- Fix molds not showing solid/liquid tooltips.
+- Plant behavior fixes:
+  - Fix a number of plants interacting with fluids incorrectly.
+  - Fix a number of plants spreading incorrectly or not at all.
+  - Allow dead bushes to spawn on more places.
+  - Fixed several bugs with banana plants.
+- Worldgen fixes:
+  - Fix fissures breaking through rivers.
+  - Fix some internal calculation bugs that probably don't show up in game.
+  - Fix cave spikes and calcites having wrong spawning logic. We should see them mor enow.
+  - Fix an issue causing vines to spawn less.
+  - Fix disc veins being cone-shaped.
+- Fixed some issues with the Octopoteuthis causing lag.
+- Fixed orca animations never playing.
+- Fixed shore creatures missing from several biomes.
+- Fixed cactus beds rendered inside adjacent blocks.
