@@ -148,7 +148,7 @@ public class FissureFeature extends Feature<FissureConfig>
         {
             mutablePos.setWithOffset(pos, rand.nextInt(config.radius()) - rand.nextInt(config.radius()), 0, rand.nextInt(config.radius()) - rand.nextInt(config.radius()));
             mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
-            FissureFeature.placeFissure(level, pos, mutablePos.immutable(), mutablePos, rand, config.fluidState(), insideState, config.minPieces(), config.maxPieces(), config.maxPieceLength(), minDepth, config.radius(), config.decoration().orElse(null));
+            FissureFeature.placeFissure(level, mutablePos.immutable(), pos, mutablePos, rand, config.fluidState(), insideState, config.minPieces(), config.maxPieces(), config.maxPieceLength(), minDepth, config.radius(), config.decoration().orElse(null));
         }
         return true;
     }

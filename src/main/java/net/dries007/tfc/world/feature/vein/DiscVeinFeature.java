@@ -29,7 +29,7 @@ public class DiscVeinFeature extends VeinFeature<DiscVeinConfig, DiscVeinFeature
         if (Math.abs(y) <= config.height() && sample > 1f)
         {
             return config.config().density()
-                * Mth.clampedMap((float) Math.abs(y - config.height()), 0.7f * config.height(), config.height(), 1.0f, 0.4f)
+                * Mth.clampedMap((float) Math.abs(y), 0.7f * config.height(), config.height(), 1.0f, 0.4f)
                 * Mth.clampedMap(sample, 2f, 1f, 1f, 0.6f);
         }
         return 0;

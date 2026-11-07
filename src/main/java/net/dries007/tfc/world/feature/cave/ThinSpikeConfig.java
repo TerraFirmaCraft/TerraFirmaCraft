@@ -27,7 +27,7 @@ public record ThinSpikeConfig(BlockState state, int radius, int tries, int minHe
     ).apply(instance, ThinSpikeConfig::new)).comapFlatMap(c -> {
         if (c.maxHeight < c.minHeight)
         {
-            return DataResult.error(() -> "maxHeight (" + c.minHeight + ") must be greater or equal to minHeight (" + c.maxHeight + ')');
+            return DataResult.error(() -> "maxHeight (" + c.maxHeight + ") must be greater or equal to minHeight (" + c.minHeight + ')');
         }
         return DataResult.success(c);
     }, Function.identity());

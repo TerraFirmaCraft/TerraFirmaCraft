@@ -100,7 +100,10 @@ public class TFCFox extends Fox
     public TFCFox getBreedOffspring(ServerLevel level, AgeableMob other)
     {
         TFCFox fox = TFCEntities.FOX.get().create(level);
-        setVariant(this.random.nextBoolean() ? this.getVariant() : ((TFCFox) other).getVariant());
+        if (fox != null && other instanceof TFCFox otherFox)
+        {
+            fox.setVariant(this.random.nextBoolean() ? this.getVariant() : otherFox.getVariant());
+        }
         return fox;
     }
 

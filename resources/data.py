@@ -451,7 +451,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'sabertooth'), fauna(climate=climate_config(max_temp=0, min_rain=250)))
     rm.data(('tfc', 'fauna', 'tiger'), fauna(climate=climate_config(min_temp=13, min_rain=100, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
-    rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
+    rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=40))
     rm.data(('tfc', 'fauna', 'pig'), fauna(climate=climate_config(min_temp=-10, max_temp=35, min_rain=200, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'cow'), fauna(climate=climate_config(min_temp=-10, max_temp=35, min_rain=250)))
     rm.data(('tfc', 'fauna', 'goat'), fauna(climate=climate_config(min_temp=-12, max_temp=25, max_rain=300)))

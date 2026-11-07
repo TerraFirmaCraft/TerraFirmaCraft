@@ -66,7 +66,7 @@ public class CaveColumnFeature extends Feature<NoneFeatureConfiguration>
             {
                 for (int z = -radius; z <= radius; z++)
                 {
-                    if (x * x * z * z < radius * radius)
+                    if (x * x + z * z < radius * radius)
                     {
                         mutablePos.set(xo + x, y, zo + z);
                         setBlock(level, mutablePos, state);

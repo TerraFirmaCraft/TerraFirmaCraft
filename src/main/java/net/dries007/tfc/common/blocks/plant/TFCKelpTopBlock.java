@@ -130,7 +130,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     protected boolean canGrowInto(BlockState state)
     {
         Fluid fluid = state.getFluidState().getType();
-        return getFluidProperty().canContain(fluid) && fluid != Fluids.EMPTY;
+        return FluidHelpers.isEmptyFluid(state) && getFluidProperty().canContain(fluid) && fluid != Fluids.EMPTY;
     }
 
     @Override

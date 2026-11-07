@@ -190,11 +190,11 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
                         }
                         else
                         {
-                            final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+                            final IFluidHandlerItem destFluidItemHandler = Helpers.getCapability(stack.copy(), Capabilities.FLUID_ITEM);
                             final IFluidHandlerItem sourceFluidItemHandler = Helpers.getCapability(getChestItem(), Capabilities.FLUID_ITEM);
                             if (destFluidItemHandler != null && sourceFluidItemHandler != null)
                             {
-                                if (FluidHelpers.transferBetweenItemAndOther(getChestItem(), destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level(), blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand)))
+                                if (FluidHelpers.transferBetweenItemAndOther(stack, destFluidItemHandler, sourceFluidItemHandler, destFluidItemHandler, FluidHelpers.Transfer.FILL, level(), blockPosition(), new FluidHelpers.AfterTransferWithPlayer(player, hand)))
                                 {
                                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                                 }

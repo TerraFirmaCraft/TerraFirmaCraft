@@ -51,16 +51,18 @@ public class KrummholzFeature extends Feature<KrummholzConfig>
         cursor.move(0, 1, 0);
         if (!block.canSurvive(level, pos) || !level.getFluidState(pos).isEmpty())
             return false;
-        int maxHeight = 1;
+        int maxHeight = 0;
         for (int i = 0; i < height; i++)
         {
             cursor.setWithOffset(pos, 0, i, 0);
-            maxHeight = i + 1;
             if (!EnvironmentHelpers.isWorldgenReplaceable(level, cursor))
             {
                 break;
             }
+            maxHeight = i + 1;
         }
+        if (maxHeight == 0)
+            return false;
         for (int i = 0; i < maxHeight; i++)
         {
             cursor.setWithOffset(pos, 0, i, 0);

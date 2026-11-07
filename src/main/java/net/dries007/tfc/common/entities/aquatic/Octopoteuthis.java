@@ -97,10 +97,10 @@ public class Octopoteuthis extends TFCSquid implements IGlow
     }
 
     @Override
-    public void tickGlow()
+    public void tick()
     {
         super.tick();
-        IGlow.super.tickGlow();
+        tickGlow();
     }
 
     @Override

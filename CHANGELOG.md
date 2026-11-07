@@ -1,6 +1,8 @@
 ### Changes
-- Fix issue with stick loot drops from double crops.
-- Fix issue with field guide tables drawing backgrounds off the page.
-- Fix several issues with food capabilities not being activated with loot drops from mobs/crops, some due to a conflict with modern fix.
-- Prevent rosewood generating underwater.
-- Fix collapse config options not working.
+- Fix some incompatibilities with Create and other mods that take drops from our block entities.
+- Fixed an issue with patchouli tables.
+- Increased minimum depth of Octopoteuthis spawns.
+- Fixed a bug where Octopoteuthis didn't glow.
+- Made a performance improvement to oceans.
+- Fixed a bug with stick drops from double crops.
+- Backported a number of minor fixes to entities, worldgen, and plant behavior.

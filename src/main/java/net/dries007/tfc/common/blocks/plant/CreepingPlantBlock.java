@@ -173,7 +173,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean ground = block.canCreepOn(level, pos, level.getBlockState(mutablePos), direction);
+            boolean ground = block.canCreepOn(level, mutablePos, level.getBlockState(mutablePos), direction);
 
             state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
             hasEarth |= ground;

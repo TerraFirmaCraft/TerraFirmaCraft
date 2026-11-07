@@ -18,7 +18,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
@@ -51,7 +50,7 @@ public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLogg
     {
         if (!state.canSurvive(level, currentPos))
         {
-            return Blocks.AIR.defaultBlockState();
+            return state.getFluidState().createLegacyBlock();
         }
         else
         {
