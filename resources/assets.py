@@ -1809,7 +1809,7 @@ def generate(rm: ResourceManager):
             rm.block_model(('plant', '%s_sapling_1' % fruit), {'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit}, 'block/cross')
         else:
             def banana_suffix(state: str, i: int) -> str:
-                if i == 2 and (state == 'fruiting' or state == 'flowering'):
+                if i == 2 and state != 'healthy':
                     return '%d_%s' % (i, state)
                 return str(i)
 
@@ -1825,9 +1825,9 @@ def generate(rm: ResourceManager):
                 'functions': [{**loot_tables.set_count(1, 2)}],
                 'conditions': [loot_tables.block_state_property('tfc:plant/dead_banana_plant[stage=2]')]
             })
-            rm.block_model(('plant', 'banana_trunk_0_dead'), textures={"particle": "tfc:block/fruit_tree/banana_branch", "0": "tfc:block/fruit_tree/banana_branch"}, parent='tfc:block/plant/banana_trunk_0')
-            rm.block_model(('plant', 'banana_trunk_1_dead'), textures={"particle": "tfc:block/fruit_tree/banana_branch", "0": "tfc:block/fruit_tree/banana_branch"}, parent='tfc:block/plant/banana_trunk_1')
-            rm.block_model(('plant', 'banana_trunk_2_dead'), textures={"particle": "tfc:block/fruit_tree/banana_leaves_dead", "1_0": "tfc:block/fruit_tree/banana_leaves_dead"}, parent='tfc:block/plant/banana_trunk_2')
+            rm.block_model(('plant', 'banana_trunk_0_dead'), textures={'particle': 'tfc:block/fruit_tree/banana_branch', 'trunk': 'tfc:block/fruit_tree/banana_branch'}, parent='tfc:block/plant/banana_trunk_0')
+            rm.block_model(('plant', 'banana_trunk_1_dead'), textures={'particle': 'tfc:block/fruit_tree/banana_branch', 'trunk': 'tfc:block/fruit_tree/banana_branch'}, parent='tfc:block/plant/banana_trunk_1')
+            rm.block_model(('plant', 'banana_trunk_2_dead'), textures={'particle': 'tfc:block/fruit_tree/banana_leaves_dead', 'leaves': 'tfc:block/fruit_tree/banana_leaves_dead'}, parent='tfc:block/plant/banana_trunk_2')
             rm.block_model(('plant', 'banana_sapling'), textures={'cross': 'tfc:block/fruit_tree/banana_sapling'}, parent='block/cross')
             rm.blockstate(('plant', 'banana_sapling'), model='tfc:block/plant/banana_sapling').with_lang(lang('Banana Sapling')).with_block_loot('tfc:plant/banana_sapling')
 

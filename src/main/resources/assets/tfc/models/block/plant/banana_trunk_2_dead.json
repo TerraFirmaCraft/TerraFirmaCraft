@@ -3,6 +3,6 @@
   "parent": "tfc:block/plant/banana_trunk_2",
   "textures": {
     "particle": "tfc:block/fruit_tree/banana_leaves_dead",
-    "1_0": "tfc:block/fruit_tree/banana_leaves_dead"
+    "leaves": "tfc:block/fruit_tree/banana_leaves_dead"
   }
 }

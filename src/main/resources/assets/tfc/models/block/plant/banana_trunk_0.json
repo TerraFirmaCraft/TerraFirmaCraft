@@ -1,21 +1,44 @@
 {
 	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
 	"textures": {
-		"0": "tfc:block/fruit_tree/banana_branch",
-		"particle": "tfc:block/fruit_tree/banana_branch"
+		"particle": "tfc:block/fruit_tree/banana_trunk",
+		"shoots": "tfc:block/fruit_tree/banana_shoots",
+		"trunk": "tfc:block/fruit_tree/banana_trunk"
 	},
 	"elements": [
 		{
 			"from": [4, 0, 4],
 			"to": [12, 16, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [10, 8, 10]},
 			"faces": {
-				"north": {"uv": [0, 0, 8, 16], "texture": "#0"},
-				"east": {"uv": [0, 0, 8, 16], "texture": "#0"},
-				"south": {"uv": [0, 0, 8, 16], "texture": "#0"},
-				"west": {"uv": [0, 0, 8, 16], "texture": "#0"},
-				"up": {"uv": [0, 0, 8, 8], "texture": "#0"},
-				"down": {"uv": [0, 0, 8, 8], "texture": "#0"}
+				"north": {"uv": [8, 0, 0, 16], "texture": "#trunk"},
+				"east": {"uv": [0, 0, 8, 16], "texture": "#trunk"},
+				"south": {"uv": [8, 0, 0, 16], "texture": "#trunk"},
+				"west": {"uv": [0, 0, 8, 16], "texture": "#trunk"},
+				"up": {"uv": [0, 8, 8, 16], "texture": "#trunk"},
+				"down": {"uv": [0, 5, 8, 13], "texture": "#trunk"}
+			}
+		},
+		{
+			"from": [3.8, 12.8, 3.8],
+			"to": [12.2, 18.2, 12.2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 13, 3]},
+			"faces": {
+				"north": {"uv": [3, 0, 11, 5], "texture": "#shoots"},
+				"east": {"uv": [5, 5, 13, 10], "texture": "#shoots"},
+				"south": {"uv": [3, 0, 11, 5], "texture": "#shoots"},
+				"west": {"uv": [5, 5, 13, 10], "texture": "#shoots"}
+			}
+		},
+		{
+			"from": [3.9, 10.9, 3.9],
+			"to": [12.1, 16.1, 12.1],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 11, 3]},
+			"faces": {
+				"north": {"uv": [2, 0, 10, 5], "texture": "#shoots"},
+				"east": {"uv": [6, 5, 14, 10], "texture": "#shoots"},
+				"south": {"uv": [2, 0, 10, 5], "texture": "#shoots"},
+				"west": {"uv": [6, 5, 14, 10], "texture": "#shoots"}
 			}
 		}
 	]
