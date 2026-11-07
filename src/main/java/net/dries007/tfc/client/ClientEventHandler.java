@@ -282,6 +282,7 @@ import net.dries007.tfc.common.component.heat.HeatCapability;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.aquatic.Fish;
+import net.dries007.tfc.common.entities.aquatic.Manatee;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
@@ -538,6 +539,8 @@ public final class ClientEventHandler
     }
 
     private static final ResourceLocation SEALED = Helpers.identifier("sealed");
+    private static final ResourceLocation MANATEE = RenderHelpers.animalTexture("manatee");
+    private static final ResourceLocation MANATEE_ALGAE = RenderHelpers.animalTexture("manatee_algae");
 
     private static <T> void registerSealedProperty(ItemLike item, Supplier<? extends DataComponentType<T>> type)
     {
@@ -632,7 +635,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, HorseshoeCrabModel::new, "horseshoe_crab").build());
         event.registerEntityRenderer(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
         event.registerEntityRenderer(TFCEntities.ORCA.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, OrcaModel::new, "orca").build());
-        event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, ManateeModel::new, "manatee").build());
+        event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer.Builder<Manatee, ManateeModel>(ctx, ManateeModel::new, "manatee").texture(e -> e.hasAlgae() ? MANATEE_ALGAE : MANATEE).build());
         event.registerEntityRenderer(TFCEntities.TURTLE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCTurtleModel::new, "turtle").build());
         event.registerEntityRenderer(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
         event.registerEntityRenderer(TFCEntities.LEOPARD_SEAL.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, LeopardSealModel::new, "seal").build());
