@@ -61,6 +61,7 @@ public class BuiltinFauna extends DataManagerProvider<Fauna>
         add(Faunas.LEOPARD_SEAL, b -> b.maxTemperature(-9).minGroundwater(105));
         add(Faunas.FROG, b -> b.minGroundwater(150).minTemperature(-13));
         add(Faunas.TURTLE, b -> b.minTemperature(21).minGroundwater(250));
+        add(Faunas.POND_TURTLE, b -> b.minTemperature(5).minGroundwater(200));
         add(Faunas.POLAR_BEAR, b -> b.maxTemperature(-10).minGroundwater(100));
         add(Faunas.GRIZZLY_BEAR, b -> b.temperature(-15, 15).minGroundwater(200).minForest(2));
         add(Faunas.BLACK_BEAR, b -> b.temperature(5, 20).minGroundwater(250).minForest(2));

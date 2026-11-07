@@ -2049,6 +2049,10 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'armadillo': spawner('tfc:armadillo', min_count=2, max_count=3),
 }
 
+FRESHWATER_SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'pond_turtle': spawner('tfc:pond_turtle', min_count=1, max_count=3),
+}
+
 VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'spider': spawner('minecraft:spider', weight=100, min_count=4, max_count=4),
     'zombie': spawner('minecraft:zombie', weight=95, min_count=4, max_count=4),
@@ -2156,7 +2160,10 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
             large_features += ['tfc:dead_forest']
         large_features += ['tfc:rare_bamboo', 'tfc:bamboo', 'tfc:rare_bamboo_golden', 'tfc:bamboo_golden', 'tfc:cave_vegetation']
         surface_decorations.append('#tfc:feature/land_plants')
-        spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
+        creatures = spawners.setdefault('creature', [])
+        creatures += [entity for entity in LAND_CREATURES.values() if entity['type'] not in {e['type'] for e in creatures}]
+        if (category in ('river', 'swamp') or 'lake' in name or name == 'river_valley') and name != 'salt_marsh':
+            spawners['creature'] += FRESHWATER_SHORE_CREATURES.values()
 
     if ('glaciated' in name) or ('mountains_edge' in name):
         if 'oceanic' in name:

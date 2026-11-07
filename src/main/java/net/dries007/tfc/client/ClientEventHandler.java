@@ -140,6 +140,7 @@ import net.dries007.tfc.client.model.entity.PeafowlModel;
 import net.dries007.tfc.client.model.entity.PenguinModel;
 import net.dries007.tfc.client.model.entity.PheasantModel;
 import net.dries007.tfc.client.model.entity.PolarBearModel;
+import net.dries007.tfc.client.model.entity.PondTurtleModel;
 import net.dries007.tfc.client.model.entity.QuailModel;
 import net.dries007.tfc.client.model.entity.RatModel;
 import net.dries007.tfc.client.model.entity.RedPiranhaModel;
@@ -637,6 +638,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.ORCA.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, OrcaModel::new, "orca").build());
         event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer.Builder<Manatee, ManateeModel>(ctx, ManateeModel::new, "manatee").texture(e -> e.hasAlgae() ? MANATEE_ALGAE : MANATEE).build());
         event.registerEntityRenderer(TFCEntities.TURTLE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, TFCTurtleModel::new, "turtle").build());
+        event.registerEntityRenderer(TFCEntities.POND_TURTLE.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, PondTurtleModel::new, "pond_turtle").build());
         event.registerEntityRenderer(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
         event.registerEntityRenderer(TFCEntities.LEOPARD_SEAL.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, LeopardSealModel::new, "seal").build());
         event.registerEntityRenderer(TFCEntities.FROG.get(), FrogRenderer::new);
@@ -771,6 +773,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.layerId("orca"), OrcaModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("manatee"), ManateeModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("turtle"), TFCTurtleModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.layerId("pond_turtle"), PondTurtleModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("penguin"), PenguinModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("seal"), LeopardSealModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.layerId("polar_bear"), PolarBearModel::createBodyLayer);

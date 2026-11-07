@@ -2,6 +2,7 @@
   "values": [
     "#tfc:water_ambient",
     "#tfc:water_creatures",
-    "tfc:turtle"
+    "tfc:turtle",
+    "tfc:pond_turtle"
   ]
 }

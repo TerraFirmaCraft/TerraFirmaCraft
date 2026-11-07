@@ -158,6 +158,7 @@ public class TFCEntities
 
     // Creatures
     public static final Id<TFCTurtle> TURTLE = register("turtle", EntityType.Builder.of(TFCTurtle::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
+    public static final Id<TFCTurtle> POND_TURTLE = register("pond_turtle", EntityType.Builder.of(TFCTurtle::new, MobCategory.CREATURE).sized(0.6F, 0.3F).clientTrackingRange(10));
     public static final Id<Penguin> PENGUIN = register("penguin", EntityType.Builder.of(Penguin::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
     public static final Id<LeopardSeal> LEOPARD_SEAL = register("leopard_seal", EntityType.Builder.of(LeopardSeal::new, MobCategory.CREATURE).sized(1.2F, 0.7F).clientTrackingRange(10));
     public static final Id<TFCFrog> FROG = register("frog", EntityType.Builder.of(TFCFrog::new, MobCategory.CREATURE).sized(0.5F, 0.5F).clientTrackingRange(10));
@@ -250,6 +251,7 @@ public class TFCEntities
         event.put(ORCA.get(), Dolphin.createAttributes().build());
         event.put(MANATEE.get(), Manatee.createAttributes().build());
         event.put(TURTLE.get(), AmphibiousAnimal.createAttributes().build());
+        event.put(POND_TURTLE.get(), AmphibiousAnimal.createAttributes().build());
         event.put(PENGUIN.get(), Penguin.createAttributes().build());
         event.put(LEOPARD_SEAL.get(), LeopardSeal.createAttributes().build());
         event.put(FROG.get(), TFCFrog.createAttributes().build());
