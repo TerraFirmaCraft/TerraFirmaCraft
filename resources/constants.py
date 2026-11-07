@@ -837,7 +837,7 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'yucca': [0, 1, 2, 2, 2, 3]
 }
 
-MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm')
+MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm')
 SEAGRASS = ('star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail')
 
 SEAWEED = ('sago', 'gutweed', 'laminaria', 'milfoil')
