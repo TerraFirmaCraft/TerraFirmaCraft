@@ -30,7 +30,7 @@ public class JellyfishRenderer extends SimpleMobRenderer<Jellyfish, JellyfishMod
 
     public JellyfishRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new JellyfishModel(RenderHelpers.bakeSimple(ctx, "jellyfish")), "jellyfish", 0.3f, true, 1f, false, false, null);
+        super(ctx, new JellyfishModel(RenderHelpers.bakeSimple(ctx, "jellyfish")), "jellyfish", 0.3f, false, 1f, false, false, null);
     }
 
     @Override

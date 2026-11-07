@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.*;
@@ -22,9 +24,29 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCDolphin extends Dolphin implements AquaticMob
 {
+    public final AnimationState attackingAnimation = new AnimationState();
+
     public TFCDolphin(EntityType<? extends Dolphin> type, Level level)
     {
         super(type, level);
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity target)
+    {
+        final boolean hurt = super.doHurtTarget(target);
+        level().broadcastEntityEvent(this, (byte) 4);
+        return hurt;
+    }
+
+    @Override
+    public void handleEntityEvent(byte id)
+    {
+        if (id == 4)
+        {
+            attackingAnimation.start(tickCount);
+        }
+        super.handleEntityEvent(id);
     }
 
     @Override
