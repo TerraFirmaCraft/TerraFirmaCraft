@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "灯是一种长效光源。它们燃烧液体燃料。灯被破坏时会保留其燃料含量。用桶右键点击灯可以添加燃料。然后用$(thing)起火器$()或任何能点火的物品即可点亮。$(thing)橄榄油$()和$(thing)蜡脂$()是灯的燃料。用箭射中点亮的灯可能引发火灾。"
+      "text": "Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$() and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire. Lamps react to redstone signals."
     },
     {
       "type": "patchouli:multiblock",

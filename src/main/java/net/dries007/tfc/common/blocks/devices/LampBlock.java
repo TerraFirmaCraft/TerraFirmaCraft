@@ -58,6 +58,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     protected static final VoxelShape SHAPE = Shapes.or(Block.box(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.box(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
     protected static final VoxelShape HANGING_SHAPE = Shapes.or(Block.box(5.0D, 1.0D, 5.0D, 11.0D, 8.0D, 11.0D), Block.box(6.0D, 8.0D, 6.0D, 10.0D, 10.0D, 10.0D));
@@ -70,7 +71,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     public LampBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(HANGING, false).setValue(LIT, false));
+        registerDefaultState(getStateDefinition().any().setValue(HANGING, false).setValue(LIT, false).setValue(POWERED, false));
     }
 
     @Override
@@ -141,11 +142,13 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
+        boolean powered = context.getLevel().hasNeighborSignal(context.getClickedPos());
+
         for (Direction direction : context.getNearestLookingDirections())
         {
             if (direction.getAxis() == Direction.Axis.Y)
             {
-                BlockState state = this.defaultBlockState().setValue(HANGING, direction == Direction.UP);
+                BlockState state = this.defaultBlockState().setValue(HANGING, direction == Direction.UP).setValue(POWERED, powered);
                 return state.canSurvive(context.getLevel(), context.getClickedPos()) ? state : null;
             }
         }
@@ -161,7 +164,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(HANGING, LIT));
+        super.createBlockStateDefinition(builder.add(HANGING, LIT, POWERED));
     }
 
     @Override
@@ -208,5 +211,28 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType)
     {
         return false;
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    {
+        final boolean signal = level.hasNeighborSignal(pos);
+        if (signal != state.getValue(POWERED))
+        {
+            state = state.setValue(POWERED, signal);
+
+            final @Nullable LampBlockEntity lamp = level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).orElse(null);
+            if (lamp != null && signal != state.getValue(LIT))
+            {
+                if (!signal)
+                {
+                    lamp.checkHasRanOut(); // update fuel usage
+                    Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
+                }
+                state = state.setValue(LIT, signal && lamp.getFuel() != null); // don't light if there's no fuel
+                lamp.resetCounter();
+            }
+            level.setBlockAndUpdate(pos, state);
+        }
     }
 }
