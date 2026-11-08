@@ -83,10 +83,8 @@ public class WindmillBlock extends DeviceBlock implements EntityBlockExtension, 
             final IItemHandler inv = windmill.getInventory();
             if (count < WindmillBlockEntity.SLOTS && !stack.isEmpty())
             {
-                final ItemStack leftover = Helpers.insertAllSlots(inv, player.isCreative() ? stack.copyWithCount(1) : stack.split(1));
-                if (!leftover.isEmpty())
+                if (!Helpers.insertSlotsFromHand(inv, player, stack, 1, 0, inv.getSlots()))
                 {
-                    ItemHandlerHelper.giveItemToPlayer(player, leftover);
                     return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
                 }
                 final int newCount = windmill.updateState();

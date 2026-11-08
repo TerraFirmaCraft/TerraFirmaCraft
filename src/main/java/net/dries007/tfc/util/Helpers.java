@@ -965,6 +965,18 @@ public final class Helpers
     }
 
     /**
+     * Inserts up to {@code amount} items from a player's held {@code stack}, consuming what was inserted unless the player has infinite materials.
+     *
+     * @return {@code true} if any items were inserted
+     */
+    public static boolean insertSlotsFromHand(IItemHandler inventory, Player player, ItemStack stack, int amount, int slotStartInclusive, int slotEndExclusive)
+    {
+        final int inserted = amount - insertSlots(inventory, stack.copyWithCount(amount), slotStartInclusive, slotEndExclusive).getCount();
+        stack.consume(inserted, player);
+        return inserted > 0;
+    }
+
+    /**
      * Inserts every stack from {@code source} that {@code destination} accepts while ignoring creation date and
      * stopping once the destination is full. Inserted items are removed from {@code source} in place; anything that
      * does not fit (or that {@link IItemHandler#isItemValid} rejects) is left untouched.
