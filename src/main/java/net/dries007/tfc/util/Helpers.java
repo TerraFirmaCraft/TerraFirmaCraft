@@ -818,13 +818,16 @@ public final class Helpers
     }
 
     /**
-     * Initializes or updates the Food Capability of {@code stack}
+     * Initializes the Food Capability of {@code stack}
      */
-    public static ItemStack initOrUpdateFoodCapability(ItemStack stack)
+    public static ItemStack initFoodCapability(ItemStack stack)
     {
         if (!stack.isEmpty() && !FoodCapability.CACHE.getAll(stack.getItem()).isEmpty())
         {
-            FoodCapability.updateFoodDecayOnCreate(stack);
+            if (!FoodCapability.has(stack))
+            {
+                FoodCapability.updateFoodDecayOnCreate(stack);
+            }
         }
         return stack;
     }
@@ -1611,11 +1614,11 @@ public final class Helpers
     }
 
     /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      * @see #isItem(Item, TagKey)
      * @see #isBlock(Block, TagKey)
      * @see #isFluid(Fluid, TagKey)
      * @see #isEntity(Entity, TagKey)
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      */
     @Deprecated
     public static <T> boolean checkTag(IForgeRegistry<T> registry, T object, TagKey<T> tag)
@@ -1624,10 +1627,10 @@ public final class Helpers
     }
 
     /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      * @see #randomItem(TagKey, RandomSource)
      * @see #randomBlock(TagKey, RandomSource)
      * @see #randomEntity(TagKey, RandomSource)
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      */
     @Deprecated
     public static <T> Optional<T> getRandomElement(IForgeRegistry<T> registry, TagKey<T> tag, RandomSource random)
@@ -1636,10 +1639,10 @@ public final class Helpers
     }
 
     /**
-     * @deprecated Use one of the overloads for a specific type. Make {@code private} in 1.21
      * @see #randomItem(TagKey, RandomSource)
      * @see #randomBlock(TagKey, RandomSource)
      * @see #randomEntity(TagKey, RandomSource)
+     * @deprecated Use one of the overloads for a specific type. Make {@code private} in 1.21
      */
     public static <T> Optional<T> getRandomElement(Registry<T> registry, TagKey<T> tag, RandomSource random)
     {
@@ -1647,10 +1650,10 @@ public final class Helpers
     }
 
     /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      * @see #allItems(TagKey)
      * @see #allBlocks(TagKey)
      * @see #allFluids(TagKey)
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      */
     @Deprecated
     public static <T> List<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
@@ -1659,10 +1662,10 @@ public final class Helpers
     }
 
     /**
-     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      * @see #allItems(TagKey)
      * @see #allBlocks(TagKey)
      * @see #allFluids(TagKey)
+     * @deprecated Use one of the overloads for a specific type. Remove in 1.21
      */
     @Deprecated
     public static <T> Stream<T> streamAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)

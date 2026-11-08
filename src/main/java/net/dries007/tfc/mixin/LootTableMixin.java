@@ -31,7 +31,7 @@ public abstract class LootTableMixin
         {
             for (ItemStack stack : list)
             {
-                Helpers.initOrUpdateFoodCapability(stack);
+                Helpers.initFoodCapability(stack);
             }
         }
     }
