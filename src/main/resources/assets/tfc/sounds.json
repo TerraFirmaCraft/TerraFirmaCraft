@@ -2760,6 +2760,66 @@
       "minecraft:random/fizz"
     ]
   },
+  "item.glassworking": {
+    "subtitle": "subtitles.item.tfc.glassworking",
+    "sounds": [
+      {
+        "name": "minecraft:block.anvil.use",
+        "type": "event"
+      }
+    ]
+  },
+  "item.glassworking.blow": {
+    "subtitle": "subtitles.item.tfc.glassworking.blow",
+    "sounds": [
+      "tfc:block/bellows/blow1"
+    ]
+  },
+  "item.glassworking.roll": {
+    "subtitle": "subtitles.item.tfc.glassworking.roll",
+    "sounds": [
+      {
+        "name": "minecraft:block.wool.hit",
+        "type": "event"
+      }
+    ]
+  },
+  "item.glassworking.stretch": {
+    "subtitle": "subtitles.item.tfc.glassworking.stretch",
+    "sounds": [
+      {
+        "name": "minecraft:block.honey_block.slide",
+        "type": "event"
+      }
+    ]
+  },
+  "item.glassworking.pinch": {
+    "subtitle": "subtitles.item.tfc.glassworking.pinch",
+    "sounds": [
+      {
+        "name": "minecraft:entity.sheep.shear",
+        "type": "event"
+      }
+    ]
+  },
+  "item.glassworking.flatten": {
+    "subtitle": "subtitles.item.tfc.glassworking.flatten",
+    "sounds": [
+      {
+        "name": "minecraft:block.wood.hit",
+        "type": "event"
+      }
+    ]
+  },
+  "item.glassworking.saw": {
+    "subtitle": "subtitles.item.tfc.glassworking.saw",
+    "sounds": [
+      {
+        "name": "minecraft:block.grindstone.use",
+        "type": "event"
+      }
+    ]
+  },
   "entity.rooster.cry": {
     "subtitle": "subtitles.entity.tfc.rooster.cry",
     "sounds": [

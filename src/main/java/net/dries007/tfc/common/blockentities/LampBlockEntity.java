@@ -33,7 +33,19 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
     public LampBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.LAMP.get(), pos, state);
-        this.tank = new InventoryFluidTank(TFCConfig.SERVER.lampCapacity.get(), stack -> LampFuel.get(stack.getFluid(), getBlockState()) != null, this);
+        this.tank = new InventoryFluidTank(TFCConfig.SERVER.lampCapacity.get(), stack -> LampFuel.get(stack.getFluid(), getBlockState()) != null, this)
+        {
+            @Override
+            public int fill(FluidStack resource, FluidAction action)
+            {
+                final int filled = super.fill(resource, action);
+                if (filled > 0 && action.execute())
+                {
+                    lightAfterFilling();
+                }
+                return filled;
+            }
+        };
         this.sidedFluidInventory = new SidedHandler<>(tank);
     }
 
@@ -48,6 +60,11 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
     public LampFuel getFuel()
     {
         return LampFuel.get(tank.getFluid().getFluid(), getBlockState());
+    }
+
+    public int getFuelAmount()
+    {
+        return tank.getFluidAmount();
     }
 
     /**
@@ -105,6 +122,19 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
             {
                 level.setBlockAndUpdate(worldPosition, state.setValue(LampBlock.LIT, false));
             }
+        }
+    }
+
+    private void lightAfterFilling()
+    {
+        assert level != null;
+
+        final BlockState state = getBlockState();
+        final @Nullable LampFuel fuel = getFuel();
+        if (!level.isClientSide && fuel != null && !state.getValue(LampBlock.LIT) && (state.getValue(LampBlock.POWERED) || fuel.burnRate() == -1))
+        {
+            level.setBlockAndUpdate(worldPosition, state.setValue(LampBlock.LIT, true));
+            resetCounter();
         }
     }
 

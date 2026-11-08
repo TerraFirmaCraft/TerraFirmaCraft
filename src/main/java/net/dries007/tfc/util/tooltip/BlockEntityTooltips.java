@@ -508,26 +508,21 @@ public final class BlockEntityTooltips
                 if (fuel.burnRate() != -1)
                 {
                     tooltip.accept(Component.translatable("tfc.jade.burn_rate", fuel.burnRate()));
-                }
-                if (state.getValue(LampBlock.LIT))
-                {
-                    if (fuel.burnRate() == -1)
+
+                    final IFluidHandler fluidHandler = Helpers.getCapability(Capabilities.FluidHandler.BLOCK, lamp);
+                    if (fluidHandler != null)
                     {
-                        tooltip.accept(Component.translatable("tfc.jade.burn_forever"));
-                    }
-                    else
-                    {
-                        final IFluidHandler fluidHandler = Helpers.getCapability(Capabilities.FluidHandler.BLOCK, lamp);
-                        if (fluidHandler != null)
+                        final int fluid = fluidHandler.getFluidInTank(0).getAmount();
+                        if (fluid > 0)
                         {
-                            final int fluid = fluidHandler.getFluidInTank(0).getAmount();
-                            if (fluid > 0)
-                            {
-                                // ticks / mB * mB = ticks
-                                timeLeft(level, tooltip, (long) fluid * fuel.burnRate());
-                            }
+                            // ticks / mB * mB = ticks
+                            timeLeft(level, tooltip, (long) fluid * fuel.burnRate());
                         }
                     }
+                }
+                else if (state.getValue(LampBlock.LIT))
+                {
+                    tooltip.accept(Component.translatable("tfc.jade.burn_forever"));
                 }
             }
         }

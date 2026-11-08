@@ -1543,7 +1543,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/sandpaper'),
         )),
         entry('lamps', 'Lamps', 'tfc:metal/lamp/bismuth_bronze', pages=(
-            text('Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$() and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire. Lamps react to redstone signals.'),
+            text('Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$(), $(thing)Canola Oil$(), and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire. Lamps react to redstone signals.'),
             two_tall_block_spotlight('Lamps', 'A lit lamp hanging from a chain.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]').link('#tfc:lamps'),
             crafting('tfc:crafting/metal/lamp/bronze', text_contents='Lamps are smithed in the $(l:metalworking/anvils)Anvil$() and crafted with $(l:crafting/glassworking_applications#lamp_glass)Lamp Glass$() to be completed.'),
             quern_recipe('tfc:quern/olive_paste', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.').anchor('olives'),
