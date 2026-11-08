@@ -216,7 +216,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
 
     public ItemStack getProductItem(RandomSource random)
     {
-        return Helpers.initOrUpdateFoodCapability(new ItemStack(productItem.get()));
+        return Helpers.initFoodCapability(new ItemStack(productItem.get()));
     }
 
     protected Lifecycle getLifecycleForCurrentMonth()

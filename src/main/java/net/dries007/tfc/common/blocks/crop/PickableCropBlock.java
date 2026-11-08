@@ -105,7 +105,7 @@ public abstract class PickableCropBlock extends DefaultCropBlock
     private ItemStack yieldItemStack(Item item, float yield, RandomSource random)
     {
         ItemStack stack = new ItemStack(item, Mth.floor(Mth.lerp(yield, 1f, 5f) + random.nextInt(2)));
-        return Helpers.initOrUpdateFoodCapability(stack);
+        return Helpers.initFoodCapability(stack);
     }
 
 }
