@@ -20,9 +20,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.common.entities.ai.predator.PackPredator;
+import net.dries007.tfc.common.entities.predator.TFCWolf;
 
-public class TFCWolfModel extends HierarchicalAnimatedModel<PackPredator>
+public class TFCWolfModel extends HierarchicalAnimatedModel<TFCWolf>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -76,7 +76,7 @@ public class TFCWolfModel extends HierarchicalAnimatedModel<PackPredator>
     }
 
     @Override
-    public void setupAnim(PackPredator entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch)
+    public void setupAnim(TFCWolf entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, yaw, pitch);
 
