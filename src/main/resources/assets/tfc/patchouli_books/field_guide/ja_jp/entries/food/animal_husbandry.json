@@ -111,7 +111,7 @@
       "type": "patchouli:text",
       "anchor": "rabbit",
       "text": "$(thing)Rabbits$() spawn in $(l:core_mechanics/climate#temperature)temperatures$() above $(cfg:temperature:-16), and at least 15mm of $(l:core_mechanics/climate#rainfall)rainfall$(), changing their coat based on climate. They are $(l:food/animal_husbandry#mammals)Mammals$() with no special abilities, aside from being known for chewing on carrots and cabbage. They will eat any food, even if it is rotten. They have 1-6 children, are pregnant for just 19 days, and reach adulthood in 20 days. They can have children 6 times.",
-      "title": "Rabbits"
+      "title": "ウサギ"
     },
     {
       "type": "patchouli:entity",

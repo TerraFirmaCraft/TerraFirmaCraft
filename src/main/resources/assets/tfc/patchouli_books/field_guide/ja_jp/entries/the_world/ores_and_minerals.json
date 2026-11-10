@@ -955,7 +955,7 @@
       "item": "tfc:ore/gypsum",
       "title": "石膏",
       "link_recipes": false,
-      "text": "Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#plaster)Plaster$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "石膏は装飾用の$(thing)鉱物$()であり、$(l:mechanics/advanced_building_materials#plaster)雪花石膏$()の製作に使用されます。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
