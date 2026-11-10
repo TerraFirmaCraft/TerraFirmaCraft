@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(), which can be used to transport $(cfg:metalBucketCapacity) of both liquid fluids, and $(6)Lava$()."
+      "text": "$(thing)青鋼$()は、ツールや$(l:mechanics/armor)防具$()、および$(cfg:metalBucketCapacity)の液体と$(6)溶岩$()を運ぶことができる$(thing)青鋼のバケツ$()を作成するために使用できます。"
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(), which can be used to transport $(cfg:metalBucketCapacity) of both liquid fluids, and $(6)Lava$()"
+      "text": "$(thing)赤鋼$()は、ツールや$(l:mechanics/armor)防具$()、および$(cfg:metalBucketCapacity)の液体と$(6)溶岩$()を運ぶことができる$(thing)赤鋼のバケツ$()を作成するために使用できます。"
     }
   ],
   "read_by_default": true,

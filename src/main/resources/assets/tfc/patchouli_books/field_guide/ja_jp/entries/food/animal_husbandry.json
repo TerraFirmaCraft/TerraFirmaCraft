@@ -97,7 +97,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pig",
-      "text": "$(thing)Pigs$() spawn in mild forests with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:-10) and $(cfg:temperature:35), and at least 200mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "text": "$(thing)ブタ$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-10)〜$(cfg:temperature:35)、$(l:core_mechanics/climate#rainfall)降水量$()200mm以上の温暖な森林に生息しています。$(l:food/animal_husbandry#mammals)哺乳類$()で、特別な能力はありません。食べ物は、腐っていてもあらゆる食べます。一度に1〜10匹の子供を産み、妊娠期間はわずか19日で、80日で大人になります。彼らは6回の出産が可能です。",
       "title": "ブタ"
     },
     {
@@ -123,7 +123,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cow",
-      "text": "$(thing)Cows$() spawn in most climates, between $(l:core_mechanics/climate#temperature)temperature$() $(cfg:temperature:-10) and $(cfg:temperature:35), and at least 250mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#dairy_animals)Dairy Animals$(). They only eat $(thing)grains$(), which may be rotten. They can have 1-2 children, are pregnant for 58 days, and reach adulthood in 192 days. They can have children 13 times, if they are never milked, or be milked 128 times, if they are never bred. They produce milk every day.",
+      "text": "$(thing)ウシ$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-10)～$(cfg:temperature:35)、$(l:core_mechanics/climate#rainfall)降水量$()250mm以上のほとんどの気候に生息してる$(l:food/animal_husbandry#dairy_animals)乳用動物$()です。食べ物は、$(thing)穀物$()しか食べず、穀物が腐っていても構いません。一度に1～2匹の子供を産み、妊娠期間は58日で、192日で大人になります。ミルクを一度も絞られなければ13回の出産が可能で、一度も繁殖しなければ128回ミルクを絞ることができます。毎日ミルクを生産します。",
       "title": "ウシ"
     },
     {
@@ -136,7 +136,7 @@
     {
       "type": "patchouli:text",
       "anchor": "goat",
-      "text": "$(thing)Goats$() spawn in moderate climates, with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:-12) and $(cfg:temperature:25), and at least 300mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.",
+      "text": "$(thing)ヤギ$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-12)～$(cfg:temperature:25)、$(l:core_mechanics/climate#rainfall)降水量$()300mm以上の温暖な気候に生息している$(l:food/animal_husbandry#dairy_animals)乳用動物$()です。食べ物は、$(thing)穀物$()、$(thing)果物$()、および$(thing)野菜$()を食べ、腐っていても構いません。一度に1～2匹の子供を産み、妊娠期間は32日で、96日で大人になります。ミルクを一度も絞られなければ6回の出産が可能で、一度も繁殖しなければ60回ミルクを絞ることができます。3日ごとにミルクを生産します。",
       "title": "ヤギ"
     },
     {
@@ -149,7 +149,7 @@
     {
       "type": "patchouli:text",
       "anchor": "yak",
-      "text": "$(thing)Yaks$() spawn in cold climates, with $(l:core_mechanics/climate#temperature)temperature$() of at most $(cfg:temperature:-11), and at least 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#dairy_animals)Dairy Animals$(). They eat only fresh $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 180 days. They can have children 23 times, if they are never milked, or be milked 230 times, if they are never bred. They produce milk once a day.",
+      "text": "$(thing)ヤク$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-11)以下、$(l:core_mechanics/climate#rainfall)降水量$()100mm以上の寒冷な気候に生息している$(l:food/animal_husbandry#dairy_animals)乳用動物$()です。食べ物は、新鮮な$(thing)穀物$()しか食べません。一度に1匹の子供を産み、妊娠期間は64日で、180日で大人になります。ミルクを一度も絞られなければ23回の出産が可能で、一度も繁殖しなければ230回ミルクを絞ることができます。毎日1回ミルクを生産します。",
       "title": "ヤク"
     },
     {
@@ -214,7 +214,7 @@
     {
       "type": "patchouli:text",
       "anchor": "chicken",
-      "text": "$(thing)Chickens$() spawn in warm forests, with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:14), and at least 225mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 24 days. They can lay eggs 100 times. They produce eggs every 30 hours.",
+      "text": "$(thing)ニワトリ$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:14)以上、$(l:core_mechanics/climate#rainfall)降雨量$()225mm以上の暖かい森林に生息している$(l:food/animal_husbandry#oviparous_animals)卵生動物$()です。食べ物は、$(thing)穀物$()、$(thing)果物$()、$(thing)野菜$()、および$(thing)種子$()を食べます。腐っていても構いません。卵は8日で孵化し、24日で大人になります。100回卵を産むことができ、30時間ごとに卵を産みます。",
       "title": "ニワトリ"
     },
     {
@@ -227,7 +227,7 @@
     {
       "type": "patchouli:text",
       "anchor": "duck",
-      "text": "$(thing)Ducks$() spawn in most plains, with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:-25) and $(cfg:temperature:30), and at least 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.",
+      "text": "$(thing)アヒル$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-25)～$(cfg:temperature:30)、$(l:core_mechanics/climate#rainfall)降雨量$()100mm以上のほとんどの平原に生息している$(l:food/animal_husbandry#oviparous_animals)卵生動物$()です。食べ物は、$(thing)穀物$()、$(thing)果物$()、$(thing)野菜$()、$(thing)パン$()、および$(thing)種子$()を食べます。卵は8日で孵化し、32日で大人になります。72回卵を産むことができ、32時間ごとに卵を産みます。",
       "title": "アヒル"
     },
     {
@@ -240,7 +240,7 @@
     {
       "type": "patchouli:text",
       "anchor": "quail",
-      "text": "$(thing)Quails$() spawn in colder climates, with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:-15) and $(cfg:temperature:15), and at least 200mm of  $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.",
+      "text": "$(thing)ウズラ$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-15)～$(cfg:temperature:15)、$(l:core_mechanics/climate#rainfall)降雨量$()200mm以上の寒冷な気候に生息している$(l:food/animal_husbandry#oviparous_animals)卵生動物$()です。食べ物は、$(thing)穀物$()、$(thing)果物$()、$(thing)野菜$()、および$(thing)種子$()を食べます。腐っていても構いません。卵は8日で孵化し、22日で大人になります。48回卵を産むことができ、28時間ごとに卵を産みます。",
       "title": "ウズラ"
     },
     {
@@ -253,7 +253,7 @@
     {
       "type": "patchouli:text",
       "anchor": "donkey",
-      "text": "$(thing)Donkeys$() spawn in wetter plains, with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:-15), and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "text": "$(thing)ロバ$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-15)以上、$(l:core_mechanics/climate#rainfall)降雨量$()130～400mmの湿った平原に生息している$(l:food/animal_husbandry#horses)馬類$()の一種で、$(thing)チェスト$()を運ぶことができます。食べ物は、$(thing)穀物$()と$(thing)果物$()を食べます。一度に1匹の子供を産み、妊娠期間は19日で、80日で大人になります。6回の出産が可能です。",
       "title": "ロバ"
     },
     {
@@ -279,7 +279,7 @@
     {
       "type": "patchouli:text",
       "anchor": "horse",
-      "text": "$(thing)Horses$() spawn in plains with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:-15), and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "text": "$(thing)ウマ$()は、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-15)以上、$(l:core_mechanics/climate#rainfall)降雨量$()130～400mmの平原に生息している$(l:food/animal_husbandry#horses)馬類$()の一種です。食べ物は、$(thing)穀物$()と$(thing)果物$()を食べます。一度に1匹の子供を産み、妊娠期間は19日で、80日で大人になります。彼らは6回の出産が可能です。",
       "title": "ウマ"
     },
     {

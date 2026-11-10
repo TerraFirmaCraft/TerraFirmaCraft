@@ -23,62 +23,62 @@
       "entity": "tfc:polar_bear",
       "scale": 0.55,
       "name": "シロクマ",
-      "text": "The polar bear spawns in only the coldest regions, $(l:core_mechanics/climate#temperature)temperature$() at most $(cfg:temperature:10), with a $(l:core_mechanics/climate#rainfall)rainfall$() of at least 100mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:10)以下 $(l:core_mechanics/climate#rainfall)降水量$()100mm以上のとても寒い地域にのみ生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
       "name": "グリズリー",
-      "text": "The grizzly bear spawns in forests of moderate climates, with a $(l:core_mechanics/climate#temperature)temperature$() range of $(cfg:temperature:-15) to $(cfg:temperature:15) and at least 200mm of $(l:core_mechanics/climate#rainfall)rainfall$()."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-15)~$(cfg:temperature:15) $(l:core_mechanics/climate#rainfall)降水量$()200mm以上の温かい森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "ブラックベア",
-      "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:core_mechanics/climate#temperature)temperature$() $(cfg:temperature:5) to $(cfg:temperature:20) and at least 250mm of $(l:core_mechanics/climate#rainfall)rainfall$()."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:5)~$(cfg:temperature:20) $(l:core_mechanics/climate#rainfall)降水量$()250mm以上の暖かく湿った森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
       "scale": 0.6,
       "name": "ピューマ",
-      "text": "The cougar prefers most moderate climates, with $(l:core_mechanics/climate#temperature)temperature$() from $(cfg:temperature:-10) to $(cfg:temperature:21) and at least 150mm of $(l:core_mechanics/climate#rainfall)rainfall$()."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-10)~$(cfg:temperature:21) $(l:core_mechanics/climate#rainfall)降水量$()150mm以上の温暖な気候に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
       "scale": 0.6,
       "name": "ヒョウ",
-      "text": "The panther prefers most moderate climates, with $(l:core_mechanics/climate#temperature)temperature$() from $(cfg:temperature:-10) to $(cfg:temperature:21) and at least 150mm of $(l:core_mechanics/climate#rainfall)rainfall$()."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-10)~$(cfg:temperature:21) $(l:core_mechanics/climate#rainfall)降水量$()150mm以上の最も穏やかな気候に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
       "scale": 0.55,
       "name": "ライオン",
-      "text": "The lion spawns in plains with an average $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:16), and $(l:core_mechanics/climate#rainfall)rainfall$() between 50 and 300mm."
+      "text": "平均$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:16)以上 $(l:core_mechanics/climate#rainfall)降水量$()50~300mmの平原に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tiger",
       "scale": 0.55,
       "name": "トラ",
-      "text": "The tiger spawns in forests with an average $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:13), and $(l:core_mechanics/climate#rainfall)rainfall$() above 100mm."
+      "text": "平均$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:13)以上 $(l:core_mechanics/climate#rainfall)降水量$()100以上の森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
       "scale": 0.6,
       "name": "サーベルタイガー",
-      "text": "The sabertooth spawns at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:0), and any $(l:core_mechanics/climate#rainfall)rainfall$() above 250mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:0)以上 $(l:core_mechanics/climate#rainfall)降水量$()250mm以上の場所に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wolf",
       "scale": 0.7,
-      "text": "The wolf spawns at any $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:22), and $(l:core_mechanics/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. Feeding a wolf enough times will tame it into a $(l:food/pets)Dog$()."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:22)以下$(l:core_mechanics/climate#rainfall)降水量$()150~420mmの場所に生息。群れで狩りをし、十分な回数餌を与え、$(l:food/pets)犬$()として飼い慣らせます。"
     },
     {
       "type": "patchouli:entity",
@@ -90,20 +90,20 @@
       "type": "patchouli:entity",
       "entity": "tfc:hyena",
       "scale": 0.7,
-      "text": "The hyena spawns at any $(l:core_mechanics/climate#temperature)temperature$() warmer than $(cfg:temperature:15), and $(l:core_mechanics/climate#rainfall)rainfall$() between 80 and 380mm. They hunt in packs. They are not tamable."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:15)以上 $(l:core_mechanics/climate#rainfall)降水量$()80~380mmの場所に生息。群れで狩りをし、飼い慣らせません。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crocodile",
       "scale": 0.7,
       "name": "クロコダイル",
-      "text": "The crocodile spawns near rivers, lakes, and marshes at any $(l:core_mechanics/climate#temperature)temperature$() warmer than $(cfg:temperature:15), and at any $(l:core_mechanics/climate#rainfall)rainfall$(). They are nocturnal, and most dangerous in the water."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:15)以上 $(l:core_mechanics/climate#rainfall)降水量$()に関係なく、川、湖、湿地に生息。夜行性で水中では特に危険。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "The ocelot attacks small animals. It spawns at any $(l:core_mechanics/climate#temperature)temperature$() from $(cfg:temperature:15) to $(cfg:temperature:30), and $(l:core_mechanics/climate#rainfall)rainfall$() between 300 and 500mm, in forests. Feeding an ocelot enough times will tame it into a $(l:food/pets)Cat$(). Ocelots can eat raw fish"
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:15)~$(cfg:temperature:30) $(l:core_mechanics/climate#rainfall)降水量$()300~500mmの森林に生息。十分な回数生の魚を与え、$(l:food/pets)ネコ$()として飼い慣らせます。"
     },
     {
       "type": "patchouli:text",
@@ -116,19 +116,19 @@
       "entity": "tfc:boar",
       "scale": 0.8,
       "name": "イノシシ",
-      "text": "The boar spawns at $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:25) and above $(cfg:temperature:-5), and $(l:core_mechanics/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-5)~$(cfg:temperature:25) $(l:core_mechanics/climate#rainfall)降水量$()130~400mmの場所に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:moose",
       "scale": 0.7,
-      "text": "The moose spawns in forests at $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:10) and above $(cfg:temperature:-15), and $(l:core_mechanics/climate#rainfall)rainfall$() between 150 and 300mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-15)~$(cfg:temperature:10) $(l:core_mechanics/climate#rainfall)降水量$()150~300mmの森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:wildebeest",
       "scale": 0.7,
-      "text": "The wildebeest spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:13), and $(l:core_mechanics/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:13)以上 $(l:core_mechanics/climate#rainfall)降水量$()90~380mmの開けた平原に生息。"
     },
     {
       "type": "patchouli:entity",
@@ -151,58 +151,58 @@
       "entity": "tfc:fox",
       "scale": 0.7,
       "name": "キツネ",
-      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:25), and $(l:core_mechanics/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:25)以下$(l:core_mechanics/climate#rainfall)降雨量$()130~400mmの森林に生息。茂みのベリーを好んで食べます。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:deer",
       "scale": 0.7,
-      "text": "The deer spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:25) and above $(cfg:temperature:-15), and $(l:core_mechanics/climate#rainfall)rainfall$() between 130 and 400mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-15)~$(cfg:temperature:25) $(l:core_mechanics/climate#rainfall)降雨量$()130~400mmの森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:caribou",
       "scale": 0.5,
       "name": "トナカイ",
-      "text": "The caribou spawns at any $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:-9), and $(l:core_mechanics/climate#rainfall)rainfall$() between 110 and 500mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-9)以下 $(l:core_mechanics/climate#rainfall)降雨量$()110~500mmの場所に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:gazelle",
       "scale": 0.7,
-      "text": "The gazelle spawns in open plains at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:12), and $(l:core_mechanics/climate#rainfall)rainfall$() between 90 and 380mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:12)以上 $(l:core_mechanics/climate#rainfall)降雨量$()90~380mmの開けた平原に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bongo",
       "scale": 0.7,
       "name": "ボンゴ",
-      "text": "The bongo spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:15), and $(l:core_mechanics/climate#rainfall)rainfall$() between 230 and 500mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:15)以上 $(l:core_mechanics/climate#rainfall)降雨量$()230~500mmの森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grouse",
       "scale": 0.7,
-      "text": "The grouse spawns at any $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:13) and above $(cfg:temperature:-12), and $(l:core_mechanics/climate#rainfall)rainfall$() between 150 and 400mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-12)~$(cfg:temperature:13) $(l:core_mechanics/climate#rainfall)降雨量$()150~400mmの場所に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pheasant",
       "scale": 0.7,
-      "text": "The pheasant spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:17) and above $(cfg:temperature:-5), and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 300mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:-5)~$(cfg:temperature:17) $(l:core_mechanics/climate#rainfall)降雨量$()100~300mmの森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "The turkey spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:17) and above $(cfg:temperature:0), and $(l:core_mechanics/climate#rainfall)rainfall$() between 250 and 450mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:0)~$(cfg:temperature:17) $(l:core_mechanics/climate#rainfall)降雨量$()250~450mmの森林に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
       "scale": 0.8,
       "name": "クジャク",
-      "text": "The peafowl spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:14), and $(l:core_mechanics/climate#rainfall)rainfall$() between 190 and 500mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:14)以上 $(l:core_mechanics/climate#rainfall)降雨量$()190~500mmの森林に生息。"
     },
     {
       "type": "patchouli:entity",
@@ -243,7 +243,7 @@
       "entity": "tfc:turtle",
       "scale": 0.7,
       "name": "カメ",
-      "text": "The sea turtle likes warm water. It spawns in $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:21) and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 250mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:21)以上 $(l:core_mechanics/climate#rainfall)降雨量$()250mm以上の場所に生息。温かい水を好みます。"
     },
     {
       "type": "patchouli:empty"
@@ -258,28 +258,28 @@
       "entity": "tfc:cod",
       "scale": 0.7,
       "name": "タラ",
-      "text": "Cod prefer colder oceans, $(l:core_mechanics/climate#temperature)temperature$() at most $(cfg:temperature:18). They can be fished."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:18)以下の冷たい海に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pufferfish",
       "scale": 0.7,
       "name": "フグ",
-      "text": "Pufferfish live in any ocean with at least a $(l:core_mechanics/climate#temperature)temperature$() of $(cfg:temperature:10)."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:10)以上の海に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:jellyfish",
       "scale": 0.7,
       "name": "クラゲ",
-      "text": "Jellyfish live in warmer oceans, with a $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:18)."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:18)以上の温かい海に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:tropical_fish",
       "scale": 0.7,
       "name": "熱帯魚",
-      "text": "Tropical fish prefer warmer oceans, with a $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:18)."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:18)以上の温かい海に生息。"
     },
     {
       "type": "patchouli:entity",
@@ -404,28 +404,28 @@
       "entity": "tfc:isopod",
       "scale": 0.7,
       "name": "ダイオウグソクムシ",
-      "text": "Isopods spawn in deeper sections of oceans of $(l:core_mechanics/climate#temperature)temperature$() at most $(cfg:temperature:14)."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:14)以下の深い海域に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
       "name": "ロブスター",
-      "text": "Lobster spawn in any ocean that is at most of a $(l:core_mechanics/climate#temperature)temperature$() of $(cfg:temperature:21)."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:21)以下の海に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "ザリガニ",
-      "text": "Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:5) and a $(l:core_mechanics/climate#rainfall)rainfall$() of at least 125mm."
+      "text": "ロブスターに似ていますが、$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:5)以上 $(l:core_mechanics/climate#rainfall)降雨量$()125mm以上の川や湖に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horseshoe_crab",
       "scale": 0.7,
       "name": "カブトガニ",
-      "text": "Horseshoe crabs spawn in oceans of moderate climate, $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:10) and $(cfg:temperature:21) and with a $(l:core_mechanics/climate#rainfall)rainfall$() of at most 400mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:10)~$(cfg:temperature:21) $(l:core_mechanics/climate#rainfall)降雨量$()400mm以下の温暖な海に生息。"
     },
     {
       "type": "patchouli:text",
@@ -437,21 +437,21 @@
       "entity": "tfc:orca",
       "scale": 0.25,
       "name": "シャチ",
-      "text": "Orca whales live in deep oceans with $(l:core_mechanics/climate#temperature)temperature$() of at most $(cfg:temperature:19) and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 100mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:19)以下 $(l:core_mechanics/climate#rainfall)降雨量$()100mm以上の深い海に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dolphin",
       "scale": 0.4,
       "name": "イルカ",
-      "text": "Dolphins live in deep oceans with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:10) and $(l:core_mechanics/climate#rainfall)rainfall$() of at least 200mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:10)以上 $(l:core_mechanics/climate#rainfall)降雨量$()200mm以上の深い海に生息。"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:manatee",
       "scale": 0.25,
       "name": "マナティー",
-      "text": "Manatees live in any warm lake, with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:20) and $(l:core_mechanics/climate#rainfall)rainfall$() of at most 300mm."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:20)以上 $(l:core_mechanics/climate#rainfall)降雨量$()300mm以下の温かい湖に生息。"
     },
     {
       "type": "patchouli:text",

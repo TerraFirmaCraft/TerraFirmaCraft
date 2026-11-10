@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The bloomery can contain up to a maximum of $(cfg:bloomeryTotalCapacity) $(thing)Inputs$(), with $(cfg:bloomeryCapacity) items per layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br2)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
+      "text": "塊鉄炉には最大$(cfg:bloomeryTotalCapacity)個のアイテムが入れられます。煙突の各層には$(cfg:bloomeryCapacity)個のアイテムが入ります。煙突に層を追加するには、石ブロックを2層積み重ねます。$(br2)塊鉄炉にアイテムを追加するには、頂上まで登ってアイテムを中に投げ入れます。灰色の鉱石の塔が形成されるはずです。"
     },
     {
       "type": "patchouli:image",
