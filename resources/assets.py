@@ -1236,6 +1236,16 @@ def generate(rm: ResourceManager):
     rm.blockstate('ceramic/bowl').with_block_model({'all': 'tfc:block/ceramic_bowl'}, 'tfc:block/template_bowl').with_lang(lang('ceramic bowl')).with_block_loot('tfc:ceramic/bowl')
 
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_block_loot('tfc:barrel_rack')
+
+    for perch in ('parrot_perch', 'wall_parrot_perch'):
+        block = rm.blockstate(perch, variants=four_rotations('tfc:block/%s' % perch, (90, None, 180, 270)))
+        block.with_block_model(textures={
+            'log': 'tfc:block/wood/log/oak',
+            'log_top': 'tfc:block/wood/log_top/oak',
+            'particle': 'tfc:block/wood/log/oak'
+        }, parent='tfc:block/template_%s' % perch)
+        block.with_lang(lang(perch)).with_block_loot('tfc:%s' % perch).with_item_model()
+
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
     rm.item_model('firestarter', parent='item/handheld').with_lang(lang('firestarter'))
     rm.item_model('flint_and_pyrite', parent='item/handheld').with_lang(lang('flint and pyrite'))
@@ -2103,18 +2113,6 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s Tool Rack', wood))
         block.with_block_loot('tfc:wood/tool_rack/%s' % wood)
         block.with_item_model()
-
-        # Parrot Perches
-        for perch, name in (('parrot_perch', '%s Parrot Perch'), ('wall_parrot_perch', '%s Wall Parrot Perch')):
-            block = rm.blockstate('tfc:wood/%s/%s' % (perch, wood), model='tfc:block/wood/%s/%s' % (perch, wood), variants=four_rotations('tfc:block/wood/%s/%s' % (perch, wood), (90, None, 180, 270)))
-            block.with_block_model(textures={
-                'log': 'tfc:block/wood/log/%s' % wood,
-                'log_top': 'tfc:block/wood/log_top/%s' % wood,
-                'particle': 'tfc:block/wood/log/%s' % wood
-            }, parent='tfc:block/%s' % perch)
-            block.with_lang(lang(name, wood))
-            block.with_block_loot('tfc:wood/%s/%s' % (perch, wood))
-            block.with_item_model()
 
         # Loom
         block = rm.blockstate('tfc:wood/loom/%s' % wood, model='tfc:block/wood/loom/%s' % wood, variants=four_rotations('tfc:block/wood/loom/%s' % wood, (270, 180, None, 90)))

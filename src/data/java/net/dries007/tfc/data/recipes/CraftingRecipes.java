@@ -611,14 +611,6 @@ public interface CraftingRecipes extends Recipes
                 .shaped(blocks.get(Wood.BlockType.TOOL_RACK));
             recipe()
                 .input('L', lumber)
-                .pattern("L", "L")
-                .shaped(blocks.get(Wood.BlockType.PARROT_PERCH));
-            recipe()
-                .input('L', lumber)
-                .pattern("L ", " L")
-                .shaped(blocks.get(Wood.BlockType.WALL_PARROT_PERCH));
-            recipe()
-                .input('L', lumber)
                 .pattern("LLL", "LLL")
                 .shaped(blocks.get(Wood.BlockType.TRAPDOOR), 2);
             recipe()
@@ -1055,6 +1047,14 @@ public interface CraftingRecipes extends Recipes
             .input('L', TFCTags.Items.LUMBER)
             .pattern("LLL", "S S", "S S")
             .shaped(TFCBlocks.BARREL_RACK);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .pattern("L", "L")
+            .shaped(TFCBlocks.PARROT_PERCH);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .pattern("L ", " L")
+            .shaped(TFCBlocks.WALL_PARROT_PERCH);
         recipe()
             .input('L', TFCTags.Items.LUMBER)
             .input('R', Tags.Items.LEATHERS)

@@ -131,11 +131,13 @@ import net.dries007.tfc.common.blocks.soil.ColoredBlock;
 import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.common.blocks.wood.ParrotPerchBlock;
 import net.dries007.tfc.common.blocks.wood.TFCCeilingHangingSignBlock;
 import net.dries007.tfc.common.blocks.wood.TFCDoorBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSlabBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStairBlock;
 import net.dries007.tfc.common.blocks.wood.TFCWallHangingSignBlock;
+import net.dries007.tfc.common.blocks.wood.WallParrotPerchBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.SimpleFluid;
@@ -446,6 +448,8 @@ public final class TFCBlocks
     public static final Id<Block> BELLOWS = register("bellows", () -> new BellowsBlock(ExtendedProperties.of(MapColor.WOOD).noOcclusion().dynamicShape().pushReaction(PushReaction.DESTROY).sound(SoundType.WOOD).strength(3.0f).blockEntity(TFCBlockEntities.BELLOWS).ticks(BellowsBlockEntity::tickBoth)));
     public static final Id<Block> POWDERKEG = register("powderkeg", () -> new PowderkegBlock(ExtendedProperties.of(MapColor.WOOD).noOcclusion().dynamicShape().sound(SoundType.WOOD).strength(2.5f).blockEntity(TFCBlockEntities.POWDERKEG).serverTicks(PowderkegBlockEntity::serverTick)), block -> new TooltipBlockItem(block, new Item.Properties()));
     public static final Id<Block> BARREL_RACK = register("barrel_rack", () -> new BarrelRackBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.WOOD).flammableLikePlanks().strength(4f)));
+    public static final Id<Block> PARROT_PERCH = register("parrot_perch", () -> new ParrotPerchBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.WOOD).strength(2f).noOcclusion().flammableLikePlanks()));
+    public static final Id<Block> WALL_PARROT_PERCH = register("wall_parrot_perch", () -> new WallParrotPerchBlock(ExtendedProperties.of(MapColor.WOOD).sound(SoundType.WOOD).strength(2f).noOcclusion().flammableLikePlanks()));
 
     public static final Id<Block> PLACED_ITEM = registerNoItem("placed_item", () -> new PlacedItemBlock(ExtendedProperties.of().instabreak().sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.PLACED_ITEM)));
     public static final Id<Block> SCRAPING = registerNoItem("scraping", () -> new ScrapingBlock(ExtendedProperties.of().strength(0.2F).sound(SoundType.STEM).noOcclusion().blockEntity(TFCBlockEntities.SCRAPING)));

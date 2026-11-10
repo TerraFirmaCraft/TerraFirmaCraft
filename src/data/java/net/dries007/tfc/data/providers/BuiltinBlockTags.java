@@ -198,6 +198,8 @@ public class BuiltinBlockTags extends TagsProvider<Block> implements Accessors
                 TFCBlocks.WHITE_CEDAR_KRUMMHOLZ,
                 TFCBlocks.BELLOWS,
                 TFCBlocks.BARREL_RACK,
+                TFCBlocks.PARROT_PERCH,
+                TFCBlocks.WALL_PARROT_PERCH,
                 TFCBlocks.MELON,
                 TFCBlocks.PUMPKIN,
                 TFCBlocks.ROTTEN_MELON,
