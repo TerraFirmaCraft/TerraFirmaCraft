@@ -61,7 +61,7 @@ def generate(rm: ResourceManager):
     rm.placed_feature_tag('feature/shore_decorations', *['tfc:%s_patch' % v for v in SHORE_DECORATORS])
     rm.placed_feature_tag('feature/tide_pool_decorations', 'tfc:tide_pool', 'tfc:big_tide_pool')
     rm.placed_feature_tag('feature/ocean_decorations', 'tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp', 'tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch')
-    rm.placed_feature_tag('feature/clay_indicators', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch', 'tfc:plant/rose_patch')
+    rm.placed_feature_tag('feature/clay_indicators', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
     rm.placed_feature_tag('feature/surface_grasses', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
     rm.placed_feature_tag('feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder', 'tfc:raw_boulder_small_patch', 'tfc:cobble_boulder_small_patch', 'tfc:mossy_boulder_small_patch')
     rm.placed_feature_tag('feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow', 'tfc:rooted_dirt', 'tfc:mollisol_disc') # Does not include alfisol/podzol discs as those are placed per tree by the forest feature
@@ -490,6 +490,8 @@ def generate(rm: ResourceManager):
     igneous_rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive'])
     rm.configured_feature('ocean_ridge_rivulet', 'tfc:rivulet', {'states': [{'replace': 'tfc:rock/%s/%s' % (var, rock), 'with': 'tfc:rock/magma/%s' % rock} for var in ('raw', 'hardened') for rock in igneous_rocks]})
     rm.placed_feature('ocean_ridge_rivulet', 'tfc:ocean_ridge_rivulet', decorate_count(2), decorate_square(), ('tfc:ocean_ridge', {'min_distance': 0, 'max_distance': 32}))
+    configured_placed_feature(rm, 'hydrothermal_vent', 'minecraft:simple_block', {'to_place': simple_state_provider('tfc:hydrothermal_vent')}, decorate_heightmap('ocean_floor_wg'), decorate_replaceable(), decorate_would_survive('tfc:hydrothermal_vent'))
+    configured_placed_feature(rm, 'hydrothermal_vent_patch', 'minecraft:random_patch', {'tries': 8, 'xz_spread': 4, 'y_spread': 2, 'feature': 'tfc:hydrothermal_vent'}, decorate_chance(12), decorate_square(), ('tfc:ocean_ridge', {'min_distance': 0, 'max_distance': 32}))
 
     # Atoll Features
     for coral in ('tree', 'mushroom', 'claw'):
@@ -850,7 +852,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'pine_large'), 'tfc:random_tree', random_config('pine', 9, 1, trunk=[3, 5, 1], place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'pine_dead'), 'tfc:random_tree', random_config('pine', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'rosewood'), 'tfc:random_tree', random_config('rosewood', 18, 1, place=tree_placement_config(1, 9)))
-    configured_placed_feature(rm, ('tree', 'rosewood_large'), 'tfc:random_tree', random_config('rosewood', 8, 1, '_large', place=tree_placement_config(1, 9, 'submerged')))
+    configured_placed_feature(rm, ('tree', 'rosewood_large'), 'tfc:random_tree', random_config('rosewood', 8, 1, '_large', place=tree_placement_config(1, 9)))
     configured_placed_feature(rm, ('tree', 'rosewood_dead'), 'tfc:random_tree', random_config('rosewood', 6, 1, '_dead', place=tree_placement_config(1, 9, 'submerged')))
     configured_placed_feature(rm, ('tree', 'sequoia'), 'tfc:random_tree', random_config('sequoia', 7, place=tree_placement_config(1, 3), roots=root_config(4, 2, 15)))
     configured_placed_feature(rm, ('tree', 'sequoia_large'), 'tfc:stacked_tree', stacked_config('sequoia', 8, 16, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, '_large', place=tree_placement_config(2, 7), roots=root_config(6, 3, 33)))
@@ -1367,6 +1369,9 @@ def generate(rm: ResourceManager):
 
     # Underground decoration
     configured_placed_feature(rm, 'underground_loose_rocks', 'tfc:loose_rock', decorate_carving_mask(), decorate_chance(0.05), decorate_count(25), decorate_range(-32, 59), decorate_scanner('down', 12), decorate_random_offset(0, 1))
+    rm.configured_feature('cave_guano', 'minecraft:simple_block', {'to_place': {'type': 'minecraft:simple_state_provider', 'state': utils.block_state('tfc:groundcover/guano[fluid=empty]')}})
+    rm.placed_feature('cave_guano', 'tfc:cave_guano', decorate_underground(), decorate_replaceable(), decorate_would_survive('tfc:groundcover/guano[fluid=empty]'))
+    configured_placed_feature(rm, 'cave_guano_patch', 'minecraft:random_patch', {'tries': 24, 'xz_spread': 4, 'y_spread': 1, 'feature': 'tfc:cave_guano'}, decorate_carving_mask(utils.vertical_anchor(25, 'above_bottom'), 60), decorate_chance(0.0002), decorate_climate(min_temp=4, min_water=150, fuzzy=True), decorate_scanner('down', 12), decorate_random_offset(0, 1))
     rm.configured_feature('geode', 'minecraft:geode', {
         'blocks': {
             'filling_provider': {'type': 'minecraft:simple_state_provider', 'state': {'Name': 'minecraft:air'}},
@@ -2048,6 +2053,10 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'armadillo': spawner('tfc:armadillo', min_count=2, max_count=3),
 }
 
+FRESHWATER_SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
+    'pond_turtle': spawner('tfc:pond_turtle', min_count=1, max_count=3),
+}
+
 VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'spider': spawner('minecraft:spider', weight=100, min_count=4, max_count=4),
     'zombie': spawner('minecraft:zombie', weight=95, min_count=4, max_count=4),
@@ -2086,6 +2095,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     # Oceans
     if name == 'ocean_ridge':
         large_features.append('tfc:ocean_ridge_rivulet')
+        surface_decorations.append('tfc:hydrothermal_vent_patch')
 
     if ocean_features:
         if name != 'tidal_flats' and 'deep_ocean' not in name and name != 'ocean_ridge':
@@ -2134,6 +2144,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
     if 'salt_marsh' == name or 'tower_karst_bay' == name:
         spawners['water_ambient'] = [entity for entity in SALT_MARSH_AMBIENT.values()]
     spawners['monster'] = [entity for entity in VANILLA_MONSTERS.values()]
+    spawners['ambient'] = [spawner('minecraft:bat', weight=10, min_count=8, max_count=8)]
 
     if reef_features:
         large_features.append('tfc:coral_mushroom')
@@ -2153,8 +2164,11 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
             large_features += ['tfc:dead_forest']
         large_features += ['tfc:rare_bamboo', 'tfc:bamboo', 'tfc:rare_bamboo_golden', 'tfc:bamboo_golden', 'tfc:cave_vegetation']
         surface_decorations.append('#tfc:feature/land_plants')
-        spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
-        spawners['ambient'] = [entity for entity in LAND_AMBIENT.values()]
+        creatures = spawners.setdefault('creature', [])
+        creatures += [entity for entity in LAND_CREATURES.values() if entity['type'] not in {e['type'] for e in creatures}]
+        if (category in ('river', 'swamp') or 'lake' in name or name == 'river_valley') and name != 'salt_marsh':
+            spawners['creature'] += FRESHWATER_SHORE_CREATURES.values()
+        spawners['ambient'] += LAND_AMBIENT.values()
 
     if ('glaciated' in name) or ('mountains_edge' in name):
         if 'oceanic' in name:

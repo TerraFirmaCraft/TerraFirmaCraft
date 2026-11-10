@@ -191,6 +191,7 @@ import net.dries007.tfc.util.events.DouseFireEvent;
 import net.dries007.tfc.util.events.LoggingEvent;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -406,7 +407,7 @@ public final class ForgeEventHandler
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
         final Level level = event.getLevel();
-        if (!level.isClientSide)
+        if (!level.isClientSide && TFCConfig.SERVER.enableExplosionCollapsing.get() && TFCConfig.SERVER.enableBlockCollapsing.get())
         {
             WorldTracker.get(level).addCollapsePositions(BlockPos.containing(event.getExplosion().center()), event.getExplosion().getToBlow());
         }
@@ -417,6 +418,7 @@ public final class ForgeEventHandler
         if (event.getLevel() instanceof ServerLevel level)
         {
             WorldTracker.get(level).tick();
+            WeatherHelpers.tickCatchUp(level);
         }
     }
 
@@ -484,6 +486,11 @@ public final class ForgeEventHandler
         if (state.getBlock() instanceof AqueductBlock)
         {
             event.setCanConvert(false); // Waterlogged aqueducts do not count as the source when creating source blocks
+        }
+
+        if (!Helpers.isFluid(state.getFluidState(), TFCTags.Fluids.USABLE_IN_SLUICE))
+        {
+            return; // Sluices only output fresh water, so this cannot be a sluice output
         }
 
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -865,6 +872,11 @@ public final class ForgeEventHandler
         final LivingEntity entity = event.getEntity();
         final LevelAccessor level = event.getLevel();
         final MobSpawnType spawn = event.getSpawnType();
+
+        if (!(event.getLevel().getLevel().getChunkSource().getGenerator() instanceof ChunkGeneratorExtension))
+        {
+            return;
+        }
 
         // we only care about "natural" spawns
         if (spawn == MobSpawnType.NATURAL || spawn == MobSpawnType.CHUNK_GENERATION || spawn == MobSpawnType.REINFORCEMENT)

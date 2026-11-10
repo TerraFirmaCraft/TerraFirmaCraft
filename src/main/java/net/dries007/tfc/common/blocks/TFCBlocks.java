@@ -281,6 +281,8 @@ public final class TFCBlocks
         register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(ExtendedProperties.of().pathType(PathType.LAVA).mapColor(MapColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)), b -> new BlockItem(b, rock.createItemProperties()))
     );
 
+    public static final Id<Block> HYDROTHERMAL_VENT = register("hydrothermal_vent", () -> new HydrothermalVentBlock(ExtendedProperties.of().pathType(PathType.DAMAGE_FIRE).mapColor(MapColor.COLOR_GRAY).noLootTable().strength(4f).isValidSpawn((state, level, pos, type) -> type.fireImmune())));
+
     // Metals
 
     public static final Map<Metal, Map<Metal.BlockType, Id<Block>>> METALS = Helpers.mapOf(Metal.class, metal ->
@@ -359,8 +361,8 @@ public final class TFCBlocks
 
     public static final Id<Block> ROTTEN_PUMPKIN = registerNoItem("rotten_pumpkin", () -> new Block(Properties.of().mapColor(MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
     public static final Id<Block> ROTTEN_MELON = registerNoItem("rotten_melon", () -> new Block(Properties.of().mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
-    public static final Id<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(MapColor.COLOR_ORANGE).mapColor(MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick).instrument(NoteBlockInstrument.DIDGERIDOO).pushReaction(PushReaction.DESTROY), ROTTEN_PUMPKIN), b -> new BlockItem(b, new Item.Properties()));
-    public static final Id<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(MapColor.COLOR_ORANGE).mapColor(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick).instrument(NoteBlockInstrument.DIDGERIDOO).pushReaction(PushReaction.DESTROY), ROTTEN_MELON), b -> new BlockItem(b, new Item.Properties()));
+    public static final Id<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick).instrument(NoteBlockInstrument.DIDGERIDOO).pushReaction(PushReaction.DESTROY), ROTTEN_PUMPKIN), b -> new BlockItem(b, new Item.Properties()));
+    public static final Id<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(MapColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick).instrument(NoteBlockInstrument.DIDGERIDOO).pushReaction(PushReaction.DESTROY), ROTTEN_MELON), b -> new BlockItem(b, new Item.Properties()));
 
     public static final Id<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(Properties.of().pushReaction(PushReaction.DESTROY).mapColor(MapColor.COLOR_GREEN).pushReaction(PushReaction.DESTROY).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()));
 

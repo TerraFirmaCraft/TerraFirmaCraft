@@ -837,7 +837,7 @@ SINGLE_BLOCK_STAGE_PLANTS: dict[str, list[int, int, int, int, int, int]] = {
     'yucca': [0, 1, 2, 2, 2, 3]
 }
 
-MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm')
+MODEL_PLANTS = ('arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant', 'sea_palm')
 SEAGRASS = ('star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail')
 
 SEAWEED = ('sago', 'gutweed', 'laminaria', 'milfoil')
@@ -881,7 +881,7 @@ SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'humus', 'rotten_flesh', 'bone')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water', 'ocean_creeping', 'rotatable_water_plant', 'ocean_rock_creeping')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'saguaro_patch', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'philodendron_cover', 'tree_fern', 'arundo', 'flame_vine', 'cycad')
-UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'water_surface_spring', 'extra_water_surface_spring', 'glacial_spring', 'ice_sheet_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks')
+UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'water_surface_spring', 'extra_water_surface_spring', 'glacial_spring', 'ice_sheet_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'cave_guano_patch')
 
 # Note, this may be worth moving entirely to groundwater now that we have that system
 # When this gets updated, it needs to be updated in both the book (generate_book.py) and in the climate range (data.py) to use the new hydration and rainfall values
@@ -927,7 +927,7 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'turkey', 'peafowl', 'grouse', 'venison', 'bison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'tropical_fish', 'turtle', 'calamari', 'shellfish', *SIMPLE_FRESHWATER_FISH, 'frog_legs', 'fox', 'armadillo')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'leopard_seal', 'frog', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'dromedary_camel', 'bactrian_camel', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'bison', 'peafowl', 'jerboa', 'lemming', 'mongoose', 'armadillo', *SIMPLE_FRESHWATER_FISH)
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'manatee', 'penguin', 'leopard_seal', 'frog', 'turtle', 'pond_turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'dromedary_camel', 'bactrian_camel', 'deer', 'moose', 'boar', 'rat', 'cat', 'dog', 'wolf', 'panda', 'grouse', 'pheasant', 'turkey', 'ocelot', 'direwolf', 'hyena', 'tiger', 'crocodile', 'bongo', 'caribou', 'gazelle', 'wildebeest', 'bison', 'peafowl', 'jerboa', 'lemming', 'mongoose', 'armadillo', *SIMPLE_FRESHWATER_FISH)
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', *SIMPLE_FRESHWATER_FISH)
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'crate', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'blast_furnace', 'large_vessel', 'powderkeg', 'bowl', 'hot_poured_glass', 'glass_basin', 'axle', 'sewing_table', 'shelf', 'thatch_bed', 'trip_hammer', 'windmill', 'firebox', 'mold_table', 'channel', 'power_loom', 'lobster_trap', 'buoy')
@@ -1074,6 +1074,13 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.javelin.hit_ground': 'Javelin vibrates',
     'subtitles.item.tfc.javelin.throw': 'Javelin clangs',
     'subtitles.item.tfc.cool': 'Something hisses',
+    'subtitles.item.tfc.glassworking': 'Glass being worked',
+    'subtitles.item.tfc.glassworking.blow': 'Blowpipe whooshes',
+    'subtitles.item.tfc.glassworking.roll': 'Cloth rolls glass',
+    'subtitles.item.tfc.glassworking.stretch': 'Glass stretches',
+    'subtitles.item.tfc.glassworking.pinch': 'Jacks pinch glass',
+    'subtitles.item.tfc.glassworking.flatten': 'Paddle flattens glass',
+    'subtitles.item.tfc.glassworking.saw': 'Gem Saw cuts glass',
     **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % lang(metal)) for metal, data in METALS.items() if data.type == 'all'),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
@@ -1646,6 +1653,7 @@ DEFAULT_LANG = {
     'entity.tfc.leopard_seal': 'Leopard Seal',
     'entity.tfc.frog': 'Frog',
     'entity.tfc.turtle': 'Turtle',
+    'entity.tfc.pond_turtle': 'Pond Turtle',
     'entity.tfc.pig': 'Pig',
     'entity.tfc.pig.male': 'Pig',
     'entity.tfc.pig.female': 'Sow',
@@ -2255,6 +2263,7 @@ DEFAULT_LANG = {
     'tfc.config.server.enableSmallVesselInventoryInteraction': 'Enable Small Vessel Inventory Interaction',
     'tfc.config.server.enableSnowSlowEntities': 'Enable Snow Slow Entities',
     'tfc.config.server.snowMaxAccumulationOnUpdate': 'Max Snow Accumulation on Update',
+    'tfc.config.server.snowMaxCatchUpChunksPerTick': 'Max Snow Catch-Up Chunks per Tick',
     'tfc.config.server.ticksPerSnowAccumulation': 'Ticks Per Snow Accumulation',
     'tfc.config.server.snowMeltMultiplier': 'Snow Melt Multiplier',
     'tfc.config.server.enableThatchBedSleeping': 'Enable Thatch Bed Sleeping',
@@ -2269,7 +2278,6 @@ DEFAULT_LANG = {
     'tfc.config.server.enableVanillaMonsters': 'Enable Vanilla Monsters',
     'tfc.config.server.enableVanillaMonstersOnSurface': 'Enable Vanilla Monsters on Surfac',
     'tfc.config.server.enableVanillaSkeletonHorseSpawning': 'Enable Vanilla Skeleton Horse Spawning',
-    'tfc.config.server.enableVanillaWeatherEffects': 'Enable Vanilla Weather Effects',
     'tfc.config.server.familiarityDecayLimit': 'Familiarity Decay Limit',
     'tfc.config.server.farmlandMakesTheBestRaceTracks': 'Farmland Makes the Best Race Tracks',
     'tfc.config.server.fireboxEnableAutomation': 'Enable Automation',
@@ -2433,7 +2441,6 @@ DEFAULT_LANG = {
     'tfc.config.server.traitVinegarModifier': 'Vinegar Modifier',
     'tfc.config.server.traitWildModifier': 'Wild Modifier',
     'tfc.config.server.traitWoodGrilledModifier': 'Wood Grilled Modifier',
-    'tfc.config.server.usePlacedItemWhitelist': 'Use Placed Item Whitelist',
     'tfc.config.server.volcanicGlassBottleBreakChance': 'Volcanic Glass Bottle Break Chance',
     'tfc.config.server.volcanicGlassBottleCapacity': 'Volcanic Glass Bottle Capacity',
     'tfc.config.server.whiteCedarSaplingGrowthTicks': 'White Cedar Sapling Growth Ticks',
@@ -2480,7 +2487,7 @@ DEFAULT_LANG = {
     'tfc.recipe.barrel.tfc.barrel.mortar': 'Mortar',
     'tfc.recipe.barrel.tfc.barrel.curdled_milk': 'Curdling Milk',
     'tfc.recipe.barrel.tfc.barrel.cheese': 'Cheese',
-    'tfc.recipe.barrel.tfc.barrel.raw_alabaster': 'Raw Plaster',
+    'tfc.recipe.barrel.tfc.barrel.alabaster.raw': 'Raw Plaster',
     'tfc.recipe.barrel.tfc.barrel.clean_jute_net': 'Cleaning Jute Net',
     'tfc.recipe.barrel.tfc.barrel.candle': 'Candle',
     'tfc.recipe.barrel.tfc.barrel.bleach_wool': 'Bleaching Wool',

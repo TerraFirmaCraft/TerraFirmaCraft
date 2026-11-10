@@ -245,6 +245,7 @@ public class QuernBlockEntity extends TickableInventoryBlockEntity<ItemStackHand
     @Override
     protected void onLoadAdditional()
     {
+        super.onLoadAdditional();
         performNetworkAction(NetworkAction.ADD);
     }
 

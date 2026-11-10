@@ -124,6 +124,25 @@ public abstract class PlantBlock extends TFCBushBlock implements ISlowEntities
         };
     }
 
+    public static PlantBlock createDeadBush(RegistryPlant plant, ExtendedProperties properties)
+    {
+        return new PlantBlock(properties)
+        {
+            @Override
+            public RegistryPlant getPlant()
+            {
+                return plant;
+            }
+
+            @Override
+            public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+            {
+                final BlockState belowState = level.getBlockState(pos.below());
+                return isDryBlockPlantable(belowState) || Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+            }
+        };
+    }
+
     public static PlantBlock createPerchedEpiphyte(RegistryPlant plant, ExtendedProperties properties)
     {
         return new PlantBlock(properties)

@@ -41,6 +41,13 @@ public final class TFCSounds
     public static final Id JAVELIN_HIT_GROUND = register("item.javelin.hit_ground");
     public static final Id JAVELIN_THROWN = register("item.javelin.throw");
     public static final Id ITEM_COOL = register("item.cool");
+    public static final Id GLASSWORKING = register("item.glassworking");
+    public static final Id GLASSWORKING_BLOW = register("item.glassworking.blow");
+    public static final Id GLASSWORKING_ROLL = register("item.glassworking.roll");
+    public static final Id GLASSWORKING_STRETCH = register("item.glassworking.stretch");
+    public static final Id GLASSWORKING_PINCH = register("item.glassworking.pinch");
+    public static final Id GLASSWORKING_FLATTEN = register("item.glassworking.flatten");
+    public static final Id GLASSWORKING_SAW = register("item.glassworking.saw");
 
     // Blocks
     public static final Id QUERN_DRAG = register("block.quern.drag");

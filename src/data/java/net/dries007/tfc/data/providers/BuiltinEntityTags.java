@@ -43,11 +43,12 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
                 TFCEntities.MANATEE.get(),
                 TFCEntities.SQUID.get(),
                 TFCEntities.OCTOPOTEUTHIS.get(),
-                TFCEntities.TURTLE.get()
+                TFCEntities.TURTLE.get(),
+                TFCEntities.POND_TURTLE.get()
             );
         tag(EntityTypeTags.AQUATIC)
             .addTags(WATER_AMBIENT, WATER_CREATURES)
-            .add(TFCEntities.TURTLE.get());
+            .add(TFCEntities.TURTLE.get(), TFCEntities.POND_TURTLE.get());
         tag(EntityTypeTags.FALL_DAMAGE_IMMUNE)
             .addTag(OVIPAROUS_ANIMALS)
             .add(
@@ -164,6 +165,7 @@ public class BuiltinEntityTags extends EntityTypeTagsProvider
 
         tag(AMPHIBIOUS_CREATURES)
             .add(TFCEntities.TURTLE.get())
+            .add(TFCEntities.POND_TURTLE.get())
             .add(TFCEntities.PENGUIN.get())
             .add(TFCEntities.LEOPARD_SEAL.get())
             .add(TFCEntities.FROG.get());

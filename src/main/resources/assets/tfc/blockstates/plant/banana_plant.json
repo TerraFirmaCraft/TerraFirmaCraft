@@ -17,7 +17,7 @@
       "model": "tfc:block/plant/banana_trunk_1"
     },
     "lifecycle=dormant,stage=2": {
-      "model": "tfc:block/plant/banana_trunk_2"
+      "model": "tfc:block/plant/banana_trunk_2_dormant"
     },
     "lifecycle=fruiting,stage=0": {
       "model": "tfc:block/plant/banana_trunk_0"

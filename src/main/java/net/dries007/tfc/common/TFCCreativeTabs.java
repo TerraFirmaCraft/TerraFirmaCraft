@@ -488,6 +488,7 @@ public final class TFCCreativeTabs
         }
 
         TFCBlocks.MAGMA_BLOCKS.values().forEach(out::accept);
+        out.accept(TFCBlocks.HYDROTHERMAL_VENT);
 
         out.accept(TFCBlocks.LIGNITE);
         out.accept(TFCBlocks.BITUMINOUS_COAL);

@@ -8,12 +8,17 @@ package net.dries007.tfc.common.commands;
 
 import java.util.function.Predicate;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.blocks.BlockPredicateArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.Level;
 
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
@@ -48,6 +53,8 @@ public final class CountBlockCommand
 
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
 
+        BlockPos example = null;
+
         int found = 0;
         for (int x = -radius; x <= radius; x++)
         {
@@ -58,13 +65,30 @@ public final class CountBlockCommand
                     cursor.set(center).move(x, 0, z).setY(y);
                     if (block.test(new BlockInWorld(level, cursor, true)))
                     {
+                        if (example == null)
+                            example = cursor.immutable();
                         found++;
                     }
                 }
             }
         }
         int finalFound = found;
-        source.sendSuccess(() -> Component.translatable(DONE, finalFound), true);
+        final BlockPos fExample = example;
+        source.sendSuccess(() -> {
+            final MutableComponent component = Component.translatable(DONE, finalFound);
+            if (fExample != null)
+            {
+                component.append(" ");
+                component.append(ComponentUtils.wrapInSquareBrackets(Component.translatable("chat.coordinates", fExample.getX(), fExample.getY(), fExample.getZ()))
+                    .withStyle(
+                        p_214489_ -> p_214489_.withColor(ChatFormatting.GREEN)
+                            .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + fExample.getX() + " " + fExample.getY() + " " + fExample.getZ()))
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.translatable("chat.coordinates.tooltip")))
+                    ));
+            }
+
+            return component;
+        }, true);
         return Command.SINGLE_SUCCESS;
     }
 }

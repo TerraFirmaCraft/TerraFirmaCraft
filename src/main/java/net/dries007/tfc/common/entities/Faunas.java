@@ -79,6 +79,7 @@ public class Faunas
     public static final Id<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
     public static final Id<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
     public static final Id<TFCTurtle> TURTLE = registerAnimal(TFCEntities.TURTLE);
+    public static final Id<TFCTurtle> POND_TURTLE = registerAnimal(TFCEntities.POND_TURTLE);
     public static final Id<Penguin> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final Id<LeopardSeal> LEOPARD_SEAL = registerAnimal(TFCEntities.LEOPARD_SEAL);
     public static final Id<TFCFrog> FROG = registerAnimal(TFCEntities.FROG);
@@ -145,6 +146,7 @@ public class Faunas
         registerSpawnPlacement(event, ORCA);
         registerSpawnPlacement(event, MANATEE);
         registerSpawnPlacement(event, TURTLE);
+        registerSpawnPlacement(event, POND_TURTLE);
         registerSpawnPlacement(event, PENGUIN);
         registerSpawnPlacement(event, LEOPARD_SEAL);
         registerSpawnPlacement(event, FROG);

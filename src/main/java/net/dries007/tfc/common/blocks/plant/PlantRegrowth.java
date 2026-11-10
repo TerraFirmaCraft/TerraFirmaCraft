@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.BiPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -55,10 +56,10 @@ public final class PlantRegrowth
     @Nullable
     public static BlockPos spreadSelf(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, int selfSpreadRange, int radius, int maxPlants, BiPredicate<BlockState, BlockPos> occlusionTest, BiPredicate<BlockState, BlockPos> placementTest)
     {
-        BlockPos newPos = pos.offset(Mth.nextInt(random, 0, selfSpreadRange), 0, Mth.nextInt(random, 0, selfSpreadRange));
+        BlockPos newPos = pos.offset(Mth.nextInt(random, -selfSpreadRange, selfSpreadRange), 0, Mth.nextInt(random, -selfSpreadRange, selfSpreadRange));
         if (newPos.equals(pos))
         {
-            newPos = pos.offset(Mth.nextInt(random, 1, selfSpreadRange), 0, Mth.nextInt(random, 1, selfSpreadRange));
+            newPos = pos.relative(Direction.Plane.HORIZONTAL.getRandomDirection(random));
         }
         state = FluidHelpers.fillWithFluid(state, level.getFluidState(newPos).getType());
         if (state != null && placementTest.test(level.getBlockState(newPos), newPos) && state.canSurvive(level, newPos))
@@ -76,7 +77,7 @@ public final class PlantRegrowth
                     }
                     if (occlusionTest.test(level.getBlockState(cursor), cursor))
                     {
-                        if (plants++ > maxPlants)
+                        if (plants++ > maxPlants + 1)
                         {
                             return null;
                         }
@@ -148,6 +149,10 @@ public final class PlantRegrowth
         {
             for (int z = -2; z <= 2; z++)
             {
+                if (x == 0 && z == 0)
+                {
+                    continue;
+                }
                 cursor.setWithOffset(pos, x, 0, z);
                 if (level.getBlockState(cursor).getBlock() instanceof LooseRockBlock)
                 {

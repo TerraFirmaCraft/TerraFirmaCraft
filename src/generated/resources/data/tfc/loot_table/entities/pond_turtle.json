@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:turtle_scute"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:food/turtle"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "tfc:entities/pond_turtle"
+}

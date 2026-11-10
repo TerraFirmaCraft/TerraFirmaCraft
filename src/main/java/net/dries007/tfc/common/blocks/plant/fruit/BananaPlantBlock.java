@@ -88,7 +88,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements HoeOverlayBl
         {
             basePos = pos;
         }
-        final int hydration = getFruitBushHydrationFromRootPos(level, basePos);
+        final int hydration = getFruitBushHydrationFromRootPos(level, basePos.below());
         final float temp = Climate.getAverageTemperature(level, basePos);
 
         if (climateRange.get().checkBoth(hydration, temp, false))
@@ -97,7 +97,12 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements HoeOverlayBl
         }
         else
         {
-            kill(level, pos);
+            final BlockPos.MutableBlockPos cursor = pos.mutable();
+            while (Helpers.isBlock(level.getBlockState(cursor), this))
+            {
+                cursor.move(Direction.UP);
+            }
+            kill(level, cursor);
         }
     }
 
@@ -216,10 +221,9 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements HoeOverlayBl
         if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity bush)
         {
             final ClimateRange range = climateRange.get();
-            final BlockPos sourcePos = bush.getStemPos().below();
             final int hydration = getFruitBushHydration(level, pos);
             text.accept(FarmlandBlock.getHydrationTooltip(range, false, hydration));
-            text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, sourcePos, range, false));
+            text.accept(FarmlandBlock.getAverageTemperatureTooltip(level, bush.getStemPos(), range, false));
         }
     }
 

@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryPlant;
 
@@ -109,12 +110,17 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
             if (direction == Direction.DOWN)
                 direction = Direction.UP;
             final BlockPos newPos = random.nextFloat() < 0.2f ? pos.relative(direction).above() : pos.relative(direction);
-            if (level.getBlockState(newPos).isAir())
+            final BlockState targetState = level.getBlockState(newPos);
+            if (FluidHelpers.isAirOrEmptyFluid(targetState))
             {
-                final BlockState newState = updateStateFromSides(level, newPos, state);
-                if (!newState.isAir())
+                final BlockState filledState = FluidHelpers.fillWithFluid(state, targetState.getFluidState().getType());
+                if (filledState != null)
                 {
-                    level.setBlockAndUpdate(newPos, newState);
+                    final BlockState newState = updateStateFromSides(level, newPos, filledState);
+                    if (!newState.isAir())
+                    {
+                        level.setBlockAndUpdate(newPos, newState);
+                    }
                 }
             }
         }
@@ -178,7 +184,7 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean ground = block.canCreepOn(level, pos, level.getBlockState(mutablePos), direction);
+            boolean ground = block.canCreepOn(level, mutablePos, level.getBlockState(mutablePos), direction);
 
             state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
             hasEarth |= ground;

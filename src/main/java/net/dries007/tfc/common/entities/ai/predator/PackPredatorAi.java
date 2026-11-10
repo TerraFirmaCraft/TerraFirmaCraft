@@ -19,7 +19,6 @@ import net.minecraft.world.entity.ai.behavior.BabyFollowAdult;
 import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
 import net.minecraft.world.entity.ai.behavior.FollowTemptation;
 import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
-import net.minecraft.world.entity.ai.behavior.MoveToTargetSink;
 
 import net.dries007.tfc.common.entities.ai.SetLookTarget;
 
@@ -31,6 +30,7 @@ import net.minecraft.world.entity.schedule.Activity;
 import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.pet.MoveToTargetSinkIfNotSleeping;
 import net.dries007.tfc.common.entities.predator.Predator;
 
 public class PackPredatorAi
@@ -74,7 +74,7 @@ public class PackPredatorAi
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new AggressiveSwim(0.8F),
             new LookAtTargetSink(45, 90),
-            new MoveToTargetSink(),
+            new MoveToTargetSinkIfNotSleeping(),
             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS)
         ));
     }
@@ -124,7 +124,7 @@ public class PackPredatorAi
     {
         predator.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).ifPresent(list -> {
             list.forEach(entity -> {
-                if (entity instanceof PackPredator otherPredator)
+                if (entity instanceof PackPredator otherPredator && otherPredator.getType() == predator.getType())
                 {
                     if (target != null)
                     {

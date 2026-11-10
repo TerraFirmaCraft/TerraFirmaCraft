@@ -36,7 +36,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l)$(a)果物$()$(): 果物の栄養素は主にベリーの茂みや果樹などの$(l:the_world/wild_fruits)結実植物$()から得られます。 これに対する注目すべき例外は $(l:food/crops#pumpkin)カボチャ$() と $(l:food/crops#pumpkin)メロン$() で、これらが含む栄養素は果物です。$(br2)$(l)$ (2)野菜$()$(): ほぼすべての $(l:food/crops)作物$()から得られます。$(br2)$(l)$(c)タンパク質$()$(): タンパク質は $(l:the_world/wild_animals)動物$() の肉から得られます。タンパク質と野菜の栄養素を含む $(l:food/crops#soybean)大豆$() からも入手できます。"
+      "text": "$(l)$(a)果物$()$(): 果物の栄養素は主にベリーの茂みや果樹などの$(l:the_world/wild_fruits)結実植物$()から得られます。 これに対する注目すべき例外は $(l:food/crops#pumpkin)カボチャ$() と $(l:food/crops#pumpkin)メロン$() で、これらが含む栄養素は果物です。$(br2)$(l)$(2)野菜$()$(): ほぼすべての $(l:food/crops)作物$()から得られます。$(br2)$(l)$(c)タンパク質$()$(): タンパク質は $(l:the_world/wild_animals)動物$() の肉から得られます。タンパク質と野菜の栄養素を含む $(l:food/crops#soybean)大豆$() からも入手できます。"
     },
     {
       "type": "patchouli:text",

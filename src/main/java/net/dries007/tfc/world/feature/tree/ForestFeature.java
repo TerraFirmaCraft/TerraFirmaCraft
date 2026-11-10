@@ -275,7 +275,7 @@ public class ForestFeature extends Feature<ForestConfig>
             if (entry != null)
             {
                 final int fallChance = entry.fallenChance();
-                if (fallChance > 0 && level.getRandom().nextInt(fallChance) == 0)
+                if (fallChance > 0 && random.nextInt(fallChance) == 0)
                 {
                     BlockState log = entry.fallenLog().orElse(null);
                     if (log != null)
@@ -322,7 +322,7 @@ public class ForestFeature extends Feature<ForestConfig>
                         {
                             // Balanced
                             mutablePos.set(start);
-                            for (int i = 0; i < length; i++)
+                            for (int i = 0; i < valid; i++)
                             {
                                 level.setBlock(mutablePos, log, 2);
                                 mutablePos.move(axis);

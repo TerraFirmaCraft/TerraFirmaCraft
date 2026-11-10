@@ -45,7 +45,8 @@ public class RammingPreyAi
     protected static final TargetingConditions RAM_TARGET_CONDITIONS_ADULT_MALE = TargetingConditions.forCombat().selector((target) ->
     {
         return (target.level().getWorldBorder().isWithinBounds(target.getBoundingBox())
-            && !(target instanceof RammingPrey && !Helpers.isEntity(target, TFCTags.Entities.NOT_RAMMED_BY_RAMMERS) && (!((RammingPrey) target).isMale() || target.isBaby() || (target.getHealth() / target.getMaxHealth() < 0.7)))
+            && !Helpers.isEntity(target, TFCTags.Entities.NOT_RAMMED_BY_RAMMERS)
+            && !(target instanceof RammingPrey && (!((RammingPrey) target).isMale() || target.isBaby() || (target.getHealth() / target.getMaxHealth() < 0.7)))
         );
     });
 

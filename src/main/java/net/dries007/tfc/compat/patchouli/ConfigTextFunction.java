@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,6 +41,9 @@ import net.dries007.tfc.util.tooltip.Tooltips;
  * <p>
  * {@link #VALUES} is the set of names the book is allowed to reference. Any name used in {@code generate_book.py}
  * must appear here.
+ * <p>
+ * Addons can register their own text functions with {@link #register(String, Function)}, so that they are also
+ * substituted where Patchouli's text parser isn't run, such as table cells.
  */
 public final class ConfigTextFunction
 {
@@ -46,7 +51,9 @@ public final class ConfigTextFunction
 
     private static final String TEMPERATURE = "temperature:";
     private static final String HEAT = "heat:";
-    private static final Pattern REFERENCE = Pattern.compile("\\$\\(" + NAME + ":([^)]*)\\)");
+    private static final Pattern REFERENCE = Pattern.compile("\\$\\(([a-z_]+):([^)]*)\\)");
+
+    private static final Map<String, Function<String, Component>> FUNCTIONS = new ConcurrentHashMap<>();
 
     private static final Map<String, Supplier<Component>> VALUES = buildValues();
 
@@ -137,20 +144,23 @@ public final class ConfigTextFunction
     {
         final String value = text.getString();
         final Matcher matcher = REFERENCE.matcher(value);
-        if (!matcher.find())
+        MutableComponent result = null;
+        int last = 0;
+        while (matcher.find())
+        {
+            final Function<String, Component> function = FUNCTIONS.get(matcher.group(1));
+            if (function == null)
+                continue;
+            if (result == null)
+                result = Component.empty().withStyle(text.getStyle());
+            result.append(value.substring(last, matcher.start()));
+            result.append(unknownOr(function.apply(matcher.group(2)), matcher.group(2)));
+            last = matcher.end();
+        }
+        if (result == null)
         {
             return text;
         }
-
-        final MutableComponent result = Component.empty().withStyle(text.getStyle());
-        int last = 0;
-        do
-        {
-            result.append(value.substring(last, matcher.start()));
-            result.append(unknownOr(resolve(matcher.group(1)), matcher.group(1)));
-            last = matcher.end();
-        }
-        while (matcher.find());
         result.append(value.substring(last));
         return result;
     }
@@ -170,8 +180,18 @@ public final class ConfigTextFunction
 
     public static void register()
     {
-        PatchouliAPI.get().registerFunction(NAME, (param, style) -> {
-            final Component component = unknownOr(resolve(param), param);
+        register(NAME, ConfigTextFunction::resolve);
+    }
+
+    /**
+     * Registers the field guide text function {@code $(<name>:<param>)}, both with Patchouli, and so that
+     * {@link #substitute} can resolve it. Addons should use this rather than registering with Patchouli directly.
+     */
+    public static void register(String name, Function<String, Component> resolver)
+    {
+        FUNCTIONS.put(name, resolver);
+        PatchouliAPI.get().registerFunction(name, (param, style) -> {
+            final Component component = unknownOr(resolver.apply(param), param);
             // The book renders text, not components, so any color the value carries has to be moved onto the span
             final TextColor color = component.getStyle().getColor();
             if (color != null)

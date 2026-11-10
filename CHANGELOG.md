@@ -1,22 +1,9 @@
 ### Changes
-- Added more info to inventory tab tooltips (#3729)
-- Show the survival inventory tabs in creative mode (#3728)
-- Barrel dyeing recipes for terracotta now use plain terracotta as the input, allowing you to make white terracotta (#3714)
-- Welding recipes no longer display an anvil tier requirement in JEI/EMI when they have no minimum tier (#3695)
-- Flower cuttings now display all possible flowers in JEI/EMI instead of an empty item (#3736)
-- Exposed `airTicks` on more devices (#3734)
 
-### Fixes
-- Fix a crash with bamboo (#3704)
-- Fix the Globe Trotter advancement being impossible to complete in some cases (#3722)
-- Fix javelins not dealing variable thrown damage (#3724)
-- Fix several field guide typos (#3715)
-- Fix the berry bush config item (#3731)
-- Fix prey animals not fleeing from predators (#3726) (#3727)
-- Fix crushing damage (#3725)
-- Fix firepits consuming fuel while the calendar is paused (#3733)
-- Fix plants rendering in their non-blooming state outside the world, such as in the field guide or in JEI/EMI (#3186)
-- Fix a crash when using Vivecraft (most likely)
-- Fix incorrect Rankine calculation (#3738)
-- Fix falling blocks getting stuck on boats (#3700)
-- Fix an issue with addons/other mods adding food items and it crashing with creative tabs (#3711)
+- Allow redstone to turn lamps on/off.
+- Lamps now have a comparator output based on fuel.
+- Lamps show their time left in Jade regardless of their lit/unlit status.
+- Lava lamps should now be auto-lit in more situations (such as placement)
+- Lamps now have particle effects.
+- Charcoal forges will now insert fuel, molds, and heatable items automatically when you click.
+- Loot tables now work with TFC Containers.

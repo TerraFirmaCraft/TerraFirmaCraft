@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,13 +19,26 @@ import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCTurtle extends AmphibiousAnimal
 {
+    public final AnimationState hidingAnimation = new AnimationState();
+
     public TFCTurtle(EntityType<? extends AmphibiousAnimal> type, Level level)
     {
         super(type, level, TFCSounds.TURTLE);
+    }
+
+    @Override
+    public void tick()
+    {
+        if (level().isClientSide)
+        {
+            EntityHelpers.startOrStop(hidingAnimation, isPlayingDead(), tickCount);
+        }
+        super.tick();
     }
 
     @Override

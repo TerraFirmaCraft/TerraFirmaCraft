@@ -64,10 +64,4 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
             default -> GRASS_SHAPE;
         };
     }
-
-    @Override
-    public float getMaxHorizontalOffset()
-    {
-        return super.getMaxHorizontalOffset();
-    }
 }

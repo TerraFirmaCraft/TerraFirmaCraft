@@ -6,14 +6,19 @@
 
 package net.dries007.tfc.mixin.accessor;
 
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.world.level.levelgen.RandomState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(ChunkMap.class)
 public interface ChunkMapAccessor
 {
     @Accessor("randomState")
     RandomState accessor$getRandomState();
+
+    @Invoker("getChunks")
+    Iterable<ChunkHolder> invoke$getChunks();
 }

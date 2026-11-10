@@ -438,6 +438,7 @@ public class ClientForgeEventHandler
         final Player player = ClientHelpers.getPlayer();
         if (player != null && level != null && level.getGameTime() % 2 == 0)
         {
+            final boolean boating = player.getVehicle() instanceof Boat;
             final BlockPos pos = player.blockPosition();
             final Vec2 wind = ClimateRenderCache.INSTANCE.getWind();
             final float windStrength = wind.length();
@@ -446,7 +447,7 @@ public class ClientForgeEventHandler
             {
                 count = (int) (windStrength * 8);
             }
-            else if (player.getVehicle() instanceof Boat)
+            else if (boating)
             {
                 count = 2; // always show if in a boat
             }
@@ -455,7 +456,10 @@ public class ClientForgeEventHandler
             final double xBias = wind.x > 0 ? 6 : -6;
             final double zBias = wind.y > 0 ? 6 : -6;
 
-            // don't spawn wind particles in rain
+            // don't spawn wind particles in rain or at midnight (to improve visibility of stars)
+            final int hour = Calendars.CLIENT.getHourOfDay();
+            if ((hour == 0 || hour == 23) && !boating)
+                return;
             if (!(ClimateRenderCache.INSTANCE.getInstantTemperature() > 0f && level.getRainLevel(0) > 0))
             {
                 final ParticleOptions particle = ClimateRenderCache.INSTANCE.getInstantTemperature() < 0f && level.getRainLevel(0) > 0 ? TFCParticles.SNOWFLAKE.get() : TFCParticles.WIND.get();

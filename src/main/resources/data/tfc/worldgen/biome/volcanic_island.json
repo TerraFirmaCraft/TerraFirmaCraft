@@ -34,6 +34,30 @@
   "spawners": {
     "creature": [
       {
+        "type": "tfc:polar_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:penguin",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "tfc:turtle",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "tfc:leopard_seal",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:crocodile",
         "weight": 10,
         "minCount": 1,
@@ -98,12 +122,6 @@
         "weight": 1,
         "minCount": 2,
         "maxCount": 6
-      },
-      {
-        "type": "tfc:polar_bear",
-        "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
       },
       {
         "type": "tfc:grizzly_bear",
@@ -403,6 +421,12 @@
       }
     ],
     "ambient": [
+      {
+        "type": "minecraft:bat",
+        "weight": 10,
+        "minCount": 8,
+        "maxCount": 8
+      },
       {
         "type": "tfc:parrot",
         "weight": 1,

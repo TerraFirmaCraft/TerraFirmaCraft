@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AnimationState;
@@ -121,7 +122,7 @@ public class Pest extends Prey
                         level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, held), getX(), getEyeY(), getZ(), Helpers.triangle(random), -random.nextFloat(), Helpers.triangle(random));
                     if (random.nextInt(20) == 0)
                     {
-                        playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), getVoicePitch());
+                        playLocalSound(SoundEvents.GENERIC_EAT);
                     }
                 }
                 if (dragTicks > (DRAG_TIME + EAT_TIME))
@@ -146,12 +147,12 @@ public class Pest extends Prey
                 if (random.nextBoolean())
                 {
                     sniffingAnimation.startIfStopped(tickCount);
-                    playSound(SoundEvents.FOX_SNIFF, getSoundVolume(), getVoicePitch());
+                    playLocalSound(SoundEvents.FOX_SNIFF);
                 }
                 else
                 {
                     searchingAnimation.startIfStopped(tickCount);
-                    playSound(SoundEvents.FOX_SNIFF, getSoundVolume(), getVoicePitch());
+                    playLocalSound(SoundEvents.FOX_SNIFF);
                 }
             }
         }
@@ -192,5 +193,13 @@ public class Pest extends Prey
             setBaby(true);
         }
         return spawnData;
+    }
+
+    private void playLocalSound(SoundEvent sound)
+    {
+        if (!isSilent())
+        {
+            level().playLocalSound(getX(), getY(), getZ(), sound, getSoundSource(), getSoundVolume(), getVoicePitch(), false);
+        }
     }
 }

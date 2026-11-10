@@ -1,8 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/plant/milfoil"
-    }
+    "": [
+      {
+        "model": "tfc:block/plant/milfoil_1"
+      },
+      {
+        "model": "tfc:block/plant/milfoil_2"
+      }
+    ]
   }
 }

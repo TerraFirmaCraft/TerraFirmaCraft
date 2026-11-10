@@ -105,16 +105,11 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
         // Initial result is valid, overfill upwards
         Set<BlockPos> nextFilled = new HashSet<>(filled);
         startPos = startPos.above();
-        int prevSize = filled.size();
 
+        // Terminates automagically at either a solid ceiling, an illegal border, or leaking out of the bounding box
         while (floodFillLayer(worldIn, startPos, box, nextFilled, mutablePos, config))
         {
             filled.addAll(nextFilled);
-            if (prevSize == filled.size())
-            {
-                // The last move upwards added no new filled area. We abort here to not endlessly advance upwards
-                return true;
-            }
             startPos = startPos.above();
         }
         return true;

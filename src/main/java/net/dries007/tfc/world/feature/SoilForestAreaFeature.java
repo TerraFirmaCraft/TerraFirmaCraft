@@ -114,7 +114,7 @@ public class SoilForestAreaFeature extends Feature<SoilForestAreaConfig>
 
     public boolean placeColumn(ChunkAccess chunk, SoilForestAreaConfig config, WorldGenLevel level, int x, int z, BlockPos.MutableBlockPos mutablePos)
     {
-        final int surfaceY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
+        final int surfaceY = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z) - 1;
         boolean placed = false;
         mutablePos.set(x, 0, z);
         for (int y = surfaceY - config.getHeight(); y <= surfaceY; ++y)

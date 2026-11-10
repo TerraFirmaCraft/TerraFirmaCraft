@@ -43,6 +43,9 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.component.mold.IMold;
+import net.dries007.tfc.common.items.MoldItem;
+import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
@@ -171,9 +174,13 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
     {
-        CharcoalForgeBlockEntity forge = level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).orElse(null);
-        if (forge != null)
+        if (level.getBlockEntity(pos) instanceof CharcoalForgeBlockEntity forge)
         {
+            if (tryInsert(forge, player, stack))
+            {
+                Helpers.playPlaceSound(player, level, pos, state);
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
             if (player instanceof ServerPlayer serverPlayer)
             {
                 serverPlayer.openMenu(forge, pos);
@@ -181,6 +188,25 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    private static boolean tryInsert(CharcoalForgeBlockEntity forge, Player player, ItemStack stack)
+    {
+        if (forge.isItemValid(CharcoalForgeBlockEntity.SLOT_FUEL_MIN, stack))
+        {
+            return Helpers.insertSlotsFromHand(forge.getInventory(), player, stack, stack.getCount(), CharcoalForgeBlockEntity.SLOT_FUEL_MIN, CharcoalForgeBlockEntity.SLOT_FUEL_MAX + 1);
+        }
+        if (stack.getItem() instanceof MoldItem)
+        {
+            final IMold mold = IMold.get(stack);
+            return mold != null && mold.getFluidInTank(0).isEmpty() && Helpers.insertSlotsFromHand(forge.getInventory(), player, stack, 1, CharcoalForgeBlockEntity.SLOT_EXTRA_MIN, CharcoalForgeBlockEntity.SLOT_EXTRA_MAX + 1);
+        }
+        // prevent tools getting sucked in
+        if (!stack.isDamageableItem() && HeatingRecipe.getRecipe(stack) != null)
+        {
+            return Helpers.insertSlotsFromHand(forge.getInventory(), player, stack, 1, CharcoalForgeBlockEntity.SLOT_INPUT_MIN, CharcoalForgeBlockEntity.SLOT_INPUT_MAX + 1);
+        }
+        return false;
     }
 
     @Override

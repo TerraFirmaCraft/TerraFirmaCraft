@@ -139,6 +139,10 @@ public class BuiltinEntityLoot extends EntityLootSubProvider
             .withPool(lootPool().add(lootTableItem(Items.TURTLE_SCUTE)))
             .withPool(lootPool().add(lootTableItem(TFCItems.FOOD.get(Food.TURTLE))))
         );
+        add(TFCEntities.POND_TURTLE.get(), lootTable()
+            .withPool(lootPool().add(lootTableItem(Items.TURTLE_SCUTE)))
+            .withPool(lootPool().add(lootTableItem(TFCItems.FOOD.get(Food.TURTLE))))
+        );
 
         // Armadillo - scute + armadillo meat
         add(TFCEntities.ARMADILLO.get(), lootTable()

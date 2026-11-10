@@ -164,6 +164,7 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     protected void onLoadAdditional()
     {
+        super.onLoadAdditional();
         if (needsLogDispersion)
         {
             disperseLogsToNewSlots();

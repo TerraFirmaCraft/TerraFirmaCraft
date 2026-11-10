@@ -29,7 +29,7 @@ public abstract class TFCCactusBedBlock extends PlantBlock
 {
     public static final IntegerProperty AGE = TFCBlockStateProperties.AGE_3;
 
-    public static TFCCactusBedBlock createBarrel(RegistryPlant plant, ExtendedProperties properties)
+    public static TFCCactusBedBlock createCactusBed(RegistryPlant plant, ExtendedProperties properties)
     {
 
         return new TFCCactusBedBlock(properties)
@@ -56,7 +56,6 @@ public abstract class TFCCactusBedBlock extends PlantBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
@@ -80,14 +79,17 @@ public abstract class TFCCactusBedBlock extends PlantBlock
 
     // These two methods allow placing extra per block
     @Override
-    protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+    protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext)
+    {
         return !useContext.isSecondaryUseActive() && useContext.getItemInHand().is(this.asItem()) && state.getValue(AGE) < 3 || super.canBeReplaced(state, useContext);
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-        if (Helpers.isBlock(state, this)) {
+        if (Helpers.isBlock(state, this))
+        {
             return state.setValue(AGE, Math.min(3, state.getValue(AGE) + 1));
         }
         return super.getStateForPlacement(context);

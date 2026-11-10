@@ -147,11 +147,11 @@ public final class TreeHelpers
 
         mutablePos.move(0, -1, 0);
         final BlockState stateBelow = level.getBlockState(mutablePos);
-        if (water)
+        if (water && FluidHelpers.isAirOrEmptyFluid(stateAt))
         {
             return Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
         }
-        if (fluid.isEmpty())
+        if (fluid.isEmpty() && (stateAt.isAir() || stateAt.getBlock() instanceof SaplingBlock))
         {
             boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
             if (!treeGrowsOn && config.groundType() == TreePlacementConfig.GroundType.SAND)

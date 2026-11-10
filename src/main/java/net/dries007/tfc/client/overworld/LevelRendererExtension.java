@@ -22,13 +22,6 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
-
-import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
-import net.dries007.tfc.common.blocks.devices.FirepitBlock;
-
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
@@ -66,8 +59,13 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.ClimateRenderCache;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.IBlockRain;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.Climate;
@@ -163,12 +161,15 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
     {
         final float zenith = star.zenith();
         final float azimuth = star.azimuth();
-        final int color = 0xff000000 | star.color();
-        final float size = Mth.clampedMap(star.apparentMagnitude(), -1, 6, 0.4f, 0.1f);
+        final float magnitude = star.apparentMagnitude();
+        // drop alpha exponentially starting at mag 2.5, min 15%
+        final float alpha = Mth.clamp((float) Math.pow(10, -0.25 * (magnitude - 2.5)), 0.15f, 1f);
+        final int color = (int) (alpha * 255) << 24 | star.color();
+        final float size = Mth.clampedMap(magnitude, -1, 4, 0.4f, 0.2f);
 
         final float sinZenith = Mth.sin(zenith);
         final float x = 100f * sinZenith * Mth.cos(azimuth);
-        final float z = 100f * sinZenith * Mth.sin(azimuth);
+        final float z = -100f * sinZenith * Mth.sin(azimuth);
         final float y = 100f * Mth.cos(zenith);
 
         final Vector3f pos = new Vector3f(x, y, z);
@@ -296,8 +297,10 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 float[] coverColors;
                 if (sunriseColor != null)
                 {
-                    coverColors = Arrays.copyOf(sunriseColor,sunriseColor.length);
-                } else {
+                    coverColors = Arrays.copyOf(sunriseColor, sunriseColor.length);
+                }
+                else
+                {
                     coverColors = new float[3];
                     coverColors[0] = (float) skyColor.x;
                     coverColors[1] = (float) skyColor.y;
@@ -314,17 +317,17 @@ public class LevelRendererExtension extends DimensionSpecialEffects.OverworldEff
                 RenderSystem.setShaderColor(1, 1, 1, 1.0F);
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
                 BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                buffer.addVertex(sun, -7.5F, 100.0F, -7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
-                buffer.addVertex(sun, 7.5F, 100.0F, -7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
-                buffer.addVertex(sun, 7.5F, 100.0F, 7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
-                buffer.addVertex(sun, -7.5F, 100.0F, 7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
+                buffer.addVertex(sun, -7.5F, 100.0F, -7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
+                buffer.addVertex(sun, 7.5F, 100.0F, -7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
+                buffer.addVertex(sun, 7.5F, 100.0F, 7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
+                buffer.addVertex(sun, -7.5F, 100.0F, 7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
                 BufferUploader.drawWithShader(buffer.buildOrThrow());
 
                 buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                buffer.addVertex(moon, -7.5F, 100.0F, -7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
-                buffer.addVertex(moon, 7.5F, 100.0F, -7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
-                buffer.addVertex(moon, 7.5F, 100.0F, 7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
-                buffer.addVertex(moon, -7.5F, 100.0F, 7.5F).setColor(coverColors[0],coverColors[1],coverColors[2], 1.0f);
+                buffer.addVertex(moon, -7.5F, 100.0F, -7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
+                buffer.addVertex(moon, 7.5F, 100.0F, -7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
+                buffer.addVertex(moon, 7.5F, 100.0F, 7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
+                buffer.addVertex(moon, -7.5F, 100.0F, 7.5F).setColor(coverColors[0], coverColors[1], coverColors[2], 1.0f);
                 BufferUploader.drawWithShader(buffer.buildOrThrow());
 
                 RenderSystem.enableBlend();

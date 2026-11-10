@@ -80,6 +80,15 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         super.collectImplicitComponents(builder);
     }
 
+    @Override
+    protected void insertLoot(int slot, ItemStack stack)
+    {
+        final boolean sealed = getBlockState().getValue(SealableDeviceBlock.SEALED);
+        inventory.mutable = true;
+        super.insertLoot(slot, sealed ? FoodCapability.applyTrait(stack.copy(), FoodTraits.PRESERVED) : stack);
+        inventory.mutable = false;
+    }
+
     public void onUnseal()
     {
         assert level != null;
@@ -103,6 +112,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
     public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>
     {
         private final LargeVesselBlockEntity vessel;
+        private boolean mutable;
 
         VesselInventory(InventoryBlockEntity<?> entity)
         {
@@ -132,7 +142,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
 
         private boolean canModify()
         {
-            return !vessel.getBlockState().getValue(LargeVesselBlock.SEALED);
+            return mutable || !vessel.getBlockState().getValue(LargeVesselBlock.SEALED);
         }
     }
 }

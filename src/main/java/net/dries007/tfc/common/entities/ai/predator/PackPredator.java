@@ -168,7 +168,7 @@ public class PackPredator extends Predator implements Temptable
     @Override
     public boolean hurt(DamageSource source, float amount)
     {
-        if (!level().isClientSide && source.getDirectEntity() instanceof LivingEntity livingEntity && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
+        if (!level().isClientSide && source.getEntity() instanceof LivingEntity livingEntity && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))
         {
             PackPredatorAi.alertOthers(this, livingEntity);
         }

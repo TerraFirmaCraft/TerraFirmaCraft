@@ -92,7 +92,6 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         if (!state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
-            return Blocks.AIR.defaultBlockState();
         }
         return state;
     }

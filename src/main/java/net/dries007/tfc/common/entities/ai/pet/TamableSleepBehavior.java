@@ -53,6 +53,6 @@ public class TamableSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
     @Override
     protected boolean onTarget(ServerLevel level, TamableMammal mob)
     {
-        return targetPos != null && targetPos.closerThan(mob.blockPosition(), 1);
+        return targetPos != null && (targetPos.equals(mob.blockPosition()) || targetPos.above().equals(mob.blockPosition()));
     }
 }

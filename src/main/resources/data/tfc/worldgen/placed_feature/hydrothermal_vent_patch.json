@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:hydrothermal_vent_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 12
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:ocean_ridge",
+      "min_distance": 0,
+      "max_distance": 32
+    }
+  ]
+}

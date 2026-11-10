@@ -80,6 +80,7 @@ public class PowerLoomBlockEntity extends LoomBlockEntity implements RotationSin
     @Override
     protected void onLoadAdditional()
     {
+        super.onLoadAdditional();
         performNetworkAction(NetworkAction.ADD);
     }
 

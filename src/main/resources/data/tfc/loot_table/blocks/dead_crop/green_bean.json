@@ -66,7 +66,7 @@
           "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "tfc:crop/green_bean",
+              "block": "tfc:dead_crop/green_bean",
               "properties": {
                 "part": "bottom",
                 "stick": "true"

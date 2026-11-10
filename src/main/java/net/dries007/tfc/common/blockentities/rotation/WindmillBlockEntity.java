@@ -211,6 +211,7 @@ public class WindmillBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     @Override
     protected void onLoadAdditional()
     {
+        super.onLoadAdditional();
         performNetworkAction(NetworkAction.ADD_SOURCE);
     }
 

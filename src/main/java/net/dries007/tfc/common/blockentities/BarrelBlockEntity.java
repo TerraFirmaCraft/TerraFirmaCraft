@@ -500,6 +500,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     }
 
     @Override
+    protected void insertLoot(int slot, ItemStack stack)
+    {
+        inventory.whileMutable(() -> super.insertLoot(slot, stack));
+    }
+
+    @Override
     public boolean canModify()
     {
         return !getBlockState().getValue(BarrelBlock.SEALED);

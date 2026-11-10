@@ -1117,7 +1117,7 @@
       "item": "tfc:ore/opal",
       "title": "Opal",
       "link_recipes": false,
-      "text": "Opal is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Sedimentary) and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
+      "text": "Opal is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Sedimentary$() and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
     },
     {
       "type": "patchouli:multiblock",
@@ -1144,7 +1144,7 @@
       "item": "tfc:ore/pyrite",
       "title": "Pyrite",
       "link_recipes": false,
-      "text": "Pyrite, or fool's gold, is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Igneous Intrusive) and $(thing)Igneous Extrusive$() beloy y=70."
+      "text": "Pyrite, or fool's gold, is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Igneous Intrusive$() and $(thing)Igneous Extrusive$() below y=70."
     },
     {
       "type": "patchouli:multiblock",

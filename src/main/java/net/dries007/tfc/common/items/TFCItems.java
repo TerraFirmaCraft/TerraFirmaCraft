@@ -299,6 +299,7 @@ public final class TFCItems
     public static final ItemId ORCA_EGG = registerSpawnEgg(TFCEntities.ORCA);
     public static final ItemId MANATEE_EGG = registerSpawnEgg(TFCEntities.MANATEE);
     public static final ItemId TURTLE_EGG = registerSpawnEgg(TFCEntities.TURTLE);
+    public static final ItemId POND_TURTLE_EGG = registerSpawnEgg(TFCEntities.POND_TURTLE);
     public static final ItemId PENGUIN_EGG = registerSpawnEgg(TFCEntities.PENGUIN);
     public static final ItemId LEOPARD_SEAL_SPAWN_EGG = registerSpawnEgg(TFCEntities.LEOPARD_SEAL);
     public static final ItemId FROG_EGG = registerSpawnEgg(TFCEntities.FROG);

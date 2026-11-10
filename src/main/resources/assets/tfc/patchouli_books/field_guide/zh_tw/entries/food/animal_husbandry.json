@@ -162,7 +162,7 @@
     {
       "type": "patchouli:text",
       "anchor": "alpaca",
-      "text": "$(thing)羊駝$()是一種會在$(l:core_mechanics/climate#temperature)溫度$()在 $(cfg:temperature:-8) 到 $(cfg:temperature:20) 之間、$(l:core_mechanics/climate#rainfall)降雨量$()至少 250 毫米的溫和的氣候中生成的$(l:food/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()和$(thing)水果。他們一胎能生產 1-2 個幼崽，懷孕 36 天，98 天成年。若從未剪過毛，衰老前它們可以產仔 13 次。若從未產過仔，衰老前它們可以剪毛 180 次，且每 6 天長出一次羊毛。",
+      "text": "$(thing)羊駝$()是一種會在$(l:core_mechanics/climate#temperature)溫度$()在 $(cfg:temperature:-8) 到 $(cfg:temperature:20) 之間、$(l:core_mechanics/climate#rainfall)降雨量$()至少 250 毫米的溫和的氣候中生成的$(l:food/animal_husbandry#wooly_animals)產毛動物$()。它們會吃$(thing)穀物$()和$(thing)水果$()。他們一胎能生產 1-2 個幼崽，懷孕 36 天，98 天成年。若從未剪過毛，衰老前它們可以產仔 13 次。若從未產過仔，衰老前它們可以剪毛 180 次，且每 6 天長出一次羊毛。",
       "title": "羊駝"
     },
     {

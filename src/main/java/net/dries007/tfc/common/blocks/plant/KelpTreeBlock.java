@@ -66,7 +66,7 @@ public abstract class KelpTreeBlock extends PipePlantBlock implements IFluidLogg
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
         FluidHelpers.tickFluid(level, pos, state);
-        return state;
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override

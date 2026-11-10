@@ -22,7 +22,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -57,12 +56,12 @@ public class GlassOperation
     });
 
     // Blowpipe
-    public static final DeferredHolder<GlassOperation, GlassOperation> BLOW = OPERATIONS.register("blow", () -> new GlassOperation(Set.of(TFCItems.BLOWPIPE_WITH_GLASS.holder(), TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.holder()), TFCSounds.BELLOWS_BLOW.holder(), Heat.FAINT_RED.getMin(), false));
-    public static final DeferredHolder<GlassOperation, GlassOperation> ROLL = register("roll", TFCItems.WOOL_CLOTH);
-    public static final DeferredHolder<GlassOperation, GlassOperation> STRETCH = register("stretch", Set.of(TFCItems.BLOWPIPE_WITH_GLASS.holder(), TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.holder()));
-    public static final DeferredHolder<GlassOperation, GlassOperation> PINCH = register("pinch", TFCItems.JACKS);
-    public static final DeferredHolder<GlassOperation, GlassOperation> FLATTEN = register("flatten", TFCItems.PADDLE);
-    public static final DeferredHolder<GlassOperation, GlassOperation> SAW = OPERATIONS.register("saw", () -> new GlassOperation(Set.of(TFCItems.GEM_SAW.holder()), Holder.direct(SoundEvents.ANVIL_USE), 0, false));
+    public static final DeferredHolder<GlassOperation, GlassOperation> BLOW = OPERATIONS.register("blow", () -> new GlassOperation(Set.of(TFCItems.BLOWPIPE_WITH_GLASS.holder(), TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.holder()), TFCSounds.GLASSWORKING_BLOW.holder(), Heat.FAINT_RED.getMin(), false));
+    public static final DeferredHolder<GlassOperation, GlassOperation> ROLL = register("roll", TFCItems.WOOL_CLOTH, TFCSounds.GLASSWORKING_ROLL);
+    public static final DeferredHolder<GlassOperation, GlassOperation> STRETCH = register("stretch", Set.of(TFCItems.BLOWPIPE_WITH_GLASS.holder(), TFCItems.CERAMIC_BLOWPIPE_WITH_GLASS.holder()), TFCSounds.GLASSWORKING_STRETCH);
+    public static final DeferredHolder<GlassOperation, GlassOperation> PINCH = register("pinch", TFCItems.JACKS, TFCSounds.GLASSWORKING_PINCH);
+    public static final DeferredHolder<GlassOperation, GlassOperation> FLATTEN = register("flatten", TFCItems.PADDLE, TFCSounds.GLASSWORKING_FLATTEN);
+    public static final DeferredHolder<GlassOperation, GlassOperation> SAW = OPERATIONS.register("saw", () -> new GlassOperation(Set.of(TFCItems.GEM_SAW.holder()), TFCSounds.GLASSWORKING_SAW.holder(), 0, false));
     // Powder Bowl
     public static final DeferredHolder<GlassOperation, GlassOperation> AMETHYST = powder("amethyst", TFCItems.ORE_POWDERS.get(Ore.AMETHYST));
     public static final DeferredHolder<GlassOperation, GlassOperation> SODA_ASH = powder("soda_ash", TFCItems.POWDERS.get(Powder.SODA_ASH));
@@ -112,7 +111,7 @@ public class GlassOperation
 
     public GlassOperation(Holder<Item> item, boolean isPowder)
     {
-        this(Set.of(item), Holder.direct(SoundEvents.ANVIL_USE), Heat.FAINT_RED.getMin(), isPowder);
+        this(Set.of(item), TFCSounds.GLASSWORKING.holder(), Heat.FAINT_RED.getMin(), isPowder);
     }
 
     public GlassOperation(Set<Holder<Item>> items, Holder<SoundEvent> sound, float minTemperature, boolean isPowder)
@@ -154,16 +153,21 @@ public class GlassOperation
 
     private static DeferredHolder<GlassOperation, GlassOperation> powder(String name, Set<Holder<Item>> items)
     {
-        return OPERATIONS.register(name, () -> new GlassOperation(items, Holder.direct(SoundEvents.ANVIL_USE), Heat.FAINT_RED.getMin(), true));
+        return OPERATIONS.register(name, () -> new GlassOperation(items, TFCSounds.GLASSWORKING.holder(), Heat.FAINT_RED.getMin(), true));
     }
 
     private static DeferredHolder<GlassOperation, GlassOperation> register(String name, Set<Holder<Item>> items)
     {
-        return OPERATIONS.register(name, () -> new GlassOperation(items, Holder.direct(SoundEvents.ANVIL_USE), Heat.FAINT_RED.getMin(), false));
+        return OPERATIONS.register(name, () -> new GlassOperation(items, TFCSounds.GLASSWORKING.holder(), Heat.FAINT_RED.getMin(), false));
     }
 
-    private static DeferredHolder<GlassOperation, GlassOperation> register(String name, TFCItems.ItemId item)
+    private static DeferredHolder<GlassOperation, GlassOperation> register(String name, Set<Holder<Item>> items, TFCSounds.Id sound)
     {
-        return OPERATIONS.register(name, () -> new GlassOperation(item.holder(), false));
+        return OPERATIONS.register(name, () -> new GlassOperation(items, sound.holder(), Heat.FAINT_RED.getMin(), false));
+    }
+
+    private static DeferredHolder<GlassOperation, GlassOperation> register(String name, TFCItems.ItemId item, TFCSounds.Id sound)
+    {
+        return OPERATIONS.register(name, () -> new GlassOperation(Set.of(item.holder()), sound.holder(), Heat.FAINT_RED.getMin(), false));
     }
 }

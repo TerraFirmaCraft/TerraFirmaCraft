@@ -21,6 +21,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -46,10 +47,28 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
 {
     private static final EntityDataAccessor<Integer> DATA_TYPE_ID_TFC = SynchedEntityData.defineId(Jellyfish.class, EntityDataSerializers.INT);
 
+    public final AnimationState swimmingAnimation = new AnimationState();
+    public final AnimationState idleAnimation = new AnimationState();
+    public final AnimationState thrownAnimation = new AnimationState();
+
     public Jellyfish(EntityType<? extends AbstractSchoolingFish> type, Level level)
     {
         super(type, level);
         moveControl = new TFCFishMoveControl(this);
+    }
+
+    @Override
+    public void tick()
+    {
+        if (level().isClientSide)
+        {
+            final boolean inWater = isInWaterOrBubble();
+            final boolean moving = getDeltaMovement().lengthSqr() > 1.0E-4D;
+            EntityHelpers.startOrStop(swimmingAnimation, inWater && moving, tickCount);
+            EntityHelpers.startOrStop(idleAnimation, inWater && !moving, tickCount);
+            EntityHelpers.startOrStop(thrownAnimation, !inWater, tickCount);
+        }
+        super.tick();
     }
 
     public Type getVariant()

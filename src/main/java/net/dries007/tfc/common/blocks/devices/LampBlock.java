@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -50,6 +51,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
@@ -58,6 +60,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
     protected static final VoxelShape SHAPE = Shapes.or(Block.box(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.box(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
     protected static final VoxelShape HANGING_SHAPE = Shapes.or(Block.box(5.0D, 1.0D, 5.0D, 11.0D, 8.0D, 11.0D), Block.box(6.0D, 8.0D, 6.0D, 10.0D, 10.0D, 10.0D));
@@ -70,7 +73,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     public LampBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(HANGING, false).setValue(LIT, false));
+        registerDefaultState(getStateDefinition().any().setValue(HANGING, false).setValue(LIT, false).setValue(POWERED, false));
     }
 
     @Override
@@ -83,6 +86,16 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     public boolean isRandomlyTicking(BlockState state)
     {
         return state.getValue(LIT);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random)
+    {
+        if (random.nextInt(6) == 0 && state.getValue(LIT))
+        {
+            final double y = pos.getY() + (state.getValue(HANGING) ? 0.625 : 0.6875);
+            level.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.5, y, pos.getZ() + 0.5, 0, 0, 0);
+        }
     }
 
     @Override
@@ -111,11 +124,8 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
             {
                 lamp.markForSync();
-                if (lamp.getFuel() != null && lamp.getFuel().burnRate() == -1 && player instanceof ServerPlayer serverPlayer)
+                if (lamp.getFuel() != null && lamp.getFuel().burnRate() == -1 && lamp.getBlockState().getValue(LIT) && player instanceof ServerPlayer serverPlayer)
                 {
-                    // special case, light automatically when lava is inserted.
-                    level.setBlockAndUpdate(pos, state.setValue(LIT, true));
-                    lamp.resetCounter();
                     TFCAdvancements.LAVA_LAMP.trigger(serverPlayer);
                 }
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -141,12 +151,17 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
+        boolean powered = context.getLevel().hasNeighborSignal(context.getClickedPos());
+
         for (Direction direction : context.getNearestLookingDirections())
         {
             if (direction.getAxis() == Direction.Axis.Y)
             {
-                BlockState state = this.defaultBlockState().setValue(HANGING, direction == Direction.UP);
-                return state.canSurvive(context.getLevel(), context.getClickedPos()) ? state : null;
+                BlockState state = this.defaultBlockState().setValue(HANGING, direction == Direction.UP).setValue(POWERED, powered);
+                if (state.canSurvive(context.getLevel(), context.getClickedPos()))
+                {
+                    return state;
+                }
             }
         }
         return null;
@@ -161,7 +176,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(HANGING, LIT));
+        super.createBlockStateDefinition(builder.add(HANGING, LIT, POWERED));
     }
 
     @Override
@@ -208,5 +223,46 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType)
     {
         return false;
+    }
+
+    @Override
+    protected boolean hasAnalogOutputSignal(BlockState state)
+    {
+        return true;
+    }
+
+    @Override
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos)
+    {
+        if (level.getBlockEntity(pos) instanceof LampBlockEntity lamp)
+        {
+            final int capacity = TFCConfig.SERVER.lampCapacity.get();
+            if (lamp.getFuelAmount() > 0 && capacity != 0)
+            {
+                return Mth.clamp(lamp.getFuelAmount() * 15 / capacity, 1, 15);
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    {
+        final boolean signal = level.hasNeighborSignal(pos);
+        if (signal != state.getValue(POWERED))
+        {
+            state = state.setValue(POWERED, signal);
+            if (level.getBlockEntity(pos) instanceof LampBlockEntity lamp && signal != state.getValue(LIT))
+            {
+                if (!signal)
+                {
+                    lamp.checkHasRanOut(); // update fuel usage
+                    Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
+                }
+                state = state.setValue(LIT, signal && lamp.getFuel() != null); // don't light if there's no fuel
+                lamp.resetCounter();
+            }
+            level.setBlockAndUpdate(pos, state);
+        }
     }
 }

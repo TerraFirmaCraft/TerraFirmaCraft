@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "サイズによって、アイテムが中に収まるストレージ ブロックが決まります。$(br)$(li)$(thing)極小$() アイテムはどんなものにも収まります。$(li)$(thing)とても小さい$() アイテムはどんなものにも収まります .$(li)$(thing)小さい$() アイテムは、$(l:food/decay#small_vessels)小さな壺$()$().$(li)$(thing)中%()アイテムは、$(l:food/decay#small_vessels)大きな壺$() に収まる最大のアイテムです。",
+      "text": "サイズによって、アイテムが中に収まるストレージ ブロックが決まります。$(br)$(li)$(thing)極小$() アイテムはどんなものにも収まります。$(li)$(thing)とても小さい$() アイテムはどんなものにも収まります .$(li)$(thing)小さい$() アイテムは、$(l:food/decay#small_vessels)小さな壺$()$().$(li)$(thing)中$()アイテムは、$(l:food/decay#small_vessels)大きな壺$() に収まる最大のアイテムです。",
       "title": "大きさ ⇲"
     },
     {
