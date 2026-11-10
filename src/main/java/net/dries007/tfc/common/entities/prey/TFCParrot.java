@@ -63,7 +63,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.blocks.wood.ParrotPerchBlock;
 import net.dries007.tfc.common.component.food.FoodCapability;
-import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -91,7 +90,7 @@ public class TFCParrot extends Parrot
         final List<Species> species = new ArrayList<>();
         for (Species value : Species.VALUES)
         {
-            if (value.livesIn(temperature, groundwater, forest) && currentTemperature >= value.leaveTemperature)
+            if (value.livesIn(temperature, groundwater, forest) && currentTemperature >= value.minDailyTemperature)
             {
                 species.add(value);
             }
@@ -134,7 +133,6 @@ public class TFCParrot extends Parrot
 
     public final AnimationState idleAnimationState = new AnimationState();
 
-    private long nextLeaveCheckTick = Long.MIN_VALUE;
     private @Nullable Vec3 perchSeat;
     private IdleAnimation idleAnimation = IdleAnimation.PREEN;
     private int idleAnimationTicks, idleAnimationCooldown;
@@ -288,25 +286,12 @@ public class TFCParrot extends Parrot
             idleAnimationCooldown = 100 + random.nextInt(200);
             level().broadcastEntityEvent(this, (byte) (IDLE_ANIMATION_EVENT + random.nextInt(IdleAnimation.VALUES.length)));
         }
-        if (isTame() || isPersistenceRequired() || isLeashed()) return;
-
-        final ICalendar calendar = Calendars.get(level());
-        final long ticks = calendar.getTicks();
-        if (ticks < nextLeaveCheckTick) return;
-        nextLeaveCheckTick = ticks + calendar.getTicksInHour() * ICalendar.HOURS_IN_DAY;
-
-        // Wild parrots leave for the winter, and spawning brings them back
-        if (getDailyTemperature(Climate.get(level()), level(), blockPosition()) < getSpecies().leaveTemperature && level().getNearestPlayer(this, 32) == null)
-        {
-            discard();
-        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag)
     {
         super.addAdditionalSaveData(tag);
-        tag.putLong("nextLeaveCheck", nextLeaveCheckTick);
         tag.putString("species", getSpecies().getSerializedName());
         if (perchSeat != null)
         {
@@ -318,7 +303,6 @@ public class TFCParrot extends Parrot
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        nextLeaveCheckTick = EntityHelpers.getLongOrDefault(tag, "nextLeaveCheck", Long.MIN_VALUE);
         setSpecies(Species.byName(tag.getString("species")));
         if (tag.contains("perch", Tag.TAG_LIST))
         {
@@ -378,7 +362,7 @@ public class TFCParrot extends Parrot
     @Override
     public boolean removeWhenFarAway(double distance)
     {
-        return false;
+        return !isTame() && !isLeashed();
     }
 
     @Override
@@ -460,9 +444,9 @@ public class TFCParrot extends Parrot
         private final String serializedName;
         private final float minTemperature, maxTemperature, minGroundwater, maxGroundwater;
         private final int minForest, maxForest;
-        private final float leaveTemperature;
+        private final float minDailyTemperature;
 
-        Species(float minTemperature, float maxTemperature, float minGroundwater, float maxGroundwater, int minForest, int maxForest, float leaveTemperature)
+        Species(float minTemperature, float maxTemperature, float minGroundwater, float maxGroundwater, int minForest, int maxForest, float minDailyTemperature)
         {
             this.serializedName = name().toLowerCase(Locale.ROOT);
             this.minTemperature = minTemperature;
@@ -471,7 +455,7 @@ public class TFCParrot extends Parrot
             this.maxGroundwater = maxGroundwater;
             this.minForest = minForest;
             this.maxForest = maxForest;
-            this.leaveTemperature = leaveTemperature;
+            this.minDailyTemperature = minDailyTemperature;
         }
 
         public boolean livesIn(float temperature, float groundwater, int forest)

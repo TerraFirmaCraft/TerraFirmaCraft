@@ -287,12 +287,6 @@
         "maxCount": 3
       },
       {
-        "type": "tfc:parrot",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 3
-      },
-      {
         "type": "tfc:frog",
         "weight": 1,
         "minCount": 2,
@@ -407,6 +401,14 @@
         "weight": 100,
         "minCount": 4,
         "maxCount": 4
+      }
+    ],
+    "ambient": [
+      {
+        "type": "tfc:parrot",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
       }
     ]
   },

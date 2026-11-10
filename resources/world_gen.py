@@ -1980,6 +1980,10 @@ RIVER_AMBIENT: Dict[str, Dict[str, Any]] = {
     'crayfish': spawner('tfc:crayfish', min_count=1, max_count=4, weight=5)
 }
 
+LAND_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'parrot': spawner('tfc:parrot', min_count=1, max_count=3)
+}
+
 LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
     'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
 }
@@ -2040,7 +2044,6 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'dromedary_camel': spawner('tfc:dromedary_camel', min_count=1, max_count=3),
     'bactrian_camel': spawner('tfc:bactrian_camel', min_count=1, max_count=3),
     'ocelot': spawner('tfc:ocelot', min_count=1, max_count=3),
-    'parrot': spawner('tfc:parrot', min_count=1, max_count=3),
     'frog': spawner('tfc:frog', min_count=2, max_count=4),
     'armadillo': spawner('tfc:armadillo', min_count=2, max_count=3),
 }
@@ -2151,6 +2154,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         large_features += ['tfc:rare_bamboo', 'tfc:bamboo', 'tfc:rare_bamboo_golden', 'tfc:bamboo_golden', 'tfc:cave_vegetation']
         surface_decorations.append('#tfc:feature/land_plants')
         spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
+        spawners['ambient'] = [entity for entity in LAND_AMBIENT.values()]
 
     if ('glaciated' in name) or ('mountains_edge' in name):
         if 'oceanic' in name:

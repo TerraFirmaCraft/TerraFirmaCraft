@@ -193,7 +193,7 @@ public class TFCEntities
     public static final Id<TFCFox> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).eyeHeight(0.4F).clientTrackingRange(8));
     public static final Id<TFCPanda> PANDA = register("panda", EntityType.Builder.of(TFCPanda::new, MobCategory.CREATURE).sized(1.3F, 1.25F).clientTrackingRange(10));
     public static final Id<TFCOcelot> OCELOT = register("ocelot", EntityType.Builder.of(TFCOcelot::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(10));
-    public static final Id<TFCParrot> PARROT = register("parrot", EntityType.Builder.of(TFCParrot::new, MobCategory.CREATURE).sized(0.5F, 0.9F).eyeHeight(0.54F).passengerAttachments(0.4625F).clientTrackingRange(8));
+    public static final Id<TFCParrot> PARROT = register("parrot", EntityType.Builder.of(TFCParrot::new, MobCategory.AMBIENT).sized(0.5F, 0.9F).eyeHeight(0.54F).passengerAttachments(0.4625F).clientTrackingRange(8));
     public static final Id<Prey> DEER = register("deer", EntityType.Builder.of(TFCEntities::makeDeer, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
     public static final Id<Prey> CARIBOU = register("caribou", EntityType.Builder.of(TFCEntities::makeCaribou, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
     public static final Id<Prey> BONGO = register("bongo", EntityType.Builder.of(TFCEntities::makeBongo, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
