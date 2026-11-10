@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Crankshafts",
+  "name": "クランクシャフト",
   "category": "tfc:mechanics",
   "icon": "tfc:crankshaft",
   "pages": [
@@ -12,13 +12,13 @@
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:crankshaft",
       "name": "",
-      "text": "A $(thing)Crankshaft$() being powered by an $(l:mechanics/mechanical_power#axle)Axle$()",
+      "text": "$(thing)軸$()によって動力を供給される$(l:mechanics/mechanical_power#axle)クランクシャフト$()",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/crankshaft",
-      "text": "The base can be crafted from $(l:getting_started/primitive_alloys#brass)Brass$(). Once a base is placed, a shaft can be added to it by using a $(thing)Steel Rod$() on the base. If there is an empty space to the side of the crankshaft, the rod will be placed."
+      "text": "ベースは$(l:getting_started/primitive_alloys#brass)真鍮$()から作成できます。ベースが設置されたら、$(thing)鋼の棒$()を使用してシャフトを追加できます。クランクシャフトの横に空きスペースがある場合、棒が配置されます。"
     },
     {
       "type": "patchouli:text",

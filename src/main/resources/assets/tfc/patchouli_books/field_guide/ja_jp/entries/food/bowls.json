@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Bowls",
+  "name": "ボウル",
   "category": "tfc:food",
   "icon": "tfc:ceramic/bowl",
   "pages": [
@@ -11,12 +11,12 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_bowl_1",
-      "text": "Multiple unfired bowls can be made from one knapping."
+      "text": "1回の加工で複数の未焼成のボウルを作ることができます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:bowl",
-      "title": "Wooden Bowls",
+      "title": "木のボウル",
       "text": "Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:crafting/barrels#limewater)Limewater$()."
     },
     {
@@ -27,15 +27,15 @@
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:bowl_powders",
-      "title": "Powders",
+      "title": "粉末",
       "link_recipes": false,
-      "text": "The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand.$(br2)$(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl."
+      "text": "粉末入りのボウルは、指定された粉末を最大16個まで保持できます。粉末を入れるには、粉末を持ちながら$(item)$(k:key.use)$()を押します。アイテムを取り出すには、空の手で$(item)$(k:key.use)$()を押します。$(br2)$(item)$(k:key.sneak)$()を押すと、ボウルの中身を全て取り出せます。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:powder/salt",
       "link_recipes": false,
-      "text": "If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory."
+      "text": "ボウルに塩がある場合、生肉をクリックすると肉を塩を付けできます。これはインベントリ内の塩で肉をクラフトするのと同じです。"
     }
   ],
   "read_by_default": true,

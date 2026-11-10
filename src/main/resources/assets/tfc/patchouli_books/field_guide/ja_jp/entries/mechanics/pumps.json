@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pumps",
+  "name": "ポンプ",
   "category": "tfc:mechanics",
   "icon": "tfc:steel_pipe",
   "pages": [
@@ -16,11 +16,11 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/steel_pump",
-      "text": "In order to operate the pump, you will also need a $(l:mechanics/crankshaft)Crankshaft$(), and a source of $(l:mechanics/mechanical_power)Mechanical Power$():$(br)$(li)The pump must be connected on the $(bold)bottom$() to a pipe."
+      "text": "ポンプを操作するには、$(l:mechanics/crankshaft)クランクシャフト$()と$(l:mechanics/mechanical_power)動力$()の供給が必要です: $(br)$(li)ポンプの$(bold)底面$()は吸い上げるためのパイプに接続する必要があります。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)On the narrow side, the pump must be adjacent to the business end of a $(l:mechanics/crankshaft)Crankshaft$().$(li)The pump can reach up to $(bold)16$() blocks. The end of the pipe must be $(bold)submerged$() in the target fluid, and adjacent to a source fluid block.$(li)If the crankshaft is active, fluid will be brought up and appear on the wide end of the $(thing)Pump$().$(li)The pump can fill an enclosed area up to $(bold)32$() blocks with source blocks."
+      "text": "$(li)ポンプの狭い方の口は、$(l:mechanics/crankshaft)クランクシャフト$()の先端に接する必要があります。$(li)ポンプは最大で$(bold)16$()ブロック伸ばせます。パイプの端は目標の液体ブロックに面していて、液体に$(bold)浸かって$()いる必要があります。$(li)クランクシャフトがアクティブな場合、液体は引き上げられ、$(thing)ポンプ$()の広い方の口に現れます。$(li)ポンプは最大で$(bold)32$()ブロックのエリアを満たせます。"
     }
   ],
   "read_by_default": true,

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gems are a kind of mineral that spawns in a variety of different places, such as $(thing)under rivers$() and in $(l:the_world/geology)Volcanoes$(). For information on the precise conditions, see $(l:the_world/ores_and_minerals)the ores and minerals chapter$()."
+      "text": "宝石は、$(thing)川底$()や$(l:the_world/geology)火山$()など、さまざまな場所で生成される鉱物の一種です。正確な条件については、$(l:the_world/ores_and_minerals)鉱石と鉱物$()の章を参照してください。"
     },
     {
       "type": "patchouli:spotlight",

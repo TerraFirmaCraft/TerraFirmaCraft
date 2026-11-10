@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Dye",
+  "name": "染料",
   "category": "tfc:mechanics",
   "icon": "minecraft:red_dye",
   "pages": [
@@ -11,24 +11,24 @@
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
-      "title": "Dye Liquids",
+      "title": "液体染料",
       "link_recipes": false,
       "text": "Dyes can also be made into fluids. A dye item and 1000mB of $(item)Water$() boiled in a $(l:food/pot)Pot$() produces the same amount of $(thing)Dye Fluid$(). Dye fluids are used in $(l:crafting/barrels)Barrels$() to color items."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/red_concrete_powder",
-      "text": "Dyeing items in a barrel is cheaper than using items, requiring only 25mB of dyed fluid."
+      "text": "樽でアイテムを染色するのは、アイテムを使用するよりも安価で、染料液体はわずか25mBしか必要としません。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/music_disc_chirp",
-      "text": "Dye fluids can be used to finish $(item)Music Discs$()."
+      "text": "染料液は$(item)レコード$()の仕上げに使用できます。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/red_dyeable",
-      "text": "Dye fluids can even dye leather as if it were crafted!"
+      "text": "染料液は、まるで工芸品のように革を染色することさえできます！"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "text": "$(li)$(item)Black Dye$() is used for $(l:crafting/scribing_table)Scribing Tables$().$(li)$(item)Red Dye$() is used for $(l:mechanics/powderkegs)Powderkegs$(). $(li)Unfired $(l:food/decay#small_vessels)Small Vessels$() and $(l:food/decay#large_vessels)Large Vessels$() can be dyed$().",
-      "title": "Miscellaneous"
+      "title": "その他"
     }
   ],
   "read_by_default": true

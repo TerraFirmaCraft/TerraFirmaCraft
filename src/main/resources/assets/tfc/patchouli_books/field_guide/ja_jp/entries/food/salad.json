@@ -13,7 +13,7 @@
       "item": "tag:c:foods/salad",
       "title": "",
       "link_recipes": false,
-      "text": "Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot."
+      "text": "上部のスロットに最大5つの材料を追加できます。左下のスロットには$(thing)ボウル$()を追加できます。完了したら、右下のスロットからサラダを取り出すことができます。"
     }
   ],
   "read_by_default": true,

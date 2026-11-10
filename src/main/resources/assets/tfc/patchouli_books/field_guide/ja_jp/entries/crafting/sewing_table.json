@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Sewing Table",
+  "name": "裁縫テーブル",
   "category": "tfc:crafting",
   "icon": "tfc:wood/sewing_table/oak",
   "pages": [
@@ -11,41 +11,41 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bone_needle",
-      "text": "A needle for sewing can be made from a bone."
+      "text": "裁縫用の針は、骨から作ることができます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/sewing_table/oak",
-      "text": "The sewing table can be made from wood, leather, and a pair of shears."
+      "text": "裁縫テーブルは木材、革、ハサミから作成することができます。"
     },
     {
       "type": "patchouli:text",
-      "text": "The sewing table's inventory is similar to that of a crafting table. If you ever make a mistake, you can simply exit the inventory, and your items will be returned to you. There is a recipe book available in the GUI. Selecting the book opens a menu where you can select a recipe. This places small indicators of what steps to perform on the working surface."
+      "text": "裁縫テーブルのインベントリは、作業台のインベントリに似ています。間違えた場合は、インベントリを終了するだけで、アイテムは返されます。GUIにはレシピブックがあり、本を選択するとメニューが開き、レシピを選択できます。これにより、作業面に実行するステップの小さな指示が表示されます。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/sewing_table.png"
       ],
-      "text": "The sewing screen.",
+      "text": "裁縫画面。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "The slots on the left are for the string and the needle. The two bottom slots can hold any combination of burlap and wool cloth. The slot on the right will show the result when it is ready to be taken. Taking the result from the result slot completes the craft, and uses the items."
+      "text": "左側のスロットには糸と針を入れます。下部の2つのスロットには、ジュート布とウール布の任意の組み合わせを入れることができます。右側のスロットには、仕上がった完成品が表示されます。完成品スロットからアイテムを取り出すことでクラフトが完了し、アイテムが使用されます。"
     },
     {
       "type": "patchouli:text",
-      "text": "Each cloth item allows placing 8 squares of that material on the sewing surface. Similarly, each yarn item allows placing 16 stitches. When you have selected a recipe, just use the buttons on the top right of the screen to place squares and stitch them together as shown by the guide. Want to remove stitches? Use the red 'X' button to get rid of squares."
+      "text": "各布製アイテムは、裁縫面にその材料の8つの四角を配置することができます。同様に、各毛糸アイテムは16ステッチを配置することができます。レシピを選択したら、画面の右上のボタンを使用して四角を配置し、ガイドに示されたようにそれらを縫い合わせます。ステッチを削除したいですか？赤い「X」ボタンを使用して四角を取り除きます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:loom",
-      "text": "The banner loom, for making things with banner patterns, can be crafted to do work with banner patterns."
+      "text": "旗のパターンを作成するための旗の加工台は、旗のパターンを使用して作業するために作られます。"
     },
     {
       "type": "patchouli:text",
-      "text": "For information on the use of smithing templates, see the $(l:mechanics/armor_trims)Armor Trims$() chapter."
+      "text": "鍛冶テンプレートの使用方法については、$(l:mechanics/armor_trims)防具の装飾$()の章を参照してください。"
     }
   ],
   "read_by_default": true,

@@ -45,11 +45,11 @@
       "type": "patchouli:text",
       "anchor": "cherry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-5.2) - $(cfg:temperature:14)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 100 - 350mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.cherry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.cherry.hydration)%$(br2)Cherry trees grow in the months of January through March, start flowering in April and May, and bear fruit in June.",
-      "title": "Cherry Tree"
+      "title": "サクランボの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example cherry tree.",
+      "text": "サクランボの木の例。",
       "multiblocks": [
         {
           "pattern": [
@@ -269,11 +269,11 @@
       "type": "patchouli:text",
       "anchor": "green_apple",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-10.6) - $(cfg:temperature:10.4)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 130 - 280mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.green_apple.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.green_apple.hydration)%$(br2)Green apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
-      "title": "Green Apple Tree"
+      "title": "青リンゴの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example green apple tree.",
+      "text": "青リンゴの木の例。",
       "multiblocks": [
         {
           "pattern": [
@@ -493,11 +493,11 @@
       "type": "patchouli:text",
       "anchor": "lemon",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:7.4) - $(cfg:temperature:24.8)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 220 - 440mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.lemon.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.lemon.hydration)%$(br2)Lemon trees grow from February to May, start flowering in June and July, and bear fruit in August.",
-      "title": "Lemon Tree"
+      "title": "レモンの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example lemon tree.",
+      "text": "レモンの木の例。",
       "multiblocks": [
         {
           "pattern": [
@@ -717,11 +717,11 @@
       "type": "patchouli:text",
       "anchor": "olive",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:2) - $(cfg:temperature:23)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 250 - 450mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.olive.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.olive.hydration)%$(br2)Olive trees grow from March to July, start flowering in August and September, and bear fruit in October.$(br2)Olives can be used to produce $(l:mechanics/lamps#olives)Olive Oil$(), which can be used as a fuel for lamps.",
-      "title": "Olive Tree"
+      "title": "オリーブの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example olive tree.",
+      "text": "オリーブの木の例",
       "multiblocks": [
         {
           "pattern": [
@@ -941,11 +941,11 @@
       "type": "patchouli:text",
       "anchor": "orange",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:9.2) - $(cfg:temperature:40)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 300 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.orange.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.orange.hydration)%$(br2)Orange trees grow from March to June, start flowering in July and August, and bear fruit in September.",
-      "title": "Orange Tree"
+      "title": "オレンジの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example orange tree.",
+      "text": "オレンジの木の例。",
       "multiblocks": [
         {
           "pattern": [
@@ -1165,11 +1165,11 @@
       "type": "patchouli:text",
       "anchor": "peach",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-3.4) - $(cfg:temperature:15.8)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 180 - 470mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.peach.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.peach.hydration)%$(br2)Peach trees grow from December to March, start flowering in April and May, and bear fruit in June.",
-      "title": "Peach Tree"
+      "title": "モモの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example peach tree.",
+      "text": "モモの木の例。",
       "multiblocks": [
         {
           "pattern": [
@@ -1389,11 +1389,11 @@
       "type": "patchouli:text",
       "anchor": "plum",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-7) - $(cfg:temperature:12.2)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 120 - 300mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.plum.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.plum.hydration)%$(br2)Plum trees grow from January to April, start flowering in May and June, and bear fruit in July.",
-      "title": "Plum Tree"
+      "title": "プラムの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example plum tree.",
+      "text": "プラムの木の例。",
       "multiblocks": [
         {
           "pattern": [
@@ -1613,11 +1613,11 @@
       "type": "patchouli:text",
       "anchor": "red_apple",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-10.6) - $(cfg:temperature:10.4)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 190 - 310mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.red_apple.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.red_apple.hydration)%$(br2)Red Apple trees grow from March to July, start flowering in August and September, and bear fruit in October.",
-      "title": "Red Apple Tree"
+      "title": "赤リンゴの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example red apple tree.",
+      "text": "赤リンゴの木の例",
       "multiblocks": [
         {
           "pattern": [
@@ -1837,11 +1837,11 @@
       "type": "patchouli:text",
       "anchor": "banana",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:11) - $(cfg:temperature:40)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 280 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.banana.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.banana.hydration)%$(br2)Bananas grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and must be replanted in the spring.",
-      "title": "Banana Tree"
+      "title": "バナナの木"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example banana tree.",
+      "text": "バナナの木の例。",
       "multiblocks": [
         {
           "pattern": [
@@ -2296,7 +2296,7 @@
           "fill": "0xa8986a"
         }
       ],
-      "text": "The fruiting calendar for fruit trees.",
+      "text": "果樹が実をつける時期や$(br)成長サイクルのカレンダー",
       "title": "果樹",
       "legend": [
         {
@@ -2331,20 +2331,20 @@
     {
       "type": "patchouli:text",
       "anchor": "tall_bushes",
-      "text": "$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.",
-      "title": "Tall Bushes"
+      "text": "$(thing)背の高いベリーの茂み$()は、あらゆる方向に成長し、広がることができる果物のブロックです。上方向に成長し、最大での高さ3になるか、側面に$(thing)茎$()が生え、完全な茂みブロックに成長していきます。しばらくすると、茂みは広がるのをやめ、成熟に達します。鋭い道具でこれらの茂みを収穫すると、新しい茂みを落とす可能性があります。完全に成熟した茂みは常に自然に落ちます。",
+      "title": "背の高いベリーの茂み"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/berry_bush.png"
       ],
-      "text": "A wild tall bush.",
+      "text": "野生の背の高いベリーの茂み",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Tall bushes are able to spread when their canes have somewhere to take root. Practically, this means that they need a solid block under them to place a new bush on. Providing a flat, open area free of grass or other debris gives them the best chance to grow."
+      "text": "背の高いベリーの茂みは、その茎が根を張る場所があるときに広がることができます。実際には、新しい茂みを育てるためにはその下に固いブロックが必要です。草や他のゴミがない平らで開けた場所に植えることで、成長のチャンスが最も高まります。"
     },
     {
       "type": "patchouli:text",
@@ -2354,11 +2354,11 @@
       "type": "patchouli:text",
       "anchor": "blackberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-5.2) - $(cfg:temperature:19.4)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 200 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.blackberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.blackberry.hydration)%$(br2)Blackberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
-      "title": "Blackberry Bush"
+      "title": "ブラックベリー"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example blackberry bush.",
+      "text": "ブラックベリーの茂みの例。",
       "multiblocks": [
         {
           "pattern": [
@@ -2454,11 +2454,11 @@
       "type": "patchouli:text",
       "anchor": "raspberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-10.6) - $(cfg:temperature:14)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 180 - 450mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.raspberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.raspberry.hydration)%$(br2)Raspberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in areas with few trees.",
-      "title": "Raspberry Bush"
+      "title": "ラズベリー"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example raspberry bush.",
+      "text": "ラズベリーの茂みの例。",
       "multiblocks": [
         {
           "pattern": [
@@ -2554,11 +2554,11 @@
       "type": "patchouli:text",
       "anchor": "blueberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-8.8) - $(cfg:temperature:8.6)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 150 - 400mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.blueberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.blueberry.hydration)%$(br2)Blueberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
-      "title": "Blueberry Bush"
+      "title": "ブルーベリー"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example blueberry bush.",
+      "text": "ブルーベリーの茂みの例。",
       "multiblocks": [
         {
           "pattern": [
@@ -2654,11 +2654,11 @@
       "type": "patchouli:text",
       "anchor": "elderberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-5.2) - $(cfg:temperature:15.8)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 120 - 380mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.elderberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.elderberry.hydration)%$(br2)Elderberry bushes grow from February to May, start flowering in June and July, and bear fruit in August.$(br2)They can be found in areas with few trees.",
-      "title": "Elderberry Bush"
+      "title": "ニワトコ"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example elderberry bush.",
+      "text": "ニワトコの茂みの例。",
       "multiblocks": [
         {
           "pattern": [
@@ -2984,12 +2984,12 @@
     {
       "type": "patchouli:text",
       "anchor": "small_bushes",
-      "text": "$(thing)Small Bushes$() are a kind of low lying fruit block that spawns in forests. Small bushes occasionally will spread to surrounding blocks, if there aren't too many other bushes nearby.$(br2)Small bushes will go through three sizes, and when grown, they are harvested just with $(item)$(k:key.use)$().",
-      "title": "Small Bushes"
+      "text": "$(thing)小さい茂み$()は森林に生育する低い果実植物一種です。近くに他の茂みがあまりない場合、小さい茂みは時折周囲のブロックに広がります。$(br2)小さい茂みは3段階のサイズを経て成長し、成長したら$(item)$(k:key.use)$()で収穫できます。",
+      "title": "小さい茂み"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Three different sizes of a healthy small bush",
+      "text": "小さい茂みの3段階のサイズ",
       "multiblocks": [
         {
           "pattern": [
@@ -3036,11 +3036,11 @@
       "type": "patchouli:text",
       "anchor": "bunchberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-14.2) - $(cfg:temperature:1.4)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 280 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.bunchberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.bunchberry.hydration)%$(br2)Bunchberry bushes grow from May to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
-      "title": "Bunchberry Bush"
+      "title": "ゴゼンタチバナ"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a bunchberry bush.",
+      "text": "ゴゼンタチバナの各時期の成長段階。",
       "multiblocks": [
         {
           "pattern": [
@@ -3100,11 +3100,11 @@
       "type": "patchouli:text",
       "anchor": "gooseberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-7) - $(cfg:temperature:12.2)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 200 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.gooseberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.gooseberry.hydration)%$(br2)Gooseberry bushes grow from April to July, start flowering in August and September, and bear fruit in October.$(br2)They can be found in forests.",
-      "title": "Gooseberry Bush"
+      "title": "セイヨウスグリ"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a gooseberry bush.",
+      "text": "セイヨウスグリの各時期の成長段階。",
       "multiblocks": [
         {
           "pattern": [
@@ -3164,11 +3164,11 @@
       "type": "patchouli:text",
       "anchor": "snowberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-10.6) - $(cfg:temperature:5)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 200 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.snowberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.snowberry.hydration)%$(br2)Snowberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests.",
-      "title": "Snowberry Bush"
+      "title": "セッコウボク"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a snowberry bush.",
+      "text": "セッコウボクの各時期の成長段階。",
       "multiblocks": [
         {
           "pattern": [
@@ -3228,11 +3228,11 @@
       "type": "patchouli:text",
       "anchor": "cloudberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-14.2) - $(cfg:temperature:6.8)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 80 - 320mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.cloudberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.cloudberry.hydration)%$(br2)Cloudberry bushes grow from February to May, start flowering in June to August, and bear fruit in September.$(br2)They can be found in forests.",
-      "title": "Cloudberry Bush"
+      "title": "ホロムイイチゴ"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a cloudberry bush.",
+      "text": "ホロムイイチゴの各時期の成長段階。",
       "multiblocks": [
         {
           "pattern": [
@@ -3292,11 +3292,11 @@
       "type": "patchouli:text",
       "anchor": "strawberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-1.6) - $(cfg:temperature:17.6)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 140 - 400mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.strawberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.strawberry.hydration)%$(br2)Strawberry bushes grow from October to December, start flowering in January and February, and bear fruit in March.$(br2)They can be found in forests.",
-      "title": "Strawberry Bush"
+      "title": "イチゴ"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a strawberry bush.",
+      "text": "イチゴ各時期の成長段階。",
       "multiblocks": [
         {
           "pattern": [
@@ -3356,11 +3356,11 @@
       "type": "patchouli:text",
       "anchor": "wintergreen_berry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-8.8) - $(cfg:temperature:6.8)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 100 - 370mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.wintergreen_berry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.wintergreen_berry.hydration)%$(br2)Wintergreen berry bushes grow from May to September, start flowering in October and November, and bear fruit in December.$(br2)They can be found in forests.",
-      "title": "Wintergreen Berry Bush"
+      "title": "ヒメコウジ"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a wintergreen berry bush.",
+      "text": "ヒメコウジの各時期の成長段階。",
       "multiblocks": [
         {
           "pattern": [
@@ -3420,11 +3420,11 @@
       "type": "patchouli:text",
       "anchor": "cranberry",
       "text": "Can be found in regions with: $(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:temperature:-14.2) - $(cfg:temperature:8.6)$(br)$(bold)$(l:core_mechanics/climate#rainfall)Rainfall$(): 250 - 500mm$(br2)Conditions required for growth:$(br)$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.cranberry.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.cranberry.hydration)%$(br2)Cranberry bushes grow from March to June, start flowering in July and August, and bear fruit in September.$(br2)They can be found in forests. Unlike most small bushes, cranberry bushes are grown underwater.",
-      "title": "Cranberry Bush"
+      "title": "クランベリー"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a cranberry bush.",
+      "text": "クランベリーの各時期の成長段階。",
       "multiblocks": [
         {
           "pattern": [

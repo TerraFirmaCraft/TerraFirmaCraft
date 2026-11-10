@@ -40,29 +40,29 @@
     {
       "type": "patchouli:text",
       "text": "Other alloys are not suitable for creating tools. These are $(thing)Brass$(), $(thing)Rose Gold$(), and $(thing)Sterling Silver$().$(br2)$(thing)Brass$() is a useful alloy for all sorts of contraptions, including $(l:mechanics/mechanical_power)Mechanical Power$().$(br2)$(thing)Rose Gold$() and $(thing)Sterling Silver$() are used for crafting $(l:metalworking/steel#red_steel)Red Steel$() and $(l:metalworking/steel#blue_steel)Blue Steel$().",
-      "title": "Utility Alloys"
+      "title": "有益合金"
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "brass",
       "item": "tfc:metal/ingot/brass",
-      "title": "Brass",
+      "title": "真鍮",
       "link_recipes": false,
       "text": "$(br)$(bold)必要:$()$(br)$(li)88 - 92 % : $(thing)銅$()$(li)8 - 12 % : $(thing)錫$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/rose_gold",
-      "title": "Rose Gold",
+      "title": "ローズゴールド",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)15 - 30 % : $(thing)Copper$()$(li)70 - 85 % : $(thing)Gold$()$(br2)"
+      "text": "$(br)$(bold)材料:$()$(br)$(li)15 - 30 % : $(thing)銅$()$(li)70 - 85 % : $(thing)金$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/sterling_silver",
-      "title": "Sterling Silver",
+      "title": "スターリングシルバー",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)20 - 40 % : $(thing)Copper$()$(li)60 - 80 % : $(thing)Silver$()$(br2)"
+      "text": "$(br)$(bold)材料:$()$(br)$(li)20 - 40 % : $(thing)銅$()$(li)60 - 80 % : $(thing)銀$()$(br2)"
     }
   ],
   "read_by_default": true,

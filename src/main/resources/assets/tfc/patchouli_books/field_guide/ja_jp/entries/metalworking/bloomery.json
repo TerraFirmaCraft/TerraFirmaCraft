@@ -52,7 +52,7 @@
         }
       },
       "name": "塊鉄ブロック",
-      "text": "A large $(thing)Bloom$().",
+      "text": "大きな$(thing)塊鉄$()。",
       "enable_visualize": false
     },
     {

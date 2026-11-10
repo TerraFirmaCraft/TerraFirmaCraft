@@ -27,8 +27,8 @@
           "X": "tfc:plant/anthurium"
         }
       },
-      "name": "Standard",
-      "text": "Standard plants are like small flowers. They grow on grass, dirt, and farmland.",
+      "name": "一般的な植物",
+      "text": "一般的な植物は小さな花のようなものです。草地、土、耕作地で育ちます。",
       "enable_visualize": false
     },
     {
@@ -46,8 +46,8 @@
           "X": "tfc:plant/sagebrush"
         }
       },
-      "name": "Dry",
-      "text": "Dry plants are like standard plants, but they can grow on sand. These generally only spawn in areas with low rainfall.",
+      "name": "乾燥地帯の植物",
+      "text": "乾燥した植物は一般的な植物に似ていますが、砂の上で育つことができます。これらは降水量の少ない地域で育ちます。",
       "enable_visualize": false
     },
     {
@@ -70,8 +70,8 @@
           "Y": "tfc:plant/barrel_cactus[part=lower]"
         }
       },
-      "name": "Cacti",
-      "text": "Cacti can grow two blocks high, and they will damage you!",
+      "name": "サボテン",
+      "text": "サボテンは2ブロックの高さまで成長し、接触するとダメージを与えます！",
       "enable_visualize": false
     },
     {
@@ -89,8 +89,8 @@
           "X": "tfc:plant/moss[down=true]"
         }
       },
-      "name": "Creeping",
-      "text": "Creeping plants take the shape of the surrounding block faces. They mostly spawn in blobs on the ground",
+      "name": "這う植物",
+      "text": "這うように育つ植物は周囲のブロックの形状に沿って形を変えます。主に地面に塊となって育ちます。",
       "enable_visualize": false
     },
     {
@@ -109,8 +109,8 @@
           "Y": "tfc:plant/licorice_fern[facing=south]"
         }
       },
-      "name": "Epiphyte",
-      "text": "Epiphytes only live on the sides of logs.",
+      "name": "着生植物",
+      "text": "着生植物は丸太の側面にのみ育ちます。",
       "enable_visualize": false
     },
     {
@@ -128,8 +128,8 @@
           "X": "tfc:plant/bluegrass"
         }
       },
-      "name": "Short Grass",
-      "text": "Short grass blocks grow taller with age. They also are able to grow on peat and mud.",
+      "name": "短い草",
+      "text": "背の低い草の植物は、時間が立つにつれて高く成長します。また、泥炭と泥の上でも育ちます。",
       "enable_visualize": false
     },
     {
@@ -151,8 +151,8 @@
           "Y": "tfc:plant/king_fern[part=lower]"
         }
       },
-      "name": "Tall Grass",
-      "text": "Tall grass blocks are just tall enough to block your field of view.",
+      "name": "高い草",
+      "text": "背の高い草の植物は、視界を遮るのにちょうど良い高さです。",
       "enable_visualize": false
     },
     {
@@ -170,8 +170,8 @@
           "X": "tfc:plant/ivy[up=true,north=true]"
         }
       },
-      "name": "Vines",
-      "text": "Vine blocks spread around the world on their own, if it's warm enough.",
+      "name": "つる植物",
+      "text": "つる植物は、十分に暖かい場所であれば世界中に広がります。",
       "enable_visualize": false
     },
     {
@@ -193,8 +193,8 @@
           "Y": "tfc:plant/liana"
         }
       },
-      "name": "Weeping Vines",
-      "text": "Weeping vines grow downward from an anchoring block.",
+      "name": "垂れ下がったつる植物",
+      "text": "垂れ下がったつるは、上部のブロックから下に向かって成長します。",
       "enable_visualize": false
     },
     {
@@ -216,14 +216,14 @@
           "Y": "tfc:plant/arundo_plant"
         }
       },
-      "name": "Twisting Vines",
-      "text": "Twisting vines twist upward from the Earth. They can come in a solid variant.",
+      "name": "ねじれたつる植物",
+      "text": "ねじれたつるは、地面から上へとねじれながら成長し、変種として存在することもあります。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Water plants are restricted to either spawn in fresh or salty water. Otherwise, they grow and act much like the plants you see on the surface. Some water plants can be cooked for food.",
-      "title": "Water Plants"
+      "text": "水生植物は淡水か海水でのみ植生します。それ以外は、地上で見られる植物とほぼ同じように成長します。一部の水生植物は、食べ物として調理することができます。",
+      "title": "水生植物"
     },
     {
       "type": "patchouli:multiblock",
@@ -240,8 +240,8 @@
           "X": "tfc:plant/sago[fluid=water]"
         }
       },
-      "name": "Standard Water",
-      "text": "Standard water plants can be broken with a $(thing)$()Knife$() to get $(thing)Seaweed$().",
+      "name": "一般的な水生植物",
+      "text": "一般的な水生植物は、$(thing)ナイフ$()で切断すると$(thing)海藻$()が得られます。",
       "enable_visualize": false
     },
     {
@@ -259,8 +259,8 @@
           "X": "tfc:plant/manatee_grass[fluid=salt_water]"
         }
       },
-      "name": "Water Grass",
-      "text": "Water grasses are grasses that grow under the water.",
+      "name": "水草",
+      "text": "水草は水中で育つ草です。",
       "enable_visualize": false
     },
     {
@@ -282,8 +282,8 @@
           "Y": "tfc:plant/cattail[part=lower,fluid=water]"
         }
       },
-      "name": "Tall Water Plant",
-      "text": "Tall water plants can grow with just the bottom block in water. $(thing)Water Taro$() and $()Cattail$() can be broken with a $(thing)Knife$() for $(thing)Roots$().",
+      "name": "背の高い水生植物",
+      "text": "背の高い水生植物は、下部のみを水に浸すと成長し、$(thing)タロ$()と$()ガマ$()は、$(thing)ナイフ$()で切断すると$(thing)根$()が得られます。",
       "enable_visualize": false
     },
     {
@@ -305,8 +305,8 @@
           "Y": "minecraft:water"
         }
       },
-      "name": "Floating",
-      "text": "Floating plants sit on top of the water. Boats will break them on contact.",
+      "name": "浮草",
+      "text": "浮草は水面に浮かんでいます。ボートが接触するとそれらを壊してしまいます。",
       "enable_visualize": false
     },
     {
@@ -328,8 +328,8 @@
           "Y": "tfc:plant/winged_kelp_plant[fluid=salt_water]"
         }
       },
-      "name": "Kelp",
-      "text": "Kelp are twisting vines that grow underwater.",
+      "name": "海藻",
+      "text": "海藻は水中で成長するねじれたつる植物です。",
       "enable_visualize": false
     },
     {
@@ -351,8 +351,8 @@
           "Y": "tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]"
         }
       },
-      "name": "Tree Kelp",
-      "text": "Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().",
+      "name": "木の様な海藻",
+      "text": "一部の海藻は水中で複雑な木の様に成長します。花は$(thing)ナイフ$()で収穫することができます。",
       "enable_visualize": false
     }
   ],
