@@ -72,7 +72,7 @@
       },
       {
         "type": "tfc:parrot",
-        "weight": 1,
+        "weight": 10,
         "minCount": 1,
         "maxCount": 3
       }

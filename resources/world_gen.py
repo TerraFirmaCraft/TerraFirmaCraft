@@ -1986,7 +1986,7 @@ RIVER_AMBIENT: Dict[str, Dict[str, Any]] = {
 }
 
 LAND_AMBIENT: Dict[str, Dict[str, Any]] = {
-    'parrot': spawner('tfc:parrot', min_count=1, max_count=3)
+    'parrot': spawner('tfc:parrot', min_count=1, max_count=3, weight=10)
 }
 
 LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
