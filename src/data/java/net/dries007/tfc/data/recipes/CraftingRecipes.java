@@ -1049,6 +1049,14 @@ public interface CraftingRecipes extends Recipes
             .shaped(TFCBlocks.BARREL_RACK);
         recipe()
             .input('L', TFCTags.Items.LUMBER)
+            .pattern("L", "L")
+            .shaped(TFCBlocks.PARROT_PERCH);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
+            .pattern("L ", " L")
+            .shaped(TFCBlocks.WALL_PARROT_PERCH);
+        recipe()
+            .input('L', TFCTags.Items.LUMBER)
             .input('R', Tags.Items.LEATHERS)
             .pattern("LLL", "RRR", "LLL")
             .shaped(TFCBlocks.BELLOWS);

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "pattern": [
+    "L ",
+    " L"
+  ],
+  "result": {
+    "count": 1,
+    "id": "tfc:wall_parrot_perch"
+  }
+}

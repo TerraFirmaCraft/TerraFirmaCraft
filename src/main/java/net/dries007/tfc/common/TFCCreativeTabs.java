@@ -694,6 +694,8 @@ public final class TFCCreativeTabs
         out.accept(Blocks.JUKEBOX);
 
         out.accept(TFCBlocks.BARREL_RACK);
+        out.accept(TFCBlocks.PARROT_PERCH);
+        out.accept(TFCBlocks.WALL_PARROT_PERCH);
 
         for (Wood wood : Wood.VALUES)
         {

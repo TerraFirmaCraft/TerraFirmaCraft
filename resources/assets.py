@@ -1238,6 +1238,16 @@ def generate(rm: ResourceManager):
     rm.blockstate('ceramic/bowl').with_block_model({'all': 'tfc:block/ceramic_bowl'}, 'tfc:block/template_bowl').with_lang(lang('ceramic bowl')).with_block_loot('tfc:ceramic/bowl')
 
     rm.blockstate('barrel_rack').with_item_model().with_lang(lang('barrel rack')).with_block_loot('tfc:barrel_rack')
+
+    for perch in ('parrot_perch', 'wall_parrot_perch'):
+        block = rm.blockstate(perch, variants=four_rotations('tfc:block/%s' % perch, (90, None, 180, 270)))
+        block.with_block_model(textures={
+            'log': 'tfc:block/wood/log/oak',
+            'log_top': 'tfc:block/wood/log_top/oak',
+            'particle': 'tfc:block/wood/log/oak'
+        }, parent='tfc:block/template_%s' % perch)
+        block.with_lang(lang(perch)).with_block_loot('tfc:%s' % perch).with_item_model()
+
     rm.lang('item.tfc.pan.empty', lang('Empty Pan'))
     rm.item_model('firestarter', parent='item/handheld').with_lang(lang('firestarter'))
     rm.item_model('flint_and_pyrite', parent='item/handheld').with_lang(lang('flint and pyrite'))
@@ -1677,6 +1687,8 @@ def generate(rm: ResourceManager):
     for meat in MEATS:
         rm.item_model(('food', meat)).with_lang(lang('raw %s', meat))
         rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
+    rm.item_model(('food', 'parrot'), 'tfc:item/food/quail').with_lang(lang('raw parrot'))
+    rm.item_model(('food', 'cooked_parrot'), 'tfc:item/food/cooked_quail').with_lang(lang('cooked parrot'))
     for veg in MISC_FOODS:
         rm.item_model(('food', veg)).with_lang(lang(veg))
 
@@ -2593,6 +2605,7 @@ def generate(rm: ResourceManager):
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:
         rm.item_model('spawn_egg/%s' % creature).with_lang(lang('%s Spawn Egg', creature))
+    rm.item_model('spawn_egg/parrot', parent='minecraft:item/template_spawn_egg', no_textures=True).with_lang(lang('parrot spawn egg'))
     for creature in BUCKETABLE_FISH:
         rm.item_model('bucket/%s' % creature).with_lang(lang('%s Bucket', creature))
 

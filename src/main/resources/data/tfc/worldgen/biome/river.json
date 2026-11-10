@@ -168,6 +168,12 @@
         "weight": 10,
         "minCount": 8,
         "maxCount": 8
+      },
+      {
+        "type": "tfc:parrot",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 3
       }
     ],
     "creature": [

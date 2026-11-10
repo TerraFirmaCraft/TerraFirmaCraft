@@ -206,13 +206,17 @@
     },
     {
       "type": "patchouli:entity",
+      "entity": "tfc:parrot",
+      "scale": 0.7,
+      "name": "Parrot",
+      "text": "The parrot perches on leaves and migrates when it gets cold. It lives in open land at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:12) with $(l:core_mechanics/climate#rainfall)rainfall$() between 60 and 200mm, or anywhere above $(cfg:temperature:20) with at least 150mm. Feeding a parrot seeds, grains, or berries may tame it. Tamed parrots can rest on a $(l:food/pets#parrots)Parrot Perch$()."
+    },
+    {
+      "type": "patchouli:entity",
       "entity": "tfc:armadillo",
       "scale": 0.7,
       "name": "Armadillo",
       "text": "The armadillo sheds scutes every 30 hours. It can be found at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:12), and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 400mm."
-    },
-    {
-      "type": "patchouli:empty"
     },
     {
       "type": "patchouli:text",

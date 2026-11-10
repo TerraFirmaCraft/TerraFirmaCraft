@@ -1985,6 +1985,10 @@ RIVER_AMBIENT: Dict[str, Dict[str, Any]] = {
     'crayfish': spawner('tfc:crayfish', min_count=1, max_count=4, weight=5)
 }
 
+LAND_AMBIENT: Dict[str, Dict[str, Any]] = {
+    'parrot': spawner('tfc:parrot', min_count=1, max_count=3, weight=10)
+}
+
 LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
     'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
 }
@@ -2164,6 +2168,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         creatures += [entity for entity in LAND_CREATURES.values() if entity['type'] not in {e['type'] for e in creatures}]
         if (category in ('river', 'swamp') or 'lake' in name or name == 'river_valley') and name != 'salt_marsh':
             spawners['creature'] += FRESHWATER_SHORE_CREATURES.values()
+        spawners['ambient'] += LAND_AMBIENT.values()
 
     if ('glaciated' in name) or ('mountains_edge' in name):
         if 'oceanic' in name:
