@@ -61,7 +61,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels have the ability to $(l:mechanics/dye)Dye$() and $(l:mechanics/dye#lye)Bleach$() items. Most color-able things, like carpet, candles, and $(l:mechanics/advanced_building_materials#plaster)Plaster$() can be dyed by sealing them in a barrel of dye or bleached by sealing them in a barrel of lye. See the dye chapter for more information."
+      "text": "樽にはアイテムを$(l:mechanics/dye)染色$()および$(l:mechanics/dye#lye)漂白$()する機能があります。カーペット、ろうそく、$(l:mechanics/advanced_building_materials#plaster)雪花石膏$()など、色をつけられるほとんどのものは、染料の樽に密封することで染色されるか、灰汁の樽に密封することで漂白されます。詳細は染料の章を参照してください。"
     },
     {
       "type": "patchouli:text",

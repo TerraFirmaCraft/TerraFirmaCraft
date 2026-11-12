@@ -28,13 +28,13 @@
         }
       },
       "name": "ランプ",
-      "text": "A lit lamp hanging from a chain.",
+      "text": "チェーンに吊るされた点灯したランタン。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/lamp/bronze",
-      "text": "Lamps are smithed in the $(l:metalworking/anvils)Anvil$() and crafted with $(l:crafting/glassworking_applications#lamp_glass)Lamp Glass$() to be completed."
+      "text": "ランタンは$(l:metalworking/anvils)金床$()で鍛造され、$(l:crafting/glassworking_applications#lamp_glass)ランタンガラス$()で完成されます。"
     },
     {
       "type": "tfc:quern_recipe",

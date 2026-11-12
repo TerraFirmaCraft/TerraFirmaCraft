@@ -10,17 +10,17 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, what they look like, and where to find them."
+      "text": "さらに、鉱石には$(thing)含有量$()が存在します。鉱石ブロックは低純度、中純度、高純度と区別され、鉱脈によって各ブロックの量が異なります。$(thing)高純度$()な鉱脈はより収益性が高くなります。$(br2)次のページからは、さまざまな種類の鉱石、その外観、および鉱石の場所についての解説です。"
     },
     {
       "type": "patchouli:text",
       "anchor": "native_copper",
-      "text": "Native Copper is an ore of $(thing)Copper$() metal. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks, at elevations above y=40.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:getting_started/panning)panned$().",
+      "text": "自然銅は$(thing)銅$()の鉱石です。標高y=40以上の$(l:the_world/geology#igneous_extrusive)火成噴出岩$()で見つかります。$(br2)また、$(thing)川$()の堆積物の中にも存在し、$(l:getting_started/panning)ふるい$()で採取できます。",
       "title": "自然銅"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Native Copper Ores in Dacite.",
+      "text": "デイサイト岩に含まれている自然銅鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -66,12 +66,12 @@
     {
       "type": "patchouli:text",
       "anchor": "native_gold",
-      "text": "Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=70, but deeper veins are larger and richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:getting_started/panning)panned$().",
+      "text": "自然金は$(thing)金$()の鉱石です。標高y=70未満で見つかりますが、より地下深くにある鉱脈の方が大きく、純度も高くなります。$(l:the_world/geology#igneous_extrusive)火成噴出岩$()および$(l:the_world/geology#igneous_intrusive)火成貫入岩$()で見つかります。$(br2)また、$(thing)川$()の堆積物の中にも存在し、$(l:getting_started/panning)ふるい$()で採取できます。",
       "title": "自然金"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Native Gold Ores in Diorite.",
+      "text": "閃緑岩に含まれている自然金鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -117,12 +117,12 @@
     {
       "type": "patchouli:text",
       "anchor": "native_silver",
-      "text": "Native Silver is an ore of $(thing)Silver$() metal. Small poor veins can be found in $(thing)Granite$() or $(thing)Diorite$() in uplift regions, above y=90. Larger and richer veins can be found in $(thing)Granite$(), $(thing)Diorite$(), $(thing)Schist$(), and $(thing)Gneiss$() deep underground below y=20.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:getting_started/panning)panned$().",
+      "text": "自然銀は$(thing)銀$()の鉱石です。標高y=90以上で隆起地域の$(thing)花崗岩$()や$(thing)閃緑岩$()に小さな鉱脈が見つかります。より大きな鉱脈は、標高y=20以下の地下深くにある$(thing)花崗岩$()、$(thing)閃緑岩$()、$(thing)片岩$()、および$(thing)片麻岩$()で見つかります。$(br2)また、$(thing)川$()の堆積物の中にも存在し、$(l:getting_started/panning)ふるい$()で採取できます。",
       "title": "自然銀"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Native Silver Ores in Granite.",
+      "text": "花崗岩に含まれる自然銀鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -168,12 +168,12 @@
     {
       "type": "patchouli:text",
       "anchor": "tetrahedrite",
-      "text": "Tetrahedrite is an ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.",
+      "text": "四面銅鉱は$(thing)銅$()の鉱石です。どの標高でも見つけることができますが、より地下深くにある鉱脈のほうが純度が高くなることが多いです。$(l:the_world/geology#metamorphic)変成岩$()で見つかります。",
       "title": "安四面銅鉱"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Tetrahedrite Ores in Schist.",
+      "text": "片岩に含まれる四面銅鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -219,12 +219,12 @@
     {
       "type": "patchouli:text",
       "anchor": "malachite",
-      "text": "Malachite is an ore of $(thing)Copper$() metal. It can be found primarily in $(thing)Marble$() or $(thing)Limestone$(), $(thing)Chalk$(), and $(thing)Dolomite$(). It can be found at most elevations, however deeper veins are often larger and richer.",
+      "text": "孔雀石は$(thing)銅$()の鉱石です。主に$(thing)大理石$()や$(thing)石灰岩$()、$(thing)白亜$()、および$(thing)苦灰石$()で見つかります。ほとんどの標高で見つかりますが、より地下深くにある鉱脈の方が大きく、純度も高くなる事が多いです。",
       "title": "孔雀石"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Malachite Ores in Marble.",
+      "text": "大理石に含まれる孔雀石。",
       "multiblocks": [
         {
           "pattern": [
@@ -270,12 +270,12 @@
     {
       "type": "patchouli:text",
       "anchor": "cassiterite",
-      "text": "Cassiterite is an ore of $(thing)Tin$() metal. It can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks at high elevation, above y=80 in uplift regions or in dikes.$(br2)It can also be found in deposits in $(thing)rivers$(), which can be $(l:getting_started/panning)panned$().",
+      "text": "錫石は$(thing)錫$()の鉱石です。標高y=80以上の隆起地域または岩脈にある$(l:the_world/geology#igneous_intrusive)火成貫入岩$()で見つかります。$(br2)また、$(thing)川$()の堆積物の中にも見つかり、$(l:getting_started/panning)ふるい$()で採取できます。",
       "title": "錫石"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Cassiterite Ores in Diorite.",
+      "text": "閃緑岩に含まれる錫鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -321,12 +321,12 @@
     {
       "type": "patchouli:text",
       "anchor": "bismuthinite",
-      "text": "Bismuthinite is an ore of $(thing)Bismuth$() metal. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface, or larger and richer veins in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.",
+      "text": "輝蒼鉛鉱は$(thing)蒼鉛$()の鉱石です。表面近くの$(l:the_world/geology#sedimentary)堆積岩$()や、地下深くの$(l:the_world/geology#igneous_intrusive)火成貫入岩$()により大きくて純度の高い鉱脈が見つかります。",
       "title": "輝蒼鉛鉱"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Bismuthinite Ores in Shale.",
+      "text": "頁岩に含まれる輝蒼鉛鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -372,12 +372,12 @@
     {
       "type": "patchouli:text",
       "anchor": "garnierite",
-      "text": "Garnierite is an ore of $(thing)Nickel$() metal. It can be found at elevations below y=0. It can be found primarily in $(thing)Gabbro$() deep underground. Smaller, rarer veins can also be found in any $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock.",
+      "text": "珪ニッケル鉱は$(thing)ニッケル$()の鉱石です。標高y=0以下で見つかります。主に地下深くの$(thing)斑れい岩$()で見つかります。より小さくて珍しい鉱脈は、どの$(l:the_world/geology#igneous_intrusive)火成貫入岩$()でも見つかることがあります。",
       "title": "珪ニッケル鉱"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Garnierite Ores in Gabbro.",
+      "text": "斑れい岩に含まれる珪ニッケル鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -423,12 +423,12 @@
     {
       "type": "patchouli:text",
       "anchor": "hematite",
-      "text": "Hematite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface.",
+      "text": "赤鉄鉱は$(thing)鉄$()の鉱石です。地表近くの$(l:the_world/geology#igneous_extrusive)火成噴出岩$()で大きな鉱脈として見つかります。",
       "title": "赤鉄鉱"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Hematite Ores in Andesite.",
+      "text": "安山岩に含まれる赤鉄鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -474,12 +474,12 @@
     {
       "type": "patchouli:text",
       "anchor": "magnetite",
-      "text": "Magnetite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.",
+      "text": "磁鉄鉱は$(thing)鉄$()の鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で大きな鉱脈として見つかります。",
       "title": "磁鉄鉱"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Magnetite Ores in Limestone.",
+      "text": "石灰岩に含まれる磁鉄鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -525,12 +525,12 @@
     {
       "type": "patchouli:text",
       "anchor": "limonite",
-      "text": "Limonite is an ore of $(thing)Iron$() metal. It can be found in large veins in any $(l:the_world/geology#sedimentary)Sedimentary$() rocks near the surface.",
+      "text": "褐鉄鉱は$(thing)鉄$()の鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で大きな鉱脈として見つかります。",
       "title": "褐鉄鉱"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Limonite Ores in Chalk.",
+      "text": "白亜に含まれる褐鉄鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -576,12 +576,12 @@
     {
       "type": "patchouli:text",
       "anchor": "sphalerite",
-      "text": "Sphalerite is an ore of $(thing)Zinc$() metal. Small, poor veins can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks near the surface, and large richer veins can be found in $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks deep underground.",
+      "text": "閃亜鉛鉱は$(thing)亜鉛$()の鉱石です。地表近くの$(l:the_world/geology#igneous_extrusive)火成噴出岩$()で小さく純度も低い鉱脈が見つかり、地下深くの$(l:the_world/geology#igneous_intrusive)火成貫入岩$()で大きく純度も高い鉱脈が見つかります。",
       "title": "閃亜鉛鉱"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Sphalerite Ores in Quartzite.",
+      "text": "珪岩に含まれる閃亜鉛鉱石。",
       "multiblocks": [
         {
           "pattern": [
@@ -630,7 +630,7 @@
       "item": "tfc:ore/lignite",
       "title": "褐炭",
       "link_recipes": false,
-      "text": "Lignite is a type of low-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "褐炭は低品位の$(thing)石炭$()鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -657,7 +657,7 @@
       "item": "tfc:ore/bituminous_coal",
       "title": "瀝青炭",
       "link_recipes": false,
-      "text": "Bituminous Coal is a type of mid-grade $(thing)Coal$() ore. It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "瀝青炭は中品位の$(thing)石炭$()鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -688,7 +688,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Variants of kaolin clay.",
+      "text": "カオリン粘土の様々な種類",
       "multiblocks": [
         {
           "pattern": [
@@ -766,7 +766,7 @@
       "item": "tfc:ore/graphite",
       "title": "黒鉛",
       "link_recipes": false,
-      "text": "Graphite is a $(thing)Mineral$() which is used in the construction of $(l:metalworking/fire_clay)Fire Clay$(). It can be found in $(thing)Gneiss$(), $(thing)Marble$(), $(thing)Quartzite$(), and $(thing)Schist$() rocks, in elevations below y=60."
+      "text": "黒鉛は、$(l:metalworking/fire_clay)耐火粘土$()に使用される$(thing)鉱物$()です。標高y=60未満の$(thing)片麻岩$()、$(thing)大理石$()、$(thing)珪岩$()、および$(thing)片岩$()の岩石で見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -784,7 +784,7 @@
         }
       },
       "name": "",
-      "text": "Graphite in Gneiss.",
+      "text": "片麻岩に含まれる黒鉛。",
       "enable_visualize": false
     },
     {
@@ -811,7 +811,7 @@
         }
       },
       "name": "",
-      "text": "Cinnabar in Quartzite.",
+      "text": "珪岩に含まれる辰砂。",
       "enable_visualize": false
     },
     {
@@ -820,7 +820,7 @@
       "item": "tfc:ore/cryolite",
       "title": "氷晶石",
       "link_recipes": false,
-      "text": "Cryolite is a $(thing)Mineral$() which can be ground in the $(l:crafting/quern)Quern$() to obtain $(thing)Redstone Dust$(). It can be found in veins deep underground, in $(thing)Granite$(), and $(thing)Diorite$()."
+      "text": "氷晶石は、$(l:crafting/quern)石臼$()で挽くことによって$(thing)レッドストーンダスト$()を得ることができる$(thing)鉱物$()です。地下深くの$(thing)花崗岩$()および$(thing)閃緑岩$()の鉱脈で見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -838,7 +838,7 @@
         }
       },
       "name": "",
-      "text": "Cryolite in Granite.",
+      "text": "花崗岩に含まれる氷晶石。",
       "enable_visualize": false
     },
     {
@@ -847,7 +847,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "硝石",
       "link_recipes": false,
-      "text": "Saltpeter is a $(thing)Mineral$() which can be ground in the $(l:crafting/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "硝石は、$(l:crafting/quern)石臼$()で挽くことによって$(thing)火薬$()の製作に使用できる$(thing)鉱物$()です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -865,7 +865,7 @@
         }
       },
       "name": "",
-      "text": "Saltpeter in Shale.",
+      "text": "頁岩に含まれる硝石。",
       "enable_visualize": false
     },
     {
@@ -874,7 +874,7 @@
       "item": "tfc:ore/sulfur",
       "title": "硫黄",
       "link_recipes": false,
-      "text": "Sulfur is a $(thing)Mineral$() which can be ground in the $(l:crafting/quern)Quern$(), and then used in the crafting of $(thing)Gunpowder$(). It is found near lava level deep underground, in sparse but large and plentiful veins, in any $(l:the_world/geology#metamorphic)Metamorphic$() or $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rock."
+      "text": "硫黄は、$(l:crafting/quern)石臼$()で挽くことによって$(thing)火薬$()の製作に使用できる$(thing)鉱物$()です。地下深くの$(l:the_world/geology#metamorphic)変成岩$()や$(l:the_world/geology#igneous_intrusive)火成貫入岩$()の溶岩近くで、まばらではあるものの大きくて豊富な鉱脈で見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -892,7 +892,7 @@
         }
       },
       "name": "",
-      "text": "Sulfur in Gabbro.",
+      "text": "斑れい岩に含まれる硫黄。",
       "enable_visualize": false
     },
     {
@@ -901,7 +901,7 @@
       "item": "tfc:ore/sylvite",
       "title": "カリ岩塩",
       "link_recipes": false,
-      "text": "Sylvite is a $(thing)Mineral$() which can be ground in the $(l:crafting/quern)Quern$(), and then used as a $(l:food/fertilizers)Fertilizer$(). It can be found in very large flat deposits near the surface in $(thing)Shale$(), $(thing)Claystone$() and $(thing)Chert$()."
+      "text": "カリ岩塩は、$(l:crafting/quern)石臼$()で挽くことによって$(l:food/fertilizers)肥料$()として使用できる$(thing)鉱物$()です。地表面近くの$(thing)頁岩$()、$(thing)粘土岩$()、および$(thing)角岩$()に非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -919,7 +919,7 @@
         }
       },
       "name": "",
-      "text": "Sylvite in Chert.",
+      "text": "角岩に含まれるカリ岩塩。",
       "enable_visualize": false
     },
     {
@@ -928,7 +928,7 @@
       "item": "tfc:ore/borax",
       "title": "ホウ砂",
       "link_recipes": false,
-      "text": "Borax is a $(thing)Mineral$() which can be ground in the $(l:crafting/quern)Quern$() to produce $(l:metalworking/flux)Flux$(). It can be found in very large flat deposits near the surface in $(thing)Claystone$(), $(thing)Limestone$(), and $(thing)Shale$()."
+      "text": "ホウ砂は、$(l:crafting/quern)石臼$()で挽くことによって$(l:metalworking/flux)融剤$()として使用できる$(thing)鉱物$()です。地表近くの$(thing)粘土岩$()、$(thing)石灰岩$()、および$(thing)頁岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -946,7 +946,7 @@
         }
       },
       "name": "",
-      "text": "Borax in Shale.",
+      "text": "頁岩に含まれるホウ砂",
       "enable_visualize": false
     },
     {
@@ -955,7 +955,7 @@
       "item": "tfc:ore/gypsum",
       "title": "石膏",
       "link_recipes": false,
-      "text": "Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#plaster)Plaster$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "石膏は装飾用の$(thing)鉱物$()であり、$(l:mechanics/advanced_building_materials#plaster)雪花石膏$()の製作に使用されます。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -973,7 +973,7 @@
         }
       },
       "name": "",
-      "text": "Gypsum in Chalk.",
+      "text": "白亜に含まれる石膏",
       "enable_visualize": false
     },
     {
@@ -982,7 +982,7 @@
       "item": "tfc:ore/halite",
       "title": "岩塩",
       "link_recipes": false,
-      "text": "Halite is a $(thing)Mineral$() which can be ground in the $(l:crafting/quern)Quern$() to make $(thing)Salt$(), which is an important $(l:food/decay#salting)Preservative$(). It can be found in very large flat deposits near the surface in $(l:the_world/geology#sedimentary)Sedimentary$() rocks."
+      "text": "岩塩は$(l:crafting/quern)石臼$()で挽くことによって$(thing)塩$()になる$(thing)鉱物$()です。これは重要な$(l:food/decay#salting)保存料$()です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1027,7 +1027,7 @@
         }
       },
       "name": "",
-      "text": "Emerald in Diorite.",
+      "text": "閃緑岩に含まれるエメラルド",
       "enable_visualize": false
     },
     {
@@ -1054,7 +1054,7 @@
         }
       },
       "name": "",
-      "text": "Kimberlite in Gabbro.",
+      "text": "斑れい岩に含まれるキンバーライト。",
       "enable_visualize": false
     },
     {
@@ -1081,14 +1081,14 @@
         }
       },
       "name": "",
-      "text": "Lapis Lazuli in Marble.",
+      "text": "大理石に含まれるラピスラズリ",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "amethyst",
       "item": "tfc:ore/amethyst",
-      "title": "Amethyst",
+      "title": "アメジスト",
       "link_recipes": false,
       "text": "Amethyst is a decorative $(l:mechanics/gems)Gemstone$() which can be used to make $(l:crafting/glassworking)Glass$(). It can be found in $(thing)Sedimentary$() and $(thing)Metamorphic$() rock beneath rivers above y=40, or in geodes below y=30."
     },
@@ -1108,14 +1108,14 @@
         }
       },
       "name": "",
-      "text": "Amethyst in Marble.",
+      "text": "大理石に含まれるアメジスト",
       "enable_visualize": false
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "opal",
       "item": "tfc:ore/opal",
-      "title": "Opal",
+      "title": "オパール",
       "link_recipes": false,
       "text": "Opal is a decorative $(l:mechanics/gems)Gemstone$(). It can be found in $(thing)Sedimentary$() and $(thing)Igneous Extrusive$() rock beneath rivers above y=40."
     },
@@ -1135,7 +1135,7 @@
         }
       },
       "name": "",
-      "text": "Opal in Basalt.",
+      "text": "玄武岩に含まれるオパール",
       "enable_visualize": false
     },
     {

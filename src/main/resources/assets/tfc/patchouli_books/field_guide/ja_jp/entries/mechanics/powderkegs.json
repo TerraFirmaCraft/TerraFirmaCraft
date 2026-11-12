@@ -23,7 +23,7 @@
           "X": "tfc:powderkeg[sealed=true]"
         }
       },
-      "name": "The Powderkeg",
+      "name": "火薬樽",
       "text": "$(l:crafting/barrels)樽$() と同様に、火薬樽は $(item)$(k:key.use)$() で密封および開封できます。 点火できるのは密封された火薬樽のみです。",
       "enable_visualize": false
     },
@@ -34,7 +34,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/powderkeg",
-      "text": "Powderkegs can be made from adding $(l:mechanics/dye)Red Dye$() and string to the crafting shape of a barrel."
+      "text": "火薬樽は、$(l:mechanics/dye)赤色染料$()と糸を樽のクラフト形状に追加することで作成できます。"
     },
     {
       "type": "patchouli:crafting",

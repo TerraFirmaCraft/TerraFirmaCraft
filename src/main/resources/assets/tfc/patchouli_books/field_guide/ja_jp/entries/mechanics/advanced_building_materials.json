@@ -17,18 +17,18 @@
       "type": "patchouli:text",
       "anchor": "plaster",
       "text": "アラバスターは $(l:the_world/ores_and_minerals#gypsum)石膏$() から作られた建築ブロックです。 アラバスターは $(l:the_world/ores_and_minerals#gypsum)石膏$() を使って直接クラフトすることで作成できますが、一部の $(l:the_world/ores_and_minerals#gypsum)石膏$() を 100 mB で封印するとより効率的に作成できます。 樽の中に $(thing)石灰水$()を入れて石膏を密封します。",
-      "title": "Plaster"
+      "title": "雪花石膏"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster_brick",
       "recipe2": "tfc:crafting/alabaster/bricks",
-      "title": "Plaster Bricks"
+      "title": "雪花石膏のレンガ"
     },
     {
       "type": "patchouli:text",
-      "text": "Plaster can be $(l:mechanics/dye)dyed$() in a $(l:crafting/barrels)Barrel$() of dye into any color. Raw Plaster blocks can also be $(l:metalworking/chisel)chiseled$() into $(thing)Polished Plaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
-      "title": "Plaster Decorations"
+      "text": "雪花石膏は、$(l:mechanics/dye)染料$()$(l:crafting/barrels)樽$()の中で任意の色に染めることができます。生の雪花石膏は、$(thing)滑らかにする$()ノミのモードを使用して$(l:metalworking/chisel)加工$()することで$(thing)磨かれた雪花石膏$()にすることもできますし、階段、ハーフブロック、または壁にクラフトもできます。",
+      "title": "雪花石膏の装飾"
     },
     {
       "type": "patchouli:crafting",

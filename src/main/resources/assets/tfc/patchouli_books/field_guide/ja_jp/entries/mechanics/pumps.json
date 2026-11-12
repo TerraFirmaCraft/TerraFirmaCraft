@@ -1,26 +1,26 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Pumps",
+  "name": "ポンプ",
   "category": "tfc:mechanics",
   "icon": "tfc:steel_pipe",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Steel Pumps$() and $(thing)Steel Pipes$() are blocks useful for transporting fluids, such as $(thing)Water$(), $(thing)Salt Water$(), and $(thing)Spring Water$(). They can also be used to move source blocks, and fill small enclosed areas. Unlike $(l:food/aqueducts)Aqueducts$(), they can also be used to transport source blocks upwards."
+      "text": "$(thing)鋼のポンプ$()および$(thing)鋼のパイプ$()は、$(thing)水$()、$(thing)海水$()、および$(thing)温泉水$()などの液体を輸送するために便利なブロックです。これらは液体ブロックを移動させ、小さな囲まれたエリアを満たすためにも使用できます。$(l:food/aqueducts)用水路$()とは異なり、液体ブロックを上方向に輸送することもできます。"
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/steel_pipe",
-      "text": "The steel pipe can be crafted from, predictably, $(l:metalworking/steel)Steel$(), on an $(l:metalworking/anvils)Anvil$(). A $(thing)Steel Pump$() can be crafted from some $(thing)Steel Pipes$(), and $(l:getting_started/primitive_alloys#brass)Brass Mechanisms$()."
+      "text": "鋼のパイプは予想通り、$(l:metalworking/steel)鋼$()から$(l:metalworking/anvils)金床$()で作成できます。$(thing)鋼のポンプ$()は、いくつかの$(thing)鋼のパイプ$()と$(l:getting_started/primitive_alloys#brass)真鍮のベアリング$()から作成できます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/steel_pump",
-      "text": "In order to operate the pump, you will also need a $(l:mechanics/crankshaft)Crankshaft$(), and a source of $(l:mechanics/mechanical_power)Mechanical Power$():$(br)$(li)The pump must be connected on the $(bold)bottom$() to a pipe."
+      "text": "ポンプを操作するには、$(l:mechanics/crankshaft)クランクシャフト$()と$(l:mechanics/mechanical_power)動力$()の供給が必要です: $(br)$(li)ポンプの$(bold)底面$()は吸い上げるためのパイプに接続する必要があります。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)On the narrow side, the pump must be adjacent to the business end of a $(l:mechanics/crankshaft)Crankshaft$().$(li)The pump can reach up to $(bold)16$() blocks. The end of the pipe must be $(bold)submerged$() in the target fluid, and adjacent to a source fluid block.$(li)If the crankshaft is active, fluid will be brought up and appear on the wide end of the $(thing)Pump$().$(li)The pump can fill an enclosed area up to $(bold)32$() blocks with source blocks."
+      "text": "$(li)ポンプの狭い方の口は、$(l:mechanics/crankshaft)クランクシャフト$()の先端に接する必要があります。$(li)ポンプは最大で$(bold)16$()ブロック伸ばせます。パイプの端は目標の液体ブロックに面していて、液体に$(bold)浸かって$()いる必要があります。$(li)クランクシャフトがアクティブな場合、液体は引き上げられ、$(thing)ポンプ$()の広い方の口に現れます。$(li)ポンプは最大で$(bold)32$()ブロックのエリアを満たせます。"
     }
   ],
   "read_by_default": true,

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(thing)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need an empty pan."
+      "text": "$(thing)パンニング$()は、川や用水路で選鉱して特定のちいさな鉱石を取得する方法です。$(br2)湖や川の底にある鉱石が混ざった砂利として見つかる$(thing)鉱床$()を利用します。$(br2)選鉱を始めるには、空のふるいが必要です。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -33,7 +33,7 @@
           "X": "tfc:deposit/native_gold/slate"
         }
       },
-      "name": "Example",
+      "name": "例",
       "text": "一部の粘板岩にある自然金の混じった砂利。",
       "enable_visualize": false
     },
