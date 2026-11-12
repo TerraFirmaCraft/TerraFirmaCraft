@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:crafting/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()"
+      "text": "最もシンプルなガラス製品は$(thing)ガラス板$()と$(thing)ガラスブロック$()です。これらを作成するには、$(l:crafting/glassworking#blowpipe)吹き竿$()と$(thing)ガラスバッチ$()を使用し、$(thing)注ぐ$()必要があります。$(br)$(li)$(bold)テーブルに注ぐ$()は$(thing)ガラス板$()を作成するために使用されます$(li)$(bold)穴に注ぐ$()は$(thing)ガラスブロック$()を作成するために使用されます。"
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:crafting/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:crafting/glassworking#paddle)Paddle$() to flatten the glass.",
+      "text": "$(thing)ガラス板$()は$(thing)テーブルに注い$()で作られます。テーブルは、連続した領域に最大16個の$(thing)真鍮メッキのブロック$()を配置することで作成されます。$(br2)1. $(l:crafting/glassworking)ガラスバッチ$()を$(thing)吹き竿$()に追加します。$(br)2. 吹き竿を$(4)$(bold)ぼんやりした赤色$()に加熱します。$(br)3. 吹き竿を持ちテーブルの上で$()$(item)$(k:key.use)$()を行います。$(br)4. 最後に$(l:crafting/glassworking#paddle)木ごて$()を使ってガラスを平らにします。",
       "title": "テーブルに注ぐ"
     },
     {
@@ -24,12 +24,12 @@
         "tfc:textures/gui/book/tutorial/glass_panes_2.png",
         "tfc:textures/gui/book/tutorial/glass_panes_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:crafting/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "ガラスが冷却されると、$(l:crafting/glassworking#saw)宝石ノコギリ$()で壊して取得できます。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:crafting/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.",
+      "text": "$(thing)ガラスブロック$()は$(thing)穴へ注ぎ$()作られます。穴というのは、$(thing)真鍮メッキのブロック$()で上以外の空気ブロックを囲み作成します。$(br2)1. $(l:crafting/glassworking)ガラスバッチ$()を$(thing)吹き竿$()に追加します。$(br)2. 吹き竿を$(4)$(bold)ぼんやりした赤色$()に加熱します。$(br)3. 吹き竿を持ちテーブルの上で$(item)$(k:key.use)$()を行います。",
       "title": "穴に注ぐ"
     },
     {
@@ -39,13 +39,13 @@
         "tfc:textures/gui/book/tutorial/glass_block_2.png",
         "tfc:textures/gui/book/tutorial/glass_block_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:crafting/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "ガラスが冷却されると、$(l:crafting/glassworking#saw)宝石ノコギリ$()で壊して取得できます。",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "coloring",
-      "text": "Glass has a natural color based on the type of $(l:crafting/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:food/bowls)Bowl$().$(br2)To use, place the $(l:food/bowls)Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the bowl to add the powder to the batch.",
+      "text": "ガラスは使用された$(l:crafting/glassworking)ガラスバッチ$()の種類に基づいて自然な色を持っています。他の色は$(l:food/bowls)ボウル$()を使って作ることができます。$(br2)使用方法として、$(l:food/bowls)ボウル$()を地面に置き、必要な$(thing)粉末$()を$(item)$(k:key.use)$()します。$(thing)注ぐ$()前に、吹き竿を使ってボウルに粉末を追加します。",
       "title": "ガラスの染色"
     },
     {
@@ -388,7 +388,7 @@
       "type": "tfc:glassworking_recipe",
       "anchor": "jar",
       "recipe": "tfc:glassworking/empty_jar",
-      "text": "$(l:food/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass."
+      "text": "$(l:food/jarring)ジャム瓶$()も吹きガラスから作れますが、シリカまたはヘマタイトガラスからのみです。"
     },
     {
       "type": "tfc:glassworking_recipe",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sewing Table$() is used to produce banner patterns and smithing templates. It requires $(l:crafting/weaving#wool_cloth)Wool Cloth$(), $(l:crafting/weaving#burlap_cloth)Burlap Cloth$(), String or Yarn, as well as a Needle."
+      "text": "$(thing)裁縫テーブル$()は、バナーパターンや鍛冶テンプレートを作成するために使用されます。それには、$(l:crafting/weaving#wool_cloth)羊毛の布$()、$(l:crafting/weaving#burlap_cloth)麻布$()、糸または羊毛の糸、および針が必要です。"
     },
     {
       "type": "patchouli:crafting",

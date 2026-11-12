@@ -84,7 +84,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:direwolf",
       "scale": 0.7,
-      "text": "The direwolf spawns at any $(l:core_mechanics/climate#temperature)temperature$() below freezing, and $(l:core_mechanics/climate#rainfall)rainfall$() between 150 and 420mm. They hunt in packs. They are larger than regular wolves, and are not tamable."
+      "text": "$(l:core_mechanics/climate#temperature)気温$()0°C以下 $(l:core_mechanics/climate#rainfall)降水量$()150~420mmの場所に生息。群れで狩りをし、通常のオオカミより大きく、飼い慣らせません。"
     },
     {
       "type": "patchouli:entity",
@@ -250,7 +250,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:food/fishing)fished$(). Some prefer oceans, rivers, or lakes.",
+      "text": "$(thing)魚$()は水中を泳ぐ小さな生き物です。ほとんどの魚は$(l:food/fishing)釣り$()で捕獲できます。いくつかは海、川、または湖を好みます。",
       "title": "魚"
     },
     {
@@ -396,7 +396,7 @@
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:metalworking/flux)flux$(). Shellfish can be $(l:food/fishing)bait$() for fish.",
+      "text": "$(thing)甲殻類$()は、水中の底に住む小さな生き物です。釣ることはできませんが、食べられるものや殻を$(l:metalworking/flux)融剤$()に加工することもでき、$(l:food/fishing)魚の餌$()としても使用できます。",
       "title": "甲殻類"
     },
     {

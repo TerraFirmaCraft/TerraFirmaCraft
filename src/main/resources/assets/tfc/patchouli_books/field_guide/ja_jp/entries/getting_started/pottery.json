@@ -144,7 +144,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "A $(thing)Hoe$() used for planting and maintaining $(l:food/crops)Crops$()."
+      "text": "$(thing)クワ$()は$(l:food/crops)作物$()の植え付けと維持に使用されます。"
     },
     {
       "type": "tfc:knapping_recipe",

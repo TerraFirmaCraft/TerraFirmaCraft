@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Steel Pumps$() and $(thing)Steel Pipes$() are blocks useful for transporting fluids, such as $(thing)Water$(), $(thing)Salt Water$(), and $(thing)Spring Water$(). They can also be used to move source blocks, and fill small enclosed areas. Unlike $(l:food/aqueducts)Aqueducts$(), they can also be used to transport source blocks upwards."
+      "text": "$(thing)鋼のポンプ$()および$(thing)鋼のパイプ$()は、$(thing)水$()、$(thing)海水$()、および$(thing)温泉水$()などの液体を輸送するために便利なブロックです。これらは液体ブロックを移動させ、小さな囲まれたエリアを満たすためにも使用できます。$(l:food/aqueducts)用水路$()とは異なり、液体ブロックを上方向に輸送することもできます。"
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/steel_pipe",
-      "text": "The steel pipe can be crafted from, predictably, $(l:metalworking/steel)Steel$(), on an $(l:metalworking/anvils)Anvil$(). A $(thing)Steel Pump$() can be crafted from some $(thing)Steel Pipes$(), and $(l:getting_started/primitive_alloys#brass)Brass Mechanisms$()."
+      "text": "鋼のパイプは予想通り、$(l:metalworking/steel)鋼$()から$(l:metalworking/anvils)金床$()で作成できます。$(thing)鋼のポンプ$()は、いくつかの$(thing)鋼のパイプ$()と$(l:getting_started/primitive_alloys#brass)真鍮のベアリング$()から作成できます。"
     },
     {
       "type": "patchouli:crafting",

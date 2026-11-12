@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:crafting/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$()."
+      "text": "$(thing)ジャム瓶$()は、果物を長期間保存するために使用されます。$(thing)空のジャム瓶$()は、$(l:crafting/glassworking_applications#jar)ガラスの加工$()で得られます。その後、$(thing)ジャム瓶の蓋$()を$(thing)錫$()から鍛造する必要があります。これらを組み合わせることで$(thing)蓋付きの空のジャム瓶$()が作成されます。"
     },
     {
       "type": "patchouli:text",

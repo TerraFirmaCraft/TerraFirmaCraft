@@ -6,14 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "All 16 vanilla $(thing)Dye Colors$() can be obtained as items. Most flowers and other colorful plants can be ground into dye using a $(l:crafting/quern)Quern$(). Powders of $(l:the_world/ores_and_minerals)metal ores$() can be crafted directly into dye. $(l:the_world/ores_and_minerals#graphite)Graphite$(), $(l:the_world/ores_and_minerals#kaolinite)Kaolinite$(), $(l:the_world/ores_and_minerals#sylvite)Sylvite$(), $(l:the_world/ores_and_minerals#lapis_lazuli)Lapis$(), Coke, and Charcoal powder can be crafted into dye as well."
+      "text": "16色のバニラの$(thing)染料$()は、アイテムとして取得できます。ほとんどの花やその他のカラフルな植物は、$(l:crafting/quern)石臼$()を使用して染料に粉砕できます。$(l:the_world/ores_and_minerals)鉱石$()の粉末は、直接染料に加工できます。$(l:the_world/ores_and_minerals#graphite)黒鉛$()、$(l:the_world/ores_and_minerals#kaolinite)カオリナイト$()、$(l:the_world/ores_and_minerals#sylvite)カリ岩塩$()、$(l:the_world/ores_and_minerals#lapis_lazuli)ラピス$()、石炭、木炭の粉末も染料に加工できます。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:bucket/red_dye",
       "title": "液体染料",
       "link_recipes": false,
-      "text": "Dyes can also be made into fluids. A dye item and 1000mB of $(item)Water$() boiled in a $(l:food/pot)Pot$() produces the same amount of $(thing)Dye Fluid$(). Dye fluids are used in $(l:crafting/barrels)Barrels$() to color items."
+      "text": "染料は液体にすることができます。染料アイテムと1000mBの$(item)水$()を$(l:food/pot)鍋$()で煮ると同量の$(thing)染料液$()が生成されます。染料液体は$(l:crafting/barrels)樽$()でアイテムの着色に使用されます。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -34,11 +34,11 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "lye",
       "recipe": "tfc:barrel/bleach_bed",
-      "text": "Five $(item)Wood Ash$() and 1000mB of $(item)Water$() boiled in a $(l:food/pot)Pot$() produces lye. 25mB of Lye removes the color from a colored item."
+      "text": "5つの$(item)木の灰$()と1000mBの$(item)水$()を$(l:food/pot)鍋$()で煮ると、灰汁が生成されます。25mBの灰汁は、色付きアイテムの色を取り除きます。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(item)Black Dye$() is used for $(l:crafting/scribing_table)Scribing Tables$().$(li)$(item)Red Dye$() is used for $(l:mechanics/powderkegs)Powderkegs$(). $(li)Unfired $(l:food/decay#small_vessels)Small Vessels$() and $(l:food/decay#large_vessels)Large Vessels$() can be dyed$().",
+      "text": "$(li)$(item)黒の染料$()は$(l:crafting/scribing_table)筆記台$()に使用されます。$(li)$(item)赤の染料$()は$(l:mechanics/powderkegs)火薬樽$()に使用されます。$(li)未焼成の$(l:food/decay#small_vessels)小さな壺$()と$(l:food/decay#large_vessels)大きな容器$()は染色できます$()。",
       "title": "その他"
     }
   ],

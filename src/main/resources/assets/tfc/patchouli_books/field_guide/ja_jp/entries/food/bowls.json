@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Bowls$() are a versatile tool which can be used to make $(l:food/salad)Salads$(), to make $(l:food/pot)Soups$(), to $(l:food/decay#salting)Salt$() meat, or to apply $(thing)Powder$() to $(l:crafting/glassworking_applications#coloring)Glass$() in order to change the resulting glass's color.$(br2)Bowls can be made both from $(thing)Ceramic$(), by knapping a bowl out of clay, and then firing them."
+      "text": "$(thing)ボウル$()は、多目的なツールであり、$(l:food/salad)サラダ$()や$(l:food/pot)スープ$()の作成、$(l:food/decay#salting)肉の塩漬け$()、または$(thing)粉末$()を$(l:crafting/glassworking_applications#coloring)ガラス$()に適用して、ガラスの色を変更するために使用できます。$(br2)ボウルは、$(thing)セラミック$()から作ることができ、粘土を加工してボウルを作り、それを焼成します。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -17,12 +17,12 @@
       "type": "patchouli:crafting",
       "recipe": "minecraft:bowl",
       "title": "木のボウル",
-      "text": "Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:crafting/barrels#limewater)Limewater$()."
+      "text": "ボウルは$(thing)接着剤$()を使うことで木材からも作れます。$(br2)$(thing)接着剤$()は、$(thing)骨粉$()を$(l:crafting/barrels#limewater)石灰水$()入りの樽に浸すことで作成できます。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/glue",
-      "text": "Bowls can also be placed on the ground like blocks. When placed, they can be filled with any type of $(thing)Powder$() - the results of grinding ores, minerals, or gems in the $(l:crafting/quern)Quern$()."
+      "text": "ボウルはブロックのように地面に置くこともできます。設置すると、$(l:crafting/quern)石臼$()で鉱石、鉱物、または宝石を粉砕した$(thing)粉末$()を入れられます。"
     },
     {
       "type": "patchouli:spotlight",

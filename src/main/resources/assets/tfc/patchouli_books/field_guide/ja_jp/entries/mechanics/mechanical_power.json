@@ -98,7 +98,7 @@
     {
       "type": "patchouli:text",
       "anchor": "quern",
-      "text": "One device that can be connected to the mechanical network is a $(l:crafting/quern)Quern$(), simply by placing a vertical-facing axle above the Quern. While connected, the Quern cannot be turned manually, instead it will grind items automatically as the axle above rotates.$(br2)The Quern will grind faster if the axle above spins faster.",
+      "text": "機械的な動力に接続できる装置の1つは$(l:crafting/quern)石臼$()で、石臼の上に垂直に向いた軸を配置するだけで接続できます。接続されると、石臼は手動で回すことができなくなり、代わりに上の軸が回転するのに合わせて自動的にアイテムを粉砕します。$(br2)軸が速く回転するほど、石臼も速く粉砕します。",
       "title": "石臼の自動化"
     },
     {
@@ -111,7 +111,7 @@
     {
       "type": "patchouli:text",
       "anchor": "trip_hammer",
-      "text": "Another mechanical device is the $(thing)Trip Hammer$(). The Trip Hammer automatically performs smithing on an $(l:metalworking/anvils)Anvil$(). The Trip Hammer needs a $(thing)Bladed Axle$() to work. The Bladed Axle works like a regular axle, but has a blade on it that is used to activate the hammer.",
+      "text": "もう一つの機械装置は$(thing)トリップハンマー$()です。トリップハンマーは自動的に$(l:metalworking/anvils)金床$()で鍛冶を行います。トリップハンマーは動作するために$(thing)羽付き軸$()が必要です。羽付き軸は通常の軸と同様に機能しますが、ハンマーを作動させるために羽が取り付けられています。",
       "title": "トリップハンマー"
     },
     {

@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Other alloys are not suitable for creating tools. These are $(thing)Brass$(), $(thing)Rose Gold$(), and $(thing)Sterling Silver$().$(br2)$(thing)Brass$() is a useful alloy for all sorts of contraptions, including $(l:mechanics/mechanical_power)Mechanical Power$().$(br2)$(thing)Rose Gold$() and $(thing)Sterling Silver$() are used for crafting $(l:metalworking/steel#red_steel)Red Steel$() and $(l:metalworking/steel#blue_steel)Blue Steel$().",
+      "text": "他の合金は、道具を作成するのには適していません。これらは$(thing)真鍮$()、$(thing)ローズゴールド$()、$(thing)スターリングシルバー$()です。$(br2)$(thing)真鍮$()は、$(l:mechanics/mechanical_power)機械的な動力$()を含むあらゆる種類の装置に役立つ合金です。$(br2)$(thing)ローズゴールド$()と$(thing)スターリングシルバー$()は、$(l:metalworking/steel#red_steel)赤鋼$()および$(l:metalworking/steel#blue_steel)青鋼$()の作成に使用されます。",
       "title": "有益合金"
     },
     {

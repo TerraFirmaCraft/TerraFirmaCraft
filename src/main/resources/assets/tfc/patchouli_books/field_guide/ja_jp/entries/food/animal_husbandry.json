@@ -51,12 +51,12 @@
     {
       "type": "patchouli:text",
       "anchor": "mammals",
-      "text": "$(thing)Mammals$() are livestock that experience $(thing)Pregnancy$(). Adult mammals that are above 30% familiarity and have been fed that day will mate, given that they are of opposite genders and near each other. The female animal will become $(thing)pregnant$(), which causes it to have children a set number of days after fertilization.$(br)An example is $(l:food/animal_husbandry#pig)Pigs$()."
+      "text": "$(thing)哺乳類$()は$(thing)妊娠$()を経験する家畜です。30%以上の親密度があり、その日に餌を与えられた成体の哺乳類は、異性で近くにいる場合、交尾します。雌の動物は$(thing)妊娠$()し、受精後の一定の日数が経過すると子供を産みます。$(br)例えば、$(l:food/animal_husbandry#pig)ブタ$()がそうです。"
     },
     {
       "type": "patchouli:text",
       "anchor": "wooly_animals",
-      "text": "$(thing)Wooly Animals$() are $(l:food/animal_husbandry#mammals)Mammals$() that can be $(thing)Sheared$() if they are adults and familiar enough to you. Some examples are $(l:food/animal_husbandry#sheep)Sheep$(), $(l:food/animal_husbandry#alpaca)Alpacas$(), and $(l:food/animal_husbandry#musk_ox)Musk Oxen$()."
+      "text": "$(thing)羊毛を持つ動物$()は、十分に親密であり、大人であれば$(thing)毛を刈る$()ことができる$(l:food/animal_husbandry#mammals)哺乳類$()です。例えば、$(l:food/animal_husbandry#sheep)羊$()、$(l:food/animal_husbandry#alpaca)アルパカ$()、および$(l:food/animal_husbandry#musk_ox)ジャコウウシ$()がいます。"
     },
     {
       "type": "tfc:welding_recipe",
@@ -66,14 +66,14 @@
     {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
-      "text": "$(thing)Dairy Animals$() are mammals that make $(thing)Milk$(). Female dairy animals can be clicked with a bucket to obtain milk. Some examples are $(l:food/animal_husbandry#goat)Goats$(), $(l:food/animal_husbandry#cow)Cows$(), and $(l:food/animal_husbandry#yak)Yaks$()."
+      "text": "$(thing)乳用動物$()は、$(thing)ミルク$()を作る哺乳類です。雌の乳用動物は、バケツを使ってミルクを入手できます。例えば、$(l:food/animal_husbandry#goat)ヤギ$()、$(l:food/animal_husbandry#cow)牛$()、および$(l:food/animal_husbandry#yak)ヤク$()がいます。"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "oviparous_animals",
       "recipe": "tfc:crafting/nest_box",
       "title": "巣箱",
-      "text": "$(thing)Oviparous Animals$() are not $(l:food/animal_husbandry#mammals)Mammals$(), and instead produce children by laying $(thing)Eggs$(). They need a $(thing)Nest Box$() to lay eggs, which they are capable of locating on their own.$(br)Some examples are $(l:food/animal_husbandry#duck)Ducks$(), $(l:food/animal_husbandry#quail)Quails$(), and $(l:food/animal_husbandry#chicken)Chickens$()."
+      "text": "$(thing)卵生動物$()は$(l:food/animal_husbandry#mammals)哺乳類$()ではなく、$(thing)卵$()を産んで子供を得ます。卵を産むには$(thing)巣箱$()が必要で、自力でそれを見つけることができます。$(br)例としては、$(l:food/animal_husbandry#duck)アヒル$()、$(l:food/animal_husbandry#quail)ウズラ$()、および$(l:food/animal_husbandry#chicken)ニワトリ$()がいます。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -92,7 +92,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:food/animal_husbandry#mule)Mules$(), $(l:food/animal_husbandry#donkey)Donkeys$(), and $(l:food/animal_husbandry#horses)Horses$(). Mules and Donkeys can hold any chest or barrel. If holding a barrel, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() can be used to remove it. The same keys while holding a bucket can be used to drain fluid from the barrel. $(br2)The next few pages will go over all livestock types."
+      "text": "乗るためには$(thing)鞍$()が必要で、革の$(thing)加工$()で作れます。これには$(l:food/animal_husbandry#mule)ラバ$()、$(l:food/animal_husbandry#donkey)ロバ$()、および$(l:food/animal_husbandry#horses)ウマ$()が含まれます。ラバとロバはチェストや樽を運ぶことができます。樽を持っている場合、$(item)$(k:key.sneak)$()を押しながら$(item)$(k:key.use)$()を押すと取り外すことができます。同じキーを使ってバケツを持っている場合、樽から液体を排出することができます。$(br2)次の数ページでは、すべての家畜の種類について説明します。"
     },
     {
       "type": "patchouli:text",

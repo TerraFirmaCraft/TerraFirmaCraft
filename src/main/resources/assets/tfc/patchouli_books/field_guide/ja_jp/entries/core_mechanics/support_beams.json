@@ -19,7 +19,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Dirt, grass, clay, gravel, cobblestone, and sand are also affected by gravity. However, unlike vanilla gravity blocks, these blocks fall down slopes, and cannot be stacked more than one high without supporting blocks around. $(l:metalworking/sluices)Ore Deposits$() also landslide, but do not degrade in quality."
+      "text": "土、草、粘土、砂利、丸石、砂も重力の影響を受けます。ただし、バニラの重力ブロックとは異なり、これらのブロックは斜面を転がり落ち、周囲に支えがない限り高さ1以上に積み重ねることはできません。$(l:metalworking/sluices)鉱石が混じった砂利$()も重力の影響を受けますが、品質は低下しません。"
     },
     {
       "type": "patchouli:crafting",

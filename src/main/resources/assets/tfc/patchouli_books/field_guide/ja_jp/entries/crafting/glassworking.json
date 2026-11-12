@@ -11,13 +11,13 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/silica_glass_batch",
-      "text": "Glass batches can then be crafted using one of the aforementioned colors of sand, plus $(l:crafting/glassworking#lime)Lime$() and a type of $(l:crafting/glassworking#potash)Potash$()."
+      "text": "ガラスバッチは、上述の色の砂のいずれかと、$(l:crafting/glassworking#lime)石灰の粉$()、そして$(l:crafting/glassworking#potash)炭酸カリウム$()の一種を使って作成できます。"
     },
     {
       "type": "tfc:heat_recipe",
       "anchor": "lime",
       "recipe": "tfc:heating/powder/lime",
-      "text": "$(thing)Lime$() is one of the ingredients required to make glass batches. It is a powder obtained by $(l:core_mechanics/heating)heating$() $(l:metalworking/flux)Flux$()."
+      "text": "$(thing)石灰の粉$()はガラスバッチを作るために必要な材料の一つです。これは$(l:metalworking/flux)融剤$()を$(l:core_mechanics/heating)加熱$()することによって得られる粉末です。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Glassworking is done by starting with a glass batch, and then completing a series of steps. These steps may require specific tools:$(br)$(li)A $(l:crafting/glassworking#blowpipe)Blowpipe$(), to $(thing)Blow$() and $(thing)Stretch$()$(li)A $(l:crafting/glassworking#paddle)Paddle$(), to $(thing)Flatten$()$(li)$(l:crafting/glassworking#jacks)Jacks$(), to $(thing)Pinch$()$(li)A $(l:crafting/glassworking#saw)Gem Saw$(), to $(thing)Saw$()",
+      "text": "ガラスの精製はガラスバッチから始め、一連のステップを完了することで行われます。これらのステップには特定のツールが必要になる場合があります：$(br)$(li)$(thing)吹きこみ$()と$(thing)伸ばす$()ための$(l:crafting/glassworking#blowpipe)吹き竿$()、$(thing)平らにする$()ための$(li)$(l:crafting/glassworking#paddle)木ごて$()、$(thing)つまむ$()ための$(li)$(l:crafting/glassworking#jacks)ジャックス$()、$(thing)切り離す$()ための$(li)$(l:crafting/glassworking#saw)宝石ノコギリ$()",
       "title": "重要な道具"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/blowpipe",
-      "text": "Ceramic blowpipes are brittle, and have a chance to to break when used. A more sturdy blowpipe can be $(l:metalworking/anvils#working)worked$() from a $(thing)Brass Rod$() on an anvil."
+      "text": "陶器の吹き竿は脆く、使用時に壊れる可能性があります。より頑丈な吹き竿は$(l:metalworking/anvils#working)金床で$(thing)真鍮の棒$()から作ることができます。"
     },
     {
       "type": "patchouli:crafting",
@@ -66,7 +66,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Flatten$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:crafting/glassworking#paddle)Paddle$() in your offhand.$(br2)$(bold)Pinch$()$(br)Use the $(thing)Blowpipe$() while holding $(l:crafting/glassworking#jacks)Jacks$() in your offhand.$(br2)$(bold)Saw$()$(br)Use the $(thing)Blowpipe$() while holding a $(l:crafting/glassworking#saw)Gem Saw$() in your offhand.$(br2)$(bold)Roll$()$(br)Use the $(thing)Blowpipe$() with a $(l:crafting/weaving#wool_cloth)Wool Cloth$() in your offhand."
+      "text": "$(bold)平らにする$()$(br)$(thing)吹き竿$()を使用し、オフハンドに$(l:crafting/glassworking#paddle)木ごて$()を持つ。$(br2)$(bold)つまむ$()$(br)$(thing)吹き竿$()を使用し、オフハンドに$(l:crafting/glassworking#jacks)ジャックス$()を持つ。$(br2)$(bold)切り離す$()$(br)$(thing)吹き竿$()を使用し、オフハンドに$(l:crafting/glassworking#saw)宝石ノコギリ$()を持つ。$(br2)$(bold)転がす$()$(br)$(thing)吹き竿$()を使用し、オフハンドに$(l:crafting/weaving#wool_cloth)羊毛の布$()を持つ"
     }
   ],
   "read_by_default": true,
