@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "16色のバニラの$(thing)染料$()は、アイテムとして取得できます。ほとんどの花やその他のカラフルな植物は、$(l:crafting/quern)石臼$()を使用して染料に粉砕できます。$(l:the_world/ores_and_minerals)鉱石$()の粉末は、直接染料に加工できます。$(l:the_world/ores_and_minerals#graphite)黒鉛$()、$(l:the_world/ores_and_minerals#kaolinite)カオリナイト$()、$(l:the_world/ores_and_minerals#sylvite)カリ岩塩$()、$(l:the_world/ores_and_minerals#lapis_lazuli)ラピス$()、石炭、木炭の粉末も染料に加工できます。"
+      "text": "16色のバニラの$(thing)染料$()は、アイテムとして取得できます。ほとんどの花やその他のカラフルな植物は、$(l:crafting/quern)石臼$()を使用して染料に粉砕できます。$(l:the_world/ores_and_minerals)鉱石$()の粉末は、直接染料に加工できます。$(l:the_world/ores_and_minerals#graphite)黒鉛$()、$(l:the_world/ores_and_minerals#kaolinite)カオリナイト$()、$(l:the_world/ores_and_minerals#sylvite)カリ岩塩$()、$(l:the_world/ores_and_minerals#lapis_lazuli)ラピス$()、コークス、木炭の粉末も染料に加工できます。"
     },
     {
       "type": "patchouli:spotlight",
@@ -28,7 +28,7 @@
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/red_dyeable",
-      "text": "染料液は、まるで工芸品のように革を染色することさえできます！"
+      "text": "染料液は、クラフトと同様に革を染色することもできます！"
     },
     {
       "type": "tfc:sealed_barrel_recipe",

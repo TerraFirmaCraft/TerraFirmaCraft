@@ -219,7 +219,7 @@
     {
       "type": "patchouli:text",
       "anchor": "malachite",
-      "text": "孔雀石は$(thing)銅$()の鉱石です。主に$(thing)大理石$()や$(thing)石灰岩$()、$(thing)白亜$()、および$(thing)苦灰石$()で見つかります。ほとんどの標高で見かりますが、より地下深くにある鉱脈の方が大きく、純度も高くなる事が多いです。",
+      "text": "孔雀石は$(thing)銅$()の鉱石です。主に$(thing)大理石$()や$(thing)石灰岩$()、$(thing)白亜$()、および$(thing)苦灰石$()で見つかります。ほとんどの標高で見つかりますが、より地下深くにある鉱脈の方が大きく、純度も高くなる事が多いです。",
       "title": "孔雀石"
     },
     {
@@ -630,7 +630,7 @@
       "item": "tfc:ore/lignite",
       "title": "褐炭",
       "link_recipes": false,
-      "text": "褐炭は低品位の$(thing)石炭$()鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らに堆積物として見つかります。"
+      "text": "褐炭は低品位の$(thing)石炭$()鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -657,7 +657,7 @@
       "item": "tfc:ore/bituminous_coal",
       "title": "瀝青炭",
       "link_recipes": false,
-      "text": "瀝青炭は中品位の$(thing)石炭$()鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らに堆積物として見つかります。"
+      "text": "瀝青炭は中品位の$(thing)石炭$()鉱石です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -847,7 +847,7 @@
       "item": "tfc:ore/saltpeter",
       "title": "硝石",
       "link_recipes": false,
-      "text": "硝石は、$(l:crafting/quern)石臼$()で挽くことによって$(thing)火薬$()の製作に使用できる$(thing)鉱物$()です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らに堆積物として見つかります。"
+      "text": "硝石は、$(l:crafting/quern)石臼$()で挽くことによって$(thing)火薬$()の製作に使用できる$(thing)鉱物$()です。地表近くの$(l:the_world/geology#sedimentary)堆積岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -901,7 +901,7 @@
       "item": "tfc:ore/sylvite",
       "title": "カリ岩塩",
       "link_recipes": false,
-      "text": "カリ岩塩は、$(l:crafting/quern)石臼$()で挽くことによって$(l:food/fertilizers)肥料$()として使用できる$(thing)鉱物$()です。地表面近くの$(thing)頁岩$()、$(thing)泥岩$()、および$(thing)角岩$()に非常に大きく平らな堆積物として見つかります。"
+      "text": "カリ岩塩は、$(l:crafting/quern)石臼$()で挽くことによって$(l:food/fertilizers)肥料$()として使用できる$(thing)鉱物$()です。地表面近くの$(thing)頁岩$()、$(thing)粘土岩$()、および$(thing)角岩$()に非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -928,7 +928,7 @@
       "item": "tfc:ore/borax",
       "title": "ホウ砂",
       "link_recipes": false,
-      "text": "ホウ砂は、$(l:crafting/quern)石臼$()で挽くことによって$(l:metalworking/flux)融剤$()として使用できる$(thing)鉱物$()です。地表近くの$(thing)泥岩$()、$(thing)石灰岩$()、および$(thing)頁岩$()で非常に大きく平らな堆積物として見つかります。"
+      "text": "ホウ砂は、$(l:crafting/quern)石臼$()で挽くことによって$(l:metalworking/flux)融剤$()として使用できる$(thing)鉱物$()です。地表近くの$(thing)粘土岩$()、$(thing)石灰岩$()、および$(thing)頁岩$()で非常に大きく平らな堆積物として見つかります。"
     },
     {
       "type": "patchouli:multiblock",

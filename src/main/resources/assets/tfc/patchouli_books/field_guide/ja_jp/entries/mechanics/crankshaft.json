@@ -12,7 +12,7 @@
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:crankshaft",
       "name": "",
-      "text": "$(thing)軸$()によって動力を供給される$(l:mechanics/mechanical_power#axle)クランクシャフト$()",
+      "text": "$(l:mechanics/mechanical_power#axle)軸$()によって動力を供給される$(thing)クランクシャフト$()",
       "enable_visualize": false
     },
     {

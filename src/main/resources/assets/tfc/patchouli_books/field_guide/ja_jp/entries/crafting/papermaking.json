@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)紙$()は、$(l:food/crops#papyrus)パピルス$(l:food/crops#papyrus)の茎を加工して作られるか、$(l:crafting/papermaking#parchment)動物の皮$()から作られます。$(thing)紙$()は、$(thing)本$()や$(thing)地図$()のような書き物に使用します。"
+      "text": "$(thing)紙$()は、$(l:food/crops#papyrus)パピルス$()の茎を加工して作られるか、$(l:crafting/papermaking#parchment)動物の皮$()から作られます。$(thing)紙$()は、$(thing)本$()や$(thing)地図$()のような書き物に使用します。"
     },
     {
       "type": "patchouli:crafting",
@@ -70,12 +70,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/treated_hide_from_large",
-      "text": "軽石、ハンマー、削られた皮を使うと、$(thing)加工された皮$()のセクションが始まります。"
+      "text": "軽石、ハンマー、削られた皮をクラフトすると、$(thing)加工された皮$()が得られます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/paper",
-      "text": "加工された皮、$(l:crafting/glassworking#lime)石灰の粉$()、粉と新鮮な卵で処理し、使用可能な紙を生成します。"
+      "text": "加工された皮、$(l:crafting/glassworking#lime)石灰の粉$()、穀粉と新鮮な卵で処理し、使用可能な紙を生成します。"
     }
   ],
   "read_by_default": true,

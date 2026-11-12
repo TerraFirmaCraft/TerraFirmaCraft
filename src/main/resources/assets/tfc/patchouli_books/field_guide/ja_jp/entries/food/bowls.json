@@ -35,7 +35,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/salt",
       "link_recipes": false,
-      "text": "ボウルに塩がある場合、生肉をクリックすると肉を塩を付けできます。これはインベントリ内の塩で肉をクラフトするのと同じです。"
+      "text": "ボウルに塩がある場合、生肉でボウルをクリックすると、肉を塩漬けにできます。これはインベントリ内の塩で肉をクラフトするのと同じです。"
     }
   ],
   "read_by_default": true,

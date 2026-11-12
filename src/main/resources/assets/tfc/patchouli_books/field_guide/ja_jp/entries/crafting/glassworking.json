@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "ガラスの精製はガラスバッチから始め、一連のステップを完了することで行われます。これらのステップには特定のツールが必要になる場合があります：$(br)$(li)$(thing)吹きこみ$()と$(thing)伸ばす$()ための$(l:crafting/glassworking#blowpipe)吹き竿$()、$(thing)平らにする$()ための$(li)$(l:crafting/glassworking#paddle)木ごて$()、$(thing)つまむ$()ための$(li)$(l:crafting/glassworking#jacks)ジャックス$()、$(thing)切り離す$()ための$(li)$(l:crafting/glassworking#saw)宝石ノコギリ$()",
+      "text": "ガラスの精製はガラスバッチから始め、一連のステップを完了することで行われます。これらのステップには特定のツールが必要になる場合があります：$(br)$(li)$(thing)吹きこみ$()と$(thing)伸ばす$()ための$(l:crafting/glassworking#blowpipe)吹き竿$()、$(li)$(thing)平らにする$()ための$(l:crafting/glassworking#paddle)木ごて$()、$(li)$(thing)つまむ$()ための$(l:crafting/glassworking#jacks)ジャックス$()、$(li)$(thing)切り離す$()ための$(l:crafting/glassworking#saw)宝石ノコギリ$()",
       "title": "重要な道具"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/blowpipe",
-      "text": "陶器の吹き竿は脆く、使用時に壊れる可能性があります。より頑丈な吹き竿は$(l:metalworking/anvils#working)金床で$(thing)真鍮の棒$()から作ることができます。"
+      "text": "陶器の吹き竿は脆く、使用時に壊れる可能性があります。より頑丈な吹き竿は$(l:metalworking/anvils#working)金床$()で$(thing)真鍮の棒$()から作ることができます。"
     },
     {
       "type": "patchouli:crafting",

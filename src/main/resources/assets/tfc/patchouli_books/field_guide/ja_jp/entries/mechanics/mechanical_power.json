@@ -105,7 +105,7 @@
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:rotating_quern",
       "name": "",
-      "text": "$(thing)軸$()に接続された$(l:mechanics/mechanical_power#axle)石臼$()。",
+      "text": "$(l:mechanics/mechanical_power#axle)軸$()に接続された$(thing)石臼$()。",
       "enable_visualize": false
     },
     {

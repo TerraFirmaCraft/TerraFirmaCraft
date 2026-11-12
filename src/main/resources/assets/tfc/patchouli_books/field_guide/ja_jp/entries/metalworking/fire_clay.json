@@ -22,7 +22,7 @@
       "type": "tfc:knapping_recipe",
       "anchor": "crucible",
       "recipe": "tfc:knapping/ceramic/unfired_crucible",
-      "text": "未焼成の$(l:metalworking/rucible)るつぼ$()は耐火粘土から作られています。"
+      "text": "未焼成の$(l:metalworking/crucible)るつぼ$()は耐火粘土から作られています。"
     },
     {
       "type": "tfc:knapping_recipe",

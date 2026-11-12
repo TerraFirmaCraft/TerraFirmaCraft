@@ -65,7 +65,7 @@
       "entity": "tfc:tiger",
       "scale": 0.55,
       "name": "トラ",
-      "text": "平均$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:13)以上 $(l:core_mechanics/climate#rainfall)降水量$()100以上の森林に生息。"
+      "text": "平均$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:13)以上 $(l:core_mechanics/climate#rainfall)降水量$()100mm以上の森林に生息。"
     },
     {
       "type": "patchouli:entity",
@@ -103,7 +103,7 @@
       "type": "patchouli:entity",
       "entity": "tfc:ocelot",
       "scale": 0.7,
-      "text": "$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:15)~$(cfg:temperature:30) $(l:core_mechanics/climate#rainfall)降水量$()300~500mmの森林に生息。十分な回数生の魚を与え、$(l:food/pets)ネコ$()として飼い慣らせます。"
+      "text": "小動物を襲います。$(l:core_mechanics/climate#temperature)気温$()$(cfg:temperature:15)~$(cfg:temperature:30) $(l:core_mechanics/climate#rainfall)降水量$()300~500mmの森林に生息。十分な回数生の魚を与え、$(l:food/pets)ネコ$()として飼い慣らせます。"
     },
     {
       "type": "patchouli:text",
@@ -396,7 +396,7 @@
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)甲殻類$()は、水中の底に住む小さな生き物です。釣ることはできませんが、食べられるものや殻を$(l:metalworking/flux)融剤$()に加工することもでき、$(l:food/fishing)魚の餌$()としても使用できます。",
+      "text": "$(thing)甲殻類$()は、水中の底に住む小さな生き物です。釣ることはできませんが、生の貝をドロップします。生の貝は食べたり、$(l:metalworking/flux)融剤$()に加工したり、$(l:food/fishing)魚の餌$()にしたりできます。",
       "title": "甲殻類"
     },
     {
