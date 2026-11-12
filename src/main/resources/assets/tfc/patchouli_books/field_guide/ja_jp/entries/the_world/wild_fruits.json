@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "世界にはさまざまな種類の野生の果物が生育しています。 これらは、適切な装置を使用して収集して食べることも、栽培することもできます。 これらはさまざまな種類の茂みや木で見つけることができます。 一般に、果物は 3 種類の植物で見つけることができます: $(l:the_world/wild_fruits#fruit_trees)果樹$()、$(l:the_world/wild_fruits#tall_bushes)背の高い茂み$()、$(l: the_world/wild_fruits#small_bushes)小さな茂み$()。$(br2)すべての結実する植物には共通のライフサイクルがあります。 それらは1年周期で成長し、花を形成し、実を発芽させ、その後休眠します。"
+      "text": "世界にはさまざまな種類の野生の果物が生育しています。 これらは、適切な装置を使用して収集して食べることも、栽培することもできます。 これらはさまざまな種類の茂みや木で見つけることができます。 一般に、果物は 3 種類の植物で見つけることができます: $(l:the_world/wild_fruits#fruit_trees)果樹$()、$(l:the_world/wild_fruits#tall_bushes)背の高い茂み$()、$(l:the_world/wild_fruits#small_bushes)小さな茂み$()。$(br2)すべての結実する植物には共通のライフサイクルがあります。 それらは1年周期で成長し、花を形成し、実を発芽させ、その後休眠します。"
     },
     {
       "type": "patchouli:text",

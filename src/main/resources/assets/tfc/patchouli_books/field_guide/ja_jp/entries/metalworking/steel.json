@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "鋼はツールや $(l:mechanics/armor)防具$() の作成に使用できる高度な素材で、$(thing)鋼$()、$(thing)黒鋼$()、$(thing)赤鋼$()、$(thing)青鋼$()などのいくつかの種類があります。$(br2)鋼 を作成するには、まず $(thing)銑鉄$() を$(l:mechanics/blast_furnace)高炉$()で $(thing)インゴット$() に鋳造する必要があります。"
+      "text": "鋼はツールや $(l:mechanics/armor)防具$() の作成に使用できる高度な素材で、$(thing)鋼$()、$(thing)黒鋼$()、$(thing)赤鋼$()、$(thing)青鋼$()などのいくつかの種類があります。$(br2)鋼 を作成するには、まず $(thing)銑鉄$() を$(l:metalworking/blast_furnace)高炉$()で $(thing)インゴット$() に鋳造する必要があります。"
     },
     {
       "type": "tfc:anvil_recipe",
@@ -38,7 +38,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blue_steel",
-      "text": "$(thing)青鋼$() は、$(l:metalworking/steel#red_steel)赤鋼$() と並ぶ 2 つの最上位金属のうちの 1 つです。 $(l:metalworking/steel#black_steel)黒鋼$() と同様に、最初のステップは $(l:mechanics/rucible)るつぼ$() で $(thing)軟青鋼$() の合金を作成することです。",
+      "text": "$(thing)青鋼$() は、$(l:metalworking/steel#red_steel)赤鋼$() と並ぶ 2 つの最上位金属のうちの 1 つです。 $(l:metalworking/steel#black_steel)黒鋼$() と同様に、最初のステップは $(l:metalworking/crucible)るつぼ$() で $(thing)軟青鋼$() の合金を作成することです。",
       "title": "青鋼"
     },
     {
@@ -60,7 +60,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_steel",
-      "text": "$(thing)赤鋼$() は、$(l:metalworking/steel#blue_steel)青鋼$() と並ぶ 2 つの最上位金属のうちの 1 つです。 $(l:metalworking/steel#black_steel)黒鋼$() と同様に、最初のステップは $(l:mechanics/rucible)るつぼ$() で $(thing)軟赤鋼$() の合金を作成することです。",
+      "text": "$(thing)赤鋼$() は、$(l:metalworking/steel#blue_steel)青鋼$() と並ぶ 2 つの最上位金属のうちの 1 つです。 $(l:metalworking/steel#black_steel)黒鋼$() と同様に、最初のステップは $(l:metalworking/crucible)るつぼ$() で $(thing)軟赤鋼$() の合金を作成することです。",
       "title": "赤鋼"
     },
     {
