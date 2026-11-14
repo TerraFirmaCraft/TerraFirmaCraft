@@ -27,7 +27,7 @@ public record ItemStackProvider(
         RecordCodecBuilder.<ItemStackProvider>create(i -> i.group(
             ItemStack.CODEC.optionalFieldOf("stack", ItemStack.EMPTY).forGetter(c -> c.stack),
             ItemStackModifier.CODEC.listOf().fieldOf("modifiers").forGetter(c -> c.modifiers)
-        ).apply(i, ItemStackProvider::new)),
+        ).apply(i, ItemStackProvider::of)),
         ItemStack.CODEC
     ).xmap(
         e -> e.map(Function.identity(), ItemStackProvider::of),
