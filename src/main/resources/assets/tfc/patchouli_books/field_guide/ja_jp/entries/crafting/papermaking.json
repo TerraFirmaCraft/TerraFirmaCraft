@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)紙$()は、$(l:food/crops#papyrus)パピルス$(l:food/crops#papyrus)の茎を加工して作られるか、$(l:crafting/papermaking#parchment)動物の皮$()から作られます。$(thing)紙$()は、$(thing)本$()や$(thing)地図$()のような書き物に使用します。"
+      "text": "$(thing)紙$()は、$(l:food/crops#papyrus)パピルス$()の茎を加工して作られるか、$(l:crafting/papermaking#parchment)動物の皮$()から作られます。$(thing)紙$()は、$(thing)本$()や$(thing)地図$()のような書き物に使用します。"
     },
     {
       "type": "patchouli:crafting",

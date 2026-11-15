@@ -61,7 +61,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "完成した溶けた金属は、炉の下の$(l:metalworking/crucible)るつぼ$()などの溶融金属用の容器に入ります。るつぼの出力スロットからインゴットの型にいれ、$(l:metalworking/steel)鋼$()に加工できます。"
+      "text": "完成した溶けた金属は、高炉の下の$(l:metalworking/crucible)るつぼ$()などの溶融金属用の容器に入ります。るつぼの出力スロットからインゴットの型にいれ、$(l:metalworking/steel)鋼$()に加工できます。"
     }
   ],
   "read_by_default": true,

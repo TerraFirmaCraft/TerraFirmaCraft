@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "大量の頑丈な木材を手に入れるためにはTFCの序盤では利用できない金属製ツールが必要になるため、建築が困難になります。$(br2)より多くの$(l:mechanics/advanced_building_materials)建材$()は金属製ツールを使用することで入手できます。"
+      "text": "多くの頑丈な建材を入手するには金属製の道具が必要なため、ゲーム序盤での建築は難しいかもしれません。ただし、石器だけでも得られる建材がいくつかあります。$(br2)より多くの$(l:mechanics/advanced_building_materials)建材$()は金属製ツールを使用することで入手できます。"
     },
     {
       "type": "patchouli:text",
@@ -105,7 +105,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wattle",
-      "text": "$(thing)編み枝$()を作成するためには丸太2つを使って編み枝を作成する必要があります。"
+      "text": "$(thing)編み枝$()を頑丈にするには、まず棒を加えて編み込む必要があります。"
     },
     {
       "type": "patchouli:crafting",
@@ -123,7 +123,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "編み枝には棒を5つまで追加することが可能です。$(thing)棒$()を手に持って$(item)$(k:key.use)$()を押すと棒を追加できます。追加する際、視点を移動し編み枝のどこに棒を追加するか上部・下部・斜め2つを選択できます。"
+      "text": "編み枝には上下と2本の対角線に、棒を計4本まで追加できます。$(thing)棒$()を手に持って$(item)$(k:key.use)$()を押すと棒を追加できます。編み枝の面のどこに照準を合わせるかで、棒を追加する位置を選べます。"
     },
     {
       "type": "patchouli:image",

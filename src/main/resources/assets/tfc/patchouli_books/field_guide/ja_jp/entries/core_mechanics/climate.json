@@ -65,7 +65,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "降水量はその地域で何を栽培できるかに影響するため、非常に重要です。 降水量は、$(l:food/hydration)水分量$() に寄与する主な要因の 1 つです。これは、特定の場所の土壌の湿り具合を正確に測定するもので、$(l:food/crops)作物$()、$(l:the_world/wild_fruits#fruit_trees)果樹$() によって使用されます。 これらをを調べて、成長できるかどうかを判断します。"
+      "text": "降水量はその地域で何を栽培できるかに影響するため、非常に重要です。 降水量は、$(l:food/hydration)水分量$() に寄与する主な要因の 1 つです。これは、特定の場所の土壌の湿り具合を正確に測定するもので、$(l:food/crops)作物$()、$(l:the_world/wild_fruits#fruit_trees)果樹$()、$(l:the_world/wild_fruits#tall_bushes)ベリーの茂み$()によって使用されます。 これらを調べて、成長できるかどうかを判断します。"
     }
   ],
   "read_by_default": true,

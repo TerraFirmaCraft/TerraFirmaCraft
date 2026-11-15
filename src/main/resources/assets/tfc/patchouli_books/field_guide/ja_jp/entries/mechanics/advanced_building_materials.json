@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)石レンガ$()は、$(l:metalworking/chisel)ノミ$()とばらばらの石レンガ、補強のための$(thing)モルタル$()が必要です。$(br2)モルタルは、$(thing)石灰水$()を入れた$(l:crafting/barrels#)樽$()に$(thing)砂$()を追加することで作成できます。",
+      "text": "$(thing)石レンガ$()は、$(l:metalworking/chisel)ノミ$()で小石を加工して作れます。頑丈な建材ブロックにするには、さらに$(thing)モルタル$()が必要です。$(br2)モルタルは、$(l:crafting/barrels#limewater)石灰水$()を入れた樽に$(thing)砂$()を加えることで作成できます。",
       "title": "レンガとモルタル"
     },
     {

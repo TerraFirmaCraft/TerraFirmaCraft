@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "革を作るにはいくつかの材料と道具が必要です。必要なもの: $(br)$(li)$(l:crafting/barrels#limewater)石灰水$(): $(thing)水$()と$(l:metalworking/flux)融剤$()の混合液$(li)水$(li)$(l:crafting/barrels#tannin)タンニン$(): 木の樹皮から作られた酸性溶液。$(li)$(thing)生皮$()$(br2)これらがすべて揃えれば革の加工プロセスを開始する準備が整いました。"
+      "text": "革を作るにはいくつかの材料と道具が必要です。必要なもの: $(br)$(li)$(l:crafting/barrels#limewater)石灰水$(): $(thing)水$()と$(l:metalworking/flux)融剤$()の混合液$(li)水$(li)$(l:crafting/barrels#tannin)タンニン$(): 木の樹皮から作られた酸性溶液。$(li)$(thing)生皮$()$(br2)これらがすべて揃えば革の加工プロセスを開始する準備が整いました。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -54,7 +54,7 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tanning",
       "recipe": "tfc:barrel/medium_leather",
-      "text": "最後に、$(thing)準備された皮$() を、$(l:crafting/barrels#tannin)タンニン入りのバレル$() に密封する必要があります。これは、丸太を水に密封することで作成できる皮を $(thing)革$() に変換するのに役立つ酸性の化合物です。 さらに 6 時間後、バレルから $(thing)革$() を回収することができます。"
+      "text": "最後に、$(thing)準備された皮$() を、$(l:crafting/barrels#tannin)タンニン入りのバレル$() に密封する必要があります。タンニンは、丸太を水に密封して作る酸性の液体で、皮を$(thing)革$()に変える働きがあります。 さらに 6 時間後、バレルから $(thing)革$() を回収することができます。"
     }
   ],
   "read_by_default": true,
