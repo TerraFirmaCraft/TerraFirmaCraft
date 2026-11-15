@@ -23,7 +23,7 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "soaking",
       "recipe": "tfc:barrel/medium_soaked_hide",
-      "text": "まず、加工前に生皮を $(thing)浸漬$() してきれいにし、不要な物質をほぐす必要があります。 $(thing)生皮$() を $(l:crafting/barrels#limewater)石灰水入りの樽$() に8 時間密封します。"
+      "text": "まず、加工前に生皮を $(thing)浸漬$() してきれいにし、不要な物質をほぐす必要があります。 $(thing)生皮$() を $(l:crafting/barrels#limewater)石灰水入りの樽$() に6 時間密封します。"
     },
     {
       "type": "patchouli:spotlight",
@@ -48,13 +48,13 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "preparing",
       "recipe": "tfc:barrel/medium_prepared_hide",
-      "text": "削り終わった後、$(thing)剥がれた皮$() を $(thing)水$() 入りの $(l:crafting/barrels)樽$() に8 時間密封し、なめし前の最終洗浄を行う必要があります 。"
+      "text": "削り終わった後、$(thing)剥がれた皮$() を $(thing)水$() 入りの $(l:crafting/barrels)樽$() に6 時間密封し、なめし前の最終洗浄を行う必要があります 。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tanning",
       "recipe": "tfc:barrel/medium_leather",
-      "text": "最後に、$(thing)準備された皮$() を、$(l:crafting/barrels#tannin)タンニン入りのバレル$() に密封する必要があります。これは、丸太を水に密封することで作成できる皮を $(thing)革$() に変換するのに役立つ酸性の化合物です。 さらに 8 時間後、バレルから $(thing)革$() を回収することができます。"
+      "text": "最後に、$(thing)準備された皮$() を、$(l:crafting/barrels#tannin)タンニン入りのバレル$() に密封する必要があります。これは、丸太を水に密封することで作成できる皮を $(thing)革$() に変換するのに役立つ酸性の化合物です。 さらに 6 時間後、バレルから $(thing)革$() を回収することができます。"
     }
   ],
   "read_by_default": true,

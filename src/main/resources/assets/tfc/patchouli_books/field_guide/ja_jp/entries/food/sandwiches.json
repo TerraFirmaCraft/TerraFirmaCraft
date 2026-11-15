@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)サンドイッチ$() は、2 つの $(l:food/bread)パン$() と 3 つの食品を組み合わせることで作れる食事です。これは、$(l:food/bread)野菜$()、$(thing)調理された肉$()、$(l:food/dairy)チーズ$()の任意の組み合わせにすることができます。"
+      "text": "$(thing)サンドイッチ$() は、2 つの $(l:food/bread)パン$() と 最大3 つの食品を組み合わせることで作れる食事です。これは、$(l:food/bread)野菜$()、$(thing)調理された肉$()、$(l:food/dairy)チーズ$()の任意の組み合わせにすることができます。"
     },
     {
       "type": "patchouli:crafting",
