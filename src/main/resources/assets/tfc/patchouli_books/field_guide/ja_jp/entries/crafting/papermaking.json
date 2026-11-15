@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/papyrus_strip",
-      "text": "まずカヤツリグサを $(thing)ナイフ$() で細長く切ります。$()"
+      "text": "まずパピルスを$(thing)ナイフ$()で細長く切ります。$()"
     },
     {
       "type": "tfc:sealed_barrel_recipe",

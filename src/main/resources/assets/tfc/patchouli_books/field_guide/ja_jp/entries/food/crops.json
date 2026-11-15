@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "自生作物を見つけるだけでなく、すでに育てている作物から種子を入手することもできます。 完全に成熟した作物が天候によって、または放置しておくと枯れ、種子となり、次の時期にさらに多くの作物を育てるために使用できる多くの種子を落とします。"
+      "text": "野生の作物だけでなく、すでに育てている作物からも種を入手できます。完全に成熟した作物が天候によって、または放置することで枯れ、種となり、次の時期に作物を育てるために使用できる多くの種を落とします。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -20,12 +20,12 @@
         "tfc:knapping/stone/hoe_head/igneous_extrusive",
         "tfc:knapping/stone/hoe_head/igneous_intrusive"
       ],
-      "text": "まず $(thing)石のクワ$() を $(thing)ナッピング$() して作成します。"
+      "text": "まず石を$(thing)加工$()して$(thing)石のクワ$()を作成します。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe/sedimentary",
-      "text": "鍬の頭をナッピングしたら、バニラと同様に土ブロックを右クリックして $(thing)農地$() に耕すことができます。$(br2)クワは、$(thing)根付いた土$()など を $(thing)土$() に変換するために使用することもできます。"
+      "text": "クワを作成したら、バニラと同様に土ブロックを右クリックして耕すことで$(thing)農地$()ができます。$(br2)クワは、$(thing)根付いた土$()などを$(thing)土$()に変換することも可能です。"
     },
     {
       "type": "patchouli:text",
@@ -783,7 +783,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "注: 成長するには、米ブロックが $(thing)水浸し$() でなければなりません。",
+      "text": "注: 成長するには、米の苗が$(thing)水中$()でなければなりません。",
       "multiblocks": [
         {
           "pattern": [
@@ -3050,7 +3050,7 @@
       "type": "patchouli:text",
       "anchor": "squash",
       "text": "$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.squash.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.squash.hydration) %$(br)$(bold)Category$(): Vegetable$(br)$(br)$(bold)$(3)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Squash is a single block crop. Squash seeds can be planted on farmland and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
-      "title": "カボチャ"
+      "title": "スカッシュ"
     },
     {
       "type": "tfc:multimultiblock",
@@ -3858,7 +3858,7 @@
       "type": "patchouli:text",
       "anchor": "papyrus",
       "text": "$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.papyrus.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.papyrus.hydration) %$(br)$(bold)Category$(): Misc$(br)$(br)$(bold)$(3)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Papyrus is a two block tall crop. Papyrus seeds can be planted on farmland, will grow two blocks tall, and will produce $(l:crafting/papermaking)Papyrus$() and $(thing)Papyrus Seeds$() as a product.",
-      "title": "カミガヤツリ"
+      "title": "パピルス"
     },
     {
       "type": "tfc:multimultiblock",

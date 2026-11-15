@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "高度な素材",
+  "name": "高度な建材",
   "category": "tfc:mechanics",
   "icon": "tfc:brick/rhyolite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "石器時代の原始的な $(l:getting_started/building_materials)建築資材$() に加えて、金属工具を入手すると、より高度な建築資材を構築できるようになります"
+      "text": "石器時代の原始的な$(l:getting_started/building_materials)建材$()に加えて、金属工具を入手すると、より高度な建材を作成できます。"
     },
     {
       "type": "patchouli:text",

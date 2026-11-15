@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TFC で光を生成する方法は多数あります。 1 つの方法は $(l:mechanics/lamps)ランプ$() を使用することですが、燃料が必要です。 一部の光源はスパークのみを必要とします。"
+      "text": "TFCで光を生成する方法は多数あります。1つの方法は$(l:mechanics/lamps)ランタン$()を使用することですが、燃料が必要です。一部の光源は火花のみを必要とします。"
     },
     {
       "type": "patchouli:text",
@@ -17,7 +17,7 @@
       "type": "tfc:heat_recipe",
       "anchor": "torches",
       "recipe": "tfc:heating/torch_from_stick",
-      "text": "松明は、$(l:getting_started/firepit)焚き火$() またはその他の加熱装置でスティックまたはスティックの束を加熱することで作成できます。"
+      "text": "松明は、$(l:getting_started/firepit)焚き火$()またはその他の加熱装置で棒または棒の束を加熱することで作成できます。"
     },
     {
       "type": "patchouli:text",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "耐火粘土の用途は少ないですが、それらはすべて重要です。 耐火粘土は、耐熱性に優れた粘土のより強力な種類です。 高温に耐える必要があるものを作るために使用されます。"
+      "text": "耐火粘土の用途は少ないですが、それらはすべて重要です。耐火粘土は、耐熱性に優れた粘土のより強力な種類です。高温に耐える必要があるものを作るために使用されます。"
     },
     {
       "type": "patchouli:crafting",
@@ -33,7 +33,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_fire_ingot_mold",
-      "text": "$(thing)耐火インゴットの型$() は $(l:getting_started/pottery#mold)インゴットの型$() のより強力なタイプで、通常のインゴットの 10 分の 1 と比較して壊れる確率は 100 分の 1 です。"
+      "text": "$(thing)耐火のインゴットの型$()は$(l:getting_started/pottery#mold)インゴットの型$()より強力なタイプで、通常のインゴットの型が10分の1の確率で壊れるのに対して、耐火粘土の型は100分の1の確率です。"
     }
   ],
   "read_by_default": true,

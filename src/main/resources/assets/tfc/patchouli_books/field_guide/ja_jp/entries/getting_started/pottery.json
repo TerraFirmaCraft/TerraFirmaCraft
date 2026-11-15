@@ -36,14 +36,14 @@
     {
       "type": "patchouli:text",
       "anchor": "knapping",
-      "text": "$(thing)アサイリウム シダ$()、$(thing)カンナ$()、$(thing)アキノキリンソウ$()、$(thing)ススキ$()、$(thing)ペロブスキー$()、$(thing)ミズカンナ$() はすべて、近くに粘土が存在することを示しています。 粘土は、川、湖、池などの水源に近い小さな堆積物でも見つかります。$(br2)石ころのナッピングと同様に、粘土をこねて新しいアイテムを形成することができます。 これには5つの粘土が必要です。 石ころのナッピングとは異なり、間違った場合は、ナッピングインターフェイスを閉じても粘土が失われず、もう一度やり直すことができます。"
+      "text": "$(thing)イヌワラビ$()、$(thing)カンナ$()、$(thing)アキノキリンソウ$()、$(thing)シロガネヨシ$()、$(thing)ロシアンセージ$()、$(thing)ミズカンナ$()はすべて、近くに粘土があることを示しています。川、湖、池など水源に近い小さな堆積物でも見つかります。$(br2)石の加工と同様に、粘土をこねて新しいアイテムを形成できます。これには5つの粘土が必要です。石の加工とは異なり、間違った場合は加工GUIを閉じても粘土が失われず、もう一度やり直せます。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/clay_knapping.png"
       ],
-      "text": "粘土ナッピングGUI。",
+      "text": "加工GUI。",
       "border": false
     },
     {
@@ -55,7 +55,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_vessel",
-      "text": "小さな壺のナッピング。"
+      "text": "小さな壺の加工。"
     },
     {
       "type": "patchouli:text",
@@ -71,35 +71,35 @@
       "type": "patchouli:text",
       "anchor": "jug",
       "text": "もう 1 つの便利な陶器アイテムは$(thing)水入れ$()です。 淡水などの液体を汲んで$(thing)飲用$()するのに使用できます。$(br2)これを使用するには、単に$(item)$(k:key.use)$()するだけです。主に淡水のないエリアで水を飲むために水入れを使用します。 水入れには一度に $(thing)100 mB$() の液体を入れることができます。",
-      "title": "水入れ"
+      "title": "水差し"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_jug",
-      "text": "水入れのナッピング。"
+      "text": "水差しの加工。"
     },
     {
       "type": "patchouli:text",
       "anchor": "mold",
-      "text": "粘土は $(thing)鋳造型$() を作るのにも必要です。 型には溶融金属を流し込むことができ、最終的には型の形状に固まります。 その後、金型に対して $(item)$(k:key.use)$() を使用することで、鋳造したアイテムと場合によっては金型を取得できます。$(br2)最も単純な型は、右側のインゴットの型です。",
-      "title": "鋳造型"
+      "text": "粘土は$(thing)鋳型$()を作るのにも必要です。型には溶融金属を流し込むことができ、最終的には型の形状に固まります。その後、金型に対して$(item)$(k:key.use)$()を押すことで、鋳造したアイテムと場合によっては金型を取得できます。$(br2)最も単純な型は、右側のインゴットの型です。",
+      "title": "鋳型"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_ingot_mold",
-      "text": "インゴットの型のナッピング。"
+      "text": "インゴットの型の加工。"
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/ceramic/ingot_mold",
-      "text": "すべての粘土製品と同様に、型を使用できるようにするには、$(l:getting_started/pit_kiln)穴窯$().$(br2)で焼成する必要があります。焼成したら、溶融金属を流し込みます。 金属が十分に冷えたら、抽出することができます。"
+      "text": "すべての粘土製品と同様に、型を使用できるようにするには、$(l:getting_started/pit_kiln)穴窯$()で焼成する必要があります。$(br2)焼成したら、溶融金属を流し込みます。金属が十分に冷えたら、取り出すことができます。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:ceramic/ingot_mold[tfc:fluid={id:\"tfc:metal/copper\",amount:100}]",
       "title": "鋳造",
       "link_recipes": false,
-      "text": "次の数ページでは、さまざまなツールの頭のナッピング方法をいくつか示します。"
+      "text": "次のページからは、さまざまなツールの頭の加工方法をいくつか示します。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -109,7 +109,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_pickaxe_head_mold",
-      "text": "$(thing)つるはし$()！ 鉱石や石を採掘するためのツールです。"
+      "text": "$(thing)ツルハシ$()！鉱石や石を採掘するためのツールです。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -119,7 +119,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_scythe_blade_mold",
-      "text": "$(thing)鎌$()はひとクリックで3x3x3のエリアで植物や葉っぱを収穫できるツールです！"
+      "text": "$(thing)鎌$()はワンクリックで3x3x3のエリアで植物や葉っぱを収穫できるツールです！"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -129,7 +129,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_axe_head_mold",
-      "text": "$(thing)斧$()はあらゆる木の伐採に使用できます。 石斧は金属よりも効率が低いことに注意してください。"
+      "text": "$(thing)斧$()はあらゆる木の伐採に使用できます。石斧は金属よりも効率が低いことに注意してください。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -139,7 +139,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_knife_blade_mold",
-      "text": "$(thing)短剣$()は武器として、または植物系ブロックの切断ツールとして使用できます。"
+      "text": "$(thing)ナイフ$()は武器として、または植物系ブロックの切断ツールとして使用できます。"
     },
     {
       "type": "tfc:knapping_recipe",

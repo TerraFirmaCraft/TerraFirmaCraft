@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "溶鉱炉",
+  "name": "炉",
   "category": "tfc:metalworking",
   "icon": "tfc:textures/block/molten_lit.png",
   "pages": [
@@ -11,8 +11,8 @@
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:charcoal_forge",
-      "name": "溶鉱炉",
-      "text": "完成した溶鉱炉です。すぐに点火できます。",
+      "name": "炉",
+      "text": "完成した炉です。すぐに点火できます。",
       "enable_visualize": true
     },
     {
@@ -55,12 +55,12 @@
       "images": [
         "tfc:textures/gui/book/gui/charcoal_forge.png"
       ],
-      "text": "溶鉱炉GUI。",
+      "text": "炉GUI。",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "底にある 5 つのスロットは燃料として使用されます。 溶鉱炉の燃焼中、$(thing)木炭$() または $(l:the_world/ores_and_minerals#bituminous_coal)石炭$() を定期的に消費します。 上部 5 つのスロットは、左側のインジケーターに示されている温度までアイテムを加熱します。 右側のスロットは、$(thing)小さな壺$() や $(thing)鋳造型$() などの溶融金属を入れることができるアイテム用です。 溶鉱炉で溶けた金属がそれらの中身を満たします。"
+      "text": "下部にある5つのスロットは燃料を配置出来ます。炉の燃焼中、$(thing)木炭$()または$(l:the_world/ores_and_minerals#bituminous_coal)石炭$()を定期的に消費します。上部5つのスロットは、左側のメーターに示されている温度までアイテムを加熱します。右側のスロットは、溶けた金属を入れられる$(thing)小さな壺$()や$(thing)鋳型$()などの容器を配置できます。炉で金属が溶けるとその中に入ります。"
     }
   ],
   "read_by_default": true,

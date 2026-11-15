@@ -11,13 +11,13 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/food/barley_grain",
-      "text": "まず、$(thing)ナイフ$() を使って小麦を小麦の粒にします。"
+      "text": "まず、$(thing)ナイフ$()を使って穀物を粒にします。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:food/rye_grain",
       "link_recipes": false,
-      "text": "穀物はで極めて高い保存性を持ち、ほとんどの食品よりもはるかにゆっくりと腐敗します。 新鮮な穀物はそのままでは 10 か月と 7 日間保存されます。 小さな壺で1年9か月と7日持ちます。"
+      "text": "穀物の粒は極めて高い保存性を持ち、ほとんどの食品よりもはるかにゆっくりと腐敗します。新鮮な穀物の粒はそのままでは10か月と7日間保存されます。小さな壺で1年9か月と7日持ちます。"
     },
     {
       "type": "tfc:quern_recipe",
@@ -27,7 +27,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/food/barley_dough_1",
-      "text": "小麦のパン生地はバケツ一杯分の $(thing)淡水$() をクラフトで小麦粉に加えて作ることができます。"
+      "text": "パン生地はバケツ一杯分の$(thing)淡水$()を穀物の粉をクラフトで作れます。"
     },
     {
       "type": "tfc:heat_recipe",

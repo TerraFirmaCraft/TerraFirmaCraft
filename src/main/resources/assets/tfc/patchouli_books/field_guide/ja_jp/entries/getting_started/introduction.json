@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TerraFirmaCraftで最初に入手できるのは棒、小枝、石ころです。 それらはほぼすべての気候で見つかり、地面に点在しています。$(item)$(k:key.use)$() または破壊で回収できます。"
+      "text": "TerraFirmaCraftで最初に入手できるのは棒、小枝、小石です。それらはほぼすべての気候で見つかり、地面に点在しています。$(item)$(k:key.use)$()または破壊で回収できます。"
     },
     {
       "type": "patchouli:multiblock",
@@ -37,24 +37,24 @@
         }
       },
       "name": "例",
-      "text": "石ころや棒の生成の例です。",
+      "text": "小石や棒の生成の例です。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "棒は地面に落ちている棒や小枝を集めるほか、葉っぱを拳で折ることでも入手できます。 いくつかの石と棒を用意したら、 $(thing)ナッピング$()を始める準備は完了です。 ナッピングとは、2 つの石を叩き合わせて特定の形状を形成するプロセスです。ナップするには、まず少なくとも 2 つの岩を手に持ち、空中で右クリックすると$(thing)ナッピングGUI$()が開きます。"
+      "text": "棒は地面に落ちている棒や小枝を集めるほか、木の葉を壊しても入手できます。いくつかの石と棒を用意したら、$(thing)石の加工$()を始める準備は完了です。石の加工とは、2つの石を叩き合わせて特定の形状を作ることです。石の加工をするには、少なくとも2つの小石を手に持ち、空中で右クリックすることで$(thing)加工GUI$()が開きます。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/rock_knapping.png"
       ],
-      "text": "粘土ナッピングGUI。",
+      "text": "加工GUI。",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "特定のアイテムをナップするには、目的の形状ができるまで正方形をクリックして削るする必要があります。 たとえば、右に示すレシピと一致させてナイフの刃を作成します。$(br2)クラフトと同様に、目的の形状の位置は関係なく、一部のレシピには有効な複数のバリエーションがあります。"
+      "text": "特定のアイテムを加工で得るには、目的の形状ができるまで正方形をクリックして削る必要があります。たとえば、右に示すレシピと一致させてナイフの刃を作成します。$(br2)クラフトと同様で、目的の形状に位置の関係はなく、一部のレシピでは１度に複数個つくれるものもあります。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -70,7 +70,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/knife/sedimentary",
-      "text": "すべての石器の頭は、棒や小枝を組み合わせて道具として組み立てることができます。$(br2)石のナイフは、植物を破壊し$(thing)藁$()を得るのに使用できます。"
+      "text": "すべての石器の頭は、棒や小枝と合わせて道具として組み立てることができます。$(br2)石のナイフは、植物を破壊し$(thing)藁$()を得るのに使用できます。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -80,7 +80,7 @@
         "tfc:knapping/stone/axe_head/igneous_extrusive",
         "tfc:knapping/stone/axe_head/igneous_intrusive"
       ],
-      "text": "$(thing)斧$()を使用すると、木全体、丸太、葉を伐採できます。 ただし、苗木と棒は葉を個別に破壊した場合にのみ入手できます。"
+      "text": "$(thing)斧$()を使用すると、木全体、丸太、葉を伐採できます。ただし、苗木と棒は葉を個別に破壊した場合にのみ入手できます。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -90,7 +90,7 @@
         "tfc:knapping/stone/shovel_head/igneous_extrusive",
         "tfc:knapping/stone/shovel_head/igneous_intrusive"
       ],
-      "text": "$(thing)シャベル$()は土系ブロックの破壊に使用できます。$(thing)土$()や$(thing)草$()に$(item)使用$()して$(thing)道$()を作成することもできます。"
+      "text": "$(thing)シャベル$()は土系ブロックの破壊に使用できます。$(thing)土$()や$(thing)草ブロック$()に$(item)使用$()して$(thing)道$()を作成することもできます。"
     },
     {
       "type": "tfc:rock_knapping_recipe",

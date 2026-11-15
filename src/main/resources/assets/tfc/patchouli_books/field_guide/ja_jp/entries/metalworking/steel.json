@@ -11,7 +11,7 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/ingot/high_carbon_steel",
-      "text": "$(thing)銑鉄インゴット$() を金床で鍛造して $(thing)高炭素鋼$() インゴットを作成し、これを再度鍛造して $(thing)鋼インゴット$() を作成できます。"
+      "text": "$(thing)銑鉄のインゴット$()を金床で鍛造して$(thing)高炭素鋼のインゴット$()を作成し、これを再度鍛造して$(thing)鋼のインゴット$()が作られます。"
     },
     {
       "type": "patchouli:text",
@@ -24,7 +24,7 @@
       "item": "tfc:metal/ingot/weak_steel",
       "title": "軟鋼",
       "link_recipes": false,
-      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 70 % : $(thing)鋼$()$(li)15 - 25 % : $(thing)ニッケル$()$(li)15 - 25 % : $(thing)黒色青銅$()$(br2) $(thing)軟鋼$() はインゴットに鋳造できます。"
+      "text": "$(br)$(bold)材料:$()$(br)$(li)50 - 70 % : $(thing)鋼$()$(li)15 - 25 % : $(thing)ニッケル$()$(li)15 - 25 % : $(thing)黒青銅$()$(br2)$(thing)軟鋼$()はインゴットに鋳造できます。"
     },
     {
       "type": "tfc:welding_recipe",
@@ -46,7 +46,7 @@
       "item": "tfc:metal/ingot/weak_blue_steel",
       "title": "軟青鋼",
       "link_recipes": false,
-      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$()$(li)10 - 15 % : $(thing)蒼鉛青銅$()$(li)10 - 15 % : $(thing)スターリングシルバー$()$(br2)"
+      "text": "$(br)$(bold)材料:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$()$(li)10 - 15 % : $(thing)蒼鉛青銅$()$(li)10 - 15 % : $(thing)スターリングシルバー$()$(br2)"
     },
     {
       "type": "tfc:welding_recipe",
@@ -68,7 +68,7 @@
       "item": "tfc:metal/ingot/weak_red_steel",
       "title": "軟赤鋼",
       "link_recipes": false,
-      "text": "$(br)$(bold)要件:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$()$(li)10 - 15 % : $(thing)真鍮$()$(li)10 - 15 % : $(thing)ローズゴールド$()$(br2)"
+      "text": "$(br)$(bold)材料:$()$(br)$(li)50 - 55 % : $(thing)黒鋼$()$(li)20 - 25 % : $(thing)鋼$()$(li)10 - 15 % : $(thing)真鍮$()$(li)10 - 15 % : $(thing)ローズゴールド$()$(br2)"
     },
     {
       "type": "tfc:welding_recipe",

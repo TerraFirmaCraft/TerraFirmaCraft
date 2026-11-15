@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/blast_furnace",
-      "text": "高炉本体を作るには $(thing)るつぼ$() と、必要となる $(thing)錬鉄の金属板$() の一部が必要です。"
+      "text": "高炉本体を作るには$(thing)るつぼ$()と、必要となる$(thing)錬鉄のプレート$()の一部が必要です。"
     },
     {
       "type": "patchouli:text",

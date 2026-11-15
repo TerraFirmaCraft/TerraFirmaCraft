@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "焚き火とポット",
+  "name": "焚き火と鍋",
   "category": "tfc:food",
   "icon": "tfc:pot",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)ポット$() は、新しいタイプの食べ物を調理したり、その他の便利なアイテムを作成したりするために、焚き火に追加できるアイテムです。$(br2)ポット付き焚き火を作成するには、まず、 $(l:getting_started/firepit)焚き火$()を作成し、次に、$(thing)ポット$() を焚き火で使用します。"
+      "text": "$(thing)鍋$()は、食べ物を調理したり、その他の便利なアイテムを作成するために、焚き火に追加できるアイテムです。$(br2)鍋付きの焚き火を作るには、まず$(l:getting_started/firepit)焚き火$()を作成し、次に$(thing)鍋$()を焚き火に使用します。"
     },
     {
       "type": "patchouli:multiblock",
@@ -24,13 +24,13 @@
         }
       },
       "name": "",
-      "text": "ポット付きの焚き火。",
+      "text": "鍋付きの焚き火。",
       "enable_visualize": false
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_pot",
-      "text": "ポットを作るには、まず粘土から $(l:getting_started/pottery)ナッピング$() する必要があります。"
+      "text": "鍋を作るには、まず粘土を$(l:getting_started/pottery)加工$()します。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -39,14 +39,14 @@
     },
     {
       "type": "patchouli:text",
-      "text": "焚き火と同様に、ポットには燃料用の 4 つのスロットがあり、温度メーターも付いています。 鍋には 5 つのアイテム スロットがあり、最大 $(thing)1000 mB$() の液体を入れることができます。$(br2)ポットで何かを調理するには、まず、あらゆる種類の液体容器を使用して液体を追加する必要があります。 (バケツなど) 次にアイテムを追加し、鍋に火をつけます。 レシピが完成するまでしばらく煮始めます。"
+      "text": "焚き火と同様に、鍋には燃料用の4つのスロットがあり、温度メーターも付いています。鍋には5つのアイテムスロットがあり、最大$(thing)1000mB$()の液体を入れることができます。$(br2)鍋で何かを調理するにはまず、あらゆる種類の液体容器を使用して液体を追加する必要があります。(バケツなど)次にアイテムを追加し、鍋に火をつけます。レシピが完成するまでしばらく煮込みます。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/pot.png"
       ],
-      "text": "一種のスープを作るポットGUI。",
+      "text": "一種のスープを作る鍋GUI。",
       "border": false
     },
     {
@@ -62,7 +62,7 @@
       "item": "tfc:bucket/red_dye",
       "title": "簡単なレシピ",
       "link_recipes": false,
-      "text": "他のレシピは、ポットの中のアイテムや液体を別のものに変えるレシピです。 たとえば、5 つの $(thing)灰$() を $(thing)水$() と一緒に沸騰させると $(thing)灰汁$() ができます。"
+      "text": "他のレシピは、鍋の中のアイテムや液体を別のものに変えるレシピです。たとえば、5つの$(thing)灰$()を$(thing)水$()と一緒に沸騰させると$(thing)灰汁$()ができます。"
     }
   ],
   "read_by_default": true,

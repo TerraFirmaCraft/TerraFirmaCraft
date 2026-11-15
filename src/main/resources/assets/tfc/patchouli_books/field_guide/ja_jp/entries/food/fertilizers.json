@@ -19,7 +19,7 @@
       "type": "patchouli:spotlight",
       "item": "minecraft:bone_meal",
       "link_recipes": false,
-      "text": "骨粉は骨を砕いて作られます。以下の栄養素が含まれています。 $(br)$(li)$(6)リン: 10$()"
+      "text": "骨粉は骨を砕いて作られます。以下の栄養素が含まれています。$(br)$(li)$(6)リン: 10$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -49,7 +49,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "カリ岩塩はカリ岩塩鉱石から作られます。以下の栄養素が含まれています。 $(br)$(li)$(d)カリウム: 50$()"
+      "text": "カリ岩塩はカリ岩塩鉱石から作られます。以下の栄養素が含まれています。$(br)$(li)$(d)カリウム: 50$()"
     }
   ],
   "read_by_default": true,

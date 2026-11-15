@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "自生植物",
+  "name": "野生の作物",
   "category": "tfc:the_world",
   "icon": "tfc:textures/gui/book/icons/wild_crops.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)自生植物$() は世界中に点在し、ゆっくり成長しています。 それらは食料や種子として収穫でき、その後、野生ではない形で自分たちで栽培することができます。$(br2)自生植物の収穫は、拳または $(thing)ナイフ$() などの鋭利なものを使って行うことができます。  壊れると、$(thing)種$() といくつかの $(thing)収穫物$() がドロップされます。"
+      "text": "$(thing)野生の作物$()は世界中に点在し、ゆっくり成長しています。それらは食料や種子として収穫でき、その後、野生ではない形で自分たちで栽培することができます。$(br2)野生の作物の収穫は、拳または$(thing)ナイフ$()などの鋭利なものを使って行うことができます。壊れると、$(thing)種$()といくつかの$(thing)収穫物$()がドロップされます。"
     },
     {
       "type": "patchouli:multiblock",
@@ -23,7 +23,7 @@
           "X": "tfc:wild_crop/wheat[mature=true]"
         }
       },
-      "name": "自生小麦",
+      "name": "野生の小麦",
       "text": "自生植物の例、この場合は $(l:food/crops#wheat)小麦$()。",
       "enable_visualize": false
     },
@@ -33,7 +33,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "全種類の自生植物。",
+      "text": "全種類の野生の作物。",
       "multiblocks": [
         {
           "pattern": [
@@ -526,7 +526,7 @@
           "text": "200 - 420"
         },
         {
-          "text": "カボチャ"
+          "text": "スカッシュ"
         },
         {
           "text": "$(cfg:temperature:-9.4) - $(cfg:temperature:19.4)"
@@ -647,7 +647,7 @@
           "text": "100 - 410"
         },
         {
-          "text": "カミガヤツリ"
+          "text": "パピルス"
         },
         {
           "text": "$(cfg:temperature:12.2) - $(cfg:temperature:40)"

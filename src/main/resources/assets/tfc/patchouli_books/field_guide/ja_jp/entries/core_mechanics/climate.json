@@ -7,7 +7,7 @@
     {
       "type": "patchouli:text",
       "anchor": "calendar",
-      "text": "TerraFirmaCraft では、気候と時間の両方が非常に重要な要素です。 $(thing)暦$() から始めましょう。$(br2)$(item)$(k:key.inventory)$() を押して、[カレンダー] タブをクリックすると、いつでもカレンダーを表示できます。 これにより、$(thing)季節$()、$(thing)曜日$()、および $(thing)日付$() が表示されます。"
+      "text": "TerraFirmaCraftでは、気候と時間の両方が非常に重要な要素です。$(thing)暦$()から始めましょう。$(br2)$(item)$(k:key.inventory)$()を押して、[カレンダー]タブをクリックすると、いつでもカレンダーを表示できます。これにより、$(thing)季節$()、$(thing)曜日$()、および$(thing)日付$()が表示されます。"
     },
     {
       "type": "patchouli:image",
@@ -19,7 +19,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "季節があり、それに合わせて天気や気候も変化します。 TerraFirmaCraft には 4 つのシーズンがあり、それぞれが $(thing)上旬$()、$(thing)中旬$()、$(thing)下旬$() に分かれています。 四季は次のとおりです:$(br)$(li)$(bold)春$(): 3 月～5 月$(li)$(bold)夏$(): 6 月～8 月$(li)$(bold)秋 $(): 9 月 - 11 月$(li)$(bold)冬$(): 12 月 - 2 月"
+      "text": "季節があり、それに合わせて天気や気候も変化します。TerraFirmaCraftには4つのシーズンがあり、それぞれが$(thing)上旬$()、$(thing)中旬$()、$(thing)下旬$()に分かれています。四季は次のとおりです。$(br)$(li)$(bold)春$():3月~5月$(li)$(bold)夏$():6月~8月$(li)$(bold)秋$():9月~11月$(li)$(bold)冬$():12月~2月"
     },
     {
       "type": "patchouli:text",

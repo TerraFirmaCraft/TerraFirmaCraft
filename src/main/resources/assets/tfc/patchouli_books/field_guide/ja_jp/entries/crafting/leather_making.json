@@ -13,7 +13,7 @@
       "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
       "title": "生皮",
       "link_recipes": true,
-      "text": "革の作成を始めるには、まず $(thing)生皮$() を入手する必要があります。これは、さまざまな $(l:the_world/wild_animals)動物$() からドロップされます。 動物ごとに、異なるサイズの $(thing)生皮$() がドロップされます。"
+      "text": "革の作成を始めるには、まず$(thing)生皮$()を入手する必要があります。これは、さまざまな$(l:the_world/wild_animals)動物$()からドロップされます。動物ごとに、異なるサイズの$(thing)生皮$()がドロップされます。"
     },
     {
       "type": "patchouli:text",
@@ -31,7 +31,7 @@
       "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
       "title": "剥ぎ",
       "link_recipes": true,
-      "text": "浸した後、$(thing)石灰漬けされた皮$() を削り、余分な材料を取り除く必要があります。 皮を削り取るには、皮を $(thing)丸太$() の上部に置きます。 $(thing)ナイフ$()で$(item)$(k:key.use)$() を皮の各部分に実行すると、部分が剥がれて変化し始めます。"
+      "text": "浸した後、$(thing)石灰漬けされた皮$()を削り、余分な材料を取り除く必要があります。皮を削り取るには、皮を$(thing)丸太$()の上部に置きます。$(thing)ナイフ$()で$(item)$(k:key.use)$()を皮の各部分に実行すると、部分が剥がれて変化し始めます。"
     },
     {
       "type": "patchouli:image",
@@ -41,7 +41,7 @@
         "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
         "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
       ],
-      "text": "皮が完全に削られたら、それを壊して $(thing)剥がれた皮$() を拾うことができます。",
+      "text": "皮が完全に削られたら、それを壊して$(thing)剥がれた皮$()を拾うことができます。",
       "border": true
     },
     {

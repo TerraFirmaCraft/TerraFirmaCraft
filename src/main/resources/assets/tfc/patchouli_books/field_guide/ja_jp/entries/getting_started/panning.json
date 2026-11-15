@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "パンニング",
+  "name": "ふるい",
   "category": "tfc:getting_started",
   "icon": "tfc:textures/gui/book/icons/panning.png",
   "pages": [
@@ -11,7 +11,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_pan",
-      "text": "上に示したように、粘土を未焼成のふるいに $(l:getting_started/pottery)ナッピング$() することができます。"
+      "text": "上に示したように、粘土を未焼成のふるいに$(l:getting_started/pottery)加工$()することができます。"
     },
     {
       "type": "tfc:heat_recipe",
@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "すべての準備が整ったらパンニングを始められます!$(br2)$(bold)1.$() ふるいを手に持って、鉱石の混じったブロック上で使用します。$(br2)$(bold)2.$()水の中に立ち、$(item)$(k:key.use)$() を押し続けるとパンニングが始まります。$(br2)$(bold)3.$() しばらくすると、運が良ければ、インベントリに小さな鉱石が入ってくるかもしれません。"
+      "text": "すべての準備が整ったら選鉱を始められます!$(br2)$(bold)1.$()ふるいを手に持って、鉱石の混じったブロック上で使用します。$(br2)$(bold)2.$()水の中に立ち、$(item)$(k:key.use)$()を押し続けると選鉱が始まります。$(br2)$(bold)3.$()しばらくすると、運が良ければ、インベントリに小さな鉱石が入ってくるかもしれません。"
     },
     {
       "type": "patchouli:image",
@@ -51,7 +51,7 @@
     {
       "type": "patchouli:text",
       "text": "パンニングにより、$(thing)鉱石$()、$(thing)石ころ$()、および $(l:mechanics/gems)宝石$() の 3 つの製品が得られます。 確率は次のとおりです:$(br)$(li)鉱石: 50%$(li)石ころ: 25%$(li)宝石: 1%$()各岩石の種類には、特定の宝石が紐づけられていてそれに基づいて宝石がドロップします。",
-      "title": "パンニングで得られるもの"
+      "title": "ふるいで得られるもの"
     }
   ],
   "read_by_default": true,

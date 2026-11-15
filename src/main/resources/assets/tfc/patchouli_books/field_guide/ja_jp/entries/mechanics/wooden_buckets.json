@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wooden_bucket",
-      "text": "木のバケツは $(thing)木材$() で作成できます。"
+      "text": "木のバケツは$(thing)木材$()で作成できます。"
     }
   ],
   "read_by_default": true

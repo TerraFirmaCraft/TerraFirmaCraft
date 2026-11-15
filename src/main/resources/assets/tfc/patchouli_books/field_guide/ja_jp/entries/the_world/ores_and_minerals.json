@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "鉱石とミネラル",
+  "name": "鉱石と鉱物",
   "category": "tfc:the_world",
   "icon": "tfc:ore/normal_hematite",
   "pages": [
@@ -169,7 +169,7 @@
       "type": "patchouli:text",
       "anchor": "tetrahedrite",
       "text": "四面銅鉱は$(thing)銅$()の鉱石です。どの標高でも見つけることができますが、より地下深くにある鉱脈のほうが純度が高くなることが多いです。$(l:the_world/geology#metamorphic)変成岩$()で見つかります。",
-      "title": "安四面銅鉱"
+      "title": "四面銅鉱"
     },
     {
       "type": "tfc:multimultiblock",
