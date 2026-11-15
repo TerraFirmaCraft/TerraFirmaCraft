@@ -24,7 +24,7 @@
         }
       },
       "name": "野生の小麦",
-      "text": "自生植物の例、この場合は $(l:food/crops#wheat)小麦$()。",
+      "text": "例として、野生の$(l:food/crops#wheat)小麦$()です。",
       "enable_visualize": false
     },
     {

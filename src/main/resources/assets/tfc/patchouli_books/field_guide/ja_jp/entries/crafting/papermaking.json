@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)紙$()は、$(l:food/crops#papyrus)パピルス$()の茎を加工して作られるか、$(l:crafting/papermaking#parchment)動物の皮$()から作られます。$(thing)紙$()は、$(thing)本$()や$(thing)地図$()のような書き物に使用します。"
+      "text": "$(thing)紙$()は、$(l:food/crops#papyrus)パピルス$(l:food/crops#papyrus)の茎を加工して作られるか、$(l:crafting/papermaking#parchment)動物の皮$()から作られます。$(thing)紙$()は、$(thing)本$()や$(thing)地図$()のような書き物に使用します。"
     },
     {
       "type": "patchouli:crafting",
@@ -16,12 +16,12 @@
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/soaked_papyrus_strip",
-      "text": "次に、パピルス片を $(thing)水$() 入りの $(l:crafting/barrels)樽$() に浸します。"
+      "text": "次に、パピルスの帯を$(thing)水$()入りの$(l:crafting/barrels)樽$()に浸します。"
     },
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/unrefined_paper",
-      "text": "次に、浸したパピルス片を織機で織り合わせて $(thing)未完成の紙$() を作ります。 最後に、それを丸太の上に置き、$(l:crafting/leather_making#scraping)剥ぎ$() をして $(thing)紙$() を作成できます。"
+      "text": "次に、浸したパピルスの帯を織機で織り合わせて$(thing)未完成の紙$()を作ります。最後に、それを丸太の上に置き、$(l:crafting/leather_making#scraping)剥ぎ$()をして$(thing)紙$()を作成できます。"
     },
     {
       "type": "patchouli:crafting",

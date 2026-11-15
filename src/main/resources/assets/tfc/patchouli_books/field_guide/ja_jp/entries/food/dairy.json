@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)乳製品$() は、$(l:food/animal_husbandry#dairy_animals)乳用動物$() によって生産された牛乳から摂取できる $(l:core_mechanics/food_and_water#nutrients)栄養素$() です。 飲むことも、$(thing)チーズ$() に加工することもできます。 飲み物は水入れから飲むことができ、常に $(l:core_mechanics/food_and_water#thirst)渇き$() を回復します。 ただし、栄養価が高まるのは食後に飲む場合だけです。 実際には、これは牛乳を2回続けて飲んでも効果がないことを意味します。 食事はその前に行わなければなりません。",
+      "text": "$(thing)乳製品$()は、$(l:food/animal_husbandry#dairy_animals)乳用動物$()によって生産されたミルクから摂取できる$(l:core_mechanics/food_and_water#nutrients)栄養素$()です。飲むことも、$(thing)チーズ$()に加工することもできます。飲むには水差しを使い、$(l:core_mechanics/food_and_water#thirst)喉の渇き$()を回復します。ただし、栄養価が高まるのは食後に飲む場合だけです。実際には、これは牛乳を2回続けて飲んでも効果がないことを意味します。食事はその前に行わなければなりません。",
       "title": "乳製品"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)チーズの作成$() を始めるには、$(thing)ミルク$() と $(thing)酢$() を $(l:crafting/barrels)樽$() に 9:1 の比率で入れます。 これは、樽に牛乳をバケツ 9 杯入れ、酢を バケツ 1 杯入れるのが最も簡単です。 これにより $(thing)酢牛乳$() が生成されます。"
+      "text": "$(thing)チーズの作成$()を始めるには、$(thing)ミルク$()と$(thing)酢$()を$(l:crafting/barrels)樽$()に9:1の比率で入れます。これは、樽に牛乳をバケツ9杯入れ、酢をバケツ1杯入れるのが最も簡単です。これにより$(thing)酢入りの牛乳$()が生成されます。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TerraFirmaCraft の鉱石と鉱物は希少です。バニラとは異なり、鉱石が一つ当たり大量に含まれる希少な鉱脈で見つかり、見つけるには $(l:metalworking/prospecting)探鉱$() が必要です。 異なる鉱石は、異なる種類の岩石や異なる標高にも出現します。つまり、適切な高度で適切な種類の岩石を見つけることが、探している鉱石を見つける鍵となります。"
+      "text": "TFCの鉱石と鉱物はバニラとは違い、鉱脈で生成されます。一つの鉱脈で鉱石が大量に採掘できますが、鉱脈は珍しいものであり、見つけるには$(l:metalworking/prospecting)探鉱$()が必要です。鉱石は、特定の種類の岩石や特定の標高に生成されます。つまり、適切な高度で適切な種類の岩石を見つけることが、鉱石を探す鍵となります。"
     },
     {
       "type": "patchouli:text",
@@ -648,7 +648,7 @@
         }
       },
       "name": "",
-      "text": "Lignite.",
+      "text": "褐炭",
       "enable_visualize": false
     },
     {
@@ -1000,7 +1000,7 @@
         }
       },
       "name": "",
-      "text": "Halite.",
+      "text": "岩塩",
       "enable_visualize": false
     },
     {

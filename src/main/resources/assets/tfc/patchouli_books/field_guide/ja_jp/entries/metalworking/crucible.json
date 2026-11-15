@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)るつぼ$() は、$(l:metalworking/crucible#advanced_alloying)高度な合金$() の作成に使用される高度なデバイスです。 これは、$(l:getting_started/primitive_alloys)小型容器$() を使用して合金を作るよりも正確な方法です。$(br2)るつぼを入手するには、まず粘土よりも耐熱性に優れる$(l:metalworking/fire_clay)耐火粘土$()を入手する必要があります。この耐火粘土を揉んで $()未焼成るつぼ$() の形に成形します。"
+      "text": "$(thing)るつぼ$()は、$(l:metalworking/crucible#advanced_alloying)高度な合金$()の作成に使用される高度なデバイスです。これは、$(l:getting_started/primitive_alloys)小さい壺$()を使用して合金を作るよりも正確な方法です。$(br2)るつぼを入手するには、まず粘土よりも耐熱性に優れる$(l:metalworking/fire_clay)耐火粘土$()を入手する必要があります。この耐火粘土を加工して$()未焼成るつぼ$()の形に成形します。"
     },
     {
       "type": "tfc:knapping_recipe",
@@ -16,7 +16,7 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/crucible",
-      "text": "るつぼをナッピングした後、他の陶器と同様に、$(l:getting_started/pit_kiln)穴窯$() または $(l:metalworking/charcoal_forge)溶鉱炉$()で$(thing)焼成$() する必要があります。$(br2)るつぼを使用するには、熱源が必要です。 るつぼは、下に置いた加熱可能なブロック (通常は $(l:metalworking/charcoal_forge)溶鉱炉$() ) によって加熱できます。"
+      "text": "るつぼを加工した後、他の陶器と同様に、$(l:getting_started/pit_kiln)穴窯$()または$(l:metalworking/charcoal_forge)炉$()で$(thing)焼成$()する必要があります。$(br2)るつぼを使用するには、熱源が必要です。るつぼは、下に置いた加熱可能なブロック(通常は$(l:metalworking/charcoal_forge)炉$())によって加熱できます。"
     },
     {
       "type": "patchouli:multiblock",
@@ -63,7 +63,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "左側の温度インジケータは、以下の $(l:metalworking/charcoal_forge)溶鉱炉$() や $(l:metalworking/blast_furnace)高炉$() からの熱などの外部熱源に基づいて上昇します。るつぼの中身がまだ溶けている限り、金属をるつぼから取り出すことができます。$(br2)最後に、るつぼは壊れても中身が残るので、必要に応じて合金の容器を持ち運ぶことができます。"
+      "text": "左側の温度メーターは、下の$(l:metalworking/charcoal_forge)炉$()や$(l:metalworking/blast_furnace)高炉$()からの熱などの外部熱源に基づいて上昇します。るつぼの中身がまだ溶けている限り、金属をるつぼから取り出すことができます。$(br2)最後に、るつぼは壊れても中身が残るので、必要に応じて合金の容器を持ち運ぶことができます。"
     }
   ],
   "read_by_default": true,

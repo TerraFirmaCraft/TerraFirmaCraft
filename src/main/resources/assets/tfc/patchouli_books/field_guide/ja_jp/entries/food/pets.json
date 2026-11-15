@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)ペット$() は $(l:food/animal_husbandry)家畜$() とよく似た機能を持つ動物ですが、物品は生み出しません。。 代わりに、命令に従い、飼い主を追いかけ、害虫を駆除し、狩猟を手伝うことができます。"
+      "text": "$(thing)ペット$()は$(l:food/animal_husbandry)家畜$()とよく似た機能を持つ動物ですが、物品は生み出しません。代わりに、命令に従い、飼い主を追いかけ、外敵を駆除し、狩猟を手伝うことができます。"
     },
     {
       "type": "patchouli:text",

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)1. $(l:core_mechanics/lighting#torches)松明$()$(li)2. $(l:core_mechanics/lighting#candles)ろうそく$()$(li)3. $(l:core_mechanics/lighting#jack_o_lanterns)ジャック・オ・ランタン$()",
+      "text": "$(li)1. $(l:core_mechanics/lighting#torches)松明$()$(li)2. $(l:core_mechanics/lighting#candles)ろうそく$()$(li)3. $(l:core_mechanics/lighting#jack_o_lanterns)ジャック･オ･ランタン$()",
       "title": "目次"
     },
     {
@@ -21,7 +21,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "松明は 3 日間持続し、その後 $(thing)消えた松明$() になり、もう一つの松明でクリックするか、着火ツールを使用することで再点火できます。 松明に対してスティックをクリックして松明にするすることもできます。 水に落としたたいまつは $(thing)木の灰$() と $(thing)棒$() に変わります。"
+      "text": "松明は3日間持続し、その後$(thing)消えた松明$()になり、点灯中の松明でクリックするか、着火ツールを使用することで再点火できます。松明に対して棒をクリックして松明にすることもできます。水に落としたたいまつは$(thing)木の灰$()と$(thing)棒$()に変わります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -40,13 +40,13 @@
         }
       },
       "name": "ろうそく",
-      "text": "たいまつは $(cfg:candleTicks)間持続し、再点灯することもできます。",
+      "text": "ろうそくは$(cfg:candleTicks)持続し、再点火できます。",
       "enable_visualize": false
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/candle",
-      "text": "ろうそくは、$(l:mechanics/lamps#tallow)獣脂$() 入りの $(l:crafting/barrels)樽$() に $(thing)糸$() を封入することで作成できます。"
+      "text": "ろうそくは、$(l:mechanics/lamps#tallow)獣脂$()入りの$(l:crafting/barrels)樽$()に$(thing)糸$()を漬け込むことで作成できます。"
     },
     {
       "type": "patchouli:multiblock",
@@ -65,12 +65,12 @@
         }
       },
       "name": "ジャック・オ・ランタン",
-      "text": "ジャック・オ・ランタンは、$(thing)くりぬかれたカボチャ$() の点灯バージョンで、元のカボチャに戻るまで $(cfg:jackOLanternTicks)間持続します。",
+      "text": "ジャック･オ･ランタンは、$(thing)くりぬかれたカボチャ$()に点火したもので、元に戻るまで$(cfg:jackOLanternTicks)持続します。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)くりぬかれたカボチャ$() は、新鮮なカボチャで $(thing)ハサミ$() または $(thing)ナイフ$() を使って $(l:food/crops#pumpkin)カボチャ$()に対して$(item)$(k:key.use)$() をクリックして作成されます。 くりぬかれたカボチャは腐らないので、頭にかぶることもできます。"
+      "text": "$(thing)くりぬかれたカボチャ$()は、新鮮な$(l:food/crops#pumpkin)カボチャ$()に$(thing)ハサミ$()または$(thing)ナイフ$()を持ち、$(item)$(k:key.use)$()をクリックして作成されます。くりぬかれたカボチャは腐らないので、頭にかぶることもできます。"
     }
   ],
   "read_by_default": true,

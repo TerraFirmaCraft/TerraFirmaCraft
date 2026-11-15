@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "パンは、$(l:food/crops#barley)大麦$() など、さまざまな穀物を加工した食料です。 穀物を壊すと、生の未加工の穀物アイテムがドロップしますが、それ自体では役に立ちません。 これは $(thing)パン$() に加工する必要があり、$(l:food/sandwiches)サンドイッチ$() にして食べたりそのまま食料にしたりできます。"
+      "text": "パンは、$(l:food/crops#barley)大麦$()など、さまざまな穀物を加工した食品です。穀物の植物を壊すと、生の未加工の穀物がドロップしますが、その状態では役に立ちません。これは$(thing)パン$()に加工する必要があり、$(l:food/sandwiches)サンドイッチ$()にして食べたりそのまま食料にしたりできます。"
     },
     {
       "type": "patchouli:crafting",
@@ -22,7 +22,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/food/oat_flour",
-      "text": "次に、小麦粉を作るために穀物を $(l:crafting/quern)石臼$() で粉砕する必要があります。"
+      "text": "次に、穀物の粉を作るために粒を$(l:crafting/quern)石臼$()で粉砕する必要があります。"
     },
     {
       "type": "patchouli:crafting",

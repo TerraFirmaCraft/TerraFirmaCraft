@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "鋼はツールや $(l:mechanics/armor)防具$() の作成に使用できる高度な素材で、$(thing)鋼$()、$(thing)黒鋼$()、$(thing)赤鋼$()、$(thing)青鋼$()などのいくつかの種類があります。$(br2)鋼 を作成するには、まず $(thing)銑鉄$() を$(l:metalworking/blast_furnace)高炉$()で $(thing)インゴット$() に鋳造する必要があります。"
+      "text": "鋼はツールや$(l:mechanics/armor)防具$()の作成に使用できる高度な素材で、$(thing)鋼$()、$(thing)黒鋼$()、$(thing)赤鋼$()、$(thing)青鋼$()などのいくつかの種類があります。$(br2)鋼を作成するには、まず$(l:metalworking/blast_furnace)高炉$()で$(thing)銑鉄$()を作り$(thing)銑鉄のインゴット$()に鋳造する必要があります。"
     },
     {
       "type": "tfc:anvil_recipe",
@@ -29,11 +29,11 @@
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/metal/ingot/high_carbon_black_steel",
-      "text": "$(thing)軟鋼インゴット$()を$(thing)銑鉄インゴット$()と溶接して、$(thing)高炭素黒鋼インゴット$()を作成できます。 最後に、これを $(l:metalworking/anvils)金床$() で鍛造して $(thing)黒鋼インゴット$() を作成できます。"
+      "text": "$(thing)軟鋼のインゴット$()を$(thing)銑鉄のインゴット$()と溶接して、$(thing)高炭素黒鋼のインゴット$()を作成できます。最後に、これを$(l:metalworking/anvils)金床$()で鍛造して$(thing)黒鋼のインゴット$()が作られます。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)黒鋼$() は、ツールや $(l:mechanics/armor)防具$() の作成に使用でき、$(l:metalworking/steel#blue_steel)青鋼$()と$(l:metalworking/steel#red_steel)赤鋼$() の作成の重要な材料としても使用されます) "
+      "text": "$(thing)黒鋼$()は、ツールや$(l:mechanics/armor)防具$()の作成に使用でき、$(l:metalworking/steel#blue_steel)青鋼$()と$(l:metalworking/steel#red_steel)赤鋼$()の作成の重要な材料としても使用されます。"
     },
     {
       "type": "patchouli:text",
@@ -51,7 +51,7 @@
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/metal/ingot/high_carbon_blue_steel",
-      "text": "$(thing)軟青鋼インゴット$() を $(l:metalworking/steel#black_steel)黒鋼インゴット$() と溶接して、$(thing)高炭素青鋼$() を作成できます。 最後に、これを $(l:metalworking/anvils)金床$() で鍛造して $(thing)青鋼インゴット$() を作成できます。"
+      "text": "$(thing)軟青鋼のインゴット$()を$(l:metalworking/steel#black_steel)黒鋼のインゴット$()と溶接して、$(thing)高炭素青鋼のインゴット$()を作成できます。最後に、これを$(l:metalworking/anvils)金床$()で鍛造して$(thing)青鋼インゴット$()が作られます。"
     },
     {
       "type": "patchouli:text",
@@ -73,7 +73,7 @@
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/metal/ingot/high_carbon_red_steel",
-      "text": "$(thing)軟赤鋼インゴット$() を $(l:metalworking/steel#black_steel)黒鋼インゴット$() と溶接して、$(thing)高炭素赤鋼インゴット$() を作成できます。 最後に、これを $(l:metalworking/anvils)金床$() で鍛造して $(thing)赤鋼インゴット$() を作成できます。"
+      "text": "$(thing)軟赤鋼のインゴット$()を$(l:metalworking/steel#black_steel)黒鋼のインゴット$()と溶接して、$(thing)高炭素赤鋼のインゴット$()を作成できます。最後に、これを$(l:metalworking/anvils)金床$()で鍛造して$(thing)赤鋼のインゴット$()が作られます。"
     },
     {
       "type": "patchouli:text",

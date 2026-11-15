@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)溶鉱炉$() は 鉱石などを $(l:core_mechanics/heating)加熱$() して溶かすために使用される装置です。 $(l:metalworking/crucible)るつぼ$() を機能させるには鍛冶場が必要です。 溶鉱炉は主に$(l:metalworking/anvils)金床$() での鍛冶の準備としてアイテムを加熱するために使用されます。 $(br)それは、7または8個の$(l:metalworking/charcoal_pit#charcoal_pile)木炭の山$()を囲む5つの$(thing)丸石$()ブロックで構築され、その後点火できます。"
+      "text": "$(thing)炉$()は、アイテムを$(l:core_mechanics/heating)加熱$()および溶かすために使用される装置です。$(l:metalworking/crucible)るつぼ$()を機能させるためにも必要です。炉は主に$(l:metalworking/anvils)金床$()で鍛造するための準備として、アイテムの加熱に使用されます。$(br)作成するには、5つの$(thing)石$()系のブロックを使用します。7層または8層の$(l:metalworking/charcoal_pit#charcoal_pile)木炭の山$()、それを囲う様に$(thing)石$()系ブロックを配置し、その後点火します。"
     },
     {
       "type": "patchouli:multiblock",
@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "溶鉱炉が機能するには煙突が必要です。 溶鉱炉の真上にあるブロックは空気、または $(l:metalworking/crucible)るつぼ$() でなければなりません。 さらに、真上のブロック、または近くの 8 つのブロックの 1 つが空(外部)と通じている必要があります。これは右側の青いステンド グラスがある領域です。$(br2)$(l:metalworking/bellows)ふいご$()は、到達可能な最大温度を上げるために、隣接する 1 ブロック上に配置できます。"
+      "text": "炉が機能するには煙突が必要です。炉の真上にあるブロックは空気、または$(l:metalworking/crucible)るつぼ$()でなければなりません。そして、真上、または近くの8つのエリアの1つが空(外部)と通じている必要があります。これは右側の青い色付きガラスがある領域です。$(br2)$(l:metalworking/bellows)ふいご$()は、到達可能な最大温度を上げるために、隣接する1ブロック上に配置できます。"
     },
     {
       "type": "patchouli:multiblock",

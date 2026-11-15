@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "サイズによって、アイテムが中に収まるストレージ ブロックが決まります。$(br)$(li)$(thing)極小$() アイテムはどんなものにも収まります。$(li)$(thing)とても小さい$() アイテムはどんなものにも収まります .$(li)$(thing)小さい$() アイテムは、$(l:food/decay#small_vessels)小さな壺$()$().$(li)$(thing)中$()アイテムは、$(l:food/decay#small_vessels)大きな壺$() に収まる最大のアイテムです。",
+      "text": "サイズによって、アイテムが中に収まる収納ブロックが決まります。$(br)$(li)$(thing)極小$()アイテムはどんなものにも収まります。$(li)$(thing)とても小さい$()アイテムはどんなものにも収まります。$(li)$(thing)小さい$()アイテムは、$(l:food/decay#small_vessels)小さな壺$()に収まります。$(li)$(thing)普通$()のアイテムは、$(l:food/decay#small_vessels)大きな壺$()に収まる最大サイズのアイテムです。",
       "title": "大きさ ⇲"
     },
     {
@@ -29,7 +29,7 @@
     {
       "type": "patchouli:text",
       "anchor": "overburdening",
-      "text": "重量超過としてカウントされるアイテムには、$(thing)金床$()、$(thing)密封された樽$()、$(thing)るつぼ(内容物付き)$() $(br2)注: $(l:food/animal_husbandry#horses)馬$() にも重量超過が起こる可能性があります。",
+      "text": "重量超過としてカウントされるアイテムには、$(thing)金床$()、$(thing)密封された樽$()、$(thing)るつぼ(内容物付き)$()$(br2)メモ: $(l:food/animal_husbandry#horses)ウマ$()にも重量超過が起こる可能性があります。",
       "title": "重量超過"
     }
   ],

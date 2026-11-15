@@ -92,7 +92,7 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)鎖$() はランプを吊るすのに最適な方法で、$(l:metalworking/anvils)金床$() で鍛造できます。"
+      "text": "$(thing)鎖$()はランタンを吊るすのに最適な方法で、$(l:metalworking/anvils)金床$()で鍛造できます。"
     }
   ],
   "read_by_default": true,
