@@ -6,28 +6,28 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "パンは、$(l:food/crops#barley)大麦$() など、さまざまな穀物を加工した食料です。 穀物を壊すと、生の未加工の穀物アイテムがドロップしますが、それ自体では役に立ちません。 これは $(thing)パン$() に加工する必要があり、$(l:food/sandwiches)サンドイッチ$() にして食べたりそのまま食料にしたりできます。"
+      "text": "パンは、$(l:food/crops#barley)大麦$()など、さまざまな穀物を加工した食品です。穀物の植物を壊すと、生の未加工の穀物がドロップしますが、その状態では役に立ちません。これは$(thing)パン$()に加工する必要があり、$(l:food/sandwiches)サンドイッチ$()にして食べたりそのまま食料にしたりできます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/food/barley_grain",
-      "text": "まず、$(thing)ナイフ$() を使って小麦を小麦の粒にします。"
+      "text": "まず、$(thing)ナイフ$()を使って穀物を粒にします。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:food/rye_grain",
       "link_recipes": false,
-      "text": "穀物はで極めて高い保存性を持ち、ほとんどの食品よりもはるかにゆっくりと腐敗します。 新鮮な穀物はそのままでは 10 か月と 7 日間保存されます。 小さな壺で1年9か月と7日持ちます。"
+      "text": "穀物の粒は極めて高い保存性を持ち、ほとんどの食品よりもはるかにゆっくりと腐敗します。新鮮な穀物の粒はそのままでは10か月と7日間保存されます。小さな壺で1年9か月と7日持ちます。"
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/food/oat_flour",
-      "text": "次に、小麦粉を作るために穀物を $(l:crafting/quern)石臼$() で粉砕する必要があります。"
+      "text": "次に、穀物の粉を作るために粒を$(l:crafting/quern)石臼$()で粉砕する必要があります。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/food/barley_dough_1",
-      "text": "小麦のパン生地はバケツ一杯分の $(thing)淡水$() をクラフトで小麦粉に加えて作ることができます。"
+      "text": "パン生地はバケツ一杯分の$(thing)淡水$()を穀物の粉をクラフトで作れます。"
     },
     {
       "type": "tfc:heat_recipe",

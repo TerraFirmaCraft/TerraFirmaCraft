@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)ガラス板$()は$(thing)テーブルに注い$()で作られます。テーブルは、連続した領域に最大16個の$(thing)真鍮メッキのブロック$()を配置することで作成されます。$(br2)1. $(l:crafting/glassworking)ガラスバッチ$()を$(thing)吹き竿$()に追加します。$(br)2. 吹き竿を$(4)$(bold)ぼんやりした赤色$()に加熱します。$(br)3. 吹き竿を持ちテーブルの上で$()$(item)$(k:key.use)$()を行います。$(br)4. 最後に$(l:crafting/glassworking#paddle)木ごて$()を使ってガラスを平らにします。",
+      "text": "$(thing)ガラス板$()は$(thing)テーブルに注ぐこと$()で作られます。テーブルは、連続した領域に最大16個の$(thing)真鍮メッキのブロック$()を配置することで作成されます。$(br2)1. $(l:crafting/glassworking)ガラスバッチ$()を$(thing)吹き竿$()に追加します。$(br)2. 吹き竿を$(4)$(bold)ぼんやりした赤色$()に加熱します。$(br)3. 吹き竿を持ちテーブルの上で$()$(item)$(k:key.use)$()を行います。$(br)4. 最後に$(l:crafting/glassworking#paddle)木ごて$()を持って$(item)$(k:key.use)$()し、ガラスを平らにします。",
       "title": "テーブルに注ぐ"
     },
     {

@@ -30,7 +30,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/chest_minecart/kapok",
-      "text": "$(thing)チェスト付きトロッコ$() は、スロットが 18 個しかなく、丸太のような非常に大きなアイテムを収納できないなど、通常の TFC チェストと同じように動作します。"
+      "text": "$(thing)チェスト付きトロッコ$()は、スロットが18個しかなく、丸太のような非常に大きなアイテムを収納できないなど、通常のTFCチェストと同じように動作します。"
     }
   ],
   "read_by_default": true,

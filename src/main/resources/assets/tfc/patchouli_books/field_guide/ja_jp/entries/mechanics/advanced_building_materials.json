@@ -1,22 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "高度な素材",
+  "name": "高度な建材",
   "category": "tfc:mechanics",
   "icon": "tfc:brick/rhyolite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "石器時代の原始的な $(l:getting_started/building_materials)建築資材$() に加えて、金属工具を入手すると、より高度な建築資材を構築できるようになります"
+      "text": "石器時代の原始的な$(l:getting_started/building_materials)建材$()に加えて、金属工具を入手すると、より高度な建材を作成できます。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#plaster)アラバスター$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)レンガとモルタル$()$(br)",
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#plaster)雪花石膏$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)レンガとモルタル$()$(br)",
       "title": "もくじ"
     },
     {
       "type": "patchouli:text",
       "anchor": "plaster",
-      "text": "アラバスターは $(l:the_world/ores_and_minerals#gypsum)石膏$() から作られた建築ブロックです。 アラバスターは $(l:the_world/ores_and_minerals#gypsum)石膏$() を使って直接クラフトすることで作成できますが、一部の $(l:the_world/ores_and_minerals#gypsum)石膏$() を 100 mB で封印するとより効率的に作成できます。 樽の中に $(thing)石灰水$()を入れて石膏を密封します。",
+      "text": "雪花石膏は$(l:the_world/ores_and_minerals#gypsum)石膏$()から作られる建築ブロックです。雪花石膏は$(l:the_world/ores_and_minerals#gypsum)石膏$()を直接クラフトすることで作成できます。また、$(l:the_world/ores_and_minerals#gypsum)石膏$()を$(thing)石灰水$()100mBとともに樽に入れ密封するとより効率よく作成できます。",
       "title": "雪花石膏"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)石レンガ$() は、$(l:metalworking/chisel)ノミ$() とばらばらの石を使用して作成できます。 次に、補強のため $(thing)モルタル$() が必要です。$(br2)モルタルは、$(thing)石灰水$()を入れた$(l:crafting/barrels#) 樽$()に $(thing)砂$() を追加することで作成できます。",
+      "text": "$(thing)石レンガ$()は、$(l:metalworking/chisel)ノミ$()で小石を加工して作れます。頑丈な建材ブロックにするには、さらに$(thing)モルタル$()が必要です。$(br2)モルタルは、$(l:crafting/barrels#limewater)石灰水$()を入れた樽に$(thing)砂$()を加えることで作成できます。",
       "title": "レンガとモルタル"
     },
     {

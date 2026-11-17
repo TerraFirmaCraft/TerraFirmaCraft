@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)火薬樽$() は爆発を引き起こすために使用されるブロックです。 12 個のスロットがあり、$(thing)火薬$() のみが入っている必要があります。 爆発の強さは含まれている火薬の量に比例します。"
+      "text": "$(thing)火薬樽$()は爆発を引き起こすために使用されるブロックです。12個のスロットがあり、$(thing)火薬$()のみが入っている必要があります。爆発の強さは含まれている火薬の量に比例します。"
     },
     {
       "type": "patchouli:multiblock",
@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "火薬樽の爆発により、付近の火薬樽が発火して連鎖的に爆発します。 爆発で壊れたすべてのブロックはアイテムをドロップしますが、元のブロックと同じ場所にあるとは限りません。"
+      "text": "火薬樽の爆発により、付近の火薬樽が発火して連鎖的に爆発します。爆発で壊れたすべてのブロックはアイテムをドロップしますが、元のブロックと同じ場所にあるとは限りません。"
     },
     {
       "type": "patchouli:crafting",
@@ -43,7 +43,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "火薬は 2 つの方法で作成できます。一つ目は $(l:the_world/ores_and_minerals#saltpeter)硝石$()、$(l:the_world/ores_and_minerals#saltpeter)硫黄$()、および $(l:metalworking/charcoal_pit)木炭$() 粉末を組み合わせることです。 これらの粉は $(l:crafting/quern)石臼$() を使用して作成できます。 $(l:the_world/ores_and_minerals#graphite)黒鉛$() を使用できる場合は、より効率的なレシピを使用できます。"
+      "text": "火薬は2つの方法で作成できます。一つ目は$(l:the_world/ores_and_minerals#saltpeter)硝石$()、$(l:the_world/ores_and_minerals#saltpeter)硫黄$()、および$(l:metalworking/charcoal_pit)木炭$()粉末を組み合わせることです。これらの粉は$(l:crafting/quern)石臼$()を使用して作成できます。$(l:the_world/ores_and_minerals#graphite)黒鉛$()を使用するレシピはより効率的です。"
     }
   ],
   "read_by_default": true

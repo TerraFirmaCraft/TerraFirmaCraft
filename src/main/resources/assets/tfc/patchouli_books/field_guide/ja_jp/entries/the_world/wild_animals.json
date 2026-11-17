@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "野生動物",
+  "name": "野生の動物",
   "category": "tfc:the_world",
   "icon": "tfc:medium_raw_hide",
   "pages": [
@@ -10,12 +10,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "動物はいくつかの異なるカテゴリに分類できます: $(l:the_world/wild_animals#predators)肉食動物$()、$(l:the_world/wild_animals#prey)獲物$()、$(l:the_world/wild_animals#aquatic) )水生$() 動物。$(br2)次の数ページでは、これらの動物の各カテゴリについて詳しく説明します。"
+      "text": "動物はいくつかの異なるカテゴリに分類できます:$(l:the_world/wild_animals#predators)肉食動物$()、$(l:the_world/wild_animals#prey)獲物の動物$()、$(l:the_world/wild_animals#aquatic)水生生物$()。$(br2)次の数ページでは、これらの動物の各カテゴリについて詳しく説明します。"
     },
     {
       "type": "patchouli:text",
       "anchor": "predators",
-      "text": "$(thing)肉食動物$() は、プレイヤーを攻撃する可能性のある動物です。 それらは、夜のみ狩猟する $(thing)夜行性$() か、日中のみ狩猟する $(thing)昼行性$() のいずれかです。 肉食動物は、最近ターゲットを殺害したかどうかに応じて、中立にも敵対にもなります。 肉食動物にはなわばりがあり、十分に遠くまで逃げれば、肉食動物は追いかけるのをやめてなわばりに戻ります。",
+      "text": "$(thing)肉食動物$()は、プレイヤーを攻撃する可能性のある動物です。それらは、夜のみ狩猟する$(thing)夜行性$()か、日中のみ狩猟する$(thing)昼行性$()のいずれかです。肉食動物は、最近ターゲットを殺害したかどうかに応じて、中立にも敵対にもなります。肉食動物にはなわばりがあり、十分に遠くまで逃げれば、肉食動物は追いかけるのをやめてなわばりに戻ります。",
       "title": "肉食動物"
     },
     {

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "穴窯を構築するには、次のものが必要です:$(br)$(li)焼成するアイテムは最大4つです。$(li)$(thing)藁8個$()$(li)8つの $(thing) 丸太$()$(li)$(l:getting_started/firepit#firestarter)火起こし器$() や $(thing)松明$() など、火をつけることができるアイテム。$(br2)$(bold) )注:$() 松明は、穴窯に松明を投げて数秒待つだけで着火できます。"
+      "text": "穴窯を作成するには、次のものが必要です:$(br)$(li)焼成するアイテム最大4つ$(li)$(thing)藁$()8個$(li)$(thing)丸太$()8本$(li)$(l:getting_started/firepit#firestarter)火起こし器$()や$(thing)松明$()など、火をつけることができるアイテム。$(br2)$(bold)メモ: $()松明は、穴窯に松明を投げて数秒待つと着火できます。"
     },
     {
       "type": "patchouli:text",

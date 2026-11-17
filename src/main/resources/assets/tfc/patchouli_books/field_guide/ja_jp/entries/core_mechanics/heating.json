@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "アイテムを加熱することで、あるアイテムを別のアイテムに変換したり、アイテムを液体に変換したりすることができます。 アイテムは、$(l:getting_started/firepit)焚き火$()、$(l:getting_started/pit_kiln)穴窯$()、または $(l:metalworking/charcoal_forge)溶鉱炉$() など、さまざまな方法で加熱できます。  ただし、それらはすべて同じように機能します。 これらの中にアイテムを置くと、アイテムは徐々に熱くなり始めます。 これはアイテムのツールチップに表示されます。"
+      "text": "アイテムは加熱することで、別のアイテムや、液体に変換できます。アイテムは、$(l:getting_started/firepit)焚き火$()、$(l:getting_started/pit_kiln)穴窯$()、または$(l:metalworking/charcoal_forge)炉$()など、さまざまな方法で加熱できます。それらはすべて同じように機能し、中にアイテムを置くとそのアイテムは徐々に熱くなり始めます。温度についてはアイテムのツールチップに表示されます。"
     },
     {
       "type": "patchouli:text",
-      "text": "アイテムの温度は色で表され、次の値によって変化します:$(br2)$(7)$(bold)あたたかい$(): $(cfg:heat:1) - $(cfg:heat:80)$(br)$(7)$(bold)熱い$(): $(cfg:heat:80) - $(cfg:heat:210)$(br)$(7)$(bold)とても熱い$(): $(cfg:heat:210) - $(cfg:heat:480)$(br)$(4)$(bold)ぼんやりとした赤$(): $(cfg:heat:480) - $(cfg:heat:580)$(br)$(bold)$(4)暗い赤$(): $(cfg:heat:580) - $(cfg:heat:730)$(br)$(c)$(bold)明るい赤$(): $(cfg:heat:730) - $(cfg:heat:930)$(br)$(6)$(bold)橙$(): $(cfg:heat:930) - $(cfg:heat:1100)$(br)$(e)$(bold)$(t:Yellow)黄$(): $(cfg:heat:1100) - $(cfg:heat:1300)$(br)$(e)$(t:Yellow White)$(bold)白みがかった黄$(): $(cfg:heat:1300) - $(cfg:heat:1400)$(br)$(d)$(bold)$(t:White)白色$(): $(cfg:heat:1400) - $(cfg:heat:1500)$(br)$(d)$(bold)$(t:Brilliant White)眩しい白色$(): >$(cfg:heat:1500)"
+      "text": "アイテムの温度は色で表され、次の値によって変化します:$(br2)$(7)$(bold)あたたかい$(): $(cfg:heat:1) - $(cfg:heat:80)$(br)$(7)$(bold)熱い$(): $(cfg:heat:80) - $(cfg:heat:210)$(br)$(7)$(bold)とても熱い$(): $(cfg:heat:210) - $(cfg:heat:480)$(br)$(4)$(bold)ぼんやりした赤色$(): $(cfg:heat:480) - $(cfg:heat:580)$(br)$(bold)$(4)暗い赤色$(): $(cfg:heat:580) - $(cfg:heat:730)$(br)$(c)$(bold)明るい赤色$(): $(cfg:heat:730) - $(cfg:heat:930)$(br)$(6)$(bold)橙色$(): $(cfg:heat:930) - $(cfg:heat:1100)$(br)$(e)$(bold)$(t:黄色)黄色$(): $(cfg:heat:1100) - $(cfg:heat:1300)$(br)$(e)$(t:白みがかった黄色)$(bold)白みがかった黄色$(): $(cfg:heat:1300) - $(cfg:heat:1400)$(br)$(d)$(bold)$(t:白色)白色$(): $(cfg:heat:1400) - $(cfg:heat:1500)$(br)$(d)$(bold)$(t:眩しい白色)眩しい白色$():>$(cfg:heat:1500)"
     }
   ],
   "read_by_default": true,
