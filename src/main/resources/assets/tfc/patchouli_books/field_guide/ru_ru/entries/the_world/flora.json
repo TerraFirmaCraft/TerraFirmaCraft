@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Flowers can be $(thing)propagated$() by $(item)$(k:key.use)$() them with shears. This drops a $(thing)Flower Cutting$(). Crafting a Flower Cutting with Compost will give you two of the original flower back, thus duplicating it."
+      "text": "Цветы можно $(thing)размножить$(), нажав $(item)$(k:key.use)$() ножницами по цветку. Получится $(thing)срез цветка$(). Из среза цветка и компоста можно сделать два цветка, дублируя таким образом оригинальный."
     },
     {
       "type": "patchouli:multiblock",
@@ -283,7 +283,7 @@
         }
       },
       "name": "Высокие водные",
-      "text": "Высокие водные растения растут под водой. $(thing)Водный таро$() и $(thing)рогоз$() можно срезать с помощью $(thing)ножа$(), чтобы получить $(thing)корни$().",
+      "text": "Высокие водные растения растут под водой. $(thing)Таро$() и $(thing)рогоз$() можно срезать с помощью $(thing)ножа$(), чтобы получить $(thing)корни$().",
       "enable_visualize": false
     },
     {

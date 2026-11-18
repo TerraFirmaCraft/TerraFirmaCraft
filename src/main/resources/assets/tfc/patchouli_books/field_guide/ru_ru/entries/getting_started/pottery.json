@@ -49,7 +49,7 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "The small vessel is one such item. Like all pottery items, it must be $(l:https://en.wikipedia.org/wiki/Pottery)fired$() before it can be used. Firing is a process of $(l:core_mechanics/heating)heating$() the item up to a point where the clay will turn into a hard $(thing)Ceramic$() material, which requires heating to $(cfg:pitKilnTemperature), or $(bold)$(cfg:pitKilnHeat)$().$(br2)In order to do this in the early game, you will need to use a $(l:getting_started/pit_kiln)Pit Kiln$().",
+      "text": "Малый сосуд — один из таких предметов. Как и все гончарные изделия, его необходимо $(l:https://ru.wikipedia.org/wiki/%D0%93%D0%BE%D0%BD%D1%87%D0%B0%D1%80%D0%BD%D0%BE%D0%B5_%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE)обжечь$() перед использованием. Обжиг — это процесс $(l:core_mechanics/heating)нагревания$() предмета до температуры, при которой глина превращается в твёрдый $(thing)керамический$() материал. Для этого вам нужен нагрев до $(cfg:pitKilnTemperature), или $(bold)$(cfg:pitKilnHeat)$().$(br)Чтобы достичь такой температуры в начале игры, понадобится $(l:getting_started/pit_kiln)земляная печь$().",
       "title": "Малый сосуд"
     },
     {
@@ -70,7 +70,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jug",
-      "text": "Ещё один полезный керамический предмет — это $(thing)кувшин$(). С его помощью можно набирать и $(thing)пить$() жидкости, например пресную воду.$(br2)Чтобы использовать кувшин, просто нажмите $(item)$(k:key.use)$() кувшином на жидкость в мире. Затем задержите $(item)$(k:key.use)$(), чтобы отпить из него. Кувшин вмещает всего $(thing)100 мБ$() жидкости.",
+      "text": "Ещё один полезный керамический предмет — это $(thing)кувшин$(). С его помощью можно набирать и $(thing)пить$() жидкости, например пресную воду.$(br2)Чтобы использовать кувшин, просто нажмите $(item)$(k:key.use)$() кувшином на жидкость в мире. Затем задержите $(item)$(k:key.use)$(), чтобы отпить из него. Кувшин вмещает всего $(thing)$(cfg:jugCapacity)$() жидкости.",
       "title": "Кувшин"
     },
     {
@@ -144,7 +144,7 @@
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_hoe_head_mold",
-      "text": "A $(thing)Hoe$() used for planting and maintaining $(l:food/crops)Crops$()."
+      "text": "$(thing)Мотыга$() используется для посадки и поддержания $(l:food/crops)культур$()."
     },
     {
       "type": "tfc:knapping_recipe",

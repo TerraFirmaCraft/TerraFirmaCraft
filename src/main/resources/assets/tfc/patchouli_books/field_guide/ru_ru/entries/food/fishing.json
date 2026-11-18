@@ -21,7 +21,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need raw fish."
+      "text": "Удочки бесполезны без наживки. Наживку можно прикрепить к удочке в верстаке. Для обычной рыбы нужны $(thing)семена$() или $(thing)моллюски$(). Для большой рыбы, например $(thing)дельфинов$() и $(thing)косаток$(), нужна сырая рыба."
     },
     {
       "type": "patchouli:text",
@@ -39,23 +39,23 @@
       "type": "patchouli:crafting",
       "anchor": "trapping",
       "recipe": "tfc:crafting/lobster_trap",
-      "title": "Trapping",
-      "text": "The $(thing)Lobster Trap$() catches $(thing)Lobsters$(), $(thing)Crayfish$(), $(thing)Isopods$(), and $(thing)Horseshoe Crabs$()."
+      "title": "Ловля",
+      "text": "$(thing)Ловушка для омаров$() ловит $(thing)омаров$(), $(thing)раков$(), $(thing)изоподов$() и $(thing)мечехвостов$()."
     },
     {
       "type": "patchouli:text",
-      "text": "Place a trap underwater and $(item)$(k:key.use)$() it with $(thing)raw fish$() or $(thing)mussels$() to bait it. Nearby critters will crawl in and be caught. One bait lasts for three catches. When it is full or out of bait, the trap closes.$(br2)$(item)$(k:key.use)$() with an empty hand to collect the catch. A trap must be emptied before it can be baited again."
+      "text": "Поставьте ловушку в воде и нажмите $(item)$(k:key.use)$() $(thing)сырой рыбой$() или $(thing)мидией$(), чтобы положить наживку. Обитающие рядом существа заползут в неё и будут пойманы. Одной наживки хватит на 3 улова. Ловушка закроется, когда заполнится, или когда закончится наживка.$(br)Нажмите $(item)$(k:key.use)$() пустой рукой, чтобы собрать улов. Улов нужно обязательно убрать перед тем, как загружать новую наживку."
     },
     {
       "type": "patchouli:crafting",
       "anchor": "buoys",
       "recipe": "tfc:crafting/buoy/red",
-      "title": "Buoys",
-      "text": "A $(thing)Buoy$() floats on the surface of water, and can be used to lower traps into deep water."
+      "title": "Буи",
+      "text": "$(thing)Буй$() держится на поверхности воды и может использоваться для погружения ловушек на глубину."
     },
     {
       "type": "patchouli:text",
-      "text": "$(item)$(k:key.use)$() a buoy with a lobster trap to place the trap in the water below it. Then $(item)$(k:key.use)$() the buoy with $(thing)Rope$() to sink the trap one block per rope. $(item)$(k:key.use)$() the buoy with an empty hand to pull the trap back up and recover the rope."
+      "text": "Нажмите $(item)$(k:key.use)$() ловушкой по бую, чтобы подвесить её под ним. Затем нажмите $(item)$(k:key.use)$() $(thing)верёвкой$() по бую, чтобы погрузить ловушку, по одной верёвке на блок. Нажмите $(item)$(k:key.use)$() пустой рукой по бую, чтобы забрать ловушку и верёвки."
     }
   ],
   "read_by_default": true,

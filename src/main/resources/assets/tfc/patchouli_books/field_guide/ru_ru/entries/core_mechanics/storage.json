@@ -1,57 +1,57 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Storage",
+  "name": "Хранение",
   "category": "tfc:core_mechanics",
   "icon": "tfc:wood/chest/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your own inventory only holds so much, so there are many ways to keep items safe and organized, such as $(thing)Chests$() and $(thing)Crates$(), $(thing)Tool Racks$(), $(thing)Shelves$(), and $(thing)Baskets$().$(br2)Keep in mind that an item's $(l:core_mechanics/size_and_weight)Size ⇲$() limits which containers it will fit inside."
+      "text": "В вашем инвентаре помещается ограниченное число предметов, но есть несколько способов безопасного и организованного хранения, таких как $(thing)сундуки$() и $(thing)ящики$(), $(thing)стеллажи для инструментов$(), $(thing)полки$(), и наконец $(thing)корзины$().$(br2)Помните, что от $(l:core_mechanics/size_and_weight)размера ⇲$() предмета зависит, в какие контейнеры он поместится."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/chest/oak",
-      "text": "A $(thing)Chest$() is the most basic storage block, crafted from a single type of $(thing)Lumber$()."
+      "text": "$(thing)Сундук$() ‒ самое простое хранилище, создающееся из одного вида $(thing)досок$()."
     },
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Chest$() has 18 slots. $(br2)Chests hold items up to $(thing)Large$() in size. $(thing)Very Large$() items, such as $(thing)Logs$(), are too big to fit and must be stored another way.",
-      "title": "Chests"
+      "text": "В $(thing)сундуке$() 18 слотов. $(br2)В сундуке можно хранить предметы размером до $(thing)большого$(). $(thing)Очень большие$() предметы, такие как $(thing)брёвна$() в него не влезут.",
+      "title": "Сундуки"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/trapped_chest/oak",
-      "text": "A $(thing)Trapped Chest$() stores items just like a normal chest, but emits a $(thing)Redstone$() signal while it is open."
+      "text": "$(thing)Сундук-ловушка$() аналогичен обычному сундуку, но выдаёт $(thing)редстоун$() сигнал при открытии."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/crate/oak",
-      "text": "A $(thing)Crate$() stores a single type of item, but up to 36 stacks of it, in sizes up to $(thing)Large$()."
+      "text": "$(thing)Ящик$() может хранить до 36 стаков, но только одного предмета размером до $(thing)большого$()."
     },
     {
       "type": "patchouli:text",
-      "text": "To insert items, use $(item)$(k:key.use)$() on the crate while holding them. With an empty hand, $(item)$(k:key.use)$() takes out a single stack, and if $(item)$(k:key.sneak)$() is held, it empties the whole crate at once.",
-      "title": "Crates"
+      "text": "Чтобы положить в ящик предметы, нажмите $(item)$(k:key.use)$(), держа их в руке. Нажмите $(item)$(k:key.use)$() пустой рукой, чтобы вынуть стак предметов. Зажмите при этом $(item)$(k:key.sneak)$(), чтобы полностью опустошить ящик.",
+      "title": "Ящики"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/tool_rack/oak",
-      "text": "A $(thing)Tool Rack$() is mounted on the side of a solid block. Place or take a tool with $(item)$(k:key.use)$(). Only items that can be used as tools may be placed on it."
+      "text": "$(thing)Стеллаж для инструментов$() крепится на стороне твёрдого блока. Чтобы повесить или взять инструмент, нажмите $(item)$(k:key.use)$(). Повесить можно только инструменты."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/shelf/oak",
-      "text": "$(thing)Shelves$() can be attached to solid walls. Items, including jars, can be placed on top of them by using the item on the shelf or underneath."
+      "text": "$(thing)Полки$() крепятся на стороне твёрдого блока. Банки и другие похожие предметы можно поставить на полку или под неё."
     },
     {
       "type": "patchouli:text",
-      "text": "For storing $(thing)food$() and slowing $(l:food/decay)decay$(), nothing use a $(thing)Vessel$(). See their chapters for details:$(br)$(li)$(l:food/decay#small_vessels)Small Vessels$()$(li)$(l:food/decay#large_vessels)Large Vessels$()",
+      "text": "Для хранения $(thing)еды$() и замедления $(l:food/decay)порчи$() используйте $(thing)сосуды$(). Смотрите соответствующие главы для подробностей:$(br)$(li)$(l:food/decay#small_vessels)Малые сосуды$()$(li)$(l:food/decay#large_vessels)Большие сосуды$()",
       "title": "Сосуды"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/basket",
-      "text": "$(thing)Baskets$() can hold 64 items inside them. Insert and extract by placing the item on the basket with $(item)$(k:key.use)$(). Larger items take up more space."
+      "text": "$(thing)Корзины$() могут хранить 64 предмета. Положить и вынуть предмет можно нажав $(item)$(k:key.use)$() предметом по корзине. Большие предметы занимают больше пространства."
     }
   ],
   "read_by_default": true,

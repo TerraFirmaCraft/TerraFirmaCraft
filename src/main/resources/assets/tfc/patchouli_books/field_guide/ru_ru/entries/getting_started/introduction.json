@@ -80,7 +80,7 @@
         "tfc:knapping/stone/axe_head/igneous_extrusive",
         "tfc:knapping/stone/axe_head/igneous_intrusive"
       ],
-      "text": "$(thing)Топоры$() можно использовать для рубки деревьев целиком, включая как бревна, так и листву. Однако саженцы и палки можно получить только ломая листву."
+      "text": "$(thing)Топоры$() можно использовать для рубки деревьев целиком, включая как брёвна, так и листву. Однако саженцы и палки можно получить только ломая листву."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -120,7 +120,7 @@
         "tfc:knapping/stone/javelin_head/igneous_extrusive",
         "tfc:knapping/stone/javelin_head/igneous_intrusive"
       ],
-      "text": "Наконец, $(thing)дротики$() можно использовать как примитивное оружие для кидания в цели или как $(l:core_mechanics/damage_types)пронзающее$() оружие."
+      "text": "Наконец, $(thing)копья$() можно использовать как примитивное оружие для кидания в цели или как $(l:core_mechanics/damage_types)колющее$() оружие."
     }
   ],
   "read_by_default": true,

@@ -29,7 +29,7 @@
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/drying_bricks/entisol",
       "title": "Глиняные кирпичи",
-      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. Mud can be created by right clicking a dirt block with a container of fresh water, such as a jug or sealed barrel. With a little bit of $(thing)Straw$(), it can be crafted into $()Wet Mud Bricks$()."
+      "text": "$(thing)Грязь$() можно найти в болотах и низменностях и на дне рек и озёр. Также её можно сделать, нажав $(item)$(k:key.use)$() контейнером с водой по земле; в качестве контейнера подойдут, например, кувшин или закрытая бочка. Смешав грязь с $(thing)соломой$(), можно получить $()сырые глиняные кирпичи$()."
     },
     {
       "type": "tfc:multimultiblock",
