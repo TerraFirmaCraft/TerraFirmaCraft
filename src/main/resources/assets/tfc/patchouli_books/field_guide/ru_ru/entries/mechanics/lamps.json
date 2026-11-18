@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Lamps are a long term source of light. They burn liquid fuel. Lamps retain their fuel content when broken. Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. $(thing)Olive Oil$(), $(thing)Canola Oil$(), and $(thing)Tallow$() are lamp fuels. Shooting a lit lamp with an arrow can cause a fire. Lamps react to redstone signals."
+      "text": "Лампы — долгоиграющий источник света. Для работы им требуется жидкое топливо. Лампы сохраняют топливо при разрушении. Нажмите $(item)$(k:key.use)$() по лампе с ведром жидкости, чтобы заправить её. Лампу можно зажечь $(thing)огнивом$(). В качестве топлива можно использовать $(thing)оливковое масло$(), $(thing)каноловое масло$() и $(thing)жир$(). Попадание стрелы в горящую лампу может вызвать пожар. Лампы реагируют на сигнал редстоуна."
     },
     {
       "type": "patchouli:multiblock",
@@ -59,7 +59,7 @@
     {
       "type": "tfc:multimultiblock",
       "name": "Лампы на лаве",
-      "text": "Lava will keep burning forever, but can only be held in a $(l:metalworking/steel#blue_steel)Blue Steel$() or $(l:metalworking/steel#red_steel)Red Steel$() lamp.",
+      "text": "Лава горит вечно, но подходит только для ламп из $(l:metalworking/steel#blue_steel)синей$() или $(l:metalworking/steel#red_steel)красной$() сталей.",
       "multiblocks": [
         {
           "pattern": [
@@ -92,7 +92,7 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)Цепи$() — отличный способ повесить ваши лампы, их можно ковать на $(l:metalworking/anvils)наковальне$()."
+      "text": "$(thing)Цепи$() — отличный способ подвесить ваши лампы, их можно выковать на $(l:metalworking/anvils)наковальне$()."
     }
   ],
   "read_by_default": true,

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "Разное",
-  "description": "Advanced and miscellaneous sections of the tech tree.$(br2)$(br)$(bold)Note:$() you can search entries simply by starting to type anywhere!",
+  "description": "Продвинутые и различные другие разделы технологического дерева.$(br2)$(br)$(bold)Примечание:$() для поиска просто начните печатать где угодно!",
   "icon": "tfc:metal/helmet/blue_steel",
   "sortnum": 6
 }

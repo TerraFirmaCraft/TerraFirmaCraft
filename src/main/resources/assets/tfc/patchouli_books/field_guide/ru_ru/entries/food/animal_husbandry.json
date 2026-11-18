@@ -97,7 +97,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pig",
-      "text": "$(thing)Свиньи$() обитают в умеренных лесах при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-10) до $(cfg:temperature:35) и $(l:core_mechanics/climate#rainfall)осадках$() более 200 мм. Они — $(l:food/animal_husbandry#mammals)млекопитающиие$() без особых способностей. Свиньи едят любую пищу, даже если она испорчена. Свинья может родить от 1 до 10 поросят за беременность, она длится всего 19 дней, и поросята достигает зрелости за 80 дней. Свиньи могут иметь потомство до 6 раз.",
+      "text": "$(thing)Свиньи$() обитают в умеренных лесах при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-10) до $(cfg:temperature:35) и $(l:core_mechanics/climate#rainfall)осадках$() более 200 мм. Они — $(l:food/animal_husbandry#mammals)млекопитающиие$() без особых способностей. Свиньи едят любую пищу, даже если она испорчена. Свинья рожает от 1–10 поросят за беременность, которая длится 19 дней. Поросята растут 80 дней. Свиньи могут иметь потомство до 6 раз.",
       "title": "Свиньи"
     },
     {
@@ -110,7 +110,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rabbit",
-      "text": "$(thing)Rabbits$() spawn in $(l:core_mechanics/climate#temperature)temperatures$() above $(cfg:temperature:-16), and at least 15mm of $(l:core_mechanics/climate#rainfall)rainfall$(), changing their coat based on climate. They are $(l:food/animal_husbandry#mammals)Mammals$() with no special abilities, aside from being known for chewing on carrots and cabbage. They will eat any food, even if it is rotten. They have 1-6 children, are pregnant for just 19 days, and reach adulthood in 20 days. They can have children 6 times.",
+      "text": "$(thing)Кролики$() обитают при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:-16) и $(l:core_mechanics/climate#rainfall)осадках$() более 15 мм, меняя окраску в зависимости от климата. Они — $(l:food/animal_husbandry#mammals)млекопитающие$() без особых способностей, кроме поедания моркови и капусты. Кролики едят любую пищу, даже если она испорчена. Крольчиха рожает 1–6 крольчат за беременность, которая длится 19 дней. Крольчата растут 20 дней. Кролики могут иметь потомство до 6 раз.",
       "title": "Кролики"
     },
     {
@@ -123,7 +123,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cow",
-      "text": "$(thing)Коровы$() обитают почти во всём мире при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-10) до $(cfg:temperature:35) и $(l:core_mechanics/climate#rainfall)осадках$() выше 250 мм. Коровы — $(l:food/animal_husbandry#dairy_animals)молочные животные$(). Они едят только $(thing)крупы$(), в том числе испорченные. Корова может родить от 1 до 2 телят за беременность, она длится 58 дней, и телята достигают зрелости за 192 дня. Коровы могут иметь потомство 13 раз, если их никогда не доили, или быть подоены 128 раз, если их никогда не оплодотворяли. Коровы дают молоко каждый день.",
+      "text": "$(thing)Коровы$() обитают почти во всём мире при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-10) до $(cfg:temperature:35) и $(l:core_mechanics/climate#rainfall)осадках$() выше 250 мм. Коровы — $(l:food/animal_husbandry#dairy_animals)молочные животные$(). Они едят только $(thing)крупы$(), в том числе испорченные. Корова рожает 1–2 телят за беременность, которая длится 58 дней. Телята растут 192 дня. Коровы могут иметь потомство 13 раз, если их никогда не доили, или быть подоены 128 раз, если их никогда не оплодотворяли. Коровы дают молоко каждый день.",
       "title": "Коровы"
     },
     {
@@ -136,7 +136,7 @@
     {
       "type": "patchouli:text",
       "anchor": "goat",
-      "text": "$(thing)Goats$() spawn in moderate climates, with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:-12) and $(cfg:temperature:25), and at least 300mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.",
+      "text": "$(thing)Козы$() обитают в умеренном климате при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-12) до $(cfg:temperature:25) и $(l:core_mechanics/climate#rainfall)осадках$() более 300 мм. Козы — $(l:food/animal_husbandry#dairy_animals)молочные животные$(). Они едят $(thing)крупы$(), $(thing)фрукты$() и $(thing)овощи$(), в том числе испорченные. Коза рожает 1–2 козлят за беременность, которая длится 32 дня. Козлята растут 96 дней. Козы могут иметь потомство до 6 раз, если их никогда не доили, или быть подоены 60 раз, если их никогда не оплодотворяли. Козы дают молоко каждые 3 дня.",
       "title": "Козы"
     },
     {
@@ -149,7 +149,7 @@
     {
       "type": "patchouli:text",
       "anchor": "yak",
-      "text": "$(thing)Яки$() обитают в холодном климате при $(l:core_mechanics/climate#temperature)температуре$() ниже $(cfg:temperature:-11) и $(l:core_mechanics/climate#rainfall)осадках$() более 100 мм. Яки — $(l:food/animal_husbandry#dairy_animals)молочные животные$(). Они едят только свежие $(thing)крупы$(). Самка яка может родить только 1 телёнка за беременность, она длится 64 дня, и телёнок достигает зрелости за 180 дней. Самки яка могут иметь потомство 23 раза, если их никогда не доили, или быть подоены 230 раз, если их никогда не оплодотворяли. Самки яка дают молоко каждый день.",
+      "text": "$(thing)Яки$() обитают в холодном климате при $(l:core_mechanics/climate#temperature)температуре$() ниже $(cfg:temperature:-11) и $(l:core_mechanics/climate#rainfall)осадках$() более 100 мм. Яки — $(l:food/animal_husbandry#dairy_animals)молочные животные$(). Они едят только свежие $(thing)крупы$(). Самка яка рожает 1 телёнка за беременность, которая длится 64 дня. Телёнок растёт 180 дней. Самки яка могут иметь потомство 23 раза, если их никогда не доили, или быть подоены 230 раз, если их никогда не оплодотворяли. Самки яка дают молоко каждый день.",
       "title": "Як"
     },
     {
@@ -162,7 +162,7 @@
     {
       "type": "patchouli:text",
       "anchor": "alpaca",
-      "text": "$(thing)Альпаки$() обитают в умеренном климате при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-8) до $(cfg:temperature:20) и $(l:core_mechanics/climate#rainfall)осадках$() более 250 мм. Альпаки — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(). Они питаются $(thing)крупами$() и $(thing)фруктами$(). Альпаки могут родить от 1 до 2 детенышей за беременность, она длится 36 дней, и детёныши достигают зрелости за 98 дней. Альпаки могут иметь потомство 13 раз, если их никогда не стригли, или быть подстрижены 128 раз, если их никогда не оплодотворяли. Шерсть у них отрастает каждые 6 дней.",
+      "text": "$(thing)Альпаки$() обитают в умеренном климате при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-8) до $(cfg:temperature:20) и $(l:core_mechanics/climate#rainfall)осадках$() более 250 мм. Альпаки — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(). Они питаются $(thing)крупами$() и $(thing)фруктами$(). Альпака рожает 1–2 детенышей за беременность, которая длится 36 дней. Детёныши растут 98 дней. Альпаки могут иметь потомство 13 раз, если их никогда не стригли, или быть подстрижены 128 раз, если их никогда не оплодотворяли. Шерсть отрастает каждые 4 дня.",
       "title": "Альпака"
     },
     {
@@ -175,7 +175,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sheep",
-      "text": "$(thing)Sheep$() spawn in drier climates, with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:0) and $(cfg:temperature:35), and between 70 and 300mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 3 days.",
+      "text": "$(thing)Овцы$() обитают в сухом климате при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:0) до $(cfg:temperature:35) и $(l:core_mechanics/climate#rainfall)осадках$() от 70 до 300 мм. Овцы — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(). Они едят $(thing)крупы$(). Овца рожает 1–2 ягнят за беременность, которая длится 32 дня. Ягнята растут 56 дней. Овцы могут иметь потомство 6 раз, если их никогда не стригли, или быть пострижены 60 раз, если их никогда не оплодотворяли. Шерсть отрастает каждые 3 дня.",
       "title": "Овцы"
     },
     {
@@ -188,7 +188,7 @@
     {
       "type": "patchouli:text",
       "anchor": "musk_ox",
-      "text": "$(thing)Овцебыки$() обитают в холодном климате при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-25) до $(cfg:temperature:0) и $(l:core_mechanics/climate#rainfall)осадках$() более 100 мм. Овцебыки — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(). Они питаются $(thing)крупами$(). Самка овцебыка может родить только 1 теленка за беременность, которая длится 64 дня, и телята достигают зрелости за 168 дней. Овцебыки могут иметь потомство 16 раз, если их никогда не стригли, или быть подстрижены 160 раз, если их никогда не оплодотворяли. Шерсть у них отрастает каждые 4 дня.",
+      "text": "$(thing)Овцебыки$() обитают в холодном климате при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-25) до $(cfg:temperature:0) и $(l:core_mechanics/climate#rainfall)осадках$() более 100 мм. Овцебыки — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(). Они питаются $(thing)крупами$(). Самка овцебыка рожает 1 телёнка за беременность, которая длится 64 дня. Телёнок растёт 168 дней. Овцебыки могут иметь потомство 16 раз, если их никогда не стригли, или быть подстрижены 160 раз, если их никогда не оплодотворяли. Шерсть отрастает каждые 3 дня.",
       "title": "Овцебыки"
     },
     {
@@ -201,20 +201,20 @@
     {
       "type": "patchouli:text",
       "anchor": "bactrian_camel",
-      "text": "$(thing)Bactrian Camels$() spawn in cold deserts, with $(l:core_mechanics/climate#temperature)temperature$() of at most $(cfg:temperature:-5), and at most 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#wooly_animals)Wooly Animals$() and can be ridden. They are slower than horses, but faster on sand and snow. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 24 days, and become adults in 80 days. They can have children 8 times if they are never sheared, or be sheared 80 times if they are never bred. They grow wool every 7 days.",
-      "title": "Bactrian Camel"
+      "text": "$(thing)Двугорбые верблюды$() обитают в холодном климате, при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:-5) и $(l:core_mechanics/climate#rainfall)осадках$() менее 100 мм. Верблюды — $(l:food/animal_husbandry#wooly_animals)шёрстные животные$(), и их можно оседлать. Они медленнее лошадей, но быстрее на песке и снегу. Они питаются $(thing)крупами$() и $(thing)фруктами$(). Самка верблюда рожает 1 верблюжонка за беременность, которая длится 24 дня. Верблюжонок растёт 80 дней. Верблюды могут иметь потомство 8 раз, если их никогда не стригли, или быть подстрижены 80 раз, если их никогда не оплодотворяли. Шерсть отрастает каждые 7 дней.",
+      "title": "Двугорбый верблюд"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bactrian_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A bactrian camel."
+      "text": "Двугорбый верблюд."
     },
     {
       "type": "patchouli:text",
       "anchor": "chicken",
-      "text": "$(thing)Куры$() обитают в теплых лесах при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:14) и $(l:core_mechanics/climate#rainfall)осадках$() более 225 мм. Куры — $(l:food/animal_husbandry#oviparous_animals)яйцекладущими животными$(). Они питаются $(thing)крупами$(), $(thing)фруктами$(), $(thing)овощами$() и $(thing)семенами$(), в том числе испорченными. Куриные яйца вылупляются за 8 дней, и цыплята становятся взрослыми за 24 дня. Куры могут нести яйца 100 раз и несутся каждые 30 часов.",
+      "text": "$(thing)Куры$() обитают в теплых лесах при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:14) и $(l:core_mechanics/climate#rainfall)осадках$() более 225 мм. Куры — $(l:food/animal_husbandry#oviparous_animals)яйцекладущие животные$(). Они питаются $(thing)крупами$(), $(thing)фруктами$(), $(thing)овощами$() и $(thing)семенами$(), в том числе испорченными. Их яйца вылупляются за 8 дней. Цыплята растут 24 дня. Куры могут нести яйца 100 раз и несутся каждые 30 часов.",
       "title": "Куры"
     },
     {
@@ -227,7 +227,7 @@
     {
       "type": "patchouli:text",
       "anchor": "duck",
-      "text": "$(thing)Ducks$() spawn in most plains, with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:-25) and $(cfg:temperature:30), and at least 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.",
+      "text": "$(thing)Утки$() обитают на равнинах при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-25) до $(cfg:temperature:30) и $(l:core_mechanics/climate#rainfall)осадках$() более 100 мм. Утки — $(l:food/animal_husbandry#oviparous_animals)яйцекладущие животные$(). Они едят $(thing)крупы$(), $(thing)фрукты$(), $(thing)овощи$(), $(thing)хлеб$() и $(thing)семена$(). Их яйца вылупляются за 8 дней. Утята растут 32 дня. Утки могут нести яйца 72 раза и несутся каждые 32 часа.",
       "title": "Утки"
     },
     {
@@ -240,7 +240,7 @@
     {
       "type": "patchouli:text",
       "anchor": "quail",
-      "text": "$(thing)Quails$() spawn in colder climates, with $(l:core_mechanics/climate#temperature)temperature$() between $(cfg:temperature:-15) and $(cfg:temperature:15), and at least 200mm of  $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.",
+      "text": "$(thing)Перепела$() обитают в холодном климате при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:-15) до $(cfg:temperature:15) и $(l:core_mechanics/climate#rainfall)осадках$() более 200 мм. Перепела — $(l:food/animal_husbandry#oviparous_animals)яйцекладущие животные$(). Они едят $(thing)крупы$(), $(thing)фрукты$(), $(thing)овощи$() и $(thing)семена$(), в том числе испорченные. Их яйца вылупляются за 8 дней. Перепелята растут 22 дня. Перепелки могут нести яйца 48 раз и несутся каждые 28 часов.",
       "title": "Перепел"
     },
     {
@@ -253,7 +253,7 @@
     {
       "type": "patchouli:text",
       "anchor": "donkey",
-      "text": "$(thing)Donkeys$() spawn in wetter plains, with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:-15), and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "text": "$(thing)Ослы$() обитают на влажных равнинах при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:-15) и $(l:core_mechanics/climate#rainfall)осадках$() от 130 до 400 мм. Ослы — вид $(l:food/animal_husbandry#horses)однокопытных$(), которые могут переносить на себе $(thing)сундуки$(). Они едят $(thing)крупы$() и $(thing)фрукты$(). Ослиха рожает 1 ослёнка за беременность, которая длится 19 дней. Ослёнок растёт 80 дней. Ослы могут иметь потомство 6 раз.",
       "title": "Ослы"
     },
     {
@@ -266,7 +266,7 @@
     {
       "type": "patchouli:text",
       "anchor": "mule",
-      "text": "$(thing)Mules$() spawn in plains with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:-15), and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$() and are the sterile product of a $(thing)horse$() and a $()donkey$(). They eat $(thing)grains$() and $(thing)fruits$(). They reach adulthood in 80 days.",
+      "text": "$(thing)Мулы$() обитают на равнинах при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:-15) и $(l:core_mechanics/climate#rainfall)осадках$() от 130 до 400 мм. Мулы — вид $(l:food/animal_husbandry#horses)однокопытных$(), которые могут переносить на себе $(thing)сундуки$(). Мулы представлены только самцами, полученными от скрещивания $(thing)лошади$() и $(thing)осла$(). Они едят $(thing)крупы$() и $(thing)фрукты$(). Мулы растут 80 дней.",
       "title": "Мулы"
     },
     {
@@ -279,7 +279,7 @@
     {
       "type": "patchouli:text",
       "anchor": "horse",
-      "text": "$(thing)Horses$() spawn in plains with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:-15), and between 130 and 400mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are a kind of $(l:food/animal_husbandry#horses)Equine$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
+      "text": "$(thing)Лошади$() обитают на равнинах при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:-15) и $(l:core_mechanics/climate#rainfall)осадках$() от 130 до 400 мм. Лошади — вид $(l:food/animal_husbandry#horses)однокопытных$(). Они едят $(thing)крупы$() и $(thing)фрукты$(). Лошадь рожает 1 жеребёнка за беременность, которая длится 19 дней. Жеребёнок растёт 80 дней. Лошади могут иметь потомство 6 раз.",
       "title": "Лошади"
     },
     {
@@ -292,20 +292,20 @@
     {
       "type": "patchouli:text",
       "anchor": "dromedary_camel",
-      "text": "$(thing)Dromedary Camels$() spawn in drier climates, with $(l:core_mechanics/climate#temperature)temperature$() of at least $(cfg:temperature:-5), and at most 100mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They are $(l:food/animal_husbandry#mammals)Mammals$() that can be ridden. They are slower than horses, but are immune to cacti and run fast on sand. They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.",
-      "title": "Dromedary Camels"
+      "text": "$(thing)Одногорбые верблюды$() обитают в сухом климате, при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:-5) и $(l:core_mechanics/climate#rainfall)осадках$() менее 100 мм. Верблюды — $(l:food/animal_husbandry#mammals)млекопитающие$(), которых можно оседлать. Они медленнее лошадей, но невосприимчивы к кактусам и передвигаются по песку заметно быстрее. Они питаются $(thing)крупами$() и $(thing)фруктами$(). Самка верблюда рожает 1 верблюжонка за беременность, которая длится 19 дня. Верблюжонок растёт 80 дней. Верблюды могут иметь потомство 6 раз.",
+      "title": "Одногорбые верблюды"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:dromedary_camel{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
       "scale": 0.75,
       "name": " ",
-      "text": "A dromedary camel."
+      "text": "Одногорбый верблюд."
     },
     {
       "type": "patchouli:text",
       "anchor": "frog",
-      "text": "$(thing)Frogs$() spawn in $(l:core_mechanics/climate#temperature)temperatures$() above $(cfg:temperature:-13), and at least 150mm of $(l:core_mechanics/climate#rainfall)rainfall$(). They can be familiarized, and when bred they will lay eggs in fresh water, which hatch into tadpoles. They will eat fish and spider eyes. ",
+      "text": "$(thing)Лягушки$() обитают при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:-13) и $(l:core_mechanics/climate#rainfall)осадках$() более 150 мм. Их можно приручить, и при размножении они откладывают икру в пресной воде, из которой потом появляются головастики. Они едят рыбу и паучьи глаза. ",
       "title": "Лягушки"
     },
     {

@@ -13,7 +13,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:compost",
       "link_recipes": false,
-      "text": "Компост является продуктом $(l:mechanics/composter)компостера$(). $(br)$(li)$(b)Азот: 20$()$(li)$(d)Калий: 20$()"
+      "text": "Компост является продуктом $(l:mechanics/composter)компостера$(). $(br)$(li)$(3)Азот: 20$()$(li)$(d)Калий: 20$()"
     },
     {
       "type": "patchouli:spotlight",
@@ -31,13 +31,13 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/saltpeter",
       "link_recipes": false,
-      "text": "Селитра получается из её руды. $(br)$(li)$(b)Азот: 10$()$(li)$(d)Калий: 40$()"
+      "text": "Селитра получается из её руды. $(br)$(li)$(3)Азот: 10$()$(li)$(d)Калий: 40$()"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:groundcover/guano",
       "link_recipes": false,
-      "text": "Гуано находится под землёй в биомах с пышной растительностью и на скалистых побережьях. $(br)$(li)$(b)Азот: 40$()$(li)$(6)Фосфор: 50$()$(li)$(d)Калий: 10$()"
+      "text": "Гуано находится под землёй в биомах с пышной растительностью и на скалистых побережьях. $(br)$(li)$(3)Азот: 40$()$(li)$(6)Фосфор: 50$()$(li)$(d)Калий: 10$()"
     },
     {
       "type": "patchouli:spotlight",

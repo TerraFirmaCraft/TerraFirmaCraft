@@ -15,7 +15,7 @@
     {
       "type": "patchouli:text",
       "anchor": "small_vessels",
-      "text": "One of the easiest ways to preserve food is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$() the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by $(cfg:traitPreservedModifier)x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.",
+      "text": "$(thing)Сосуд$() — один из самых легких способов консервации еды. В $(thing)большом сосуде$() можно хранить до 9 предметов, и когда он $(thing)закрыт$(), предметы внутри получают статус $(5)$(bold)Консервировано$(), что продлевает им время хранения в $(cfg:traitPreservedModifier) раз(а).$(br)$(thing)Малые сосуды$() могут хранить до 4 предметоы, и тоже дают содержимому статус $(5)$(bold)Консервировано$().",
       "title": "Сосуды"
     },
     {
@@ -40,13 +40,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Ещё один простой способ продлить срок годности — приготовить еду. $(thing)Мясо$() будет портиться медленнее, если оно приготовлено.$(br2)Также важно использовать правильное устройство для готовки. Некоторые устройства, которые нагреваются очень сильно ($(l:metalworking/charcoal_forge)угольная кузница$() и $(l:metalworking/crucible)тигель$()), $(bold)плохо$() подходят для приготовления пищи, что заставит ее портиться быстрее!",
+      "text": "Ещё один простой способ продлить срок годности — приготовить еду. $(thing)Мясо$() будет портиться медленнее, если оно приготовлено.$(br)Также важно использовать правильное устройство для готовки. Некоторые устройства, которые нагреваются очень сильно ($(l:metalworking/charcoal_forge)угольная кузница$() и $(l:metalworking/crucible)тигель$()), $(bold)плохо$() подходят для приготовления пищи, так что она портиться быстрее!",
       "title": "Готовка"
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/food/cooked_mutton",
-      "text": "Instead, a $(l:food/grill)Grill$() can even provide a buff for using it! Cooking mutton (pictured above) in a $(thing)Grill$() gives it the $(thing)Wood Grilled$() trait, multiplying its remaining lifetime by $(cfg:traitWoodGrilledModifier)x. Cooking in a $(l:metalworking/charcoal_forge)Charcoal Forge$() instead gives the $(thing)Charcoal Grilled$() trait, which multiplies its lifetime by $(cfg:traitCharcoalGrilledModifier)x."
+      "text": "А вот $(l:food/grill)гриль$() наоборот — может даже увеличить срок годности! Приготовление баранины (см. выше) на $(thing)гриле$() даёт ей свойство $(thing)Жарено на дровах$(), умножая оставшийся срок годности на $(cfg:traitWoodGrilledModifier). Готовка же в $(l:metalworking/charcoal_forge)угольной кузнице$() даёт статус $(thing)Жарено на углях$(), который умножает оставшийся срок годности на $(cfg:traitCharcoalGrilledModifier)."
     },
     {
       "type": "patchouli:text",
@@ -74,7 +74,7 @@
           "X": "tfc:groundcover/salt_lick"
         }
       },
-      "name": "Солонцы",
+      "name": "Соль",
       "text": "Соль можно найти естественным образом в лесах. Её можно положить и собрать.",
       "enable_visualize": false
     },

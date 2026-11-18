@@ -23,7 +23,7 @@
       "entity": "tfc:polar_bear",
       "scale": 0.55,
       "name": "Белый медведь",
-      "text": "Белый медведь обитает только в самых холодных регионах при $(l:core_mechanics/climate#temperature)температуре$() ниже $(cfg:temperature:10) с $(l:core_mechanics/climate#rainfall)осадками$() более 100 мм."
+      "text": "Белый медведь обитает только в самых холодных регионах с $(l:core_mechanics/climate#temperature)температурой$() ниже $(cfg:temperature:10) с $(l:core_mechanics/climate#rainfall)осадками$() более 100 мм."
     },
     {
       "type": "patchouli:entity",
@@ -195,21 +195,21 @@
       "type": "patchouli:entity",
       "entity": "tfc:turkey",
       "scale": 0.7,
-      "text": "The turkey spawns in forests at any $(l:core_mechanics/climate#temperature)temperature$() below $(cfg:temperature:17) and above $(cfg:temperature:0), and $(l:core_mechanics/climate#rainfall)rainfall$() between 250 and 450mm."
+      "text": "Индюки обитают в лесах при $(l:core_mechanics/climate#temperature)температуре$() от $(cfg:temperature:0) до $(cfg:temperature:17) и $(l:core_mechanics/climate#rainfall)осадках$() от 250 до 450 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:peafowl",
       "scale": 0.8,
       "name": "Павлин",
-      "text": "Павлин обитает в лесах при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:14) и $(l:core_mechanics/climate#rainfall)осадках$() выше 190 мм."
+      "text": "Павлины обитают в лесах при $(l:core_mechanics/climate#temperature)температуре$() выше $(cfg:temperature:14) и $(l:core_mechanics/climate#rainfall)осадках$() выше 190 мм."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:armadillo",
       "scale": 0.7,
-      "name": "Armadillo",
-      "text": "The armadillo sheds scutes every 30 hours. It can be found at any $(l:core_mechanics/climate#temperature)temperature$() above $(cfg:temperature:12), and $(l:core_mechanics/climate#rainfall)rainfall$() between 100 and 400mm."
+      "name": "Броненосец",
+      "text": "Броненосцы обитают при $(l:core_mechanics/climate#temperature)Температуре$() выше $(cfg:temperature:12) и $(l:core_mechanics/climate#rainfall)осадках$() от 100 до 400 мм. Они сбрасывают щитки каждые 30 часов."
     },
     {
       "type": "patchouli:empty"
@@ -410,15 +410,15 @@
       "type": "patchouli:entity",
       "entity": "tfc:lobster",
       "scale": 0.7,
-      "name": "Лобстер",
-      "text": "Лобстеры обитают в любом океане с $(l:core_mechanics/climate#temperature)температурой$() ниже $(cfg:temperature:21)."
+      "name": "Омар",
+      "text": "Омары обитают в любом океане с $(l:core_mechanics/climate#temperature)температурой$() ниже $(cfg:temperature:21)."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:crayfish",
       "scale": 0.7,
       "name": "Рак",
-      "text": "Раки похожи на лобстеров, но обитают в реках и озёрах. Им нужна $(l:core_mechanics/climate#temperature)температура$() выше $(cfg:temperature:5) и $(l:core_mechanics/climate#rainfall)осадки$() более 125 мм."
+      "text": "Раки похожи на омаров, но обитают в реках и озёрах. Им нужна $(l:core_mechanics/climate#temperature)температура$() выше $(cfg:temperature:5) и $(l:core_mechanics/climate#rainfall)осадки$() более 125 мм."
     },
     {
       "type": "patchouli:entity",

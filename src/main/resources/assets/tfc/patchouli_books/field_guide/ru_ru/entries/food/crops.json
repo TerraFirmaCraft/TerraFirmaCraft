@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Культуры выращиваются на $(l:mechanics/farmland)пашне$(). Некоторые культуры имеют дополнительные требования, такие как необходимость затопления водой или опоры на палку для роста. Культурам для роста не нужны $(thing)питательные вещества$(), но они помогают. Существует три питательных вещества: $(b)Азот$(), $(6)Фосфор$() и $(d)Калий$(). Каждая культура может потреблять или восполнять определённую комбинацию этих трёх питательных веществ.",
+      "text": "Культуры выращиваются на $(l:mechanics/farmland)пашне$(). Некоторые культуры имеют дополнительные требования, такие как необходимость затопления водой или опоры на палку для роста. Культурам для роста не нужны $(thing)питательные вещества$(), но они помогают. Существует три питательных вещества: $(3)Азот$(), $(6)Фосфор$() и $(d)Калий$(). Каждая культура может потреблять или восполнять определённую комбинацию этих трёх питательных веществ.",
       "title": "Выращивание культур"
     },
     {
@@ -38,17 +38,17 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Хотя каждая отдельная культура может иметь свой баланс потребностей в удобрениях, большинство культур относятся к четырём общим категориям: зерновые, бобовые, овощные и покровные культуры.$(br2)$(bold)Зерновые$() поглощают большое количество $(b)Азота$(), и восстанавливают $(6)Фосфор$() и $(d)Калий$(). Они дают пищу, богатую зерном",
+      "text": "Хотя каждая отдельная культура может иметь свой баланс потребностей в удобрениях, большинство культур относятся к четырём общим категориям: зерновые, бобовые, овощные и покровные культуры.$(br2)$(bold)Зерновые$() поглощают большое количество $(3)Азота$(), и восстанавливают $(6)Фосфор$() и $(d)Калий$(). Они дают пищу, богатую зерном",
       "title": "Категории культур"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Бобовые$() производят большое количество $(b)Азота$(), и потребляют $(6)Фосфор$() и $(d)Калий$(). Они дают урожай, богатый овощами и белком.$(br2)$(bold)Овощи$() потребляют все три питательных вещества, чтобы производить урожай, богатый овощами.$(br2)$(bold)Покровные$() культуры производят все три питательных вещества, но их урожай имеет лишь ограниченное применение."
+      "text": "$(bold)Бобовые$() производят большое количество $(3)Азота$(), и потребляют $(6)Фосфор$() и $(d)Калий$(). Они дают урожай, богатый овощами и белком.$(br2)$(bold)Овощи$() потребляют все три питательных вещества, чтобы производить урожай, богатый овощами.$(br2)$(bold)Покровные$() культуры производят все три питательных вещества, но их урожай имеет лишь ограниченное применение."
     },
     {
       "type": "patchouli:text",
       "anchor": "barley",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.barley.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.barley.hydration) %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(3)N: 75 $(bold)$(6)P: +20 $(bold)$(d)K: +20$()$(br)Barley is a single block crop. Barley seeds can be planted on farmland and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.barley.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.barley.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(3)N: 75 $(bold)$(6)P: +20 $(bold)$(d)K: +20$()$(br)Ячмень — одноблочная культура. Семена ячменя можно посадить на пашне, и они дадут урожай $(thing)ячменя$() и $(thing)семена ячменя$().",
       "title": "Ячмень"
     },
     {
@@ -196,7 +196,7 @@
     {
       "type": "patchouli:text",
       "anchor": "oat",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.oat.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.oat.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +40 $(bold)$(d)K: +30$()$(br)Овёс — одноблочная культура. Семена овса можно посадить на пашне, и они дадут урожай $(thing)овса$() и $(thing)семяна овса$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.oat.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.oat.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(3)N: 100 $(bold)$(6)P: +40 $(bold)$(d)K: +30$()$(br)Овёс — одноблочная культура. Семена овса можно посадить на пашне, и они дадут урожай $(thing)овса$() и $(thing)семяна овса$().",
       "title": "Овёс"
     },
     {
@@ -344,7 +344,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rye",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.rye.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.rye.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 100 $(bold)$(6)P: +20 $(bold)$(d)K: +40$()$(br)Рожь — одноблочная культура. Семена ржи можно посадить на пашне, и они дадут урожай $(thing)ржи$() и $(thing)семяна ржи$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.rye.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.rye.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(3)N: 100 $(bold)$(6)P: +20 $(bold)$(d)K: +40$()$(br)Рожь — одноблочная культура. Семена ржи можно посадить на пашне, и они дадут урожай $(thing)ржи$() и $(thing)семяна ржи$().",
       "title": "Рожь"
     },
     {
@@ -492,7 +492,7 @@
     {
       "type": "patchouli:text",
       "anchor": "maize",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.maize.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.maize.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 90 $(bold)$(6)P: +25 $(bold)$(d)K: +25$()$(br)Кукуруза — двухблочная культура. Семена кукурузы можно посадить на пашне. Они вырастут в два блока высотой и дадут урожай $(thing)кукурузных зёрен$() и $(thing)семяна кукурузы$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.maize.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.maize.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(3)N: 90 $(bold)$(6)P: +25 $(bold)$(d)K: +25$()$(br)Кукуруза — двухблочная культура. Семена кукурузы можно посадить на пашне. Они вырастут в два блока высотой и дадут урожай $(thing)кукурузных зёрен$() и $(thing)семяна кукурузы$().",
       "title": "Кукуруза"
     },
     {
@@ -630,7 +630,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wheat",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.wheat.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.wheat.hydration) %$(br)$(bold)Category$(): Cereal$(br)$(br)$(bold)$(3)N: 100 $(bold)$(6)P: +30 $(bold)$(d)K: +30$()$(br)Wheat is a single block crop. Wheat seeds can be planted on farmland and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.wheat.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.wheat.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(3)N: 100 $(bold)$(6)P: +30 $(bold)$(d)K: +30$()$(br)Пшеница — одноблочная культура. Семена пшеницы можно посадить на пашне, и они дадут урожай $(thing)пшеницы$() и $(thing)семена пшеницы$().",
       "title": "Пшеница"
     },
     {
@@ -778,7 +778,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.rice.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.rice.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 30$()$(br)Рис — одноблочная культура. Рис необходимо выращивать под водой — его нужно посадить на пашне в пресной воде глубиной в один блок. Семена риса дадут урожай $(thing)риса$() и $(thing)семяна риса$(). В отличие от большинства зерновых культур рис требует равномерного баланса питательных веществ.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.rice.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.rice.hydration) %$(br)$(bold)Категория$(): Зерновые$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 30$()$(br)Рис — одноблочная культура. Рис необходимо выращивать под водой — его нужно посадить на пашне в пресной воде глубиной в один блок. Семена риса дадут урожай $(thing)риса$() и $(thing)семяна риса$(). В отличие от большинства зерновых культур рис требует равномерного баланса питательных веществ.",
       "title": "Рис"
     },
     {
@@ -926,7 +926,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cassava",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.cassava.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.cassava.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +50 $(bold)$(6)P: 40 $(bold)$(d)K: 20$()$(br)Маниок — одноблочная культура. Семена маниока можно посадить на пашне, и они дадут урожай $(thing)маниока$() и $(thing)семяна маниока$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.cassava.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.cassava.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(3)N: +50 $(bold)$(6)P: 40 $(bold)$(d)K: 20$()$(br)Маниок — одноблочная культура. Семена маниока можно посадить на пашне, и они дадут урожай $(thing)маниока$() и $(thing)семяна маниока$().",
       "title": "Маниок"
     },
     {
@@ -1040,7 +1040,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_bean",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.green_bean.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.green_bean.hydration) %$(br)$(bold)Категория$(): Вьющиеся бобовые$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Зелёная фасоль — вьющаяся культура высотой в два блока. Семена зелёной фасоли можно посадить на пашне; растение вырастет до двух блоков высотой, если у него есть палка, и даст урожай $(thing)зелёной фасоли$() и $(thing)семяна зелёной фасоли$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.green_bean.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.green_bean.hydration) %$(br)$(bold)Категория$(): Вьющиеся бобовые$(br)$(br)$(bold)$(3)N: +80 $(bold)$(6)P: 50 $(bold)$(d)K: 40$()$(br)Зелёная фасоль — вьющаяся культура высотой в два блока. Семена зелёной фасоли можно посадить на пашне; растение вырастет до двух блоков высотой, если у него есть палка, и даст урожай $(thing)зелёной фасоли$() и $(thing)семяна зелёной фасоли$().",
       "title": "Зелёная фасоль"
     },
     {
@@ -1220,7 +1220,7 @@
     {
       "type": "patchouli:text",
       "anchor": "lentil",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.lentil.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.lentil.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 20 $(bold)$(d)K: 20$()$(br)Чечевица — одноблочная культура. Семена чечевицы можно посадить на пашне, и они дадут урожай $(thing)чечевицы$() и $(thing)семяна чечевицы$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.lentil.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.lentil.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(3)N: +80 $(bold)$(6)P: 20 $(bold)$(d)K: 20$()$(br)Чечевица — одноблочная культура. Семена чечевицы можно посадить на пашне, и они дадут урожай $(thing)чечевицы$() и $(thing)семяна чечевицы$().",
       "title": "Чечевица"
     },
     {
@@ -1334,7 +1334,7 @@
     {
       "type": "patchouli:text",
       "anchor": "peanut",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.peanut.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.peanut.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +90 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Арахис — одноблочная культура. Семена арахиса можно посадить на пашне, и они дадут урожай $(thing)арахиса$() и $(thing)Семяна арахиса$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.peanut.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.peanut.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(3)N: +90 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Арахис — одноблочная культура. Семена арахиса можно посадить на пашне, и они дадут урожай $(thing)арахиса$() и $(thing)Семяна арахиса$().",
       "title": "Арахис"
     },
     {
@@ -1448,7 +1448,7 @@
     {
       "type": "patchouli:text",
       "anchor": "soybean",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.soybean.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.soybean.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(b)N: +80 $(bold)$(6)P: 60 $(bold)$(d)K: 30$()$(br)Соя — одноблочная культура. Семена сои можно посадить на пашне, и они дадут урожай $(thing)сои$() и $(thing)семяна сои$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.soybean.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.soybean.hydration) %$(br)$(bold)Категория$(): Бобовые$(br)$(br)$(bold)$(3)N: +80 $(bold)$(6)P: 60 $(bold)$(d)K: 30$()$(br)Соя — одноблочная культура. Семена сои можно посадить на пашне, и они дадут урожай $(thing)сои$() и $(thing)семяна сои$().",
       "title": "Соя"
     },
     {
@@ -1579,7 +1579,7 @@
     {
       "type": "patchouli:text",
       "anchor": "beet",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.beet.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.beet.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 50$()$(br)Свёкла — одноблочная культура. Семена свёклы можно посадить на пашне, и они дадут урожай $(thing)свёклы$() и $(thing)семена свёклы$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.beet.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.beet.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 50$()$(br)Свёкла — одноблочная культура. Семена свёклы можно посадить на пашне, и они дадут урожай $(thing)свёклы$() и $(thing)семена свёклы$().",
       "title": "Свёкла"
     },
     {
@@ -1693,7 +1693,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cabbage",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.cabbage.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.cabbage.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 20 $(bold)$(d)K: 40$()$(br)Капуста — это одноблочная культура. Семена капусты можно посадить на пашне, и они дадут урожай $(thing)капусты$() и $(thing)семена капусты$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.cabbage.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.cabbage.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(3)N: 50 $(bold)$(6)P: 20 $(bold)$(d)K: 40$()$(br)Капуста — это одноблочная культура. Семена капусты можно посадить на пашне, и они дадут урожай $(thing)капусты$() и $(thing)семена капусты$().",
       "title": "Капуста"
     },
     {
@@ -1807,7 +1807,7 @@
     {
       "type": "patchouli:text",
       "anchor": "carrot",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.carrot.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.carrot.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 30 $(bold)$(d)K: 40$()$(br)Морковь — это одноблочная культура. Семена моркови можно посадить на пашне, и они дадут урожай $(thing)моркови$() и $(thing)семена моркови$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.carrot.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.carrot.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(3)N: 50 $(bold)$(6)P: 30 $(bold)$(d)K: 40$()$(br)Морковь — это одноблочная культура. Семена моркови можно посадить на пашне, и они дадут урожай $(thing)моркови$() и $(thing)семена моркови$().",
       "title": "Морковь"
     },
     {
@@ -1904,7 +1904,7 @@
     {
       "type": "patchouli:text",
       "anchor": "garlic",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.garlic.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.garlic.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 50$()$(br)Чеснок — это одноблочная культура. Семена чеснока можно посадить на пашне, и они дадут урожай $(thing)чеснока$() и $(thing)семена чеснока$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.garlic.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.garlic.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 50$()$(br)Чеснок — это одноблочная культура. Семена чеснока можно посадить на пашне, и они дадут урожай $(thing)чеснока$() и $(thing)семена чеснока$().",
       "title": "Чеснок"
     },
     {
@@ -2001,7 +2001,7 @@
     {
       "type": "patchouli:text",
       "anchor": "potato",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.potato.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.potato.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Картофель — это одноблочная культура. Семена картофеля можно посадить на пашне, и они дадут урожай $(thing)картофеля$() и $(thing)семена картофеля$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.potato.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.potato.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 20 $(bold)$(d)K: 60$()$(br)Картофель — это одноблочная культура. Семена картофеля можно посадить на пашне, и они дадут урожай $(thing)картофеля$() и $(thing)семена картофеля$().",
       "title": "Картофель"
     },
     {
@@ -2132,7 +2132,7 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Temperature$(): $(cfg:climate.pumpkin.temperature)$(br)$(bold)$(l:food/hydration)Hydration$(): $(cfg:climate.pumpkin.hydration) %$(br)$(bold)Category$(): Spreading Vegetable$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, and the plant matures again, it can grow more pumpkins. Pumpkins can be made into $(l:core_mechanics/lighting#jack_o_lanterns)Jack 'o Lanterns$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.pumpkin.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.pumpkin.hydration) %$(br)$(bold)Категория$(): Стелющийся овощь$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 30 $(bold)$(d)K: 60$()$(br)Тыквы — стелющаяся культура. Семена тыквы можно посадить на пашне; при созревании растение разместит возле себя до двух $(thing)тыкв$(). Если собрать тыквы и дать растению снова созреть, оно сможет вырастить больше тыкв. Из тыкв можно сделать $(l:core_mechanics/lighting#jack_o_lanterns)тыквы-фонари$().",
       "title": "Тыква"
     },
     {
@@ -2304,7 +2304,7 @@
     {
       "type": "patchouli:text",
       "anchor": "melon",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.melon.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.melon.hydration) %$(br)$(bold)Категория$(): Стелющийся овощь$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Арбузы — стелющаяся культура. Семена арбуза можно посадить на пашне; при созревании растение разместит возле себя до двух $(thing)арбузов$(). Если собрать блоки арбуза и дать растению снова созреть, оно сможет вырастить больше арбузов.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.melon.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.melon.hydration) %$(br)$(bold)Категория$(): Стелющийся овощь$(br)$(br)$(bold)$(3)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 65$()$(br)Арбузы — стелющаяся культура. Семена арбуза можно посадить на пашне; при созревании растение разместит возле себя до двух $(thing)арбузов$(). Если собрать блоки арбуза и дать растению снова созреть, оно сможет вырастить больше арбузов.",
       "title": "Арбуз"
     },
     {
@@ -2476,7 +2476,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tomatoes",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.tomato.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.tomato.hydration) %$(br)$(bold)Категория$(): Вьющийся овощь$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 50 $(bold)$(d)K: 60$()$(br)Помидоры — вьющаяся культура высотой два блока. Семена помидоров можно посадить на пашне; растение вырастет до двух блоков высотой, если у него есть палка, и даст урожай $(thing)помидоров$() и $(thing)семена помидоров$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.tomato.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.tomato.hydration) %$(br)$(bold)Категория$(): Вьющийся овощь$(br)$(br)$(bold)$(3)N: 30 $(bold)$(6)P: 50 $(bold)$(d)K: 60$()$(br)Помидоры — вьющаяся культура высотой два блока. Семена помидоров можно посадить на пашне; растение вырастет до двух блоков высотой, если у него есть палка, и даст урожай $(thing)помидоров$() и $(thing)семена помидоров$().",
       "title": "Помидор"
     },
     {
@@ -2656,7 +2656,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_bell_pepper",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.red_bell_pepper.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.red_bell_pepper.hydration) %$(br)$(bold)Категория$(): Многоурожайный овощь$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Красный перец — многоурожайная культура. Когда плоды почти созрели, их можно собрать нажатием $(item)$(k:key.use)$() для получения $(thing)зелёных перцев$(). Сбор урожая таким способом не уничтожает растение, и оно будет приносить новые плоды.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.red_bell_pepper.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.red_bell_pepper.hydration) %$(br)$(bold)Категория$(): Многоурожайный овощь$(br)$(br)$(bold)$(3)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Красный перец — многоурожайная культура. Когда плоды почти созрели, их можно собрать нажатием $(item)$(k:key.use)$() для получения $(thing)зелёных перцев$(). Сбор урожая таким способом не уничтожает растение, и оно будет приносить новые плоды.",
       "title": "Красный перец"
     },
     {
@@ -2787,7 +2787,7 @@
     {
       "type": "patchouli:text",
       "anchor": "yellow_bell_pepper",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.yellow_bell_pepper.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.yellow_bell_pepper.hydration) %$(br)$(bold)Категория$(): Многоурожайный овощь$(br)$(br)$(bold)$(b)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Жёлтый перец — многоурожайная культура. Когда плоды почти созрели, их можно собрать нажатием $(item)$(k:key.use)$() для получения $(thing)зелёных перцев$(). Сбор урожая таким способом не уничтожает растение, и оно будет приносить новые плоды.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.yellow_bell_pepper.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.yellow_bell_pepper.hydration) %$(br)$(bold)Категория$(): Многоурожайный овощь$(br)$(br)$(bold)$(3)N: 30 $(bold)$(6)P: 40 $(bold)$(d)K: 50$()$(br)Жёлтый перец — многоурожайная культура. Когда плоды почти созрели, их можно собрать нажатием $(item)$(k:key.use)$() для получения $(thing)зелёных перцев$(). Сбор урожая таким способом не уничтожает растение, и оно будет приносить новые плоды.",
       "title": "Жёлтый перец"
     },
     {
@@ -2918,7 +2918,7 @@
     {
       "type": "patchouli:text",
       "anchor": "onion",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.onion.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.onion.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Лук — одноблочная культура. Семена лука можно посадить на пашне, и они дадут урожай $(thing)лука$() и $(thing)семена лука$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.onion.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.onion.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(3)N: 40 $(bold)$(6)P: 40 $(bold)$(d)K: 40$()$(br)Лук — одноблочная культура. Семена лука можно посадить на пашне, и они дадут урожай $(thing)лука$() и $(thing)семена лука$().",
       "title": "Лук"
     },
     {
@@ -3049,7 +3049,7 @@
     {
       "type": "patchouli:text",
       "anchor": "squash",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.squash.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.squash.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(b)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Кабачок — одноблочная культура. Семена кабачка можно посадить на пашне, и они дадут урожай $(thing)кабачка$() и $(thing)семена кабачка$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.squash.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.squash.hydration) %$(br)$(bold)Категория$(): Овощные$(br)$(br)$(bold)$(3)N: 25 $(bold)$(6)P: 45 $(bold)$(d)K: 50$()$(br)Кабачок — одноблочная культура. Семена кабачка можно посадить на пашне, и они дадут урожай $(thing)кабачка$() и $(thing)семена кабачка$().",
       "title": "Кабачок"
     },
     {
@@ -3197,7 +3197,7 @@
     {
       "type": "patchouli:text",
       "anchor": "alfalfa",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.alfalfa.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.alfalfa.hydration) %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(b)N: +24 $(bold)$(6)P: +15 $(bold)$(d)K: +18$()$(br)Люцерна — одноблочная холодостойкая культура. Семена люцерны можно посадить на пашне, и они дадут урожай $(thing)люцерны$() и $(thing)семена люцерны$(), обогащая почву. Люцерну можно использовать как источник соломы или компостировать.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.alfalfa.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.alfalfa.hydration) %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(3)N: +24 $(bold)$(6)P: +15 $(bold)$(d)K: +18$()$(br)Люцерна — одноблочная холодостойкая культура. Семена люцерны можно посадить на пашне, и они дадут урожай $(thing)люцерны$() и $(thing)семена люцерны$(), обогащая почву. Люцерну можно использовать как источник соломы или компостировать.",
       "title": "Люцерна"
     },
     {
@@ -3311,7 +3311,7 @@
     {
       "type": "patchouli:text",
       "anchor": "canola",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.canola.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.canola.hydration) %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(b)N: +9 $(bold)$(6)P: +18 $(bold)$(d)K: +30$()$(br)Канола — одноблочная холодостойкая культура. Семена канолы можно посадить на пашне, и они дадут урожай $(thing)канолы$() и $(thing)семена канолы$(), обогащая почву. Канолу можно использовать как источник соломы или компостировать, а из семян сделать масло.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.canola.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.canola.hydration) %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(3)N: +9 $(bold)$(6)P: +18 $(bold)$(d)K: +30$()$(br)Канола — одноблочная холодостойкая культура. Семена канолы можно посадить на пашне, и они дадут урожай $(thing)канолы$() и $(thing)семена канолы$(), обогащая почву. Канолу можно использовать как источник соломы или компостировать, а из семян сделать масло.",
       "title": "Канола"
     },
     {
@@ -3425,7 +3425,7 @@
     {
       "type": "patchouli:text",
       "anchor": "radish",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.radish.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.radish.hydration) %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(b)N: +15 $(bold)$(6)P: +30 $(bold)$(d)K: +18$()$(br)Редис — одноблочная холодостойкая культура. Семена редиса можно посадить на пашне, и они дадут урожай $(thing)редиса$() и $(thing)семена редиса$(), обогащая почву. Редис не очень питателен, но его можно скармливать многим животным.",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.radish.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.radish.hydration) %$(br)$(bold)Категория$(): Покровная культура$(br)$(br)$(bold)$(3)N: +15 $(bold)$(6)P: +30 $(bold)$(d)K: +18$()$(br)Редис — одноблочная холодостойкая культура. Семена редиса можно посадить на пашне, и они дадут урожай $(thing)редиса$() и $(thing)семена редиса$(), обогащая почву. Редис не очень питателен, но его можно скармливать многим животным.",
       "title": "Редис"
     },
     {
@@ -3539,7 +3539,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.sugarcane.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.sugarcane.hydration) %$(br)$(bold)Категория$(): Прочее$(br)$(br)$(bold)$(b)N: 50 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Сахарный тростник — двухблочная культура. Семена сахарного тростника можно посадить на пашне; растение вырастет до двух блоков в высоту и даст урожай $(thing)сахарного тростника$() и $(thing)семена сахарного тростника$(). Сахарный тростник можно использовать для производства $(thing)сахара$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.sugarcane.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.sugarcane.hydration) %$(br)$(bold)Категория$(): Разное$(br)$(br)$(bold)$(3)N: 50 $(bold)$(6)P: 50 $(bold)$(d)K: 50$()$(br)Сахарный тростник — двухблочная культура. Семена сахарного тростника можно посадить на пашне; растение вырастет до двух блоков в высоту и даст урожай $(thing)сахарного тростника$() и $(thing)семена сахарного тростника$(). Сахарный тростник можно использовать для производства $(thing)сахара$().",
       "title": "Сахарный тростник"
     },
     {
@@ -3719,7 +3719,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jute",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.jute.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.jute.hydration) %$(br)$(bold)Категория$(): Разное$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: 40 $(bold)$(d)K: +40$()$(br)Джут — двухблочная культура. Семена джута можно посадить на пашне, растение вырастает до двух блоков в высоту и даст урожай $(thing)джута$() и $(thing)семена джута$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.jute.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.jute.hydration) %$(br)$(bold)Категория$(): Разное$(br)$(br)$(bold)$(3)N: 60 $(bold)$(6)P: 40 $(bold)$(d)K: +40$()$(br)Джут — двухблочная культура. Семена джута можно посадить на пашне, растение вырастает до двух блоков в высоту и даст урожай $(thing)джута$() и $(thing)семена джута$().",
       "title": "Джут"
     },
     {
@@ -3857,7 +3857,7 @@
     {
       "type": "patchouli:text",
       "anchor": "papyrus",
-      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.papyrus.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.papyrus.hydration) %$(br)$(bold)Категория$(): Разное$(br)$(br)$(bold)$(b)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Папирус — двухблочная культура. Семена папируса можно посадить на пашне, растение вырастает до двух блоков в высоту и даст урожай $(l:crafting/papermaking)папируса$() и $(thing)семена папируса$().",
+      "text": "$(bold)$(l:core_mechanics/climate#temperature)Температура$(): $(cfg:climate.papyrus.temperature)$(br)$(bold)$(l:food/hydration)Влажность$(): $(cfg:climate.papyrus.hydration) %$(br)$(bold)Категория$(): Разное$(br)$(br)$(bold)$(3)N: 60 $(bold)$(6)P: +40 $(bold)$(d)K: 40$()$(br)Папирус — двухблочная культура. Семена папируса можно посадить на пашне, растение вырастает до двух блоков в высоту и даст урожай $(l:crafting/papermaking)папируса$() и $(thing)семена папируса$().",
       "title": "Папирус"
     },
     {
