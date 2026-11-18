@@ -6,81 +6,81 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The world of TerraFirmaCraft is divided into large continents - landmasses many kilometers wide and separated by oceans. In these, you may find mountain ranges, rivers, and many other environments."
+      "text": "TerraFirmaCraftの世界は、大陸と呼ばれる数キロメートルに渡る広大な陸地が海によって分けられています。その中には山脈、川、そして多くの異なる環境が見られます。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/biomes/regions.png"
       ],
-      "text": "A typical TFC world viewed at a large scale.",
+      "text": "大規模な視点で見た典型的なTFCの世界。",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "rocks",
-      "text": "The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.",
-      "title": "Rock Layers"
+      "text": "世界はまた、さまざまな種類の$(thing)岩$()に分かれています。岩の地域は1キロメートル以上にわたることがあり、常に2層または3層の異なる岩層が足元に広がっています。$(l:the_world/ores_and_minerals)鉱石$()のような資源は特定の岩の種類でしか出現しないことがよくあるため、特定の岩の種類を見つけることは非常に重要です。",
+      "title": "岩層"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/biomes/rock_layers.png"
       ],
-      "text": "The cross-section of a TFC world.",
+      "text": "TFCの世界の断面図。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "Ocean floors are composed of $(l:the_world/geology#igneous_extrusive)igneous extrusive$() rock - rocks that are formed by magma which cools quickly. Underneath igneous extrusive rock will likely be a $(l:the_world/geology)igneous intrusive$() rock of the same $(item)grade$().$(br2)For example, under $(thing)Basalt$() (a mafic, igneous extrusive rock), will likely be $(thing)Gabbro$() (a mafic, igneous intrusive rock).",
-      "title": "Ocean Floors"
+      "text": "海底は$(l:the_world/geology#igneous_extrusive)火成噴出岩$()で構成されています。火成噴出岩はマグマが急速に冷却されることで形成されます。火成噴出岩の下には、同じ$(item)品位$()の$(l:the_world/geology)火成貫入岩$()が存在する可能性があります。例えば、$(thing)玄武岩$()(苦鉄質/火成噴出岩)の下には、$(thing)斑れい岩$()(苦鉄質/火成貫入岩)が存在する可能性があります。",
+      "title": "海底"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(l:https://en.wikipedia.org/wiki/Felsic)Felsic$() rocks are $(thing)Granite$() and $(thing)Rhyolite$().$(li)$(l:https://en.wikipedia.org/wiki/Intermediate_composition)Intermediate$() rocks are $(thing)Andesite$(), $(thing)Dacite$(), and $(thing)Diorite$().$(li)$(l:https://en.wikipedia.org/wiki/Mafic)Mafic$() rocks are $(thing)Basalt$() and $(thing)Gabbro$().",
-      "title": "Igneous Rock Grades"
+      "text": "$(li)$(l:https://ja.wikipedia.org/wiki/珪長質岩)珪長質$()の岩石は$(thing)花崗岩$()と$(thing)流紋岩$()です。$(li)$(l:https://en.wikipedia.org/wiki/Intermediate_composition)中間質$()の岩石は$(thing)安山岩$()、$(thing)デイサイト$()、および$(thing)閃緑岩$()です。$(li)$(l:https://ja.wikipedia.org/wiki/苦鉄質岩)苦鉄質$()の岩石は$(thing)玄武岩$()と$(thing)斑れい岩$()です。",
+      "title": "火成岩の等級"
     },
     {
       "type": "patchouli:text",
-      "text": "The top layer of rock on a continent will either be igneous extrusive, or $(l:the_world/geology#sedimentary)sedimentary$(). Underneath sedimentary rocks will likely be $(l:the_world/geology#metamorphic)metamorphosed$() forms of the rock above.$(br2)For example, $(thing)Marble$() (a metamorphic rock) will likely be found under $(thing)Limestone$() or $(thing)Chalk$(). High grade metamorphic rocks are found deep under other metamorphic or igneous rocks."
+      "text": "大陸の最上層の岩は火成噴出岩または$(l:the_world/geology#sedimentary)堆積岩$()のいずれかになります。堆積岩の下には、その上にある岩石の$(l:the_world/geology#metamorphic)変成$()形態が存在する可能性が高いです。例えば、$(thing)大理石$()(変成岩)は、$(thing)石灰岩$()や$(thing)白亜$()の下に見られることがよくあります。高品位の変成岩は、他の変成岩や火成岩の地下深くに見つかります。"
     },
     {
       "type": "patchouli:text",
       "text": "$(li)$(thing)Slate$() and $(thing)Phyllite$() form under $(thing)Shale$(), $(thing)Claystone$(), and $(thing)Conglomerate$().$(li)$(thing)Marble$() forms under $(thing)Limestone$(), $(thing)Dolomite$(), and $(thing)Chalk$().$(li)$(thing)Quartzite$() forms under $(thing)Chert$().$(li)$(thing)Schist$() and $(thing)Gneiss$() form under $(thing)Slate$() and $(thing)Phyllite$(), or igneous intrusive rocks.",
-      "title": "Metamorphic Rocks"
+      "title": "変成岩"
     },
     {
       "type": "patchouli:text",
       "text": "Finally, in mountainous regions you might also see $(thing)uplift$(), where a metamorphic or igneous intrusive rock is found on the surface. Uplift rocks can be found above other metamorphic rocks.$(br2)In addition, $(l:https://en.wikipedia.org/wiki/Dike_%28geology%29)Dikes$() - small vertical slices of igneous intrusive rock - may appear scattered around the world,",
-      "title": "Uplift Regions"
+      "title": "隆起地域"
     },
     {
       "type": "patchouli:text",
-      "text": "protruding through the upper layers of rocks.$(br2)With all that in mind, the next few pages list the rocks of all four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine where the rock can spawn (see the previous pages), and also what ores may spawn in this rock."
+      "text": "$(br2)それを踏まえて、次の数ページでは、$(thing)堆積岩$()、$(thing)変成岩$()、$(thing)火成噴出岩$()、および$(thing)火成貫入岩$()の4つのカテゴリーの岩をリストアップしています。これらのカテゴリーは、岩の生成場所(前のページを参照)やその岩の中で発生する鉱石の種類を決定します。"
     },
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They are typically found on the top layers of rock in continental areas. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
-      "title": "Sedimentary"
+      "text": "$(l:https://ja.wikipedia.org/wiki/堆積岩)堆積岩$()は、鉱物や有機粒子の堆積や沈殿によって形成されます。これらは通常、大陸の岩の最上層で見られます。堆積岩の種類は以下の通りです：$(br)$(li)頁岩$(li)粘土岩$(li)石灰岩$(li)礫岩$(li)苦灰岩$(li)角岩$(li)白亜",
+      "title": "堆積岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "metamorphic",
-      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found underneath corresponding sedimentary or igneous rock, or in uplift areas. They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
-      "title": "Metamorphic"
+      "text": "$(l:https://ja.wikipedia.org/wiki/変成岩)変成岩$()は、変成作用と呼ばれるプロセスによって生成されます。対応する堆積岩や火成岩の下、または隆起した地域で見つかります。変成岩には以下のものがあります:$(br)$(li)珪岩$(li)粘板岩$(li)千枚岩$(li)片岩$(li)片麻岩$(li)大理石",
+      "title": "変成岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth's surface. They can be found on the top layer of rock in continental areas, or on the floor of oceans. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
-      "title": "Igneous Extrusive"
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)火成噴出岩$()は、マグマが地表で冷却されることによって形成されます。大陸部の岩石の最上層または海底で見つかります。以下の種類があります:$(br)$(li)流紋岩$(li)玄武岩$(li)安山岩$(li)デイサイト",
+      "title": "火成噴出岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found deep underground, or rarely in dikes or uplift areas. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
-      "title": "Igneous Intrusive"
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)火成貫入岩$()は、地殻の下で冷えたマグマから形成されます。地下深く、またはまれに岩脈や隆起地帯で見つかります。次のような岩石があります：$(br)$(li)花崗岩$(li)閃緑岩$(li)斑れい岩",
+      "title": "火成貫入岩"
     }
   ],
   "read_by_default": true,

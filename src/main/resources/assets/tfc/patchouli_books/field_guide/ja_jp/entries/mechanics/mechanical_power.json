@@ -1,31 +1,31 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Mechanical Power",
+  "name": "機械的な動力",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/water_wheel/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Mechanical power is the art of making things rotate or move, by harnessing the elemental power of either wind or water.$(br2)Practically, many devices can be hooked up to mechanical power networks either to automate their movement, or provide power for other functionality"
+      "text": "機械的な動力は、風や水を動力として利用し、物を回転させたり動かしたりする技術です。$(br2)実際、多くの装置は動力に接続され、動きを自動化したり、他の機能のために動力を供給することもできます。"
     },
     {
       "type": "patchouli:text",
-      "text": "In order to get started with harnessing mechanical power, you will first need a $(thing)Source$() of power.$(br2)$(l:mechanics/mechanical_power#windmill)Windmills$() are a way of harnessing the wind. They can be built nearly everywhere with enough space.$(br2)$(l:mechanics/mechanical_power#water_wheel)Water Wheels$() are a slightly stronger power source, as they harness the current found in $(thing)Rivers$()"
+      "text": "機械的な動力を利用し始めるためには、まず最初に$(thing)動力源$()が必要です。$(br2)$(l:mechanics/mechanical_power#windmill)風車$()は風を利用する方法の一つです。それらは十分なスペースがあればほぼどこにでも建設できます。$(br2)$(l:mechanics/mechanical_power#water_wheel)水車$()はわずかに強い動力源です。水車は$(thing)川$()の流れを利用します。"
     },
     {
       "type": "patchouli:text",
       "anchor": "windmill",
-      "text": "$(thing)Windmills$() are a way of harnessing the power of the wind to rotate an $(l:mechanics/mechanical_power#axle)Axle$(). They are large, and require a completely unobstructed area of 13 x 13 x 1 to be placed. In order to create one, you will first need an $(thing)Axle$(), and then you will need one or more $(thing)Windmill Blades$()",
-      "title": "Windmills"
+      "text": "$(thing)風車$()は風の力を利用して$(l:mechanics/mechanical_power#axle)軸$()を回転させる方法です。風車は大きく、13x13x1の開けた場所が必要です。風車を作るためには、まず$(thing)軸$()が必要で、その後に1つ以上の$(thing)風車の羽根$()も用意する必要があります。",
+      "title": "風車"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/windmill_blade/white",
-      "text": "$(thing)Windmill Blades$() can be crafted from cloth. A single windmill can have up to five blades, and the more blades, the faster it will rotate."
+      "text": "$(thing)風車の羽根$()は布から作られます。1つの風車には最大で5枚の羽根を取り付けることができ、羽根の数が多いほど回転速度が速くなります。"
     },
     {
       "type": "patchouli:text",
-      "text": "In order to create a windmill, first place an $(l:mechanics/mechanical_power#axle)Axle$() in any horizontal orientation. Then, $(item)$(k:key.use)$() up to five $(thing)Windmill Blades$() on the axle to create the windmill. It will slowly start spinning.$(br2)The windmill may break if the axle is already connected to another source, or if there is not enough clear space."
+      "text": "風車を作るためには、まず$(l:mechanics/mechanical_power#axle)軸$()を任意の水平方向に配置します。次に、$(item)$(k:key.use)$()を使用して最大5枚の$(thing)風車の羽根$()を軸に取り付けて風車を作ります。風車はゆっくりと回り始めます。$(br2)軸がすでに他のエネルギー源に接続されている場合や、十分な空きスペースがない場合、風車が壊れることがあります。"
     },
     {
       "type": "patchouli:multiblock",
@@ -37,45 +37,45 @@
     {
       "type": "patchouli:text",
       "anchor": "water_wheel",
-      "text": "$(thing)Water Wheels$() are a way of harnessing the power of flowing water in $(3)Rivers$() in order to generate power. When placed optimally, they can rotate at some of the fastest possible speeds available.$(br2)A water wheel requires a 5 x 5 x 1 area of space to be placed. Note that the water wheel may break if there are any obstructions in the area around it,",
-      "title": "Water Wheels"
+      "text": "$(thing)水車$()は、$(3)川$()の流れる水の力を利用してエネルギーを生成する方法です。最適に配置された場合、最も高速で回転することができます。$(br2)水車を設置するには、5x5x1のスペースが必要です。周囲に障害物がある場合や、",
+      "title": "水車"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/water_wheel/oak",
       "title": " ",
-      "text": "or if the axle was already connected to another source.$(br2)Water wheels can be crafted simply from lumber."
+      "text": "軸がすでに他のエネルギー源に接続されている場合に水車が壊れることがあります。$(br2)水車は単純に木材から作れます。"
     },
     {
       "type": "patchouli:text",
-      "text": "In order to place a $(thing)Water Wheel$(), simply attach it on the end of any $(thing)Axle$(). The axle should be one or two blocks above a source of flowing water, i.e. a river.$(br2)Water below the height of the axle, when flowing, will cause the wheel to speed up. Any water elsewhere, or stationary water below the axle will impede the wheel's movement and cause it to slow down or stop."
+      "text": "$(thing)水車$()を設置するためには、単純に任意の$(thing)軸$()の端に取り付けるだけです。軸は流れる水源、例えば川の1ブロック上または2ブロック上の高さに配置する必要があります。$(br2)流れる水が軸の高さの下にある場合、車輪が加速します。その他の場所にある水や、軸の下にある静止した水は車輪の動きを妨げ、速度が落ちたり停止したりします。"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:water_wheel",
       "name": "",
-      "text": "A $(thing)Water Wheel$()",
+      "text": "$(thing)水車$()。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "anchor": "axle",
       "recipe": "tfc:crafting/wood/axle/oak",
-      "title": "Axles",
-      "text": "Axles are the bread and butter of a rotational network, and are the block that transfers rotational power from one location to the other. They can be connected up to five blocks long, but any longer and they will break!"
+      "title": "軸",
+      "text": "軸は機械的な動力の主力であり、一方の場所から他方の場所へ回転力を伝達するブロックです。最大で5ブロック長に接続できますが、それ以上長くすると壊れてしまいます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/encased_axle/oak",
-      "title": "Encased Axles",
-      "text": "Axles can also be crafted $(thing)Encased$(). These can either be placed by themselves, or on top of existing axles.$(br2)However, in order to transfer power further, you will need a $(l:mechanics/mechanical_power#gearbox)Gear Box$()"
+      "title": "ケース入りの軸",
+      "text": "軸は$(thing)ケース入り$()も作成できます。これらは単独設置することも、既存の軸の上に設置することもできます。$(br2)ただし、さらにパワーを伝達するには、$(l:mechanics/mechanical_power#gearbox)ギアボックス$()が必要です。"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "gearbox",
       "recipe": "tfc:crafting/wood/gear_box/oak",
-      "title": "Gear Box",
-      "text": "$(thing)Gear Boxes$() are a way of changing the $(thing)Direction$() of rotational power by using $(l:https://en.wikipedia.org/wiki/Gear)Gears$(). They are also useful in order to connect long chains of $(l:mechanics/mechanical_power#axle)Axles$() together without breaking."
+      "title": "ギアボックス",
+      "text": "$(thing)ギアボックス$()は、$(l:https://ja.wikipedia.org/wiki/歯車)歯車$()を使用して$(thing)回転方向$()を変更する方法です。これらは、長い$(l:mechanics/mechanical_power#axle)軸$()の連結を壊すことなくつなげるためにも役立ちます。"
     },
     {
       "type": "patchouli:text",
@@ -84,12 +84,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/clutch/oak",
-      "title": "Clutch",
-      "text": "A $(thing)Clutch$() is a way of controlling a rotational network via $(c)Redstone$(). It is an $(l:mechanics/mechanical_power#axle)Encased Axle$(), which disconnects when powered, allowing rotation to pass through only when unpowered."
+      "title": "クラッチ",
+      "text": "$(thing)クラッチ$()は、$(c)レッドストーン$()を使用して回転を制御する方法です。それは$(l:mechanics/mechanical_power#axle)ケース入りの軸$()で、レッドストーン動力が供給されると切断され、レッドストーン動力が供給されていない場合にのみ回転が通過します。"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "An example of a $(thing)Clutch$() in use.",
+      "text": "$(thing)クラッチ$()を使用した例。",
       "multiblocks": [
         "tfc:clutch_off",
         "tfc:clutch_on"
@@ -98,21 +98,21 @@
     {
       "type": "patchouli:text",
       "anchor": "quern",
-      "text": "One device that can be connected to the mechanical network is a $(l:crafting/quern)Quern$(), simply by placing a vertical-facing axle above the Quern. While connected, the Quern cannot be turned manually, instead it will grind items automatically as the axle above rotates.$(br2)The Quern will grind faster if the axle above spins faster.",
-      "title": "Quern Automation"
+      "text": "機械的な動力に接続できる装置の1つは$(l:crafting/quern)石臼$()で、石臼の上に垂直に向いた軸を配置するだけで接続できます。接続されると、石臼は手動で回すことができなくなり、代わりに上の軸が回転するのに合わせて自動的にアイテムを粉砕します。$(br2)軸が速く回転するほど、石臼も速く粉砕します。",
+      "title": "石臼の自動化"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:rotating_quern",
       "name": "",
-      "text": "A $(thing)Quern$() connected to an $(l:mechanics/mechanical_power#axle)Axle$().",
+      "text": "$(l:mechanics/mechanical_power#axle)軸$()に接続された$(thing)石臼$()。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "trip_hammer",
-      "text": "Another mechanical device is the $(thing)Trip Hammer$(). The Trip Hammer automatically performs smithing on an $(l:metalworking/anvils)Anvil$(). The Trip Hammer needs a $(thing)Bladed Axle$() to work. The Bladed Axle works like a regular axle, but has a blade on it that is used to activate the hammer.",
-      "title": "Trip Hammer"
+      "text": "もう一つの機械装置は$(thing)トリップハンマー$()です。トリップハンマーは自動的に$(l:metalworking/anvils)金床$()で鍛冶を行います。トリップハンマーは動作するために$(thing)羽付き軸$()が必要です。羽付き軸は通常の軸と同様に機能しますが、ハンマーを作動させるために羽が取り付けられています。",
+      "title": "トリップハンマー"
     },
     {
       "type": "patchouli:crafting",
@@ -140,7 +140,7 @@
         }
       },
       "name": "",
-      "text": "A setup for a trip hammer.",
+      "text": "トリップハンマーのセットアップ。",
       "enable_visualize": false
     },
     {

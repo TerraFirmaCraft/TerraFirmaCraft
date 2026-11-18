@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Paper$() is either made from the processed stalk of the $(l:food/crops#papyrus)Papyrus$() crop, or from $(l:crafting/papermaking#parchment)Animal Hides$(). Paper is useful for written materials like $(thing)Books$() and $(thing)Maps$()."
+      "text": "$(thing)紙$()は、$(l:food/crops#papyrus)パピルス$()の茎を加工して作られるか、$(l:crafting/papermaking#parchment)動物の皮$()から作られます。$(thing)紙$()は、$(thing)本$()や$(thing)地図$()のような書き物に使用します。"
     },
     {
       "type": "patchouli:crafting",
@@ -40,13 +40,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Flip to the next page for information on papermaking via the parchment process."
+      "text": "次のページでは、羊皮紙の製造プロセスについて確認できます。"
     },
     {
       "type": "patchouli:text",
       "anchor": "parchment",
-      "text": "$(thing)Parchment Paper$() starts with a scraped hide. Review the $(l:crafting/leather_making)leather making chapter$() to learn how to make it. Parchment requires treatment with a few different items. First, $(thing)Pumice$() is needed. Pumice is found on the ground near $(l:the_world/geology)Volcanoes$(), or from $(l:metalworking/sluices)Sluicing$() or $(l:getting_started/panning)Panning$() ore deposits with Andesite, Rhyolite, or Dacite in them.",
-      "title": "Parchment"
+      "text": "$(thing)羊皮紙$()は擦り取られた皮から始まります。作り方を学ぶために、$(l:crafting/leather_making)革作りの章$()を見てください。羊皮紙にはいくつかの異なるアイテムでの処理が必要です。まず、$(thing)軽石$()が必要です。軽石は$(l:the_world/geology)火山$()の近くの地面に見つかるか、$(l:metalworking/sluices)流し樋$()や$(l:getting_started/panning)ふるい$()によって、安山岩、流紋岩、またはデイサイトの鉱石沈殿物から得ることができます。",
+      "title": "羊皮紙"
     },
     {
       "type": "patchouli:multiblock",
@@ -63,19 +63,19 @@
           "X": "tfc:groundcover/pumice"
         }
       },
-      "name": "Pumice",
-      "text": "A Pumice rock placed on the ground.",
+      "name": "軽石",
+      "text": "地面に置かれた軽石。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/treated_hide_from_large",
-      "text": "Crafting pumice, a hammer, and scraped hide gives sections of $(thing)Treated Hide$()."
+      "text": "軽石、ハンマー、削られた皮をクラフトすると、$(thing)加工された皮$()が得られます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/paper",
-      "text": "Treated hide, $(l:crafting/glassworking#lime)lime powder$(), flour, and a fresh egg will complete the treatment process and yield usable paper."
+      "text": "加工された皮、$(l:crafting/glassworking#lime)石灰の粉$()、穀粉と新鮮な卵で処理し、使用可能な紙を生成します。"
     }
   ],
   "read_by_default": true,

@@ -500,7 +500,7 @@ public final class FluidHelpers
         }
 
         // And we can fill a flowing fluid block of the same fluid with a source
-        if (fluid instanceof FlowingFluid flowing && flowing.isSame(state.getFluidState().getType()))
+        if (fluid instanceof FlowingFluid flowing && flowing.isSame(state.getFluidState().getType()) && isEmptyFluid(state))
         {
             return fluid.defaultFluidState().createLegacyBlock();
         }

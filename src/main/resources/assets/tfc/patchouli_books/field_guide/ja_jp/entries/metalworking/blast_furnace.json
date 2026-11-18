@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)高炉$() は、$(thing)鋼$() の作成に使用される高度な装置です。 $(thing)鉄鉱石$()、$(thing)木炭$()、および $(thing)融剤$() を制御された高温環境で混合すると、鋳鉄や錬鉄よりも強力な金属を作成できます。$(br2)溶鉱炉を入手するには、まず $(l:mechanics/rucible)るつぼ$() と大量の $(thing)錬鉄の金属板$() が必要です。"
+      "text": "$(thing)高炉$() は、$(thing)鋼$() の作成に使用される高度な装置です。 $(thing)鉄鉱石$()、$(thing)木炭$()、および $(thing)融剤$() を制御された高温環境で混合すると、鋳鉄や錬鉄よりも強力な金属を作成できます。$(br2)溶鉱炉を入手するには、まず $(l:metalworking/crucible)るつぼ$() と大量の $(thing)錬鉄の金属板$() が必要です。"
     },
     {
       "type": "patchouli:crafting",
@@ -61,7 +61,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "この溶融金属は、溶鉱炉の直下に配置された $(l:mechanics/rucible)るつぼ$() などの溶融金属用コンテナに滴下します。 るつぼの出力スロットからインゴット鋳型に鋳造し、$(l:metalworking/steel)鋼$() に加工することができます。"
+      "text": "この溶融金属は、溶鉱炉の直下に配置された $(l:metalworking/crucible)るつぼ$() などの溶融金属用コンテナに滴下します。 るつぼの出力スロットからインゴット鋳型に鋳造し、$(l:metalworking/steel)鋼$() に加工することができます。"
     }
   ],
   "read_by_default": true,

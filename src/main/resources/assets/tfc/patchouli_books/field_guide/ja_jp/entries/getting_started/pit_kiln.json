@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A pit kiln is an early game method of $(l:core_mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about $(cfg:pitKilnTicks), will heat its contents up to $(cfg:pitKilnTemperature), or $(bold)$(cfg:pitKilnHeat)$()."
+      "text": "穴窯はアイテムを$(l:core_mechanics/heating)加熱$()するTFC序盤の方法です。たとえば、粘土を$(thing)焼成$()してセラミックにするために使用できます。穴窯は、約$(cfg:pitKilnTicks)(ゲーム内)かけて内容物を$(cfg:pitKilnTemperature)、つまり$(bold)$(cfg:pitKilnHeat)$()まで加熱します。"
     },
     {
       "type": "patchouli:text",

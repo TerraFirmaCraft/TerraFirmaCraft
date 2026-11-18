@@ -43,7 +43,7 @@
     {
       "type": "tfc:loom_recipe",
       "recipe": "tfc:loom/white_wool",
-      "text": "$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be $(l:mechanics/dye)dyed$()."
+      "text": "$(thing)羊毛の布$()は、$(thing)羊毛ブロック$()に織り直すことができ、$(l:mechanics/dye)染色$()できます。"
     },
     {
       "type": "tfc:loom_recipe",

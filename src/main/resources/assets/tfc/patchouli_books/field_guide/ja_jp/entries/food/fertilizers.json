@@ -7,7 +7,7 @@
     {
       "type": "patchouli:text",
       "text": "Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Particles should appear, indicating the fertilizer was added.$(br)The effectiveness of fertilizers are influenced by the type of $(l:food/farmland)Farmland$() they are used on.",
-      "title": "Fertilization"
+      "title": "肥料を与える"
     },
     {
       "type": "patchouli:spotlight",

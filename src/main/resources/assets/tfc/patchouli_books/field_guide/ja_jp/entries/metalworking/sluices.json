@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Sluice$() is a device that is used to process $(thing)Ore Deposits$(), producing the same results that $(l:getting_started/panning)Panning$() does, with different probabilities."
+      "text": "$(thing)流し樋$()は鉱石が混ざった砂利である$(thing)鉱床$()から金属のみを取り出す装置であり、$(l:getting_started/panning)ふるい$()と同じ様に機能しますが確率が異なります。"
     },
     {
       "type": "patchouli:crafting",

@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Armor Trims",
+  "name": "防具の装飾",
   "category": "tfc:mechanics",
   "icon": "minecraft:rib_armor_trim_smithing_template",
   "pages": [
@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:smithing_table",
-      "text": "The smithing table can be used to apply armor trims to TFC armor."
+      "text": "鍛冶台は、TFCの防具に装飾を適用するために使用できます。"
     }
   ],
   "read_by_default": true

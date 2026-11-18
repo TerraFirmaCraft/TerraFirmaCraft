@@ -1,41 +1,41 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Bowls",
+  "name": "ボウル",
   "category": "tfc:food",
   "icon": "tfc:ceramic/bowl",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Bowls$() are a versatile tool which can be used to make $(l:food/salad)Salads$(), to make $(l:food/pot)Soups$(), to $(l:food/decay#salting)Salt$() meat, or to apply $(thing)Powder$() to $(l:crafting/glassworking_applications#coloring)Glass$() in order to change the resulting glass's color.$(br2)Bowls can be made both from $(thing)Ceramic$(), by knapping a bowl out of clay, and then firing them."
+      "text": "$(thing)ボウル$()は、多目的なツールであり、$(l:food/salad)サラダ$()や$(l:food/pot)スープ$()の作成、$(l:food/decay#salting)肉の塩漬け$()、または$(thing)粉末$()を$(l:crafting/glassworking_applications#coloring)ガラス$()に適用して、ガラスの色を変更するために使用できます。$(br2)ボウルは、$(thing)セラミック$()から作ることができ、粘土を加工してボウルを作り、それを焼成します。"
     },
     {
       "type": "tfc:knapping_recipe",
       "recipe": "tfc:knapping/ceramic/unfired_bowl_1",
-      "text": "Multiple unfired bowls can be made from one knapping."
+      "text": "1回の加工で複数の未焼成のボウルを作ることができます。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "minecraft:bowl",
-      "title": "Wooden Bowls",
-      "text": "Bowls can also be made out of wood via crafting them together with $(thing)Glue$()$(br2)$(thing)Glue$() can be made by soaking $(thing)Bone Meal$() in a barrel of $(l:crafting/barrels#limewater)Limewater$()."
+      "title": "木のボウル",
+      "text": "ボウルは$(thing)接着剤$()を使うことで木材からも作れます。$(br2)$(thing)接着剤$()は、$(thing)骨粉$()を$(l:crafting/barrels#limewater)石灰水$()入りの樽に浸すことで作成できます。"
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/glue",
-      "text": "Bowls can also be placed on the ground like blocks. When placed, they can be filled with any type of $(thing)Powder$() - the results of grinding ores, minerals, or gems in the $(l:crafting/quern)Quern$()."
+      "text": "ボウルはブロックのように地面に置くこともできます。設置すると、$(l:crafting/quern)石臼$()で鉱石、鉱物、または宝石を粉砕した$(thing)粉末$()を入れられます。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:tfc:bowl_powders",
-      "title": "Powders",
+      "title": "粉末",
       "link_recipes": false,
-      "text": "The Powder Bowl can hold up to 16 of a given powder. To insert items, $(item)$(k:key.use)$() while holding the powder. To extract items, $(item)$(k:key.use)$() with an empty hand.$(br2)$(item)$(k:key.sneak)$() allows extracting the entire contents of the bowl."
+      "text": "粉末入りのボウルは、指定された粉末を最大16個まで保持できます。粉末を入れるには、粉末を持ちながら$(item)$(k:key.use)$()を押します。アイテムを取り出すには、空の手で$(item)$(k:key.use)$()を押します。$(br2)$(item)$(k:key.sneak)$()を押すと、ボウルの中身を全て取り出せます。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:powder/salt",
       "link_recipes": false,
-      "text": "If there is salt in the bowl, clicking with unsalted raw meat will salt the meat. This is the same as crafting the meat with the salt in your inventory."
+      "text": "ボウルに塩がある場合、生肉でボウルをクリックすると、肉を塩漬けにできます。これはインベントリ内の塩で肉をクラフトするのと同じです。"
     }
   ],
   "read_by_default": true,

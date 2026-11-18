@@ -2078,7 +2078,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         large_features.append('tfc:atoll_coral_mushroom')
         large_features.append('tfc:atoll_coral_tree')
         large_features.append('tfc:atoll_coral_claw')
-        large_features.append('tfc:atoll_guano')
+        large_features.append('tfc:atoll_guano_patch')
         large_features += ['tfc:forest']
     else:
         land_features = not ocean_features

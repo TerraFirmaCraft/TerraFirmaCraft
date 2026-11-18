@@ -6,14 +6,14 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$().$(br2)Salads are one of the simplest meals to make, and just require a $(l:food/bowls)Bowl$(). First, hold the $(thing)Bowl$() and press $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). This will open the salad screen."
+      "text": "$(thing)サラダ$()は、最大5つの$(thing)果物$()、$(thing)野菜$()、または$(thing)調理済みの肉$()から$(thing)ボウル$()を使って作られる食事です。$(br2)サラダは最も簡単な食事の一つです。ただ$(l:food/bowls)ボウル$()が必要です。まず、$(thing)ボウル$()を持ち、$(item)$(k:key.sneak)$()を押しながら$(item)$(k:key.use)$()を押します。これでサラダ画面が開きます。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tag:c:foods/salad",
       "title": "",
       "link_recipes": false,
-      "text": "Up to five ingredients can be added in the top slots. $(thing)Bowls$() can be added in the left bottom slot. When you are done, the salad can be taken out from the right bottom slot."
+      "text": "上部のスロットに最大5つの材料を追加できます。左下のスロットには$(thing)ボウル$()を追加できます。完了したら、右下のスロットからサラダを取り出すことができます。"
     }
   ],
   "read_by_default": true,

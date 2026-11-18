@@ -1,21 +1,21 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Glass Products",
+  "name": "ガラス製品",
   "category": "tfc:crafting",
   "icon": "minecraft:glass",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The most simple glass products are $(thing)Glass Panes$() and $(thing)Glass Blocks$(). In order to craft them, you must start with a $(l:crafting/glassworking#blowpipe)Blowpipe$() with a $(thing)Glass Batch$(), and then perform a $(thing)Pour$().$(br)$(li)$(bold)Table Pours$() are used to create $(thing)Glass Panes$()$(li)$(bold)Basin Pours$() are used to create $(thing)Glass Blocks$()"
+      "text": "最もシンプルなガラス製品は$(thing)ガラス板$()と$(thing)ガラスブロック$()です。これらを作成するには、$(l:crafting/glassworking#blowpipe)吹き竿$()と$(thing)ガラスバッチ$()を使用し、$(thing)注ぐ$()必要があります。$(br)$(li)$(bold)テーブルに注ぐ$()は$(thing)ガラス板$()を作成するために使用されます$(li)$(bold)穴に注ぐ$()は$(thing)ガラスブロック$()を作成するために使用されます。"
     },
     {
       "type": "patchouli:text",
-      "text": "Glass can also be $(thing)dyed$() before it is poured to create colored glass. The color is dependent on the type of glass batch, and any powders that have been added.$(br2)Each type of $(thing)Glass Batch$() has a different natural color of glass that they will create. $(thing)Silica$() glass batches can be made into many colors, $(thing)Olivine$(), and $(thing)Volcanic$() glass can be made into relatively few colors."
+      "text": "ガラスは注ぐ前に$(thing)染める$()こともでき、これにより色付きガラスを作成できます。色はガラスバッチの種類と、追加された粉末に依存します。$(br2)各種類の$(thing)ガラスバッチ$()は、それぞれ異なる自然なガラスの色を持っています。$(thing)シリカ$()ガラスバッチは多くの色に、$(thing)かんらん$()と$(thing)火山$()ガラスは比較的少ない色に染められます。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Panes$() are made with a $(thing)Table Pour$(). A pouring table is made by placing up to sixteen $(thing)Brass Plated Blocks$() in a continuous area.$(br2) 1. Add a $(l:crafting/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $()$(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.$(br) 4. Finally $(item)$(k:key.use)$() with a $(l:crafting/glassworking#paddle)Paddle$() to flatten the glass.",
-      "title": "Table Pour"
+      "text": "$(thing)ガラス板$()は$(thing)テーブルに注い$()で作られます。テーブルは、連続した領域に最大16個の$(thing)真鍮メッキのブロック$()を配置することで作成されます。$(br2)1. $(l:crafting/glassworking)ガラスバッチ$()を$(thing)吹き竿$()に追加します。$(br)2. 吹き竿を$(4)$(bold)ぼんやりした赤色$()に加熱します。$(br)3. 吹き竿を持ちテーブルの上で$()$(item)$(k:key.use)$()を行います。$(br)4. 最後に$(l:crafting/glassworking#paddle)木ごて$()を使ってガラスを平らにします。",
+      "title": "テーブルに注ぐ"
     },
     {
       "type": "patchouli:image",
@@ -24,13 +24,13 @@
         "tfc:textures/gui/book/tutorial/glass_panes_2.png",
         "tfc:textures/gui/book/tutorial/glass_panes_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:crafting/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "ガラスが冷却されると、$(l:crafting/glassworking#saw)宝石ノコギリ$()で壊して取得できます。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Glass Blocks$() are made with a $(thing)Basin Pour$(). A basin is made by surrounding all sides of an air block except the top with $(thing)Brass Plated Blocks$().$(br2) 1. Add a $(l:crafting/glassworking)Glass Batch$() to a $(thing)Blowpipe$().$(br) 2. Heat the blowpipe to $(4)$(bold)Faint Red$().$(br) 3. $(item)$(k:key.use)$() the $(thing)Blowpipe$() on the top of the table.",
-      "title": "Basin Pour"
+      "text": "$(thing)ガラスブロック$()は$(thing)穴へ注ぎ$()作られます。穴というのは、$(thing)真鍮メッキのブロック$()で上以外の空気ブロックを囲み作成します。$(br2)1. $(l:crafting/glassworking)ガラスバッチ$()を$(thing)吹き竿$()に追加します。$(br)2. 吹き竿を$(4)$(bold)ぼんやりした赤色$()に加熱します。$(br)3. 吹き竿を持ちテーブルの上で$(item)$(k:key.use)$()を行います。",
+      "title": "穴に注ぐ"
     },
     {
       "type": "patchouli:image",
@@ -39,27 +39,27 @@
         "tfc:textures/gui/book/tutorial/glass_block_2.png",
         "tfc:textures/gui/book/tutorial/glass_block_3.png"
       ],
-      "text": "Once the glass is cooled, it can be broken with a $(l:crafting/glassworking#saw)Gem Saw$() to obtain.",
+      "text": "ガラスが冷却されると、$(l:crafting/glassworking#saw)宝石ノコギリ$()で壊して取得できます。",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "coloring",
-      "text": "Glass has a natural color based on the type of $(l:crafting/glassworking)Glass Batch$() that was used. Other colors can be made using a $(l:food/bowls)Bowl$().$(br2)To use, place the $(l:food/bowls)Bowl$() on the ground, then $(item)$(k:key.use)$() the required $(thing)Powder$(). Before $(thing)Pouring$(), use the $(thing)Blowpipe$() on the bowl to add the powder to the batch.",
-      "title": "Coloring Glass"
+      "text": "ガラスは使用された$(l:crafting/glassworking)ガラスバッチ$()の種類に基づいて自然な色を持っています。他の色は$(l:food/bowls)ボウル$()を使って作ることができます。$(br2)使用方法として、$(l:food/bowls)ボウル$()を地面に置き、必要な$(thing)粉末$()を$(item)$(k:key.use)$()します。$(thing)注ぐ$()前に、ボウルに$(thing)吹き竿$()を使用して、ガラスバッチに粉末を加えます。",
+      "title": "ガラスの染色"
     },
     {
       "type": "patchouli:text",
-      "text": "$(br2)The next pages show the different combinations of glass types and powder materials to create each color."
+      "text": "$(br2)次のページには、各色を作成するためのガラスの種類と粉末材料のさまざまな組み合わせが示されています。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)$(7)White$(): Silica or Hematitic Glass + $(thing)Soda Ash$()$(li)$(bold)$(0)Black$(): Any Glass + $(thing)Graphite$()$(li)$(bold)$(8)Gray$(): Any + $(thing)Graphite$() + $(thing)Soda Ash$()$(li)$(bold)$(7)Light Gray$(): Any + $(thing)Graphite$() + 2x $(thing)Soda Ash$()$(li)$(bold)$(5)Purple$(): Any + $(thing)Iron$() + $(thing)Copper$()$(li)$(bold)$(#964b00)Brown$(): Any + $(thing)Nickel$()$(li)$(bold)$(3)Cyan$(): Non-Volcanic Glass + $(thing)Copper$() + $(thing)Sapphire$()$(li)$(bold)$(2)Green$(): Silica or Hematitic Glass + $(thing)Iron$()",
-      "title": "Dye Colors"
+      "text": "$(li)$(bold)$(7)白色$()：シリカ、赤鉄鉱ガラス+$(thing)ソーダ灰$()$(li)$(bold)$(0)黒色$()：各ガラス+$(thing)黒鉛$()$(li)$(bold)$(8)灰色$()：各ガラス+$(thing)黒鉛$()+$(thing)ソーダ灰$()$(li)$(bold)$(7)薄灰色$()：各ガラス+$(thing)黒鉛$()+$(thing)ソーダ灰$()x2$(li)$(bold)$(5)紫$()：各ガラス+$(thing)鉄$()+$(thing)銅$()$(li)$(bold)$(#964b00)茶色$()：各ガラス+$(thing)ニッケル$()$(li)$(bold)$(3)青緑色$()：火山ガラス以外+$(thing)銅$()+$(thing)サファイア$()$(li)$(bold)$(2)緑色$()：シリカ、赤鉄鉱ガラス+$(thing)鉄$()",
+      "title": "染料の色"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)$(a)Lime$(): Silica or Hematitic Glass + $(thing)Iron$() + $(thing)Soda Ash$()$(li)$(bold)$(b)Light Blue$(): Silica Glass + $(thing)Lapis Lazuli$()$(li)$(bold)$(1)Blue$(): Silica Glass + $(thing)Copper$()$(li)$(bold)$(4)Red$(): Silica or Hematitic Glass + $(thing)Tin$()$(li)$(bold)$(6)Yellow$(): Silica or Hematitic Glass + $(thing)Silver$()$(li)$(bold)$(#ef8e38)Orange$(): Silica Glass + $(thing)Pyrite$()$(li)$(bold)$(5)Magenta$(): Silica or Hematitic Glass + $(thing)Ruby$()$(li)$(bold)$(d)Pink$(): Silica Glass + $(thing)Gold$()$(li)$(bold)$(0)Tinted$(): Non-Silica Glass + $(thing)Amethyst$()"
+      "text": "$(li)$(bold)$(a)黄緑色$()：シリカ、赤鉄鉱ガラス+$(thing)鉄$()+$(thing)ソーダ灰$()$(li)$(bold)$(b)空色$()：シリカガラス+$(thing)ラピスラズリ$()$(li)$(bold)$(1)青色$()：シリカガラス+$(thing)銅$()$(li)$(bold)$(4)赤色$()：シリカ、赤鉄鉱ガラス+$(thing)錫$()$(li)$(bold)$(6)黄色$()：シリカ、赤鉄鉱ガラス+$(thing)銀$()$(li)$(bold)$(#ef8e38)橙色$()：シリカガラス+$(thing)黄鉄鉱$()$(li)$(bold)$(5)赤紫色$()：シリカ、赤鉄鉱ガラス+$(thing)ルビー$()$(li)$(bold)$(d)桃色$()：シリカガラス+$(thing)金$()$(li)$(bold)$(0)遮光$()：シリカガラス以外+$(thing)アメジスト$()"
     },
     {
       "type": "tfc:table_small",
@@ -350,8 +350,8 @@
           "fill": "0x3eb340"
         }
       ],
-      "text": "The availability of glass colors. 'C' is clear, 'T' is tinted. Colors can only be crafted with certain glass batches.",
-      "title": "Glass Color Availability",
+      "text": "ガラス着色の可否。「C」は透明、「T」は遮光。色は特定のガラスバッチでのみ作成できます。",
+      "title": "ガラス着色の可否表",
       "legend": [
         {
           "text": "Can be Crafted",
@@ -382,24 +382,24 @@
       "type": "tfc:glassworking_recipe",
       "anchor": "lamp_glass",
       "recipe": "tfc:glassworking/lamp_glass",
-      "text": "$(thing)Lamp Glass$() is a necessary component to craft $(l:mechanics/lamps)Lamps$()."
+      "text": "$(thing)ランタンガラス$()は$(l:mechanics/lamps)ランタン$()を作るために必要な部品です。"
     },
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "jar",
       "recipe": "tfc:glassworking/empty_jar",
-      "text": "$(l:food/jarring)Jars$() are also made from blown glass, but only silica or hematitic glass."
+      "text": "$(l:food/jarring)ジャム瓶$()も吹きガラスから作れますが、シリカまたはヘマタイトガラスからのみです。"
     },
     {
       "type": "tfc:glassworking_recipe",
       "anchor": "glass_bottle",
       "recipe": "tfc:glassworking/silica_glass_bottle",
-      "text": "$(thing)Glass Bottles$() can also be made. The quality of the glass bottle depends on the type of glass used to make it."
+      "text": "$(thing)ガラス瓶$()も作ることができます。ガラス瓶の品質は、使用されるガラスの種類によって異なります。"
     },
     {
       "type": "tfc:glassworking_recipe",
       "recipe": "tfc:glassworking/lens",
-      "text": "The $(thing)Lens$() is used for crafting the spyglass, compasses, and daylight sensors."
+      "text": "$(thing)レンズ$()は、望遠鏡、コンパス、日照センサーの製作に使用されます。"
     }
   ],
   "read_by_default": true,

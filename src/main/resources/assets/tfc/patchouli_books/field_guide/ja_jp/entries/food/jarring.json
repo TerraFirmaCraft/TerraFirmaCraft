@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Jarring",
+  "name": "瓶詰め",
   "category": "tfc:food",
   "icon": "tfc:jar/plum",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Jars$() are used to preserve fruit for longer periods of time. Jars start as $(thing)Empty Jars$(), obtained through $(l:crafting/glassworking_applications#jar)Glassworking$(). Then, a $(thing)Jar Lid$() must be smithed from $(thing)Tin$(). Crafting these together creates an $(thing)Empty Jar With Lid$()."
+      "text": "$(thing)ジャム瓶$()は、果物を長期間保存するために使用されます。$(thing)空のジャム瓶$()は、$(l:crafting/glassworking_applications#jar)ガラスの加工$()で得られます。その後、$(thing)ジャム瓶の蓋$()を$(thing)錫$()から鍛造する必要があります。これらを組み合わせることで$(thing)蓋付きの空のジャム瓶$()が作成されます。"
     },
     {
       "type": "patchouli:text",
@@ -19,16 +19,16 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/jar/plum_unsealed",
-      "text": "Unsealing a jar is done by crafting. The lid is not able to be retrieved. An unsealed jar only lasts for a few days!"
+      "text": "ジャム瓶の封を解除するにはクラフトが必要です。蓋は回収できません。封を解除したジャムは数日しか持ちません！"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/food/rye_bread_jam_sandwich_sjs_jar",
-      "text": "Jam is used for making sandwiches. Jam sandwiches can contain Dairy, Cooked Meats, and Jam. An $(thing)Empty Jar$() is left over."
+      "text": "ジャムはサンドイッチ作りに使用されます。ジャムサンドイッチには、乳製品、調理済みの肉、そしてジャムが含まれることがあります。$(thing)空のジャム瓶$()が残ります。"
     },
     {
       "type": "patchouli:text",
-      "text": "Jars can be placed on solid surfaces with $(item)$(k:key.use)$(). A block can contain four jars of any kind."
+      "text": "ジャム瓶は$(item)$(k:key.use)$()を使用して、平らな面に設置できます。1つのブロックには、任意の種類のジャム瓶を4つまで置くことができます。"
     }
   ],
   "read_by_default": true,
