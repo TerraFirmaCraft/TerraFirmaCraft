@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "ランプ",
+  "name": "ランタン",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -27,7 +27,7 @@
           "Y": "tfc:metal/lamp/copper[hanging=true,lit=true]"
         }
       },
-      "name": "ランプ",
+      "name": "ランタン",
       "text": "チェーンに吊るされた点灯したランタン。",
       "enable_visualize": false
     },
@@ -40,7 +40,7 @@
       "type": "tfc:quern_recipe",
       "anchor": "olives",
       "recipe": "tfc:quern/olive_paste",
-      "text": "ランプの燃料の 1 つは $(thing)オリーブオイル$() です。 製造の最初のステップは、オリーブペーストを作ることです。"
+      "text": "ランタンの燃料の1つは$(thing)オリーブオイル$()です。製造の最初のステップは、オリーブペーストを作ることです。"
     },
     {
       "type": "patchouli:crafting",
@@ -49,7 +49,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)オリーブペースト$() と $(thing)水$() を $(l:food/pot)ポット$() で煮て、$(thing)オリーブオイル水$() を作ります。 それを $(thing)ジュートの網$() と共に $(l:crafting/barrels)樽$() に密閉し、$(thing)オリーブオイル$() を生成します。 オリーブオイルは、液体単位ごとにゲーム内で 8 時間燃焼します。"
+      "text": "$(thing)オリーブペースト$() と $(thing)水$() を $(l:food/pot)ポット$() で煮て、$(thing)オリーブオイル水$() を作ります。 それを $(thing)ジュートの網$() と共に $(l:crafting/barrels)樽$() に密閉し、$(thing)オリーブオイル$() を生成します。 オリーブオイルは、液体単位ごとにゲーム内で 6 時間燃焼します。"
     },
     {
       "type": "patchouli:text",
@@ -58,7 +58,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "name": "溶岩ランプ",
+      "name": "溶岩ランタン",
       "text": "Lava will keep burning forever, but can only be held in a $(l:metalworking/steel#blue_steel)Blue Steel$() or $(l:metalworking/steel#red_steel)Red Steel$() lamp.",
       "multiblocks": [
         {
@@ -92,7 +92,7 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/metal/chain/black_steel",
-      "text": "$(thing)鎖$() はランプを吊るすのに最適な方法で、$(l:metalworking/anvils)金床$() で鍛造できます。"
+      "text": "$(thing)鎖$()はランタンを吊るすのに最適な方法で、$(l:metalworking/anvils)金床$()で鍛造できます。"
     }
   ],
   "read_by_default": true,
